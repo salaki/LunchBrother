@@ -1,3 +1,30 @@
-#header.h1{
-   text-align:center;
+body{
+    font-family:arial;
+    font:18px;
+}
+
+#body{
+    position:relative;
+    margin-top:40px;
+}
+
+#order{
+    font-size:20px;
+}
+.headerwidget{
+    background-color:#EB1929;
+    color:#FFFFFF;
+}
+#title {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+.note{
+    text-align:center;
+}
+.text{
+    font:bold;
+    font-size:26px;
+    position:relative;
 }
