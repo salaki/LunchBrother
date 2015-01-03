@@ -16,6 +16,11 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/grid.min.css">
 	<link rel="stylesheet" type="text/css" href="css/button.min.css">
+	<link rel="stylesheet" type="text/css" href="css/dropdown.min.css">
+	<link rel="stylesheet" type="text/css" href="css/input.min.css">
+	<link rel="stylesheet" type="text/css" href="css/divider.min.css">
+    <link rel="stylesheet" type="text/css" href="css/checkbox.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.min.css">
 </head>
 
 <body>
@@ -48,55 +53,63 @@
 							<div class="right aligned column">$10.00</div>
 						</div>
 					</div>
-					<hr>
+					<div class="ui divider"></div>
 					<div class="right aligned column">合计：$10.00</div>
 				</div>
 			</div>
-			<div class="ui fluid form segment">
+			<div class="ui form">
 				<div class="two fields">
 					<div class="twelve wide field">
-						<input placeholder="取餐人姓名" type="text">
+						<input class="ui fluid input" placeholder="取餐人姓名" type="text">
 					</div>
 					<div class="twelve wide field">
-						<input placeholder="E-mail" type="text">
+						<input class="ui fluid input" placeholder="E-mail" type="text">
 					</div>
 				</div>
-				<div class="field">
-					<select class="ui search dropdown">
-					    <option value="default">选择取餐地址</option>
-						<option value="CP">College Park</option>
-						<option value="SG">Shade Grave</option>
-						<option value="AL">Albania</option>
-					</select>
-				</div>
-			    <hr/>
-			    <div class="two fields">
-			    	<p>请输入您的信用卡信息：</p>
+					<div class="ui selection dropdown">
+						<input type="hidden" name="address">
+							<div class="default">选择取餐地址</div>
+							<i class="dropdown icon"></i>
+							<div class="menu">
+								<div class="item" data-value="CP">College Park,MD</div>
+								<div class="item" data-value="SG">Shady Grove,MD</div>
+							</div>
+					</div>
+				<div class="ui divider"></div>
+				<div class="two fields">
+					<p>请输入您的信用卡信息：</p>
 					<div class="twelve wide field">
-						<input placeholder="持卡人姓名" type="text">
+						<input class="ui fluid input" placeholder="持卡人姓名" type="text">
 					</div>
 					<div class="twelve wide field">
-						<input placeholder="卡号" type="text">
+						<input class="ui fluid input" placeholder="卡号" type="text">
 					</div>
 				</div>
 				<div class="required field">
 					<label>过期日期：</label>
+					
+					<div class="ui selection dropdown">
+						<input type="hidden" name="expdate">
+						<i class="dropdown icon"></i>
+					<div class="default">01</div>
+					    <div class="menu">
+								<div class="item" data-value="01">01</div>
+								<div class="item" data-value="02">02</div>
+								<div class="item" data-value="03">03</div>
+								<div class="item" data-value="04">04</div>
+								<div class="item" data-value="05">05</div>
+								<div class="item" data-value="06">06</div>
+								<div class="item" data-value="07">07</div>
+								<div class="item" data-value="08">08</div>
+								<div class="item" data-value="09">09</div>
+								<div class="item" data-value="10">10</div>
+								<div class="item" data-value="11">11</div>
+							    <div class="item" data-value="12">12</div>
+						</div>
+						
+				   </div>
 					<select class="ui search dropdown">
-					    <option value="01">01</option>
-						<option value="02">02</option>
-						<option value="03">03</option>
-						<option value="04">04</option>
-						<option value="05">05</option>
-						<option value="06">06</option>
-						<option value="07">07</option>
-						<option value="08">08</option>
-						<option value="09">09</option>
-						<option value="10">10</option>
-						<option value="11">11</option>
-						<option value="12">12</option>
-					</select>
-					<select class="ui search dropdown">
-					    <option value="15">2015</option>
+						<option value="15">2015</option>
 						<option value="16">2016</option>
 						<option value="17">2017</option>
 						<option value="18">2018</option>
@@ -109,22 +122,22 @@
 					<label>CW2验证码：</label>
 					<input type="text">
 				</div>
-					<div class="required inline field">
-						<div class="ui checkbox">
-							<input type="checkbox">
-							<label>我同意带饭大哥使用协议和条款</label>
-						</div>
+				<div class="required inline field">
+					<div class="ui checkbox">
+						<input type="checkbox">
+						<label>我同意带饭大哥使用协议和条款</label>
 					</div>
-					<div class="inline field">
-						<div class="ui checkbox">
-							<input type="checkbox">
-							<label>记住这张卡的信息，方便下次支付</label>
-						</div>
+				</div>
+				<div class="inline field">
+					<div class="ui checkbox">
+						<input type="checkbox">
+						<label>记住这张卡的信息，方便下次支付</label>
 					</div>
-			    </div>
-		 </div>
-		 <div class="fluid ui button" style="background-color:#EB1929;color:#FFFFFF">确定下单</div>
+				</div>
+			</div>
 		</div>
+		<div class="fluid ui button" style="background-color:#EB1929;color:#FFFFFF">确定下单</div>
+	</div>
 </body>
 
 </html>

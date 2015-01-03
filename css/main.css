@@ -36,16 +36,25 @@ body{
 .ui.two.column.page.centered{
    border: 1px solid #E8E8E8;
 }
-.ui.fluid.form.segment {
-border: 1px solid #E8E8E8;
-margin-top: 35px;
-margin-bottom:35px;
+.ui.form {
+    border: 1px solid #E8E8E8;
+    margin-top: 35px;
+    margin-bottom:35px;
 }
 
-hr{
-    color:#E8E8E8;
+.ui.selection.dropdown,.two.fields,required field,required inline field{
+    margin-top: 5%;
+    margin-left: 15%;
 }
+
 img{
     max-width:100%;
     height:auto;
+}
+
+.ui.fluid.input {
+    width: 75%;
+    height: 100%;
+    font-size: medium;
+    padding: 2%;
 }
