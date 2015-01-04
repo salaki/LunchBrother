@@ -21,7 +21,7 @@ body{
     background-color:#EB1929;
     color:#FFFFFF;
 }
-.sixteen wide column{
+.sixteen wide column,.fluid ui button{
    background-color:#EB1929;
    color:#FFFFFF;
 }
@@ -31,7 +31,7 @@ body{
     margin-bottom: 25px;
 }
 .notes{
-    text-align:center;
+    text-align:left;
     padding:10px;
 }
 .text{
@@ -39,7 +39,7 @@ body{
     font-size:26px;
     position:relative;
 }
-.ui.two.column.page.centered{
+.ui.page.centered.grid{
    border: 1px solid #E8E8E8;
 }
 .ui.form {
@@ -66,4 +66,13 @@ img{
 
 .two.fields {
 margin-left: 15%;
+}
+
+.thanks{
+    color:#EB1929;
+}
+
+img.check {
+margin-top: 15%;
+margin-left: -25%;
 }
