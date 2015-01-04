@@ -21,8 +21,11 @@
 	<link rel="stylesheet" type="text/css" href="css/divider.min.css">
     <link rel="stylesheet" type="text/css" href="css/checkbox.css">
     <link rel="stylesheet" type="text/css" href="css/menu.min.css">
+    
+    <script type="text/javascript" src="js/dropdown.min.js"></script>
+    
+    
 </head>
-
 <body>
 	<div class="b-content">
 		<div id="header" class="headerwidget">
@@ -66,7 +69,7 @@
 						<input class="ui fluid input" placeholder="E-mail" type="text">
 					</div>
 				</div>
-					<div class="ui selection dropdown">
+					<div id="addressoption"class="ui selection dropdown">
 						<input type="hidden" name="address">
 							<div class="default">选择取餐地址</div>
 							<i class="dropdown icon"></i>
@@ -87,9 +90,8 @@
 				</div>
 				<div class="required field">
 					<label>过期日期：</label>
-					
 					<div class="ui selection dropdown">
-						<input type="hidden" name="expdate">
+						<input type="hidden" name="expmonth">
 						<i class="dropdown icon"></i>
 					<div class="default">01</div>
 					    <div class="menu">
@@ -106,19 +108,20 @@
 								<div class="item" data-value="11">11</div>
 							    <div class="item" data-value="12">12</div>
 						</div>
-						
 				   </div>
-					<select class="ui search dropdown">
-						<option value="15">2015</option>
-						<option value="16">2016</option>
-						<option value="17">2017</option>
-						<option value="18">2018</option>
-						<option value="19">2019</option>
-						<option value="20">2020</option>
-						<option value="21">2021</option>
-					</select>
-				</div>
-				<div class="required field">
+			    <div class="ui selection dropdown">
+						<input type="hidden" name="expyear">
+						<i class="dropdown icon"></i> 
+				    <div class="default">2015</div>
+					    <div class="menu">
+								<div class="item" data-value="01">2015</div>
+								<div class="item" data-value="02">2016</div>
+								<div class="item" data-value="03">2017</div>
+								<div class="item" data-value="04">2018</div>
+								<div class="item" data-value="05">2019</div>
+								<div class="item" data-value="06">2020</div>
+						</div>
+				   </div>
 					<label>CW2验证码：</label>
 					<input type="text">
 				</div>
@@ -139,5 +142,4 @@
 		<div class="fluid ui button" style="background-color:#EB1929;color:#FFFFFF">确定下单</div>
 	</div>
 </body>
-
 </html>

@@ -11,7 +11,13 @@ body{
 #order{
     font-size:20px;
 }
-.headerwidget{
+
+#addressoption{
+    width:23%;
+    margin-left:15%;
+}
+
+.headerwidget,#addressoption{
     background-color:#EB1929;
     color:#FFFFFF;
 }
@@ -44,7 +50,6 @@ body{
 
 .ui.selection.dropdown,.two.fields,required field,required inline field{
     margin-top: 5%;
-    margin-left: 15%;
 }
 
 img{
@@ -57,4 +62,8 @@ img{
     height: 100%;
     font-size: medium;
     padding: 2%;
+}
+
+.two.fields {
+margin-left: 15%;
 }
