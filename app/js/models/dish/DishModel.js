@@ -3,10 +3,12 @@ define([
   'backbone',
 ], function(_, Backbone) {
 
-  var OwnerModel = Backbone.Model.extend({
+  var DishModel = Backbone.Model.extend({
 
     defaults: {
-      query: "unknown"
+      desc: ,
+      img: '',
+      price: ''
     },
 
     initialize: function(options) {
@@ -24,6 +26,6 @@ define([
 
   });
 
-  return OwnerModel;
+  return DishModel;
 
 });

@@ -110,3 +110,35 @@ header {
 #page .card .content .ui.button{
   font-size: 0.7rem;
 }
+
+#payment{
+  padding:15px;
+}
+
+#addressoption{
+  background-color:#e3151e;
+  color:#FFF;
+  min-width:150px;
+}
+
+#addressoption .dropdown.icon{
+  margin-bottom:10px;
+}
+
+#addressoption .default{
+  width:75%;
+  text-shadow: 0.5px -0.5px rgba(255, 255, 255, 1);
+}
+
+#expmonth,#expyear{
+  background:none repeat scroll 0 0 #f3f3f3;
+  min-width:150px;
+}
+
+.ui.form .field > .selection.dropdown{
+  width:25%;
+}
+
+.ui.mini.input{
+  width:25%;
+}

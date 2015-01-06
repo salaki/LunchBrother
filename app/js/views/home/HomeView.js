@@ -2,22 +2,23 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  //'views/sidebar/SidebarView',
+  'views/home/DishView',
   'text!templates/home/homeTemplate.html'
-], function($, _, Backbone, /*SidebarView, */homeTemplate){
+], function($, _, Backbone, DishView, homeTemplate){
 
   var HomeView = Backbone.View.extend({
     el: $("#page"),
-
+    
+    template: _.template(homeTemplate),
+    
     render: function(){
       
       $('.menu li').removeClass('active');
       $('.menu li a[href="#"]').parent().addClass('active');
-      this.$el.html(homeTemplate);
-
-      /*var sidebarView = new SidebarView();
-      sidebarView.render();*/
- 
+      this.$el.html(this.template());
+      
+      var dishView = new DishView();
+      this.$el.find('#dishList').html(dishView.render().$el.html());
     }
 
   });

@@ -3,12 +3,15 @@ define([
   'underscore',
   'backbone',
   'views/home/HomeView',
-  ], function($, _, Backbone, HomeView){
+  'views/pay/PayView',
+  'views/confirm/ConfirmView'
+  ], function($, _, Backbone, HomeView, PayView, ConfirmView){
 
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
-      'projects': 'showProjects',
+      'pay': 'showPay',
+      'confirm':'showConfirm',
       'users': 'showContributors',
       
       // Default
@@ -21,13 +24,21 @@ define([
 
     var appRouter = new AppRouter();
     
-    /*appRouter.on('route:showProjects', function(){
+    appRouter.on('route:showPay', function(){
    
         // Call render on the module we loaded in via the dependency array
-        var projectsView = new ProjectsView();
-        projectsView.render();
+        var payView = new PayView();
+        payView.render();
 
-    });*/
+    });
+    
+    appRouter.on('route:showConfirm', function(){
+   
+        // Call render on the module we loaded in via the dependency array
+        var confirmView = new ConfirmView();
+        confirmView.render();
+
+    });
 
     appRouter.on('route:defaultAction', function (actions) {
      

@@ -8,6 +8,7 @@ require.config({
         semantic: 'libs/semantic/semantic.min'
     },
     shim: {
+        "semantic": ["jquery"],
         "libs/semantic/dropdown.min" :["jquery", "semantic"]
     }
 });
