@@ -81,6 +81,14 @@ header {
   font-size: 12px;
   color: #888;
 }
+.summary-location{
+  color: #454545;
+  font-weight: bold;
+  padding-left: 12px;
+}
+.summary-status{
+  color:#A3A3A3;
+}
 .summary-total{
   color: #E3151E;
 }
@@ -141,4 +149,17 @@ header {
 
 .ui.mini.input{
   width:25%;
+}
+
+.check{
+  width:85%;
+  margin-left:20px;
+}
+
+.thanks{
+  color:#E3151A;
+}
+
+#customerinfo{
+  padding:10px;
 }

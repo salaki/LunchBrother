@@ -4,15 +4,15 @@ define([
   'backbone',
   'views/home/HomeView',
   'views/pay/PayView',
-  'views/confirm/ConfirmView'
-  ], function($, _, Backbone, HomeView, PayView, ConfirmView){
-
+  'views/confirm/ConfirmView',
+  'views/status/StatusView'
+  ], function($, _, Backbone, HomeView, PayView, ConfirmView, StatusView){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
       'pay': 'showPay',
       'confirm':'showConfirm',
-      'users': 'showContributors',
+      'status':'showStatus',
       
       // Default
       '*actions': 'defaultAction'
@@ -39,7 +39,15 @@ define([
         confirmView.render();
 
     });
+    
+    appRouter.on('route:showStatus', function(){
+   
+        // Call render on the module we loaded in via the dependency array
+        var statusView = new StatusView();
+        statusView.render();
 
+    });
+    
     appRouter.on('route:defaultAction', function (actions) {
      
        // We have no matching route, lets display the home page 
