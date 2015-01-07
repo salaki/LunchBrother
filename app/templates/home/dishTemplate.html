@@ -1,12 +1,12 @@
 <div class="column">
   <div class="ui card">
     <div class="image">
-      <img src="img/combo.png" />
+      <img src="<%= Image_File.url.replace('http://', 'https://') %>" />
     </div>
     <div class="content">
       <div class="ui two column grid">
         <div class="column dish-desc">
-          便当 - 尖椒肉丝，宫保鸡丁，番茄炒蛋，例汤
+          <%= Description %>
         </div>
         <div class="column">
           <div class="ui three column grid">

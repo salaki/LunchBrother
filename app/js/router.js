@@ -1,18 +1,18 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
   'views/home/HomeView',
   'views/pay/PayView',
   'views/confirm/ConfirmView',
-  'views/status/StatusView'
-  ], function($, _, Backbone, HomeView, PayView, ConfirmView, StatusView){
-  var AppRouter = Backbone.Router.extend({
+  'views/status/StatusView',
+  'views/manage/ManageView'
+  ], function(HomeView, PayView, ConfirmView, StatusView,ManageView){
+    
+  var AppRouter = Parse.Router.extend({
     routes: {
       // Define some URL routes
       'pay': 'showPay',
       'confirm':'showConfirm',
       'status':'showStatus',
+      'manage':'showManage',
       
       // Default
       '*actions': 'defaultAction'
@@ -45,7 +45,12 @@ define([
         // Call render on the module we loaded in via the dependency array
         var statusView = new StatusView();
         statusView.render();
-
+    });
+    
+     appRouter.on('route:showManage', function(){
+        // Call render on the module we loaded in via the dependency array
+        var manageView = new ManageView();
+        manageView.render();
     });
     
     appRouter.on('route:defaultAction', function (actions) {
@@ -55,7 +60,7 @@ define([
         homeView.render();
     });
 
-    Backbone.history.start();
+    Parse.history.start();
   };
   return {
     initialize: initialize
