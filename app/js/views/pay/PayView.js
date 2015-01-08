@@ -1,11 +1,9 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'text!templates/pay/payTemplate.html'
-], function($, _, Backbone, payTemplate){
-
-  var PayView = Backbone.View.extend({
+  'text!templates/pay/payTemplate.html',
+  'stripe'
+], function(payTemplate){
+  Stripe.setPublishableKey('pk_test_EMIAzyTdHHJaFEnWTNchuOTZ');
+  var PayView = Parse.View.extend({
     el: $("#page"),
     
     template: _.template(payTemplate),

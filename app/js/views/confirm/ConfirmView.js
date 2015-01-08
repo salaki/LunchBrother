@@ -1,11 +1,8 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
   'text!templates/confirm/confirmTemplate.html'
-], function($, _, Backbone, confirmTemplate){
+], function(confirmTemplate){
 
-  var ConfirmView = Backbone.View.extend({
+  var ConfirmView = Parse.View.extend({
     el: $("#page"),
     
     template: _.template(confirmTemplate),

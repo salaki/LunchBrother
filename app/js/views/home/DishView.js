@@ -1,15 +1,13 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
+  'models/dish/DishModel',
   'text!templates/home/dishTemplate.html'
-], function($, _, Backbone, dishTemplate) {
-  var DishView = Backbone.View.extend({
+], function(DishModel,dishTemplate) {
+  var DishView = Parse.View.extend({
 
     template: _.template(dishTemplate),
     
     render: function() {
-      this.$el.html(this.template());
+      this.$el.html(this.template(this.model.toJSON()));
       return this;
     }
 

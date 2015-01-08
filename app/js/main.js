@@ -1,13 +1,16 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
   'router',
   'semantic',
   'libs/semantic/dropdown.min'
-], function($, _, Backbone, router) {
+], function(router) {
   var initialize = function() {
     console.log("main init");
+    
+    var appId = 'shB8up4c14Idr6eFH4SBjzqZ1vdYT0Q79LSaPQwT';
+    var jsKey = 'PQrHeggtLnjUfFh4KI1IV5vLhZXztUzfdlUnk5X2';
+
+    Parse.initialize(appId, jsKey);
+    
     router.initialize();
 
     $('.ui.dropdown').dropdown();

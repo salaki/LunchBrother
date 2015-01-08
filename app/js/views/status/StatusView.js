@@ -1,11 +1,8 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
   'text!templates/status/statusTemplate.html'
-], function($, _, Backbone, statusTemplate){
+], function(statusTemplate){
 
-  var StatusView = Backbone.View.extend({
+  var StatusView = Parse.View.extend({
     el: $("#page"),
     
     template: _.template(statusTemplate),
