@@ -8,6 +8,9 @@ define([
     
     template: _.template(payTemplate),
     
+   
+
+    
     render: function(){
       
       $('.menu li').removeClass('active');
