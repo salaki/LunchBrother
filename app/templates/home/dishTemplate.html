@@ -1,25 +1,23 @@
-<div class="column">
-  <div class="ui card">
-    <div class="image">
-      <img src="<%= Image_File.url.replace('http://', 'https://') %>" />
-    </div>
-    <div class="content">
-      <div class="ui two column grid">
-        <div class="column dish-desc">
-          <%= Description %>
-        </div>
-        <div class="column">
-          <div class="ui three column grid">
-            <div class="column minus-btn-wrapper">
-              <button class="ui center aligned right floated button icon"><i class="minus icon"></i>
-              </button>
-            </div>
-            <div class="column order-count-wrapper"><span class="ui center aligned label dish-count">0</span>
-            </div>
-            <div class="column plus-btn-wrapper">
-              <button class="ui button icon center aligned"><i class="plus icon"></i>
-              </button>
-            </div>
+<div class="ui card">
+  <div class="image">
+    <img src="<%= Image_File.url%>" />
+  </div>
+  <div class="content">
+    <div class="ui two column grid">
+      <div class="column dish-desc">
+        <%=Description %>
+      </div>
+      <div class="column">
+        <div class="ui three column grid">
+          <div class="column minus-btn-wrapper">
+            <button id="minusone" class="ui center aligned right floated button icon"><i class="minus icon"></i>
+            </button>
+          </div>
+          <div class="column order-count-wrapper"><span id="counter" class="ui center aligned label dish-count">0</span>
+          </div>
+          <div class="column plus-btn-wrapper">
+            <button id="plusone" class="ui button icon center aligned"><i class="plus icon"></i>
+            </button>
           </div>
         </div>
       </div>
