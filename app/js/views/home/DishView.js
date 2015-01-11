@@ -16,49 +16,30 @@ define([
     initialize: function() {
       _.bindAll(this,'render','quantityIncrease','quantityDecrease');
       this.model.bind('change',this.render);
+      this.model.set("Count", 0);
     },
     
      events: {
-      'click button#plusone': 'quantityIncrease',
-      'click button#minusone': 'quantityDecrease'
+      'click .plusone': 'quantityIncrease',
+      'click .minusone': 'quantityDecrease'
     },
     
     render: function() {
-      
       this.$el.html(this.template(this.model.toJSON()));
       this.delegateEvents();
       return this;
     },
    
     quantityIncrease: function() {
-     var newCount = this.model.get('Count');
-     newCount++;
-     this.model.set('Count',newCount);
-     document.getElementById('counter').innerHtml=newCount;
-     alert('Quantity:' + newCount);
-    
-      // // var button = document.getElementById('plusone');
-      // // 
-      // // button.onclick = function(e) {
-      // //   //count++;
-      // //   //
-      // //   
-      // };
-      this.render();
+     this.model.set("Count", this.model.get("Count") + 1);
     },
 
     quantityDecrease: function() {
-        
-       var newCount = this.model.get('Count');
-        if (newCount<=0) {
-            alert("Please provide a positive quantity number");
-        }
-        else {
-          newCount--;
-          this.model.set('Count',newCount);
-          alert('Quantity:' + newCount);
-          }
-      this.render();
+     if(this.model.get("Count")<=0){
+        alert("您的份数必须大于或等于0");
+     }else{
+        this.model.set("Count", this.model.get("Count") - 1);
+     }
     },
   });
     return DishView;

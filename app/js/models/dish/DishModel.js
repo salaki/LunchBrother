@@ -5,13 +5,23 @@ define(function(){
     },
     
     initialize:function(){
-      this.bind("change:count", this.countChangeHandler);
+      this.on('error',this.handle_error);
+      this.on('change:count',this.count_change);
     },
-    countChangeHandler:function(event){
-      
-    }
+    
+    addOne:function(){
+      return this.model.get('count') + 1;
+    },
+    
+    minusOne:function(){
+      if(this.model.count<=0){
+        alert("please provide a positive number");
+      }else{
+      return this.model.get('count') - 1;
+      }
+    },
+    
   });
-  
   return DishModel;
 });
 
