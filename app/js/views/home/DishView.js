@@ -32,13 +32,14 @@ define([
    
     quantityIncrease: function() {
      this.model.set("Count", this.model.get("Count") + 1);
+     Parse.Events.trigger("collection:update");
     },
 
     quantityDecrease: function() {
      if(this.model.get("Count")<=0){
-        alert("您的份数必须大于或等于0");
      }else{
         this.model.set("Count", this.model.get("Count") - 1);
+       Parse.Events.trigger("collection:update");
      }
     },
   });

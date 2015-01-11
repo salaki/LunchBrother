@@ -7,9 +7,9 @@ define([
   var DishCollectionView = Parse.View.extend({
 
     tagName: 'div',
-    attributes:{
+    attributes: {
       id: 'dishList',
-      class:"doubling two column row dishes"
+      class: "doubling two column row dishes"
     },
 
     events: {
@@ -24,7 +24,9 @@ define([
           model: dish
         }));
       });
+      Parse.Events.on("collection:update", this.caculate, this);
     },
+    
     render: function() {
       var self = this;
       this.$el.empty();
@@ -35,7 +37,15 @@ define([
       });
       this.$el.append(container);
       return this;
+    },
+    
+    caculate: function() {
+     _.forEach(this.collection.models, function(model){
+       console.log(model);
+     });
     }
+    
   });
+  
   return DishCollectionView;
 });
