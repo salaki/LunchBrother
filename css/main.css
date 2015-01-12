@@ -17,6 +17,7 @@ body{
     margin-left:15%;
 }
 
+
 .headerwidget,#addressoption{
     background-color:#EB1929;
     color:#FFFFFF;
@@ -92,7 +93,19 @@ margin-left: -25%;
 
 .text-small{
     
-    color: #a4a4a4;
+    color: #ffffff;
 }
 
+.order-list{
+		padding: 0; 
+    margin: 0;
+    list-style-type: none;
+}
+
+.order-list li {
+    width: 150px;
+    height: 100px;
+    background-color: #000000;
+    float: left;
+}
 /*brother_manage ends*/
