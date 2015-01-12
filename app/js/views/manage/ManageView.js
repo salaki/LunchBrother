@@ -12,6 +12,9 @@ define([
       $('.menu li').removeClass('active');
       $('.menu li a[href="#pay"]').parent().addClass('active');
       this.$el.html(this.template());
+			$('.btn-check').click(function(){
+				$('.modal').modal('show');
+			})
     }
 
   });
