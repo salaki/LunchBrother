@@ -12,7 +12,7 @@
           份</span>
       </div>
       <div class="four wide column right aligned"><span class="summary-price">$
-          <%= order.get('Unit_Price') %>
+          <%= order.get('Unit_Price')*order.get('count') %>
           </span>
       </div>
     </div>
