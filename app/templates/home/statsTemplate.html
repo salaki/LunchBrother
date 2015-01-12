@@ -1,0 +1,22 @@
+<div class="ui vertical segment">
+  <h2 class="ui header small">您的订单如下：</h2>
+  <% _.each(orders, function(order) { %>
+    <div class="ui column grid summary-list">
+      <div class="eight wide column">
+        <span class="summary-name">
+        <%= order.get('type') %>
+        </span>
+      </div>
+      <div class="four wide column right aligned"><span class="summary-count">
+          <%= order.get('count') %>
+          份</span>
+      </div>
+      <div class="four wide column right aligned"><span class="summary-price">$
+          <%= order.get('Unit_Price') %>
+          </span>
+      </div>
+    </div>
+    <% }); %>
+</div>
+<div class="ui vertical segment right aligned"><strong class="summary-total-label">合计：</strong><span class="summary-total">$<%= totalCharge %></span>
+</div>

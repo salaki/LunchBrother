@@ -40,9 +40,20 @@ define([
     },
     
     caculate: function() {
-     _.forEach(this.collection.models, function(model){
-       console.log(model);
-     });
+      var totalPrice = [];
+      _.forEach(this.collection,function(model){
+         var count = model.get("Count");
+         var description = model.get("Description");
+         var price = model.get("Unit_Price");
+         var total = count*price;
+         totalPrice.push(total);
+      });
+      
+      var final = totalPrice[1]+totalPrice[0];
+      //Parse.Events.trigger("homeview:update", { final: final});
+      console.log(this.homeCallback);
+      this.homeCallback({final:final});
+      
     }
     
   });
