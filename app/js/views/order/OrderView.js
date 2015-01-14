@@ -90,16 +90,17 @@ define([
       var value = $("option:selected", field).val();
       var data = {};
       data[field.attr('id')] = value;
-      this.model.set(data);
+      var orderDetails = new OrderModel();
+      orderDetails.set(data);
     },
     
     fieldChanged: function(e) {
       var field = $(e.currentTarget);
       var data = {};
       data[field.attr('id')] = field.val();
-      this.model.set(data);
+      var orderDetails = new OrderModel();
+      orderDetails.set(data);
     }
-
   });
   return OrderView;
 });
