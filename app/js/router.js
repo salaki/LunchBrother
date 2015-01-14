@@ -3,65 +3,75 @@ define([
   'views/pay/PayView',
   'views/confirm/ConfirmView',
   'views/status/StatusView',
-  'views/manage/ManageView'
-], function(HomeView, PayView, ConfirmView, StatusView, ManageView) {
+  'views/manage/ManageView',
+	'views/delivery/DeliveryView'
+], function (HomeView, PayView, ConfirmView, StatusView, ManageView, DeliveryView) {
 
-  var AppRouter = Parse.Router.extend({
-    routes: {
-      // Define some URL routes
-      'pay': 'showPay',
-      'confirm': 'showConfirm',
-      'status': 'showStatus',
-      'manage': 'showManage',
+	var AppRouter = Parse.Router.extend({
+		routes: {
+			// Define some URL routes
+			'pay': 'showPay',
+			'confirm': 'showConfirm',
+			'status': 'showStatus',
+			'manage': 'showManage',
+			'delivery': 'showDelivery',
 
-      // Default
-      '*actions': 'defaultAction'
-    }
-  });
+			// Default
+			'*actions': 'defaultAction'
+		}
+	});
 
-  var initialize = function() {
-    console.log('router initialize');
+	var initialize = function () {
+		console.log('router initialize');
 
-    var appRouter = new AppRouter();
+		var appRouter = new AppRouter();
 
-    appRouter.on('route:showPay', function() {
+		appRouter.on('route:showPay', function () {
 
-      // Call render on the module we loaded in via the dependency array
-      var payView = new PayView();
-      payView.render();
+			// Call render on the module we loaded in via the dependency array
+			var payView = new PayView();
+			payView.render();
 
-    });
+		});
 
-    appRouter.on('route:showConfirm', function() {
+		appRouter.on('route:showConfirm', function () {
 
-      // Call render on the module we loaded in via the dependency array
-      var confirmView = new ConfirmView();
-      confirmView.render();
+			// Call render on the module we loaded in via the dependency array
+			var confirmView = new ConfirmView();
+			confirmView.render();
 
-    });
+		});
 
-    appRouter.on('route:showStatus', function() {
+		appRouter.on('route:showStatus', function () {
 
-      // Call render on the module we loaded in via the dependency array
-      var statusView = new StatusView();
-      statusView.render();
-    });
+			// Call render on the module we loaded in via the dependency array
+			var statusView = new StatusView();
+			statusView.render();
+		});
 
-    appRouter.on('route:showManage', function() {
-      // Call render on the module we loaded in via the dependency array
-      var manageView = new ManageView();
-      manageView.render();
-    });
+		appRouter.on('route:showManage', function () {
+			// Call render on the module we loaded in via the dependency array
+			var manageView = new ManageView();
+			manageView.render();
+		});
 
-    appRouter.on('route:defaultAction', function(actions) {
+		appRouter.on('route:showDelivery', function () {
+			// Call render on the module we loaded in via the dependency array
+			
+			var deliveryView = new DeliveryView();
+			deliveryView.render();
+			console.log('deliveryView rendered');
+		});
 
-      // We have no matching route, lets display the home page 
-      var homeView = new HomeView();
-    });
+		appRouter.on('route:defaultAction', function (actions) {
 
-    Parse.history.start();
-  };
-  return {
-    initialize: initialize
-  }
+			// We have no matching route, lets display the home page 
+			var homeView = new HomeView();
+		});
+
+		Parse.history.start();
+	};
+	return {
+		initialize: initialize
+	}
 })
