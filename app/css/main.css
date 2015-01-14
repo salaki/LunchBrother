@@ -226,4 +226,9 @@ header {
    clear: both;
 }
 
+.ui.form .fields .wide.field {
+  width: 6.25%;
+  padding-left: 0;
+  padding-right: 0;
+}
 
