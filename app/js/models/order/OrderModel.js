@@ -1,8 +1,11 @@
 define(function() {
   var OrderModel = Parse.Object.extend("Order", {
-    defaults: {
-
+     initialize: function() {
+      if(!this.get('Order_Id')){
+        this.set({Order_Id: "10000"});  
+      }
     },
+    
     validation: {
     name: {
       identifier  : 'first_name',

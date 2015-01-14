@@ -1,21 +1,18 @@
 define([
   'text!templates/confirm/confirmTemplate.html'
-], function(confirmTemplate){
+], function(confirmTemplate) {
 
   var ConfirmView = Parse.View.extend({
-    el: $("#page"),
-    
+    tagName: "div",
+    attributes: {
+      class: 'column'
+    },
+
     template: _.template(confirmTemplate),
-    
-    render: function(){
-      
-      $('.menu li').removeClass('active');
-      $('.menu li a[href="#"]').parent().addClass('active');
+
+    render: function() {
       this.$el.html(this.template());
     }
-
   });
-
   return ConfirmView;
-  
 });
