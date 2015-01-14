@@ -18,17 +18,17 @@
 <div class="ui segment">
     <div id="contactinfo" class="field">
       <div class="ui fluid field">
-        <input class="ui input seven wide field fname" placeholder="取餐人名" type="text" name="first_name">
-        <input class="ui input seven wide field lname" placeholder="取餐人姓" type="text" name="last_name">
-        <input class="ui fluid input required email" placeholder="E-mail" type="text" name="email" value="">
+        <input id="first_name" class="ui input seven wide field fname" placeholder="取餐人名" type="text" name="first_name">
+        <input id="last_name" class="ui input seven wide field lname" placeholder="取餐人姓" type="text" name="last_name">
+        <input id="email" class="ui fluid input required email" placeholder="E-mail" type="text" name="email">
       </div>
     </div>
     <div id="addressoption">
       <!--<i class="dropdown icon"></i>-->
-      <select class="ui dropdown">
+      <select id="addressdetails" class="ui dropdown" name="address">
         <option value="">选择取餐地址</option>
-        <option value="CP">College Park,MD</option>
-        <option value="SG">Shady Grove,MD</option>
+        <option value="College Park">College Park,MD</option>
+        <option value="Shady Grove">Shady Grove,MD</option>
       </select>
       <span class="addressdisplay"></span>
     </div>

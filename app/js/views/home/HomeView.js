@@ -15,7 +15,8 @@ define([
     statsTemplate: _.template(statsTemplate),
     stats: {
       orders: [],
-      totalCharge: 0
+      totalCharge: 0,
+      data:{}
     },
     
     events: {

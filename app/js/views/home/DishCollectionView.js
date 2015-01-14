@@ -52,9 +52,7 @@ define([
       
       var final = totalPrice[1]+totalPrice[0];
       //Parse.Events.trigger("homeview:update", { final: final});
-      Parse.Events.trigger("final:update");
       this.homeCallback({final:final});
-      
     }
     
   });
