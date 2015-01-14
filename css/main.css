@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 body{
     font-family:arial;
     font:18px;
@@ -91,6 +92,7 @@ margin-left: -25%;
     background: #ed1c24;
     color:#ffffff;
 }
+<<<<<<< Updated upstream
 
 .text-small{
     
@@ -99,3 +101,14 @@ margin-left: -25%;
 
 
 /*brother_manage ends*/
+=======
+/*brother_manage ends*/
+=======
+#header.eight wide column.h1{
+   text-align:center;
+}
+#column.p{
+	
+}
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
