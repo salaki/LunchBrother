@@ -10,7 +10,7 @@ define([
     render: function(){
       
       $('.menu li').removeClass('active');
-      $('.menu li a[href="#pay"]').parent().addClass('active');
+      $('.menu li a[href="#"]').parent().addClass('active');
       this.$el.html(this.template());
     }
 

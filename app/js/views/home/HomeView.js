@@ -1,24 +1,33 @@
 define([
   'views/home/DishView',
+  'views/order/OrderView',
   'models/dish/DishModel',
   'models/dish/DishCollection',
   'text!templates/home/homeTemplate.html',
-  'text!templates/home/statsTemplate.html'
-], function(DishView, DishModel, DishCollection, homeTemplate, statsTemplate) {
+  'text!templates/home/statsTemplate.html',
+  'text!templates/order/orderTemplate.html'
+], function(DishView, OrderView,DishModel, DishCollection, homeTemplate, statsTemplate,orderTemplate) {
 
   var HomeView = Parse.View.extend({
     // tagName: 'ul', // required, but defaults to 'div' if not set
     el: $("#page"),
 
     statsTemplate: _.template(statsTemplate),
+    stats: {
+      orders: [],
+      totalCharge: 0
+    },
+    
+    events: {
+      'click #paymentBtn' : 'continuePay'
+    },
 
     initialize: function() {
-      var that = this;
 
-      _.bindAll(this, 'render', 'loadAll', 'addOne');
+      _.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
 
       this.$el.html(_.template(homeTemplate)());
-
+    
       this.dishes = new DishCollection;
 
       var bdQuery = new Parse.Query(DishModel);
@@ -37,16 +46,10 @@ define([
     },
 
     render: function() {
-      /*$('.menu li').removeClass('active');
-      $('.menu li a[href="#"]').parent().addClass('active');*/
-
-      var orders = this.dishes.orders();
-      var totalCharge = this.dishes.charge();
+      this.stats.orders = this.dishes.orders();
+      this.stats.totalCharge = this.dishes.charge();
       
-      this.$('#orderStats').html(this.statsTemplate({
-        orders: orders,
-        totalCharge: totalCharge
-      }));
+      this.$('#orderStats').html(this.statsTemplate(this.stats));
 
       this.delegateEvents();
 
@@ -67,15 +70,26 @@ define([
       }
       return dayOfWeek;
     },
+    
     addOne: function(dish) {
       var view = new DishView({
         model: dish
       });
       this.$("#dishList").append(view.render().el);
     },
+    
     loadAll: function(collection, filter) {
       this.$("#dishList").html("");
       this.dishes.each(this.addOne);
+    },
+    
+    continuePay: function(){
+      
+      var view = new OrderView({
+        model: this.stats
+      });
+      $("#dishTitle,#dishList,#paymentBtn,#orderMessage").hide();
+      $("#page").append(view.render().el);
     }
   });
   return HomeView;

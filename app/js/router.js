@@ -1,18 +1,20 @@
 define([
   'views/home/HomeView',
-  'views/pay/PayView',
+  'views/order/OrderView',
   'views/confirm/ConfirmView',
   'views/status/StatusView',
-  'views/manage/ManageView'
-], function(HomeView, PayView, ConfirmView, StatusView, ManageView) {
+  'views/manage/ManageView',
+  'views/delivery/DeliveryView'
+], function(HomeView, OrderView, ConfirmView, StatusView, ManageView,DeliveryView) {
 
   var AppRouter = Parse.Router.extend({
     routes: {
       // Define some URL routes
-      'pay': 'showPay',
+      'order': 'showOrder',
       'confirm': 'showConfirm',
       'status': 'showStatus',
       'manage': 'showManage',
+      'delivery':'showDelivery',
 
       // Default
       '*actions': 'defaultAction'
@@ -24,11 +26,11 @@ define([
 
     var appRouter = new AppRouter();
 
-    appRouter.on('route:showPay', function() {
+    appRouter.on('route:showOrder', function() {
 
       // Call render on the module we loaded in via the dependency array
-      var payView = new PayView();
-      payView.render();
+      var orderView = new OrderView();
+      orderView.render();
 
     });
 
@@ -52,16 +54,23 @@ define([
       var manageView = new ManageView();
       manageView.render();
     });
-
+    
+    appRouter.on('route:showDelivery', function() {
+      // Call render on the module we loaded in via the dependency array
+      var deliveryView = new DeliveryView();
+      deliveryView.render();
+    });
+    
     appRouter.on('route:defaultAction', function(actions) {
 
       // We have no matching route, lets display the home page 
       var homeView = new HomeView();
+
     });
 
     Parse.history.start();
   };
   return {
     initialize: initialize
-  }
-})
+  };
+});

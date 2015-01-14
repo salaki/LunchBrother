@@ -13,7 +13,8 @@ require.config({
         'main': ['parse'],
         'parse':['jquery', 'underscore'],
         "semantic": ["jquery"],
-        "libs/semantic/dropdown.min" :["jquery", "semantic"]
+        "libs/semantic/dropdown.min" :["jquery", "semantic"],
+        "libs/semantic/checkbox.min" :["jquery", "semantic"]
     }
 });
 

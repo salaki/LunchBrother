@@ -1,19 +1,94 @@
+<!--<div class="ui segment">-->
+<!--  <div class="ui vertical segment">-->
+<!--    <h2 class="ui header small">您的订单如下：</h2>-->
+<!--    <div class="ui column grid summary-list">-->
+<!--      <div class="eight wide column"><span class="summary-name">川陕Combo</span>-->
+<!--      </div>-->
+<!--      <div class="four wide column right aligned"><span class="summary-count">1份</span>-->
+<!--      </div>-->
+<!--      <div class="four wide column right aligned"><span class="summary-price">$10.00</span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="ui vertical segment right aligned">-->
+<!--    <strong class="summary-total-label">合计：</strong><span class="summary-total">$10.00</span>-->
+<!--  </div>-->
+<!--</div>-->
+<form action="" method="POST" id="paymentForm" class="ui form">
 <div class="ui segment">
-  <div class="ui vertical segment">
-    <h2 class="ui header small">您的订单如下：</h2>
-    <div class="ui column grid summary-list">
-      <div class="eight wide column"><span class="summary-name">川陕Combo</span>
-      </div>
-      <div class="four wide column right aligned"><span class="summary-count">1份</span>
-      </div>
-      <div class="four wide column right aligned"><span class="summary-price">$10.00</span>
+    <div id="contactinfo" class="field">
+      <div class="ui fluid field">
+        <input class="ui input seven wide field fname" placeholder="取餐人名" type="text" name="first_name">
+        <input class="ui input seven wide field lname" placeholder="取餐人姓" type="text" name="last_name">
+        <input class="ui fluid input required email" placeholder="E-mail" type="text" name="email" value="">
+        <span class="help-inline"></span>
       </div>
     </div>
-  </div>
-  <div class="ui vertical segment right aligned">
-    <strong class="summary-total-label">合计：</strong><span class="summary-total">$10.00</span>
-  </div>
+    <div id="addressoption">
+      <!--<i class="dropdown icon"></i>-->
+      <select class="ui dropdown">
+        <option value="">选择取餐地址</option>
+        <option value="CP">College Park,MD</option>
+        <option value="SG">Shady Grove,MD</option>
+      </select>
+      <span class="addressdisplay"></span>
+    </div>
+    <div class="ui divider"></div>
+    <div id="cardinfo" class="field">
+      <p>请输入您的信用卡信息：</p>
+      <div class="sixteen wide field">
+        <input class="ui fluid input" placeholder="持卡人姓名" type="text" name="first_name">
+        <input class="ui fluid input card-number stripe-sensitive required" placeholder="卡号" type="text" size="20" data-stripe="number">
+      </div>
+    </div>
+    <div class="fields">
+      <div id="exptime" class="four wide field expiry-wrapper">
+        <label>过期日期：</label>
+        <select id="expMonth" data-stripe="exp-month" class="ui dropdown card-expiry-month stripe-sensitive required">
+          <option value="01">01</option>
+          <option value="02">02</option>
+          <option value="03">03</option>
+          <option value="04">04</option>
+          <option value="05">05</option>
+          <option value="06">06</option>
+          <option value="07">07</option>
+          <option value="07">08</option>
+          <option value="07">09</option>
+          <option value="07">10</option>
+          <option value="07">11</option>
+          <option value="07">12</option>
+        </select>
+      </div>
+      <!--</div>-->
+      <!--<div class="field">-->
+      <div id="expyear" class="four wide field">
+        <select id="expYear" data-stripe="exp-year" class="ui dropdown card-expiry-year stripe-sensitive required">
+          <option value="2015">2015</option>
+          <option value="2016">2016</option>
+          <option value="2017">2017</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+        </select>
+      </div>
+      <div class="four wide field" id="cw2">
+        <label>CW2验证码:</label>
+        <input type="text" class="ui mini input card-cvc" data-stripe="cvc" size="4">
+      </div>
+    </div>
+    <div id="terms" class="required inline field">
+      <div class="ui checkbox">
+        <input type="checkbox" name="terms">
+        <label>我同意带饭大哥使用协议和条款</label>
+      </div>
+    </div>
+    <div id="rememberme" class="inline field">
+      <div class="ui checkbox">
+        <input type="checkbox">
+        <label>记住这张卡的信息，方便下次支付</label>
+      </div>
+    </div>
 </div>
-<div class="twelve wide column">
-<button id="orderBtn" class="center aligned ui red button">确定下单</button>
-</div>
+<button id="orderBtn" type="button" class="center aligned ui red button">确定买单</button>
+<span class="payment-errors"></span>
+</form>

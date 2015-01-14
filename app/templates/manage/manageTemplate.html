@@ -1,139 +1,84 @@
-<div class="small ui modal">
-	<i class="close icon"></i>
-	<div class="header">
-		这个订单已经付款了吗？
-	</div>
-	<div class="content">
-		<div class="description">
-			<div class="ui header">李三蛋</div>
-			<p>订单编号:<span class="red">#111111</span>
-			</p>
-			<p>金额:<span class="red">$30.00</span>
-			</p>
-		</div>
-	</div>
-	<div class="actions">
-		<div class="ui black button">
-			取消
-		</div>
-		<div class="ui positive right labeled icon button">
-			是的，已经付款
-			<i class="checkmark icon"></i>
-		</div>
-	</div>
-</div>
-
 <div class="sixteen wide column">
-	<div class="ui page centered grid ">
-		<div class="left floated left aligned nine wide column">
-			<p>
-				<strong>XX大哥，化学楼一共有5个订单</strong>
-			</p>
-		</div>
-		<div class="right floated right aligned seven wide column">
-			<div id="addressoption" class="ui selection dropdown">
-				<input type="hidden" name="address">
-				<div class="default">化学楼</div>
-				<i class="dropdown icon"></i>
-				<div class="menu">
-					<div class="item" data-value="CP">College Park,MD</div>
-					<div class="item" data-value="SG">Shady Grove,MD</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="ui page centered grid ">
+    <div class="left floated left aligned nine wide column">
+      <p>
+        <strong class="thanks">XX大哥，化学楼一共有5个订单</strong>
+      </p>
+    </div>
+    <div class="right floated right aligned seven wide column">
+      <div id="addressoption" class="ui selection dropdown">
+        <input type="hidden" name="address">
+        <div class="default">化学楼</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="item" data-value="CP">College Park,MD</div>
+          <div class="item" data-value="SG">Shady Grove,MD</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="ui page centered grid">
-	<div class="sixteen wide column">
-		<div class="ui fluid icon input">
-			<input type="text" placeholder="Search...">
-			<i class="search icon"></i>
-		</div>
-	</div>
+  <div class="sixteen wide column">
+    <div class="ui fluid icon input">
+      <input type="text" placeholder="Search...">
+      <i class="search icon"></i>
+    </div>
+  </div>
 </div>
 
 <div class="ui page centered grid">
-	<div class="sixteen wide column">
-		<div class="order-detail clearfix">
-			<ul class="order-list">
-				<li>
-					<h4 class="ui header">张三</h4>
-				</li>
-				<li>
-					<p><span class="gray">A餐:</span><span class="red">1</span><span class="gray">,</span><span class="gray">B餐:</span><span class="red">1</span>
-					</p>
-				</li>
-				<li>
-					<p><span class="gray">订单号:</span><span class="red">#111111</span>
-				</li>
-				<li><span class="gray">金额:</span><span class="red">$10.00</span>
-				</li>
-			</ul>
-			<a class="btn-check" href="#" title="">
-				<div class="icon-check"><i class="checkmark icon"></i>
-				</div>
-			</a>
-			<div class="clearfix"></div>
-		</div>
-
-		<div class="ui hidden divider"></div>
-
-		<div class="order-detail clearfix">
-			<ul class="order-list">
-				<li>
-					<h4 class="ui header">张三</h4>
-				</li>
-				<li>
-					<p><span class="gray">A餐:</span><span class="red">1</span><span class="gray">,</span><span class="gray">B餐:</span><span class="red">1</span>
-					</p>
-				</li>
-				<li>
-					<p><span class="gray">订单号:</span><span class="red">#111111</span>
-				</li>
-				<li><span class="gray">金额:</span><span class="red">$10.00</span>
-				</li>
-
-			</ul>
-			<a class="btn-check" href="#" title="">
-				<div class="icon-check"><i class="checkmark icon"></i>
-				</div>
-			</a>
-			<div class="clearfix"></div>
-		</div>
-
-		<div class="ui hidden divider"></div>
-
-		<div class="order-detail clearfix">
-			<ul class="order-list">
-				<li>
-					<h4 class="ui header">张三</h4>
-				</li>
-				<li>
-					<p><span class="gray">A餐:</span><span class="red">1</span><span class="gray">,</span><span class="gray">B餐:</span><span class="red">1</span>
-					</p>
-				</li>
-				<li>
-					<p><span class="gray">订单号:</span><span class="red">#111111</span>
-				</li>
-				<li><span class="gray">金额:</span><span class="red">$10.00</span>
-				</li>
-			</ul>
-			<a class="btn-check" href="#" title="">
-				<div class="icon-check"><i class="checkmark icon"></i>
-				</div>
-			</a>
-			<div class="clearfix"></div>
-		</div>
-
-		<div class="ui divider"></div>
-		<div class="gray left aligned sixteen wide column">
-			注：A餐为当日便当，B餐为凉皮+肉夹馍
-		</div>
-		<div class="ui hidden divider"></div>
-
-		<button id="orderBtn" class="center aligned ui red button"><i class="announcement icon"></i>我已达化学楼</button>
-
-	</div>
+  <div class="sixteen wide column">
+    <div class="ui divided list">
+      <div class="order-detail ui padded grid">
+        <div class="seven wide white column">
+          <h4 class="ui header">张三</h4>
+           <p><span class="gray">A餐:</span><span class="red">1</span><span class="gray">,</span><span class="gray">B餐:</span><span class="red">1</span></p>
+        </div>
+        <div class="seven wide white column">
+          <p><span class="gray">订单号:</span><span class="red">#111111</span>
+          <p><span class="gray">金额:</span><span class="red">$10.00</span>
+        </div>
+        <div class="send two wide white column">
+          <a href="" title=""><i class="checkmark icon"></i></a>
+        </div>
+      </div>
+      <div class="ui hidden divider"></div>
+      <div class="order-detail ui padded grid">
+        <div class="seven wide white column">
+          <h4 class="ui header">张三</h4>
+           <p><span class="gray">A餐:</span><span class="red">1</span><span class="gray">,</span><span class="gray">B餐:</span><span class="red">1</span></p>
+        </div>
+        <div class="seven wide white column">
+          <p><span class="gray">订单号:</span><span class="red">#111111</span>
+          <p><span class="gray">金额:</span><span class="red">$10.00</span>
+        </div>
+        <div class="send two wide white column">
+          <a href="" title=""><i class="checkmark icon"></i></a>
+        </div>
+      </div>
+      <div class="ui hidden divider"></div>
+      <div class="order-detail ui padded grid">
+        <div class="seven wide white column">
+          <h4 class="ui header">张三</h4>
+          <p><span class="gray">A餐:</span><span class="red">1</span><span class="gray">,</span><span class="gray">B餐:</span><span class="red">1</span></p>
+        </div>
+        <div class="seven wide white column">
+          <p><span class="gray">订单号:</span><span class="red">#111111</span>
+          <p><span class="gray">金额:</span><span class="red">$10.00</span>
+        </div>
+        <div class="send two wide white column">
+          <a href="" title=""><i class="checkmark icon"></i></a>
+        </div>
+      </div>
+      <div class="ui divider"></div>
+      <div class="left aligned sixteen wide column">
+        注：A餐为当日便当，B餐为凉皮+肉夹馍
+      </div>
+    </div>
+  </div>
+  <div class="sixteen wide column">
+    <button id="orderBtn" class="center aligned ui red button"><i class="announcement icon"></i>我已达化学楼</button>
+  </div>
 </div>
-

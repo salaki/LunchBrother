@@ -47,11 +47,12 @@ define([
          var price = model.get("Unit_Price");
          var total = count*price;
          totalPrice.push(total);
+      
       });
       
       var final = totalPrice[1]+totalPrice[0];
       //Parse.Events.trigger("homeview:update", { final: final});
-      console.log(this.homeCallback);
+      Parse.Events.trigger("final:update");
       this.homeCallback({final:final});
       
     }
