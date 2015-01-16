@@ -149,10 +149,10 @@ header {
 }
 
 #expyear{
-  
-  min-width:150px;
-  margin-top: 1.1em;
+
+  min-width:120px;
 }
+
 
 .ui.form .field > .selection.dropdown{
   width:25%;
@@ -222,23 +222,15 @@ header {
   margin-top: 0;
 }
 
-#contactinfo,#cardinfo{
+#contactinfo,#cardinfo,#agreements,#card-expinfo{
   margin:2%;
 }
 
-#exptime,#terms,#rememberme{
-  margin-left:2%;
- 
-}
-
 #cw2{
-   width:20% !important;
+   width:25% !important;
 }
 
 
-.card-expiry-year{
-  margin-top:0.2em;
-}
 
 .clearfix:after{ 
    content: "."; 
