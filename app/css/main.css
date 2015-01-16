@@ -135,7 +135,7 @@ header {
 }
 
 #addressoption{
-  min-width:150px;
+  min-width: 150px;
 }
 
 #addressoption .dropdown.icon{
@@ -143,6 +143,7 @@ header {
 }
 
 #addressoption .default{
+	float: left;
   width:75%;
   text-shadow: 0.5px -0.5px rgba(255, 255, 255, 1);
 }
@@ -181,16 +182,23 @@ header {
 
 
 .send{
-  width: 78px;
+	opacity: 1;
+   transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
   line-height: 50px;
   background: #E3151A !important;
+	height: 78px;
 }
 
-.send a{
-  height: 100%;
-  width:100%;
-  margin: 0 20px;
+.send:hover {
+	opacity: 0.8;
+}
+
+.send i{
   color:#ffffff;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .red {
@@ -211,7 +219,7 @@ header {
   margin-top: 0;
 }
 
-#contactinfo,#addressoption,#cardinfo{
+#contactinfo,#cardinfo{
   margin:2%;
 }
 
