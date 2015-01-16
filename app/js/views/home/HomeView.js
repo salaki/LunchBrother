@@ -16,7 +16,6 @@ define([
     stats: {
       orders: [],
       totalCharge: 0,
-      data:{}
     },
     
     events: {
