@@ -8,7 +8,8 @@ define([
   'text!templates/home/statsTemplate.html',
   'text!templates/order/orderTemplate.html',
   'stripe',
-  'libs/semantic/checkbox.min'
+  'libs/semantic/checkbox.min',
+  'libs/semantic/form.min'
 ], function(DishCollection, OrderModel, PaymentModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe) {
   Stripe.setPublishableKey('pk_test_O2hEo1UfnNPrEctKfUOd6Zay');
   var OrderView = Parse.View.extend({
@@ -34,15 +35,16 @@ define([
       $(this.el).html(this.template());
       this.$('.ui.checkbox').checkbox();
       this.$('select.dropdown').dropdown();
-      this.$('form').form({
-        fname: {
+      this.$('form').submit(this.orderSubmit);
+      this.$('.ui.form').form({
+        giveName: {
           identifier: 'first_name',
           rules: [{
             type: 'empty',
             prompt: 'Please enter your first name'
           }]
         },
-        lname: {
+        surName: {
           identifier: 'last_name',
           rules: [{
             type: 'empty',
@@ -52,6 +54,9 @@ define([
         email: {
           identifier: 'email',
           rules: [{
+            type: 'empty',
+            prompt: 'Please enter your e-mail'
+          }, {
             type: 'email',
             prompt: 'Please enter a valid e-mail'
           }]
@@ -71,7 +76,6 @@ define([
           }]
         }
       });
-      this.$('form').submit(this.orderSubmit);
       return this;
     },
 
@@ -87,48 +91,8 @@ define([
       else { // No errors, submit the form.
         // Get the token from the response:
         var token = response.id;
-        var paymentDetails = new PaymentModel({
-          //   validation:{
-          //     fname: {
-          //   identifier: 'first_name',
-          //   rules: [{
-          //     type: 'empty',
-          //     prompt: 'Please enter your first name'
-          //   }]
-          // },
-          // lname: {
-          //   identifier: 'last_name',
-          //   rules: [{
-          //     type: 'empty',
-          //     prompt: 'Please enter your last name'
-          //   }]
-          // },
-          // email: {
-          //   identifier: 'email',
-          //   rules: [{
-          //     type: 'email',
-          //     prompt: 'Please enter a valid e-mail'
-          //   }]
-          // },
-          // address: {
-          //   identifier: 'address',
-          //   rules: [{
-          //     type: 'empty',
-          //     prompt: 'Please select an address'
-          //   }]
-          // },
-          // terms: {
-          //   identifier: 'terms',
-          //   rules: [{
-          //     type: 'checked',
-          //     prompt: 'You must agree to the terms and conditions'
-          //   }]
-          // }
-          //}
-        });
+        var paymentDetails = new PaymentModel();
         //
-
-
         var fname = $('#first_name').val();
         var lname = $('#last_name').val();
         var email = $('#email').val();
@@ -143,10 +107,6 @@ define([
           i++;
         });
 
-
-
-
-
         paymentDetails.set('fname', fname);
         paymentDetails.set('lname', lname);
         paymentDetails.set('email', email);
@@ -156,14 +116,13 @@ define([
         paymentDetails.set('paymentCheck', false);
         paymentDetails.save(null, {
           success: function(paymentDetails) {
-            var orderId = paymentDetails.get('orderId');
             var view1 = new TextView({
               model: paymentDetails
             });
             var view2 = new ConfirmView({
-              model:paymentDetails
+              model: paymentDetails
             });
-            $("#paymentForm").hide();
+            $("#paymentForm").remove();
             $("#page").prepend(view1.render().el);
             $("#page").append(view2.render().el);
 
@@ -193,6 +152,7 @@ define([
       $form.find('#orderBtn').prop('disabled', true);
       Stripe.card.createToken($form, this.stripeResponseHandler);
     }
+
   });
   return OrderView;
 });

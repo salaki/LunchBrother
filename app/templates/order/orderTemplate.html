@@ -19,10 +19,13 @@
 		<div id="contactinfo" class="field">
 			<div class="ui fluid field">
 				<input id="first_name" class="ui input six wide field fname" placeholder="取餐人名" type="text" name="first_name">
+				<i class="asterisk red icon"></i>
 				<input id="last_name" class="ui input six wide field lname" placeholder="取餐人姓" type="text" name="last_name">
+	      <i class="asterisk red icon"></i>		
 			</div>
 			<div class="ui fluid field">
 				<input id="email" class="ui fluid input required email" placeholder="E-mail" type="text" name="email">
+			  <i class="asterisk red icon"></i>
 			</div>
 			<div class="ui fluid field">
 				<div id="addressoption">
@@ -43,9 +46,11 @@
 			<p>请输入您的信用卡信息：</p>
 			<div class="sixteen wide field">
 				<input class="ui fluid input" placeholder="持卡人姓名" type="text" name="first_name">
+			  <i class="asterisk red icon"></i>
 			</div>
 			<div class="sixteen wide field">
 				<input class="ui fluid input card-number stripe-sensitive required" placeholder="卡号" type="text" size="20" data-stripe="number">
+			  <i class="asterisk red icon"></i>
 			</div>
 		</div>
 		<div id="card-expinfo" class="fields">
@@ -80,6 +85,7 @@
 			<div class="four wide field" id="cw2">
 				<label>CW2验证码:</label>
 				<input type="text" class="ui input card-cvc" data-stripe="cvc" size="4">
+			  <i class="asterisk red icon"></i>
 			</div>
 		</div>
 		<!--</div>-->
@@ -105,4 +111,5 @@
 
 	<button id="orderBtn" type="button" class="center aligned ui red button">确定买单</button>
 	<span class="payment-errors"></span>
+	<div class="ui error message"></div>
 </form>

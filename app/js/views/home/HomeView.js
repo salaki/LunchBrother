@@ -88,7 +88,7 @@ define([
       var view = new OrderView({
         model: this.stats
       });
-      $("#dishTitle,#dishList,#paymentBtn,#orderMessage").hide();
+      $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
       $("#page").append(view.render().el);
     }
   });
