@@ -1,3 +1,4 @@
+//OrderId&Email
 define([
   'models/order/PaymentModel',
   'models/order/SequenceModel',
@@ -11,20 +12,14 @@ define([
       class: 'column'
     },
 
-    initialize: function() {
-      _.bindAll(this, 'render','getOrderId');
-      Parse.Events.on("orderId", this.getOrderId, this)
+    initialize: function(options) {
+      _.bindAll(this, 'render');
     },
 
     template: _.template(textTemplate),
-
     render: function() {
-      this.$el.html(this.template());
+      this.$el.html(this.template(this.model.toJSON()));
       return this;
-    },
-    
-    getOrderId:function(){
-      console.log(this.orderId);
     }
   });
   return TextView;

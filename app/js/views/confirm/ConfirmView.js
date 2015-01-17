@@ -1,3 +1,4 @@
+//OrderId, fname,lname,email,address
 define([
   'models/order/PaymentModel',
   'models/order/SequenceModel',
@@ -19,8 +20,7 @@ define([
     template: _.template(confirmTemplate),
 
     render: function() {
-      
-      this.$el.html(this.template());
+      this.$el.html(this.template(this.model.toJSON()));
       return this;
     },
   });

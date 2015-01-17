@@ -9,7 +9,7 @@ define([
   'text!templates/order/orderTemplate.html',
   'stripe',
   'libs/semantic/checkbox.min'
-], function(DishCollection, OrderModel, PaymentModel, DishCollectionView, ConfirmView,TextView, statsTemplate, orderTemplate, Stripe) {
+], function(DishCollection, OrderModel, PaymentModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe) {
   Stripe.setPublishableKey('pk_test_O2hEo1UfnNPrEctKfUOd6Zay');
   var OrderView = Parse.View.extend({
     tagName: "div",
@@ -18,8 +18,7 @@ define([
     },
 
     template: _.template(orderTemplate),
-    
-   
+
     events: {
       'click #orderBtn': 'orderSubmit',
       // 'click #orderBtn': 'continueConfirm'
@@ -129,22 +128,25 @@ define([
         });
         //
 
-        
+
         var fname = $('#first_name').val();
         var lname = $('#last_name').val();
         var email = $('#email').val();
         var address = $('#addressdetails option:selected').text();
         var stripepayment = self.model.totalCharge;
         var i = 1;
-        _.each(self.model.orders, function(order){
+        _.each(self.model.orders, function(order) {
           var dishName = order.get('Description');
           var quantity = order.get('count');
-          paymentDetails.set('dishName' + i,dishName);
-          paymentDetails.set('quantity' + i,quantity);
+          paymentDetails.set('dishName' + i, dishName);
+          paymentDetails.set('quantity' + i, quantity);
           i++;
         });
-        
-        this.customerorderId = paymentDetails.get('orderId');
+
+
+
+
+
         paymentDetails.set('fname', fname);
         paymentDetails.set('lname', lname);
         paymentDetails.set('email', email);
@@ -154,6 +156,17 @@ define([
         paymentDetails.set('paymentCheck', false);
         paymentDetails.save(null, {
           success: function(paymentDetails) {
+            var orderId = paymentDetails.get('orderId');
+            var view1 = new TextView({
+              model: paymentDetails
+            });
+            var view2 = new ConfirmView({
+              model:paymentDetails
+            });
+            $("#paymentForm").hide();
+            $("#page").prepend(view1.render().el);
+            $("#page").append(view2.render().el);
+
             Parse.Cloud.run('pay', {
               orderId: paymentDetails.get('orderId')
             }, {
@@ -179,12 +192,6 @@ define([
       var $form = this.$('form');
       $form.find('#orderBtn').prop('disabled', true);
       Stripe.card.createToken($form, this.stripeResponseHandler);
-      var view1 = new TextView();
-      var view2 = new ConfirmView();
-      Parse.Events.trigger("orderId:update");
-      $("#paymentForm").hide();
-      $("#page").prepend(view1.render().el);
-      $("#page").append(view2.render().el);
     }
   });
   return OrderView;
