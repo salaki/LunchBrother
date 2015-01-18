@@ -54,7 +54,7 @@ define([
           $("#page").append(view.render().el);
         },
         error: function(user, error) {
-          self.$("#loginForm .error").html("Invalid username or password. Please try again.").show();
+          self.$("#loginInfo .error").html("Invalid username or password. Please try again.").show();
           self.$("#loginForm button").removeAttr("disabled");
         }
       });
