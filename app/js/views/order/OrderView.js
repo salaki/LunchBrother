@@ -21,9 +21,7 @@ define([
     template: _.template(orderTemplate),
 
     events: {
-      'submit #paymentForm': 'orderSubmit',
-      // 'click #orderBtn': 'continueConfirm'
-
+      'submit #paymentForm': 'orderSubmit'
     },
 
     initialize: function() {
@@ -35,7 +33,6 @@ define([
       $(this.el).html(this.template());
       this.$('.ui.checkbox').checkbox();
       this.$('select.dropdown').dropdown();
-      this.$('form').submit(this.orderSubmit);
       this.$('.ui.form').form({
          'first_name': {
           identifier: 'first_name',

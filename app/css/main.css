@@ -95,13 +95,14 @@ header {
 .summary-total-label{
   font-size: 12px;
 }
-#orderBtn.red, #paymentBtn.red, #loginBtn{
+#orderBtn.red, #paymentBtn.red, #loginBtn.red{
   background-color: #e3151e;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
   width: 100%;
 	position: relative;
 }
+
 #orderBtn.red:hover, #paymentBtn.red:hover, #loginBtn.red:hover {
 	box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
 	top: 1px;

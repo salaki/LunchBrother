@@ -3,9 +3,10 @@ define([
   'views/order/OrderView',
   'views/confirm/ConfirmView',
   'views/status/StatusView',
+  'views/manage/LoginView',
   'views/manage/ManageView',
-  'views/delivery/DeliveryView'
-], function(HomeView, OrderView, ConfirmView, StatusView, ManageView,DeliveryView) {
+  'views/manage/DeliveryView'
+], function(HomeView, OrderView, ConfirmView, StatusView, LoginView, ManageView,DeliveryView) {
 
   var AppRouter = Parse.Router.extend({
     routes: {
@@ -13,6 +14,7 @@ define([
       'order': 'showOrder',
       'confirm': 'showConfirm',
       'status': 'showStatus',
+      'login' : 'showLogin',
       'manage': 'showManage',
       'delivery':'showDelivery',
 
@@ -47,6 +49,12 @@ define([
       // Call render on the module we loaded in via the dependency array
       var statusView = new StatusView();
       statusView.render();
+    });
+    
+    appRouter.on('route:showLogin', function() {
+      // Call render on the module we loaded in via the dependency array
+      var loginView = new LoginView();
+      loginView.render();
     });
 
     appRouter.on('route:showManage', function() {

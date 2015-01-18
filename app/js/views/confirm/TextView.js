@@ -1,9 +1,8 @@
 //OrderId&Email
 define([
   'models/order/PaymentModel',
-  'models/order/SequenceModel',
   'text!templates/confirm/textTemplate.html'
-], function(PaymentModel, SequenceModel, textTemplate) {
+], function(PaymentModel,textTemplate) {
 
   var TextView = Parse.View.extend({
 

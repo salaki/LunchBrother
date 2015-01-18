@@ -1,5 +1,5 @@
 define([
-  'text!templates/delivery/deliveryTemplate.html'
+  'text!templates/manage/deliveryTemplate.html'
 ], function(deliveryTemplate){
 	
   var DeliveryView = Parse.View.extend({
@@ -9,10 +9,9 @@ define([
     
     render: function(){
       this.$el.html(this.template());
+      return this;
     }
 
   });
-
   return DeliveryView;
-  console.log('deliveryView returned');
 });

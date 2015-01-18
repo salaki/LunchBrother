@@ -1,10 +1,9 @@
 //OrderId, fname,lname,email,address
 define([
   'models/order/PaymentModel',
-  'models/order/SequenceModel',
   'views/order/OrderView',
   'text!templates/confirm/confirmTemplate.html'
-], function(PaymentModel, SequenceModel, OrderView, confirmTemplate) {
+], function(PaymentModel, OrderView, confirmTemplate) {
 
   var ConfirmView = Parse.View.extend({
 
