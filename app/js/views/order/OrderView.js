@@ -17,11 +17,11 @@ define([
     attributes: {
       class: 'column'
     },
-
+    
     template: _.template(orderTemplate),
 
     events: {
-      'click #orderBtn': 'orderSubmit',
+      'submit #paymentForm': 'orderSubmit',
       // 'click #orderBtn': 'continueConfirm'
 
     },
@@ -37,14 +37,14 @@ define([
       this.$('select.dropdown').dropdown();
       this.$('form').submit(this.orderSubmit);
       this.$('.ui.form').form({
-        giveName: {
+         'first_name': {
           identifier: 'first_name',
           rules: [{
             type: 'empty',
             prompt: 'Please enter your first name'
           }]
         },
-        surName: {
+        'last_name': {
           identifier: 'last_name',
           rules: [{
             type: 'empty',
@@ -75,6 +75,9 @@ define([
             prompt: 'You must agree to the terms and conditions'
           }]
         }
+      }, {
+        on: 'blur',
+        inline: 'true'
       });
       return this;
     },
@@ -137,22 +140,18 @@ define([
               }
             });
           },
-
           error: function(payment, error) {
             alert('Failed to create new object, with error code: ' + error.message);
           }
         });
-
-
       }
     },
-
     orderSubmit: function(e) {
+      e.preventDefault();
       var $form = this.$('form');
       $form.find('#orderBtn').prop('disabled', true);
       Stripe.card.createToken($form, this.stripeResponseHandler);
     }
-
   });
   return OrderView;
 });
