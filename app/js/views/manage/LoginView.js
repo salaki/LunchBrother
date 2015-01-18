@@ -50,7 +50,6 @@ define([
         success: function(user) {
           var view = new DeliveryView();
           $("#reminder,#loginInfo").remove();
-           console.log(view.render().el);
           $("#page").append(view.render().el);
         },
         error: function(user, error) {
@@ -65,3 +64,5 @@ define([
   });
   return LoginView;
 });
+
+
