@@ -25,7 +25,6 @@ define([
     initialize: function() {
 
       _.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
-
       this.$el.html(_.template(homeTemplate)());
     
       this.dishes = new DishCollection;
@@ -84,7 +83,6 @@ define([
     },
     
     continuePay: function(){
-      
       var view = new OrderView({
         model: this.stats
       });
