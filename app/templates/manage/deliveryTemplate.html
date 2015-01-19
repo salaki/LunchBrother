@@ -2,13 +2,13 @@
 
 <div class="ui segment">
 	<div class="ui vertical segment">
-		<a class="delivery-order" href="">
+		<a class="delivery-order" href="#manage">
 			<div class="ui column grid summary-list">
 				<div class="four wide right aligned column"><span class="summary-location">化学楼:</span>
 				</div>
-				<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp1,&nbspB餐:&nbsp2</span>
+				<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%=dishQuantity1 %>,&nbspB餐:&nbsp<%= comboQuantity1 %></span>
 				</div>
-				<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$30.00</span>
+				<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final1 %></span>
 				</div>
 				<div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
 				</div>
@@ -16,29 +16,29 @@
 		</a>
 	</div>
 
-	<div class="ui vertical segment">
-		<a class="delivery-order" href="">
-			<div class="ui column grid summary-list">
-				<div class="four wide right aligned column"><span class="summary-location">GWU:</span>
-				</div>
-				<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp1,&nbspB餐:&nbsp2</span>
-				</div>
-				<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$30.00</span>
-				</div>
-				<div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
-				</div>
-			</div>
-		</a>
-	</div>
+	<!--<div class="ui vertical segment">-->
+	<!--	<a class="delivery-order" href="#manage">-->
+	<!--		<div class="ui column grid summary-list">-->
+	<!--			<div class="four wide right aligned column"><span class="summary-location">GWU:</span>-->
+	<!--			</div>-->
+	<!--			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp1,&nbspB餐:&nbsp2</span>-->
+	<!--			</div>-->
+	<!--			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$30.00</span>-->
+	<!--			</div>-->
+	<!--			<div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>-->
+	<!--			</div>-->
+	<!--		</div>-->
+	<!--	</a>-->
+	<!--</div>-->
 
 	<div class="summary-order ui vertical segment">
-		<a href="">
+		<a href="#manage" class="delivery-order">
 			<div class="ui column grid summary-list">
 				<div class="four wide right aligned column"><span class="summary-location">商学院:</span>
 				</div>
-				<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp1,&nbspB餐:&nbsp2</span>
+				<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity2 %>,&nbspB餐:&nbsp<%= comboQuantity2 %></span>
 				</div>
-				<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$30.00</span>
+				<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final2 %></span>
 				</div>
 				<div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
 				</div>
@@ -51,9 +51,9 @@
 		<div class="ui column grid summary-list">
 			<div class="four wide right aligned column"><span class="summary-location">总计:</span>
 			</div>
-			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red">3</span>,&nbspB餐:&nbsp<span class="red">6</span></span>
+			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1+ dishQuantity2 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2 %></span></span>
 			</div>
-			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp<span class="red">$90.00</span></span>
+			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<span class="red"><%= final1+final2 %></span></span>
 			</div>
 
 		</div>
