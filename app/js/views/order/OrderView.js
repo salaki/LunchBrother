@@ -129,7 +129,6 @@ define([
         });
         //
 
-        
         var fname = $('#first_name').val();
         var lname = $('#last_name').val();
         var email = $('#email').val();
@@ -143,7 +142,6 @@ define([
           paymentDetails.set('quantity' + i,quantity);
           i++;
         });
-        
         this.customerorderId = paymentDetails.get('orderId');
         paymentDetails.set('fname', fname);
         paymentDetails.set('lname', lname);
