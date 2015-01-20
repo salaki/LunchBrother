@@ -1,0 +1,17 @@
+<% _.each(orders, function(order) { %>
+<div class="order-detail ui padded grid">
+    <div class="seven wide white column">
+        <h4 class="ui header"><%= order.get('lname') %>, <%= order.get('fname') %> (<%= order.get('address') %>)</h4>
+        <p><span class="gray">A餐:</span><span class="red"><%= order.get('quantity1') %></span><span class="gray">,</span><span class="gray">B餐:</span><span class="red"><%= order.get('quantity2') %></span>
+        </p>
+    </div>
+    <div class="seven wide white column">
+        <p><span class="gray">订单号:</span><span class="red"><%= order.id %></span>
+        <p><span class="gray">金额:</span><span class="red">$<%= order.get('totalPrice') %></span>
+    </div>
+    <a class="send two wide white column" href="" title="">
+        <i class="checkmark icon"></i>
+    </a>
+</div>
+<div class="ui hidden divider"></div>
+<% }); %>
