@@ -73,7 +73,6 @@ define([
               }
           });
       }
->>>>>>> origin/lunchbrother-jack
   });
 
   return ManageView;
