@@ -49,6 +49,10 @@ define([
       
       var found = "Combo";
       var orderDetails = new OrderModel();
+      orderDetails.set('comboQuantity1', 0);
+      orderDetails.set('dishQuantity1', 0);
+      orderDetails.set('comboQuantity2', 0);
+      orderDetails.set('dishQuantity2', 0);
       var today = new Date();
       today.setHours(0, 0, 0, 0);
       var tomorrow = new Date();
@@ -57,7 +61,7 @@ define([
       var tdcomboinQuery1 = new Parse.Query(PaymentModel);
       tdcomboinQuery1.greaterThanOrEqualTo("createdAt", today);
       tdcomboinQuery1.lessThanOrEqualTo("createdAt", tomorrow);
-      tdcomboinQuery1.equalTo("address", "College Park,MD");
+      tdcomboinQuery1.equalTo("address", "RDPG");
 
       tdcomboinQuery1.find({
         success: function(results) {
@@ -71,9 +75,6 @@ define([
               if(!dish1.match(found)) {
                 orderDetails.set('dishQuantity1', quantity1);
               }
-            } else {
-              orderDetails.set('comboQuantity1', 0);
-              orderDetails.set('dishQuantity1', 0);
             }
             var dish2 = result.get("dishName2");
             if (dish2 !== undefined) {
@@ -84,10 +85,6 @@ define([
               if(!dish2.match(found)) {
                 orderDetails.set('dishQuantity1', quantity2);
               }
-            }
-            else {
-              orderDetails.set('comboQuantity2', 0);
-              orderDetails.set('dishQuantity2', 0);
             }
           });
           var final1 = (orderDetails.get('comboQuantity1') + orderDetails.get('dishQuantity1')) * 10;
@@ -102,7 +99,7 @@ define([
       var tdcomboinQuery2 = new Parse.Query(PaymentModel);
       tdcomboinQuery2.greaterThanOrEqualTo("createdAt", today);
       tdcomboinQuery2.lessThanOrEqualTo("createdAt", tomorrow);
-      tdcomboinQuery2.equalTo("address", "Shady Grove,MD");
+      tdcomboinQuery2.equalTo("address", "VM");
       tdcomboinQuery2.find({
         success: function(results) {
           _.each(results, function(result) {
@@ -116,11 +113,7 @@ define([
                 orderDetails.set('dishQuantity2', quantity1);
               }
             }
-            else {
-              orderDetails.set('comboQuantity2', 0);
-              orderDetails.set('dishQuantity2', 0);
-            }
-
+            
             var dish2 = result.get("dishName2");
             if (dish2 !== undefined) {
               var quantity2 = result.get("quantity2");
@@ -130,10 +123,6 @@ define([
               if(!dish2.match(found)) {
                 orderDetails.set('dishQuantity2', quantity2);
               }
-            }
-            else {
-              orderDetails.set('comboQuantity2', 0);
-              orderDetails.set('dishQuantity2', 0);
             }
           });
 

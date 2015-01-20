@@ -1,16 +1,25 @@
 define([
+  'views/status/StatusView',
+  'models/order/PaymentModel',
+  'models/order/OrderModel',
+  'models/manage/DeliveryModel',
   'text!templates/manage/manageTemplate.html',
   'text!templates/manage/orderListTemplate.html',
-  'models/order/PaymentModel'
-], function(manageTemplate, orderListTemplate, PaymentModel){
-
+], function(StatusView,PaymentModel,OrderModel,DeliveryModel,manageTemplate, orderListTemplate){
   var ManageView = Parse.View.extend({
     el: $("#page"),
     template: _.template(manageTemplate),
     orderListTemplate: _.template(orderListTemplate),
       events: {
           'keyup #searchInput': 'onSearchBarInput',
-          'change #addressOption': 'onAddressSelect'
+          'change #addressOption': 'onAddressSelect',
+          'click #arriveBtn' : 'updateStatus'
+      },
+      
+      initialize:function(){
+        _.bindAll(this,'render','updateStatus','onAddressSelect');
+        this.deliveryDetails = new DeliveryModel();
+        this.deliveryDetails.set('status',false);
       },
 
     render: function(){
@@ -20,7 +29,7 @@ define([
         paymentQuery.ascending("lname");
         var self = this;
         this.$el.html(this.template());
-        this.$("#buildingLabel").text("總共");
+        this.$("#buildingLabel").text("总共");
         this.applyQuery(paymentQuery, self);
     },
 
@@ -36,7 +45,7 @@ define([
         var searchText = this.$("#searchInput").val();
         if (searchText != "") {
             paymentQuery.contains("lname", searchText);
-            this.$("#searchResultLabel").text("符合搜尋");
+            this.$("#searchResultLabel").text("符合搜寻");
         } else {
             this.$("#searchResultLabel").text("");
         }
@@ -51,12 +60,14 @@ define([
           this.$("#searchInput").val("");
           paymentQuery.contains("address", this.$("#addressOption").val());
           paymentQuery.ascending("lname");
-          if (this.$("#addressOption").val() == "College Park") {
-              this.$("#buildingLabel").text("化学楼");
-          } else if(this.$("#addressOption").val() == "Shady Grove"){
-              this.$("#buildingLabel").text("黃鹤楼");
+          if (this.$("#addressOption").val() == "RDPG") {
+              this.$("#buildingLabel").text("Regents Drive Parking Garage");
+              this.deliveryDetails.set('address',"RDPG");
+          } else if(this.$("#addressOption").val() == "VM"){
+              this.$("#buildingLabel").text("Van Munching");
+              this.deliveryDetails.set('address',"VM");
           } else {
-              this.$("#buildingLabel").text("總共");
+              this.$("#buildingLabel").text("总共");
           }
           var self = this;
           this.applyQuery(paymentQuery, self);
@@ -72,8 +83,22 @@ define([
                   alert("Error: " + error.code + " " + error.message);
               }
           });
+      },
+     
+      //date and getCurrentUser
+      updateStatus: function(){
+        $("#arriveBtn").click(function(){
+          var $this = $(this);
+            $this.toggleClass('arrive');
+         if($(this).hasClass('arrive')){
+            $(this).text('正在路上');
+         }else{
+            $(this).text('我已到达');
+         }
+       });
+       this.deliveryDetails.set('date',new Date());
       }
-  });
+    });
 
   return ManageView;
   
