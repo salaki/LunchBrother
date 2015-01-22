@@ -5,21 +5,13 @@
 				<strong>无名大哥，<label id="buildingLabel"></label>有<label id="orderNumberLabel"></label>个订单<label id="searchResultLabel"></label></strong>
 			</p>
 		</div>
+
 		<div class="right floated right aligned eight wide column">
-			<!--<div id="addressoption" class="ui selection dropdown">-->
-                <select id="addressOption" class="right floated right aligned eight wide column">
-                    <option value="">所有订单</option>
-                    <option value="RDPG">Regents Drive Parking Garage</option>
-                    <option value="VM">Van Munching</option>
-                </select>
-				<!--<input type="hidden" name="address">-->
-				<!--<div class="default">化学楼</div>-->
-				<!--<i class="dropdown icon"></i>-->
-				<!--<select class="menu">-->
-					<!--<option class="item" data-value="CP">College Park,MD</option>-->
-					<!--<option class="item" data-value="SG">Shady Grove,MD</option>-->
-				<!--</select>-->
-			<!--</div>-->
+			<select id="addressOption" class="right floated right aligned eight wide column ui dropdown">
+				<option value="">大哥，请您定位</option>
+				<option value="RDPG">Regents Drive Parking Garage</option>
+				<option value="VM">Van Munching</option>
+			</select>
 		</div>
 	</div>
 
@@ -33,7 +25,7 @@
 
 	<div class="sixteen wide column">
 		<div class="ui divided list">
-            <div id="orderList">Loading....</div>
+			<div id="orderList">Loading....</div>
 			<div class="ui divider"></div>
 			<div class="left aligned sixteen wide column">
 				注：A餐为当日便当，B餐为凉皮+肉夹馍

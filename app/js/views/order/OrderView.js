@@ -13,11 +13,13 @@ define([
 ], function(DishCollection, OrderModel, PaymentModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe) {
   Stripe.setPublishableKey('pk_test_O2hEo1UfnNPrEctKfUOd6Zay');
   var OrderView = Parse.View.extend({
+
     tagName: "div",
+
     attributes: {
       class: 'column'
     },
-    
+
     template: _.template(orderTemplate),
 
     events: {
@@ -34,7 +36,7 @@ define([
       this.$('.ui.checkbox').checkbox();
       this.$('select.dropdown').dropdown();
       this.$('.ui.form').form({
-         'first_name': {
+        'first_name': {
           identifier: 'first_name',
           rules: [{
             type: 'empty',
@@ -62,7 +64,7 @@ define([
           identifier: 'address',
           rules: [{
             type: 'empty',
-            prompt: 'Please select an address'
+            prompt: 'Please select a location'
           }]
         },
         terms: {
@@ -78,7 +80,7 @@ define([
       });
       return this;
     },
-
+    
     stripeResponseHandler: function(status, response) {
       var $form = $('#paymentForm');
       var self = this;
@@ -128,6 +130,7 @@ define([
             $("#paymentForm").remove();
             $("#page").prepend(view1.render().el);
             $("#page").append(view2.render().el);
+            
 
             Parse.Cloud.run('pay', {
               orderId: paymentDetails.get('orderId')

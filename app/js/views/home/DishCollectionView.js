@@ -43,7 +43,6 @@ define([
       var totalPrice = [];
       _.forEach(this.collection,function(model){
          var count = model.get("Count");
-         var description = model.get("Description");
          var price = model.get("Unit_Price");
          var total = count*price;
          totalPrice.push(total);
