@@ -88,14 +88,10 @@ define([
       var view = new OrderView({
         model: this.stats
       });
+      
       if (hours <= 22) {
         $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-
-	if($("#order").length == 0) {
-      	
-        	$("#page").append(view.render().el);
-      
-        }
+        $("#page").append(view.render().el);
       }
 
       if (hours > 22) {

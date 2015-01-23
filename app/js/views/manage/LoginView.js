@@ -142,9 +142,7 @@ define([
             model: orderDetails
           });
           $("#reminder,#loginInfo").remove();
-          if($('div.column').length === 1){
           $("#page").append(view.render().el);
-          }
         },
         error: function(user, error) {
           self.$("#loginInfo .error").html("Invalid username or password. Please try again.").show();

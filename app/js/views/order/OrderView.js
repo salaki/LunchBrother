@@ -14,8 +14,6 @@ define([
   Stripe.setPublishableKey('pk_test_O2hEo1UfnNPrEctKfUOd6Zay');
   var OrderView = Parse.View.extend({
 
-    id: "order",
-
     tagName: "div",
 
     attributes: {
@@ -120,8 +118,7 @@ define([
         paymentDetails.set('stripeToken', token);
         paymentDetails.set('address', address);
         paymentDetails.set('totalPrice', stripepayment);
-        paymentDetails.set('paymentCheck', false);
-          paymentDetails.save(null, {
+        paymentDetails.save(null, {
             success: function(paymentDetails) {
               var view1 = new TextView({
                 model: paymentDetails

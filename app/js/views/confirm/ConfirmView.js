@@ -1,4 +1,3 @@
-//OrderId, fname,lname,email,address
 define([
       'models/order/PaymentModel',
       'views/order/OrderView',

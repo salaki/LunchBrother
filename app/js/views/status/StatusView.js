@@ -1,9 +1,4 @@
 define([
-  //brother click the button,username, status and address pass to the delivery class.
-  //Model Changes:View 正在路上 改为 我已到达
-  //一进去：所有订单，选择地点，点到达
-  //dropdown 取值
-  //1个model 2个fields,每个field 一个状态
   'models/manage/DeliveryModel',
   'text!templates/status/statusTemplate.html'
 ], function(DeliveryModel,statusTemplate){
@@ -15,13 +10,39 @@ define([
     
     initialize: function(){
       _.bindAll(this,'render');
-      console.log(this.model);
    },
     
     render: function(){
       $('.menu li').removeClass('active');
-      $('.menu li a[href="#status"]').parent().addClass('active');
-      this.$el.html(this.template(this.model.toJSON()));
+      $('.menu li a[href="#"]').parent().addClass('active');
+      var statusQuery = new Parse.Query(DeliveryModel);
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var tomorrow = new Date();
+      tomorrow.setHours(0, 0, 0, 0);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      statusQuery.greaterThanOrEqualTo("createdAt", today);
+      statusQuery.lessThanOrEqualTo("createdAt", tomorrow);
+      statusQuery.find({
+        success:function(results){
+          _.each(results,function(result){
+            var status1 = result.get('status1');
+            var status2 = result.get('status2');
+            if(status1 !== undefined){
+              $('#status1').text(status1);
+              $('#status1').addClass("arrived");
+            }
+            if(status2 !== undefined){
+            $('#status2').text(status2);
+            $('#status2').addClass("arrived");
+            }
+        });
+      },
+      error: function(error){
+        alert("Error: " + error.code + " " + error.message);
+      }
+      });
+      this.$el.html(this.template());
       return this;
     }
   });
