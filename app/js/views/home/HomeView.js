@@ -6,7 +6,7 @@ define([
   'text!templates/home/homeTemplate.html',
   'text!templates/home/statsTemplate.html',
   'text!templates/order/orderTemplate.html'
-], function(DishView, OrderView,DishModel, DishCollection, homeTemplate, statsTemplate,orderTemplate) {
+], function(DishView, OrderView, DishModel, DishCollection, homeTemplate, statsTemplate, orderTemplate) {
 
   var HomeView = Parse.View.extend({
     // tagName: 'ul', // required, but defaults to 'div' if not set
@@ -17,16 +17,16 @@ define([
       orders: [],
       totalCharge: 0,
     },
-    
+
     events: {
-      'click #paymentBtn' : 'continuePay'
+      'click #paymentBtn': 'continuePay'
     },
 
     initialize: function() {
 
       _.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
       this.$el.html(_.template(homeTemplate)());
-    
+
       this.dishes = new DishCollection;
 
       var bdQuery = new Parse.Query(DishModel);
@@ -47,7 +47,7 @@ define([
     render: function() {
       this.stats.orders = this.dishes.orders();
       this.stats.totalCharge = this.dishes.charge();
-      
+
       this.$('#orderStats').html(this.statsTemplate(this.stats));
 
       this.delegateEvents();
@@ -69,25 +69,34 @@ define([
       }
       return dayOfWeek;
     },
-    
+
     addOne: function(dish) {
       var view = new DishView({
         model: dish
       });
       this.$("#dishList").append(view.render().el);
     },
-    
+
     loadAll: function(collection, filter) {
       this.$("#dishList").html("");
       this.dishes.each(this.addOne);
     },
-    
-    continuePay: function(){
+
+    continuePay: function() {
+      var currentTime = new Date();
+      var hours = currentTime.getHours();
       var view = new OrderView({
         model: this.stats
       });
-      $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-      $("#page").append(view.render().el);
+      if (hours <= 22) {
+        $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
+        $("#page").append(view.render().el);
+      }
+
+      if (hours > 22) {
+        $("#paymentBtn").addClass('disabled');
+        $("#timeAlert").text("不好意思，带饭大哥订餐11点结束，明天早点来吧");
+      }
     }
   });
   return HomeView;
