@@ -1,38 +1,78 @@
 <div class="ui page centered grid ">
-	<div class="doubling four column row">
-		<div class="left floated left aligned eight wide column">
-			<p>
-				<strong>无名大哥，<label id="buildingLabel"></label>有<label id="orderNumberLabel"></label>个订单<label id="searchResultLabel"></label></strong>
-			</p>
-		</div>
+    <div class="doubling four column row">
+        <div class="left floated left aligned eight wide column">
+            <p>
+                <strong>带饭大哥，<label id="buildingLabel"></label>有<label id="orderNumberLabel"></label>个订单<label id="searchResultLabel"></label></strong>
+            </p>
+        </div>
 
-		<div class="right floated right aligned eight wide column">
-			<select id="addressOption" class="right floated right aligned eight wide column ui dropdown">
-				<option value="">大哥，请您定位</option>
-				<option value="RDPG">Regents Drive Parking Garage</option>
-				<option value="VM">Van Munching</option>
-			</select>
-		</div>
-	</div>
+        <div class="right floated right aligned eight wide column">
+            <!--<div id="addressoption" class="ui selection dropdown">-->
+            <select id="addressOption" class="right floated right aligned eight wide column">
+                <option value="all">所有订单</option>
+                <option value="RDPG">Regents Drive Parking Garage</option>
+                <option value="VM">Van Munching</option>
+            </select>
+            <!--<input type="hidden" name="address">-->
+            <!--<div class="default">化学楼</div>-->
+            <!--<i class="dropdown icon"></i>-->
+            <!--<select class="menu">-->
+            <!--<option class="item" data-value="CP">College Park,MD</option>-->
+            <!--<option class="item" data-value="SG">Shady Grove,MD</option>-->
+            <!--</select>-->
+            <!--</div>-->
+        </div>
+    </div>
 
-	<div class="sixteen wide column">
-		<div class="ui fluid icon input">
-			<input id="searchInput" type="text" placeholder="Search by last name...">
-			<i class="search icon"></i>
-		</div>
-	</div>
+    <div class="sixteen wide column">
+        <div class="ui fluid icon input">
+            <input id="searchInput" type="text" placeholder="Search by last name...">
+            <i class="search icon"></i>
+        </div>
+    </div>
 
 
-	<div class="sixteen wide column">
-		<div class="ui divided list">
-			<div id="orderList">Loading....</div>
-			<div class="ui divider"></div>
-			<div class="left aligned sixteen wide column">
-				注：A餐为当日便当，B餐为凉皮+肉夹馍
-			</div>
-		</div>
-	</div>
-	<div class="sixteen wide column">
-		<button id="arriveBtn" class="center aligned ui toggle arrive button"><i class="volume down icon"></i>正在路上</button>
-	</div>
+    <div class="sixteen wide column">
+        <div class="ui divided list">
+            <div id="orderList">Loading....</div>
+            <div class="ui divider"></div>
+            <div class="left aligned sixteen wide column">
+                注：A餐为当日便当，B餐为凉皮+肉夹馍
+            </div>
+        </div>
+    </div>
+    <div class="sixteen wide column">
+        <button id="arriveBtn" class="center aligned ui toggle arrive button"><i class="volume down icon"></i>正在路上</button>
+    </div>
+</div>
+
+<div class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        请确认这个单子已经付过款
+    </div>
+    <div class="content">
+        <table width="100%">
+            <tr>
+                <td style="font-size: 12pt">
+                    点餐人: <label id="confirmDialogName"></label><br><br>
+                    订单号: #<label id="confirmDialogOrderId"></label>
+                </td>
+                <td style="font-size: 16pt; color: red">
+                    金額: $<label id="confirmDialogPay"></label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="actions">
+        <div class="two fluid ui buttons">
+            <div class="ui basic cancel button">
+                <i class="remove icon"></i>
+                取消
+            </div>
+            <div class="ui ok basic button">
+                <i class="checkmark icon"></i>
+                确认
+            </div>
+        </div>
+    </div>
 </div>

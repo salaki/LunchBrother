@@ -119,9 +119,6 @@ define([
         paymentDetails.set('address', address);
         paymentDetails.set('totalPrice', stripepayment);
         paymentDetails.set('paymentCheck', false);
-        var currentTime = new Date();
-        var hours = currentTime.getHours();
-        if (hours <= 22) {
           paymentDetails.save(null, {
             success: function(paymentDetails) {
               var view1 = new TextView({
@@ -148,7 +145,6 @@ define([
               alert('Failed to create new object, with error code: ' + error.message);
             }
           });
-        }
       }
     },
     orderSubmit: function(e) {
