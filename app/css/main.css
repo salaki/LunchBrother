@@ -262,7 +262,12 @@ header {
   padding-right: 0;
 }
 
-.map{
+
+#fullscreen{
+ display:none;
+}
+
+#smallmap{
   width:100%;
 }
 

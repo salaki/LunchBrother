@@ -1,78 +1,54 @@
 //OrderId, fname,lname,email,address
 define([
-  'models/order/PaymentModel',
-  'models/order/ImageModel',
-  'views/order/OrderView',
-  'text!templates/confirm/confirmTemplate.html'
-], function(PaymentModel, ImageModel, OrderView, confirmTemplate) {
+      'models/order/PaymentModel',
+      'views/order/OrderView',
+      'text!templates/confirm/confirmTemplate.html'
+    ], function(PaymentModel, OrderView, confirmTemplate) {
 
-  var ConfirmView = Parse.View.extend({
+      var ConfirmView = Parse.View.extend({
 
-    tagName: "div",
-    attributes: {
-      class: 'column'
-    },
-    
-    events:{
-      'click .map':'zoomInMap'
-    },
-    
-    initialize: function() {
-      _.bindAll(this, 'render','zoomInMap');
-    },
-
-
-    template: _.template(confirmTemplate),
-
-    render: function() {
-      var self = this;
-      var imageQuery = new Parse.Query(ImageModel);
-      if (this.model.get('address') == "Regents Drive Parking Garage") {
-        imageQuery.equalTo("Image_Id", 13);
-        imageQuery.find({
-          success: function(results) {
-            _.each(results, function(result) {
-              var mapURL = result.get('Image_File');
-              self.model.set("mapUrl", mapURL.url());
-            });
-            self.$el.html(self.template(self.model.toJSON()));
+          tagName: "div",
+          attributes: {
+            class: 'column'
           },
-          error: function(error) {
-            alert("Error: " + error.code + " " + error.message);
-          }
-        });
-      }
-    
-      if (this.model.get('address') == "Van Munching") {
-        imageQuery.equalTo("Image_Id", 14);
-        imageQuery.find({
-           success: function(results) {
-            _.each(results, function(result) {
-              var mapURL = result.get('Image_File');
-              self.model.set("mapUrl", mapURL.url());
-              self.model.save();
-            });
-             self.$el.html(self.template(self.model.toJSON()));
+
+          events: {
+            'click #smallmap': 'zoomInMap',
+            'click #fullscreen':'zoomOutMap'
           },
-          error: function(error) {
-            alert("Error: " + error.code + " " + error.message);
+
+          initialize: function() {
+            _.bindAll(this, 'render', 'zoomInMap','zoomOutMap');
+          },
+
+
+          template: _.template(confirmTemplate),
+
+          render: function() {
+            var self = this;
+            if (this.model.get('address') == "Regents Drive Parking Garage") {
+              self.model.set("mapUrl", "/app/img/map_sml_rdg.jpg");
+              self.$el.html(self.template(self.model.toJSON()));
+            }
+
+            if (this.model.get('address') == "Van Munching") {
+              self.model.set("mapUrl", "/app/img/map_sml_vm.jpg");
+              self.$el.html(self.template(self.model.toJSON()));
+            }
+            return this;
+          },
+
+          zoomInMap: function() {
+            $('.ui.segment').hide();
+            $("#orderMessage").hide();
+            $("#fullscreen").css("display", "block");
+          },
+          
+          zoomOutMap: function(){
+             $("#fullscreen").css("display", "none");
+             $('.ui.segment').show();
+             $("#orderMessage").show(); 
           }
-        });
-      }
-      return this;
-    },
-    
-    zoomInMap:function(){
-      $('.map').click(function(){
-        var $this = $(this);
-        $this.toggleClass('big');
-        if($(this).hasClass('big')){
-          
-        }else{
-          
-        }
+          });
+        return ConfirmView;
       });
-    }
-  });
-  return ConfirmView;
-});
