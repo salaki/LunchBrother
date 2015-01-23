@@ -27,12 +27,12 @@ define([
           render: function() {
             var self = this;
             if (this.model.get('address') == "Regents Drive Parking Garage") {
-              self.model.set("mapUrl", "/app/img/map_sml_rdg.jpg");
+              self.model.set("mapUrl", "./img/map_sml_rdg.jpg");
               self.$el.html(self.template(self.model.toJSON()));
             }
 
             if (this.model.get('address') == "Van Munching") {
-              self.model.set("mapUrl", "/app/img/map_sml_vm.jpg");
+              self.model.set("mapUrl", "./img/map_sml_vm.jpg");
               self.$el.html(self.template(self.model.toJSON()));
             }
             return this;
