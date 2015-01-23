@@ -14,6 +14,8 @@ define([
   Stripe.setPublishableKey('pk_test_O2hEo1UfnNPrEctKfUOd6Zay');
   var OrderView = Parse.View.extend({
 
+    id: "order",
+
     tagName: "div",
 
     attributes: {

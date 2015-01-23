@@ -90,7 +90,12 @@ define([
       });
       if (hours <= 22) {
         $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-        $("#page").append(view.render().el);
+
+	if($("#order").length == 0) {
+      	
+        	$("#page").append(view.render().el);
+      
+        }
       }
 
       if (hours > 22) {
