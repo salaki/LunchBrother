@@ -73,7 +73,6 @@ define([
 
       // We have no matching route, lets display the home page 
       var homeView = new HomeView();
-
     });
 
     Parse.history.start();

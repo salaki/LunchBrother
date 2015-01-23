@@ -23,5 +23,5 @@ define([
 
   return {
     initialize: initialize
-  }
-})
+  };
+});
