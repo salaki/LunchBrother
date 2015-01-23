@@ -80,7 +80,7 @@ define([
       });
       return this;
     },
-    
+
     stripeResponseHandler: function(status, response) {
       var $form = $('#paymentForm');
       var self = this;
@@ -119,34 +119,36 @@ define([
         paymentDetails.set('address', address);
         paymentDetails.set('totalPrice', stripepayment);
         paymentDetails.set('paymentCheck', false);
-        paymentDetails.save(null, {
-          success: function(paymentDetails) {
-            var view1 = new TextView({
-              model: paymentDetails
-            });
-            var view2 = new ConfirmView({
-              model: paymentDetails
-            });
-            $("#paymentForm").remove();
-            $("#page").prepend(view1.render().el);
-            $("#page").append(view2.render().el);
-            
+        var currentTime = new Date();
+        var hours = currentTime.getHours();
+        if (hours <= 22) {
+          paymentDetails.save(null, {
+            success: function(paymentDetails) {
+              var view1 = new TextView({
+                model: paymentDetails
+              });
+              var view2 = new ConfirmView({
+                model: paymentDetails
+              });
+              $("#paymentForm").remove();
+              $("#page").prepend(view1.render().el);
+              $("#page").append(view2.render().el);
 
-            Parse.Cloud.run('pay', {
-              orderId: paymentDetails.get('orderId')
-            }, {
-              success: function(amount) {
-
-              },
-              error: function(error) {
-                console.log(error);
-              }
-            });
-          },
-          error: function(payment, error) {
-            alert('Failed to create new object, with error code: ' + error.message);
-          }
-        });
+              Parse.Cloud.run('pay', {
+                orderId: paymentDetails.get('orderId')
+              }, {
+                success: function(amount) {
+                },
+                error: function(error) {
+                  console.log(error);
+                }
+              });
+            },
+            error: function(payment, error) {
+              alert('Failed to create new object, with error code: ' + error.message);
+            }
+          });
+        }
       }
     },
     orderSubmit: function(e) {
