@@ -77,10 +77,18 @@ header {
 .summary-name, 
 .summary-count,
 .summary-price,
-.summary-total{
+.summary-total,
+.summary-tax{
   font-size: 12px;
   color: #888;
 }
+
+.summary-total,
+.summary-tax{
+	display: inline-block;
+	width: 40px;
+}
+
 .summary-location{
   color: #454545;
   font-weight: bold;
@@ -92,7 +100,8 @@ header {
 .summary-total{
   color: #E3151E;
 }
-.summary-total-label{
+.summary-total-label,
+.summary-tax-label{
   font-size: 12px;
 }
 #orderBtn.red, #paymentBtn.red, #loginBtn.red,#arriveBtn.red{
