@@ -48,7 +48,7 @@ define([
     render: function() {
       this.stats.orders = this.dishes.orders();
       this.stats.tax = parseFloat((this.dishes.charge()*0.1).toFixed(3));
-      this.stats.totalCharge = this.dishes.charge()+this.stats.tax;
+      this.stats.totalCharge = parseFloat((this.dishes.charge()+this.stats.tax).toFixed(3));
       this.$('#orderStats').html(this.statsTemplate(this.stats));
 
       this.delegateEvents();
