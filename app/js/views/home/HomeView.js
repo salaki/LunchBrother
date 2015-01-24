@@ -15,6 +15,7 @@ define([
     statsTemplate: _.template(statsTemplate),
     stats: {
       orders: [],
+      tax: 0,
       totalCharge: 0,
     },
 
@@ -46,8 +47,8 @@ define([
 
     render: function() {
       this.stats.orders = this.dishes.orders();
-      this.stats.totalCharge = this.dishes.charge();
-
+      this.stats.tax = parseFloat((this.dishes.charge()*0.1).toFixed(3));
+      this.stats.totalCharge = this.dishes.charge()+this.stats.tax;
       this.$('#orderStats').html(this.statsTemplate(this.stats));
 
       this.delegateEvents();
@@ -96,7 +97,7 @@ define([
 
       if (hours > 22) {
         $("#paymentBtn").addClass('disabled');
-        $("#timeAlert").text("不好意思，带饭大哥订餐11点结束，明天早点来吧");
+        $("#timeAlert").text("不好意思，带饭大哥订餐11点结束，明天请早儿吧");
       }
     }
   });
