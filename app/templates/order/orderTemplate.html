@@ -85,3 +85,26 @@
 	<button id="orderBtn" type="submit" class="center aligned ui red button">确定买单</button>
 	<span class="payment-errors"></span>
 </form>
+
+<div id="failPaymentDialog" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        付款失败
+    </div>
+    <div class="content">
+        <table width="100%">
+            <tr>
+                <td style="font-size: 12pt">
+                    失败原因: <label id="paymentFailMessage"></label><br>
+                    请确认信用卡信息后再试
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="actions">
+        <div class="one fluid ui buttons">
+            <div class="ui ok fluid button">
+                确认
+            </div>
+        </div>
+    </div>
+</div>

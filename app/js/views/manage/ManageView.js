@@ -38,15 +38,15 @@ define([
         onSearchBarInput: function() {
             var paymentQuery = new Parse.Query(PaymentModel);
             this.$("#addressOption").val("");
-            var searchText = this.$("#searchInput").val();
+            var searchText = this.$("#searchInput").val().toLowerCase();
             if (searchText != "") {
-                paymentQuery.contains("lname", searchText);
+                paymentQuery.contains("lowercaseLastName", searchText);
                 this.$("#searchResultLabel").text("符合搜寻");
             }
             else {
                 this.$("#searchResultLabel").text("");
             }
-            paymentQuery.ascending("lname");
+            paymentQuery.ascending("lowercaseLastName");
             var self = this;
             this.applyQuery(paymentQuery, self);
         },
@@ -73,6 +73,7 @@ define([
         },
 
         applyQuery: function(query, self) {
+            query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
             query.limit(200);
             query.find({
@@ -101,13 +102,13 @@ define([
             $("#confirmDialogPay").text(totalPrice);
             $("#confirmDialogOrderId").text(orderId);
             $("#confirmDialogName").text(name);
-            $('.small.test.modal').modal({
-                closable: false,
-                onDeny: function() {
+            $('#confirmDeliveryPayment').modal({
+                closable  : false,
+                onDeny    : function(){
 
                 },
-                onApprove: function() {
-                    self.saveChange(orderId);
+                onApprove : function() {
+                    self.saveChange(orderId, "isPickedUp", true);
                     self.$("#div-" + orderId).fadeOut();
                     self.$("#divider-" + orderId).fadeOut();
                     self.$("#orderNumberLabel").text(self.$("#orderNumberLabel").text() - 1);
@@ -115,10 +116,10 @@ define([
             }).modal('show');
         },
 
-        saveChange: function(orderId) {
+        saveChange: function(orderId, attributeName, attributeValue) {
             var paymentDetail = new PaymentModel();
             paymentDetail.id = orderId;
-            paymentDetail.set("isPickedUp", true);
+            paymentDetail.set(attributeName, attributeValue);
             paymentDetail.save(null, {
                 success: function(paymentDetail) {
                     //Do nothing
@@ -181,7 +182,7 @@ define([
                     alert("Error: " + error.code + " " + error.message);
                 }
             });
-        },
+        }
     });
 
     return ManageView;
