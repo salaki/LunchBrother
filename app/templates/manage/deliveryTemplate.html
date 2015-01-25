@@ -16,7 +16,7 @@
 		</a>
 	</div>
 
-	<div class="summary-order ui vertical segment">
+	<div class="ui vertical segment">
 		<a href="#manage" class="delivery-order">
 			<div class="ui column grid summary-list">
 				<div class="four wide right aligned column"><span class="summary-location">Van Munching</span>:</span>
@@ -30,7 +30,7 @@
 			</div>
 		</a>
 	</div>
-	
+
 	<!--<div class="ui vertical segment">-->
 	<!--	<a class="delivery-order" href="#manage">-->
 	<!--		<div class="ui column grid summary-list">-->
@@ -47,14 +47,13 @@
 	<!--</div>-->
 
 
-	<div class="summary-total ui vertical segment">
-
+	<div class="summary-order ui vertical segment">
 		<div class="ui column grid summary-list">
 			<div class="four wide right aligned column"><span class="summary-location">总计:</span>
 			</div>
-			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2 %></span></span>
+			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2 %></span>
 			</div>
-			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<span class="red"><%= final1+final2 %></span></span>
+			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<span class="red"><%= final1+final2 %></span>
 			</div>
 
 		</div>
@@ -67,5 +66,6 @@
 	注：A餐为当日便当，B餐为凉皮+肉夹馍
 </div>
 <div id="user-info">
-        Signed in as <%= Parse.User.current().escape("username") %> (<a href="#" class="log-out">Log out</a>)
+	Signed in as
+	<%=Parse.User.current().escape( "username") %> (<a href="#" class="log-out">Log out</a>)
 </div>
