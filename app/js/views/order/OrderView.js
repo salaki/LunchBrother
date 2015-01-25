@@ -159,7 +159,7 @@ define([
             $form.find('#orderBtn').prop('disabled', true);
 //            this.$('#orderBtn').prop('disabled', true);
 //            Stripe.card.createToken($form, this.stripeResponseHandler);
-					$('#orderBtn').removeClass('red').addClass('gray');
+					$('#orderBtn').removeClass('red').addClass('grey');
         },
 
         displayPaymentFailDialog: function(errorMessage) {
