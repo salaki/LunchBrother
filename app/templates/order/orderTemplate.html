@@ -1,24 +1,26 @@
 <form action="" method="POST" id="paymentForm" class="ui form">
 	<div class="ui segment">
-		<div id="nameinfo" class="two fields">
-			<div class="ui fluid field">
-				<input id="first_name" class="ui input fname" placeholder="取餐人名" type="text" name="first_name" value="">
+		<div id="basicinfo">
+			<div id="nameinfo" class="two fields">
+				<div class="ui fluid field">
+					<input id="first_name" class="ui input fname" placeholder="取餐人名" type="text" name="first_name" value="">
+				</div>
+				<div class="ui fluid field">
+					<input id="last_name" class="ui input lname" placeholder="取餐人姓" type="text" name="last_name" value="">
+				</div>
 			</div>
 			<div class="ui fluid field">
-				<input id="last_name" class="ui input lname" placeholder="取餐人姓" type="text" name="last_name" value="">
+				<input id="email" class="ui input required email" placeholder="E-mail" type="text" name="email">
 			</div>
-		</div>
-		<div class="ui fluid field">
-			<input id="email" class="ui input required email" placeholder="E-mail" type="text" name="email">
-		</div>
-		<div class="ui fluid field">
-			<div id="addressoption">
-				<!--<i class="dropdown icon"></i>-->
-				<select id="addressdetails" class="ui dropdown" name="address">
-					<option value="">选择取餐地址</option>
-					<option value="RDPG">Regents Drive Parking Garage</option>
-					<option value="VM">Van Munching</option>
-				</select>
+			<div class="ui fluid field">
+				<div id="addressoption">
+					<!--<i class="dropdown icon"></i>-->
+					<select id="addressdetails" class="ui dropdown" name="address">
+						<option value="">选择取餐地址</option>
+						<option value="RDPG">Regents Drive Parking Garage</option>
+						<option value="VM">Van Munching</option>
+					</select>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -87,24 +89,25 @@
 </form>
 
 <div id="failPaymentDialog" class="ui small test modal">
-    <div class="header" style="background-color: #ffffff">
-        付款失败
-    </div>
-    <div class="content">
-        <table width="100%">
-            <tr>
-                <td style="font-size: 12pt">
-                    失败原因: <label id="paymentFailMessage"></label><br>
-                    请确认信用卡信息后再试
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="actions">
-        <div class="one fluid ui buttons">
-            <div class="ui ok fluid button">
-                确认
-            </div>
-        </div>
-    </div>
+	<div class="header" style="background-color: #ffffff">
+		付款失败
+	</div>
+	<div class="content">
+		<table width="100%">
+			<tr>
+				<td style="font-size: 12pt">
+					失败原因:
+					<label id="paymentFailMessage"></label>
+					<br>请确认信用卡信息后再试
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="actions">
+		<div class="one fluid ui buttons">
+			<div class="ui ok fluid button">
+				确认
+			</div>
+		</div>
+	</div>
 </div>
