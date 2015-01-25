@@ -2,8 +2,9 @@ define([
   'models/order/PaymentModel',
   'models/order/OrderModel',
   'views/manage/DeliveryView',
+  'views/manage/ManageView',
   'text!templates/manage/loginTemplate.html'
-], function (PaymentModel, OrderModel, DeliveryView, loginTemplate) {
+], function (PaymentModel, OrderModel, DeliveryView, ManageView, loginTemplate) {
 
     var LoginView = Parse.View.extend({
         el: $("#page"),
@@ -60,7 +61,7 @@ define([
             orderDetails.set('comboQuantity2', 0);
             orderDetails.set('dishQuantity2', 0);
             var today = new Date();
-            today.setHours(11, 0, 0, 0);
+            today.setHours(12, 0, 0, 0);
             var yesterday = new Date();
             yesterday.setHours(20, 0, 0, 0);
             yesterday.setDate(yesterday.getDate() - 1);
@@ -133,12 +134,25 @@ define([
 
 
             Parse.User.logIn(username, password, {
+               //lunchbrother:manage
+               //chef:delivery
+               //getcurrentuser's permission
                 success: function (user) {
-                    var view = new DeliveryView({
+                  var permission = user.get('permission');
+                  
+                  if(permission == 1){
+                    var manageView = new ManageView();
+                    $("#reminder,#loginInfo").remove();
+                    $("#page").append(manageView.render().el);
+                  }
+                  
+                  if(permission == 2){
+                    var deliveryView = new DeliveryView({
                         model: orderDetails
                     });
                     $("#reminder,#loginInfo").remove();
-                    $("#page").append(view.render().el);
+                    $("#page").append(deliveryView.render().el);
+                  }
                 },
                 error: function (user, error) {
                     self.$("#loginInfo .error").html("Invalid username or password. Please try again.").show();
