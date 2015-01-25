@@ -35,7 +35,6 @@ define([
 
         render: function() {
             $(this.el).html(this.template());
-//            this.$('#orderBtn').attr('disabled','disabled');
             this.$('.ui.checkbox').checkbox();
             this.$('select.dropdown').dropdown();
             this.$('.ui.form').form({
@@ -156,10 +155,13 @@ define([
         orderSubmit: function(e) {
             e.preventDefault();
             var $form = this.$('form');
-            $form.find('#orderBtn').prop('disabled', true);
-//            this.$('#orderBtn').prop('disabled', true);
-//            Stripe.card.createToken($form, this.stripeResponseHandler);
-					$('#orderBtn').removeClass('red').addClass('grey');
+	    //Disable the button
+            $('#orderBtn').removeClass('red').addClass('grey');
+            $('#orderBtn').prop('disabled', true);
+            Stripe.card.createToken($form, this.stripeResponseHandler);
+	    //Enable the button
+            $('#orderBtn').prop('disabled', false);
+            $('#orderBtn').removeClass('grey').addClass('red');
         },
 
         displayPaymentFailDialog: function(errorMessage) {
