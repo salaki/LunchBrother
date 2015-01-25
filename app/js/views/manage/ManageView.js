@@ -27,17 +27,14 @@ define([
             $('.menu li').removeClass('active');
             $('.menu li a[href="#"]').parent().addClass('active');
             var paymentQuery = new Parse.Query(PaymentModel);
-            paymentQuery.ascending("lname");
             var self = this;
             this.$el.html(this.template());
             this.$("#addressOption").dropdown();
-            this.$("#buildingLabel").text("总共");
             this.applyQuery(paymentQuery, self);
         },
 
         onSearchBarInput: function() {
             var paymentQuery = new Parse.Query(PaymentModel);
-            this.$("#addressOption").val("");
             var searchText = this.$("#searchInput").val().toLowerCase();
             if (searchText != "") {
                 paymentQuery.contains("lowercaseLastName", searchText);
@@ -46,33 +43,21 @@ define([
             else {
                 this.$("#searchResultLabel").text("");
             }
-            paymentQuery.ascending("lowercaseLastName");
             var self = this;
             this.applyQuery(paymentQuery, self);
         },
 
         onAddressSelect: function() {
             var paymentQuery = new Parse.Query(PaymentModel);
-            this.$("#searchResultLabel").text("");
-            this.$("#searchInput").val("");
-            if (this.$("#addressOption").val() != "all") {
-                paymentQuery.contains("address", this.$("#addressOption").val());
-            }
-            paymentQuery.ascending("lname");
-            if (this.$("#addressOption").val() == "RDPG") {
-                this.$("#buildingLabel").text("Regents Drive Parking Garage");
-            }
-            else if (this.$("#addressOption").val() == "VM") {
-                this.$("#buildingLabel").text("Van Munching");
-            }
-            else {
-                this.$("#buildingLabel").text("总共");
-            }
             var self = this;
             this.applyQuery(paymentQuery, self);
         },
 
         applyQuery: function(query, self) {
+            this.$("#buildingLabel").text(this.$("#addressOption").val());
+            query.contains("lowercaseLastName", this.$("#searchInput").val().toLowerCase());
+            query.equalTo("address", this.$("#addressOption").val());
+            query.ascending("lowercaseLastName");
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
             query.limit(200);

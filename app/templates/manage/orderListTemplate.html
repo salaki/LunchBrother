@@ -1,7 +1,7 @@
 <% _.each(orders, function(order) { %>
 <div id="div-<%= order.id %>" class="order-detail ui padded grid">
     <div class="seven wide white column">
-        <h4 class="ui header"><%= order.get('lname') %>, <%= order.get('fname') %> (<%= order.get('address') %>)</h4>
+        <h4 class="ui header"><%= order.get('lname') %>, <%= order.get('fname') %></h4>
         <p><span class="gray">A餐:</span><span class="red"><%= order.get('quantity1') %></span><span class="gray">,</span><span class="gray">B餐:</span><span class="red"><%= order.get('quantity2') %></span>
         </p>
     </div>

@@ -152,16 +152,16 @@ header {
   padding:15px;
 }
 
-#addressoption{
+#addressOption{
   min-width: 150px;
   margin-left:2%;
 }
 
-#addressoption .dropdown.icon{
+#addressOption .dropdown.icon{
   margin-bottom:10px;
 }
 
-#addressoption .default{
+#addressOption .default{
 	float: left;
   width:75%;
   text-shadow: 0.5px -0.5px rgba(255, 255, 255, 1);

@@ -35,6 +35,7 @@ define([
 
         render: function() {
             $(this.el).html(this.template());
+//            this.$('#orderBtn').attr('disabled','disabled');
             this.$('.ui.checkbox').checkbox();
             this.$('select.dropdown').dropdown();
             this.$('.ui.form').form({
@@ -86,7 +87,6 @@ define([
         stripeResponseHandler: function(status, response) {
             var $form = $('#paymentForm');
             var self = this;
-
             if (response.error) {
                 // Pop out the error message window
                 self.displayPaymentFailDialog(response.error.message);
@@ -140,7 +140,7 @@ define([
                                 $("#paymentForm").remove();
                                 $("#page").prepend(view1.render().el);
                                 $("#page").append(view2.render().el);
-                                self.MandrillFunction(paymentDetails);
+                                self.emailService(paymentDetails.id);
                             },
                             error: function(payment, error) {
                                 alert('Failed to create new object, with error code: ' + error.message);
@@ -157,7 +157,8 @@ define([
             e.preventDefault();
             var $form = this.$('form');
             $form.find('#orderBtn').prop('disabled', true);
-            Stripe.card.createToken($form, this.stripeResponseHandler);
+//            this.$('#orderBtn').prop('disabled', true);
+//            Stripe.card.createToken($form, this.stripeResponseHandler);
         },
 
         displayPaymentFailDialog: function(errorMessage) {
@@ -170,51 +171,17 @@ define([
             }).modal('show');
         },
 
-        MandrillFunction: function (model){
-            var Mandrill = require('mandrill');
-            Mandrill.initialize('JRaXC3NG1BqZ_JWDnjX8gA');
-            var orderId = model.id;
-            var emailAddress = model.get('email');
-            var fname = model.get('fname');
-            var lname = model.get('lname');
-            var quantity1 = model.get('quantity1');
-            var dishName1 = model.get('dishName1');
-            var quantity2 = model.get('quantity2');
-            var dishName2 = model.get('dishName2');
-            var totalPrice = model.get('totalPrice');
-            var address = model.get('address');
-            if(dishName1 !== undefined){
-                if (dishName2 !== undefined) {
-                    var text = fname+ "Thank you for placing your order at  <a href=> Lunchbrother.com</a>. OrderNumber#" +  orderId + " Dish1 " + dishName1 + " " + quantity1 + "  Dish2 " + dishName2 + " " + quantity2+ "Total Price:" + totalPrice + "Pick-up Address:" + address + ".";
-                } else {
-                    var text = fname+ "Thank you for placing your order at Lunchbrother.com. OrderNumber#" + orderId + " Dish " + dishName1 + " " + quantity1 +  "Total Price: " + totalPrice+ "Pick-up Address:" + address + ".";
-                }
-            }else{
-                var text = fname+ "Thank you for placing your order at Lunchbrother.com. OrderNumber#" +  orderId + " Dish " +dishName2+ " "+ quantity2 + "Total Price: " + totalPrice + "Pick-up Address:" + address + ".";
-            };
-            Mandrill.sendEmail({
-                message:{
-                    text:encodeURIComponent(text),
-                    subject: "Notification: your lunch is on your way",
-                    from_email: "orders@lunchbrother.com",
-                    from_name: "LunchBrother",
-                    to: [
-                        {
-                            email: emailAddress,
-                            name: lname +","+fname,
-                            type:to
-                        }
-                    ]
+        emailService: function(orderId) {
+            Parse.Cloud.run('email', {
+                orderId: orderId
+
+            }, {
+                success: function() {
+                    console.log("Confirmation email has been sent!");
                 },
-                async: true
-            },{
-                success: function(httpResponse) {
-                    console.log(httpResponse);
-                    response.success("Email sent!");
-                },
-                error: function(httpResponse) {
-                    console.error(httpResponse);
-                    response.error("Uh oh, something went wrong");
+
+                error: function(error) {
+                    console.log("Fail to send email...");
                 }
             });
         }
