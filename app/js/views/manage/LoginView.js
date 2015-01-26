@@ -9,6 +9,8 @@ define([
     var LoginView = Parse.View.extend({
         el: $("#page"),
 
+        orderDetails: {},
+
         events: {
             'submit #loginForm': 'continueLogin'
         },
@@ -18,6 +20,8 @@ define([
         },
 
         template: _.template(loginTemplate),
+
+
 
         render: function () {
             this.$el.html(this.template());
@@ -49,110 +53,62 @@ define([
             var password = this.$("#password").val();
             //yesterday:8pm to today's 11am
             var found = "Combo";
-            var totalDishQuantity1 = 0;
-            var totalComboQuantity1 = 0;
-            var totalDishQuantity2 = 0;
-            var totalComboQuantity2 = 0;
-            var totalPrice1 = 0;
-            var totalPrice2 = 0;
             var orderDetails = new OrderModel();
             orderDetails.set('comboQuantity1', 0);
             orderDetails.set('dishQuantity1', 0);
             orderDetails.set('comboQuantity2', 0);
             orderDetails.set('dishQuantity2', 0);
             var today = new Date();
-            today.setHours(12, 0, 0, 0);
-            var yesterday = new Date();
-            yesterday.setHours(20, 0, 0, 0);
-            yesterday.setDate(yesterday.getDate() - 1);
+            var currentHour = today.getHours();
+            if (currentHour > 12) {
+                var upperDate = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+                upperDate.setHours(12, 0, 0, 0);
+                var lowerDate = today;
+                lowerDate.setHours(20, 0, 0, 0);
+            } else {
+                upperDate = today;
+                upperDate.setHours(12, 0, 0, 0);
+                lowerDate = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+                lowerDate.setHours(20, 0, 0, 0);
+            }
+
             var tdQuery = new Parse.Query(PaymentModel);
-            tdQuery.greaterThanOrEqualTo("createdAt", yesterday);
-            tdQuery.lessThanOrEqualTo("createdAt", today);
+            tdQuery.greaterThanOrEqualTo("createdAt", lowerDate);
+            tdQuery.lessThanOrEqualTo("createdAt", upperDate);
             var tdRDPGQuery = tdQuery.equalTo("address", "Regents Drive Parking Garage");
             var tdVMQuery = tdQuery.equalTo("address", "Van Munching");
-            tdRDPGQuery.find({
+            tdQuery.find({
                 success: function (results) {
-                    _.each(results, function (result) {
-                        var dish1 = result.get("dishname1");
-                        var dish2 = result.get("dishName2");
-                        totalPrice1 += result.get("totalPrice");
-                        orderDetails.set("final1", totalPrice1);
-                        if (dish2 !== undefined) {
-                            //order two dishes
-                            totalDishQuantity1 += result.get("quantity1");
-                            totalComboQuantity1 += result.get("quantity2");
-                            orderDetails.set("dishQuantity1", totalDishQuantity1);
-                            orderDetails.set("comboQuantity1", totalComboQuantity1);
-                        }
-                        if (dish2 == undefined) {
-                            if (dish1.match(found)) {
-                                totalComboQuantity1 += result.get("quantity1");
-                                orderDetails.set('comboQuantity1', totalComboQuantity1);
-                            }
-                            if (!dish1.match(found)) {
-                                totalDishQuantity1 += result.get("quantity1");
-                                orderDetails.set('dishQuantity1', totalDishQuantity1);
-                            }
-                        }
-                    });
+                    this.orderDetails = results;
                 },
                 error: function (error) {
 
                 }
             });
 
-            tdVMQuery.find({
-                success: function (results) {
-                    _.each(results, function (result) {
-                        var dish1 = result.get("dishname1");
-                        var dish2 = result.get("dishName2");
-                        totalPrice2 += result.get("totalPrice");
-                        orderDetails.set("final2", totalPrice2);
-                        if (dish2 !== undefined) {
-                            //order two dishes
-                            totalDishQuantity2 += result.get("quantity1");
-                            totalComboQuantity2 += result.get("quantity2");
-                            orderDetails.set("dishQuantity2", totalDishQuantity2);
-                            orderDetails.set("comboQuantity2", totalComboQuantity2);
-                        }
-                        if (dish2 == undefined) {
-                            if (dish1.match(found)) {
-                                totalComboQuantity2 += result.get("quantity1");
-                                orderDetails.set('comboQuantity2', totalComboQuantity2);
-                            }
-                            if (!dish1.match(found)) {
-                                totalDishQuantity2 += result.get("quantity1");
-                                orderDetails.set('dishQuantity2', totalDishQuantity2);
-                            }
-                        }
-                    });
-                },
-                error: function (error) {
 
-                }
-            });
 
 
             Parse.User.logIn(username, password, {
-               //lunchbrother:manage
-               //chef:delivery
-               //getcurrentuser's permission
+                //lunchbrother:manage
+                //chef:delivery
+                //getcurrentuser's permission
                 success: function (user) {
-                  var permission = user.get('permission');
-                  
-                  if(permission == 1){
-                    var manageView = new ManageView();
-                    $("#reminder,#loginInfo").remove();
-                    $("#page").append(manageView.render().el);
-                  }
-                  
-                  if(permission == 2){
-                    var deliveryView = new DeliveryView({
-                        model: orderDetails
-                    });
-                    $("#reminder,#loginInfo").remove();
-                    $("#page").append(deliveryView.render().el);
-                  }
+                    var permission = user.get('permission');
+
+                    if (permission == 1) {
+                        var manageView = new ManageView();
+                        $("#reminder,#loginInfo").remove();
+                        $("#page").append(manageView.render().el);
+                    }
+
+                    if (permission == 2) {
+                        var deliveryView = new DeliveryView({
+                            model: this.orderDetails
+                        });
+                        $("#reminder,#loginInfo").remove();
+                        $("#page").append(deliveryView.render().el);
+                    }
                 },
                 error: function (user, error) {
                     self.$("#loginInfo .error").html("Invalid username or password. Please try again.").show();

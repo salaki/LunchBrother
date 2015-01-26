@@ -10,8 +10,8 @@ define([
   'stripe',
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
-], function(DishCollection, OrderModel, PaymentModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe) {
-  Stripe.setPublishableKey('pk_test_O2hEo1UfnNPrEctKfUOd6Zay');
+], function (DishCollection, OrderModel, PaymentModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe) {
+    Stripe.setPublishableKey('pk_test_EMIAzyTdHHJaFEnWTNchuOTZ');
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -28,12 +28,12 @@ define([
             'submit #paymentForm': 'orderSubmit'
         },
 
-        initialize: function() {
+        initialize: function () {
             _.bindAll(this, 'render', 'stripeResponseHandler', 'orderSubmit');
-            Stripe.setPublishableKey('pk_test_O2hEo1UfnNPrEctKfUOd6Zay');
+            Stripe.setPublishableKey('pk_test_EMIAzyTdHHJaFEnWTNchuOTZ');
         },
 
-        render: function() {
+        render: function () {
             $(this.el).html(this.template());
             this.$('.ui.checkbox').checkbox();
             this.$('select.dropdown').dropdown();
@@ -83,7 +83,7 @@ define([
             return this;
         },
 
-        stripeResponseHandler: function(status, response) {
+        stripeResponseHandler: function (status, response) {
             var $form = $('#paymentForm');
             var self = this;
             if (response.error) {
@@ -103,7 +103,7 @@ define([
                 var address = $('#addressdetails option:selected').text();
                 var stripepayment = self.model.totalCharge;
                 var i = 1;
-                _.each(self.model.orders, function(order) {
+                _.each(self.model.orders, function (order) {
                     var dishName = order.get('Description');
                     var quantity = order.get('count');
                     paymentDetails.set('dishName' + i, dishName);
@@ -114,12 +114,12 @@ define([
                 this.customerorderId = paymentDetails.get('orderId');
 
 
-                var self = this;
+
                 Parse.Cloud.run('pay', {
                     totalCharge: stripepayment,
                     paymentToken: token
                 }, {
-                    success: function() {
+                    success: function () {
                         paymentDetails.set('fname', fname);
                         paymentDetails.set('lname', lname);
                         paymentDetails.set('lowercaseLastName', lname.toLowerCase());
@@ -129,7 +129,7 @@ define([
                         paymentDetails.set('totalPrice', stripepayment);
                         paymentDetails.set('paymentCheck', true);
                         paymentDetails.save(null, {
-                            success: function(paymentDetails) {
+                            success: function (paymentDetails) {
                                 var view1 = new TextView({
                                     model: paymentDetails
                                 });
@@ -141,49 +141,49 @@ define([
                                 $("#page").append(view2.render().el);
                                 self.emailService(paymentDetails.id);
                             },
-                            error: function(payment, error) {
+                            error: function (payment, error) {
                                 alert('Failed to create new object, with error code: ' + error.message);
                             }
                         });
                     },
-                    error: function(error) {
+                    error: function (error) {
                         self.displayPaymentFailDialog(error.message);
                     }
                 });
             }
         },
-        orderSubmit: function(e) {
+        orderSubmit: function (e) {
             e.preventDefault();
             var $form = this.$('form');
-	    //Disable the button
+            //Disable the button
             $('#orderBtn').removeClass('red').addClass('grey');
             $('#orderBtn').prop('disabled', true);
             Stripe.card.createToken($form, this.stripeResponseHandler);
-	    //Enable the button
+            //Enable the button
             $('#orderBtn').prop('disabled', false);
             $('#orderBtn').removeClass('grey').addClass('red');
         },
 
-        displayPaymentFailDialog: function(errorMessage) {
+        displayPaymentFailDialog: function (errorMessage) {
             $('#paymentFailMessage').text(errorMessage);
             $('#failPaymentDialog').modal({
-                closable  : false,
-                onApprove : function() {
+                closable: false,
+                onApprove: function () {
                     //Do nothing
                 }
             }).modal('show');
         },
 
-        emailService: function(orderId) {
+        emailService: function (orderId) {
             Parse.Cloud.run('email', {
                 orderId: orderId
 
             }, {
-                success: function() {
+                success: function () {
                     console.log("Confirmation email has been sent!");
                 },
 
-                error: function(error) {
+                error: function (error) {
                     console.log("Fail to send email...");
                 }
             });
