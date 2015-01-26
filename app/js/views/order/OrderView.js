@@ -11,7 +11,7 @@ define([
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
 ], function (DishCollection, OrderModel, PaymentModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe) {
-    Stripe.setPublishableKey('pk_test_EMIAzyTdHHJaFEnWTNchuOTZ');
+    Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -30,7 +30,7 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render', 'stripeResponseHandler', 'orderSubmit');
-            Stripe.setPublishableKey('pk_test_EMIAzyTdHHJaFEnWTNchuOTZ');
+            Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
         },
 
         render: function () {
