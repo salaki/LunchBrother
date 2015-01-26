@@ -61,11 +61,11 @@ define([
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
 
-            //Display the orders which are from yesterday 8pm to today 11:59:59pm
-            var upperDate = new Date(new Date().getTime() + 24*60*60*1000);
-            upperDate.setHours(0, 0, 0, 0);
+            //Display the orders which are from yesterday 2pm to today 12pm
             var lowerDate = new Date(new Date().getTime() - 24*60*60*1000);
-            lowerDate.setHours(20, 0, 0, 0);
+            lowerDate.setHours(14, 0, 0, 0);
+            var upperDate = new Date();
+            upperDate.setHours(12, 0, 0, 0);
 
             query.greaterThan("createdAt", lowerDate);
             query.lessThan("createdAt", upperDate);
