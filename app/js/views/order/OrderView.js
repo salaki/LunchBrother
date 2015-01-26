@@ -151,6 +151,11 @@ define([
                     }
                 });
             }
+	    //Enable the button
+	    setTimeout(function() {
+            	$('#orderBtn').prop('disabled', false);
+            	$('#orderBtn').removeClass('grey').addClass('red');
+	    }, 2000);
         },
         orderSubmit: function (e) {
             e.preventDefault();
@@ -159,9 +164,6 @@ define([
             $('#orderBtn').removeClass('red').addClass('grey');
             $('#orderBtn').prop('disabled', true);
             Stripe.card.createToken($form, this.stripeResponseHandler);
-            //Enable the button
-            $('#orderBtn').prop('disabled', false);
-            $('#orderBtn').removeClass('grey').addClass('red');
         },
 
         displayPaymentFailDialog: function (errorMessage) {

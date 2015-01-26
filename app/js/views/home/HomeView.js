@@ -97,7 +97,7 @@ define([
       }else if((weekday == 0 && hours >= 20)||(weekday == 5 && hours <= 10) && ($("#order").length == 0)){
          $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
          $("#page").append(view.render().el);
-      }else if((weekday >= 1 && weekday <= 4) && (hours <= 10||hours >= 20) && ($("#order").length == 0)){
+      }else if((weekday >= 1 && weekday <= 4) && (hours <= 11||hours >= 20) && ($("#order").length == 0)){
         $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
         $("#page").append(view.render().el);
       }else{
