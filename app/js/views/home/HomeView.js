@@ -85,17 +85,22 @@ define([
 
     continuePay: function() {
       var currentTime = new Date();
+      var weekday = currentTime.getDay();
       var hours = currentTime.getHours();
       var view = new OrderView({
         model: this.stats
       });
       
-      if (hours <= 22) {
+      if((weekday == 6)||(weekday == 0 && hours < 20)){
+        $("#paymentBtn").addClass('disabled');
+        $("#timeAlert").text("不好意思，带饭大哥周末不订餐，周一订餐从周日晚八点开始");
+      }else if((weekday == 0 && hours >= 20)||(weekday == 5 && hours <= 11)){
+         $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
+         $("#page").append(view.render().el);
+      }else if((weekday >= 1 && weekday <= 4) && (hours <= 11||hours >= 20)){
         $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
         $("#page").append(view.render().el);
-      }
-
-      if (hours > 22) {
+      }else{
         $("#paymentBtn").addClass('disabled');
         $("#timeAlert").text("不好意思，带饭大哥订餐11点结束，明天请早儿吧");
       }
