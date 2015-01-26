@@ -69,7 +69,7 @@ define([
 
             query.greaterThan("createdAt", lowerDate);
             query.lessThan("createdAt", upperDate);
-            query.limit(200);
+            query.limit(300);
             query.find({
                 success: function(results) {
                     for (i = 0; i < results.length; i++) {
