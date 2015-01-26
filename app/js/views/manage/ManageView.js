@@ -61,19 +61,11 @@ define([
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
 
-            var current = new Date();
-            var currentHour = current.getHours();
-            if (currentHour > 12) {
-                var upperDate = new Date(current.getTime() + 24*60*60*1000);
-                upperDate.setHours(12, 0, 0, 0);
-                var lowerDate = current;
-                lowerDate.setHours(20, 0, 0, 0);
-            } else {
-                var upperDate = current
-                upperDate.setHours(12, 0, 0, 0);
-                var lowerDate = new Date(current.getTime() - 24*60*60*1000);
-                lowerDate.setHours(20, 0, 0, 0);
-            }
+            //Display the orders which are from yesterday 8pm to today 11:59:59pm
+            var upperDate = new Date(new Date().getTime() + 24*60*60*1000);
+            upperDate.setHours(0, 0, 0, 0);
+            var lowerDate = new Date(new Date().getTime() - 24*60*60*1000);
+            lowerDate.setHours(20, 0, 0, 0);
 
             query.greaterThan("createdAt", lowerDate);
             query.lessThan("createdAt", upperDate);
