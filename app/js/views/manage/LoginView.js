@@ -117,14 +117,20 @@ define([
                     alert("Error: " + error.code + " " + error.message);
                 }
             });
-	
-	    totalCombo = 0;
-            totalDish = 0;
-            totalPrice = 0;
 
-            query.equalTo("address", "Van Munching");
+            var VMQuery = new Parse.Query(PaymentModel);
 
-            query.find({
+            var totalVMCombo = 0;
+            var totalVMDish = 0;
+            var totalVMPrice = 0;
+
+            VMQuery.equalTo("address", "Van Munching");
+            VMQuery.greaterThan("createdAt", lowerDate);
+            VMQuery.lessThan("createdAt", upperDate);
+            VMQuery.limit(300);
+            
+
+            VMQuery.find({
                 success: function (results) {
                     for (i = 0; i < results.length; i++) {
                         var newEvent = {};
@@ -152,15 +158,15 @@ define([
                             }
                         }
 
-                        totalDish = results[i].get('quantity1') + totalDish;
-                        totalCombo = results[i].get('quantity2') + totalCombo;
-                        totalPrice = results[i].get('totalPrice') + totalPrice;
+                        totalVMDish = results[i].get('quantity1') + totalVMDish;
+                        totalVMCombo = results[i].get('quantity2') + totalVMCombo;
+                        totalVMPrice = results[i].get('totalPrice') + totalVMPrice;
                     }
 
 
-                    orderDetails.set('comboQuantity2', totalCombo);
-                    orderDetails.set('dishQuantity2', totalDish);
-                    orderDetails.set('final2', totalPrice);
+                    orderDetails.set('comboQuantity2', totalVMCombo);
+                    orderDetails.set('dishQuantity2', totalVMDish);
+                    orderDetails.set('final2', totalVMPrice);
                 },
                 error: function (error) {
                     alert("Error: " + error.code + " " + error.message);
