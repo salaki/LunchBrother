@@ -13,9 +13,9 @@ define([
         template: _.template(deliveryTemplate),
 
         render: function () {
-            var totalNumber = this.model.length;
-            $('.delivery-order').text(totalNumber);
-            this.$el.html(this.template());
+            var finalPrice = this.model.get('final1') + this.model.get('final2');
+            this.model.set('final', finalPrice);
+            this.$el.html(this.template(this.model.toJSON()));
             return this;
         }
 
