@@ -56,6 +56,8 @@ define([
             orderDetails.set('dishQuantity1', 0);
             orderDetails.set('comboQuantity2', 0);
             orderDetails.set('dishQuantity2', 0);
+            orderDetails.set('final1', 0);
+            orderDetails.set('final2', 0);
 
             //Display the orders which are from yesterday 2pm to today 12pm
             var lowerDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
@@ -115,7 +117,10 @@ define([
                     alert("Error: " + error.code + " " + error.message);
                 }
             });
-
+	
+	    totalCombo = 0;
+            totalDish = 0;
+            totalPrice = 0;
 
             query.equalTo("address", "Van Munching");
 
