@@ -6,7 +6,7 @@ define([
     'text!templates/manage/manageTemplate.html',
     'text!templates/manage/orderListTemplate.html',
     'libs/semantic/dropdown.min'
-], function(StatusView, PaymentModel, OrderModel, DeliveryModel, manageTemplate, orderListTemplate) {
+], function (StatusView, PaymentModel, OrderModel, DeliveryModel, manageTemplate, orderListTemplate) {
     var ManageView = Parse.View.extend({
         el: $("#page"),
         template: _.template(manageTemplate),
@@ -16,14 +16,13 @@ define([
             'keyup  #searchInput': 'onSearchBarInput',
             'change #addressOption': 'onAddressSelect',
             'click  #arriveBtn': 'updateStatus'
-
         },
 
-        initialize: function() {
+        initialize: function () {
             _.bindAll(this, 'render', 'updateStatus');
         },
 
-        render: function() {
+        render: function () {
             $('.menu li').removeClass('active');
             $('.menu li a[href="#"]').parent().addClass('active');
             var paymentQuery = new Parse.Query(PaymentModel);
@@ -31,9 +30,11 @@ define([
             this.$el.html(this.template());
             this.$("#addressOption").dropdown();
             this.applyQuery(paymentQuery, self);
+            this.searchStatus(self);
+            return this;
         },
 
-        onSearchBarInput: function() {
+        onSearchBarInput: function () {
             var paymentQuery = new Parse.Query(PaymentModel);
             var searchText = this.$("#searchInput").val().toLowerCase();
             if (searchText != "") {
@@ -47,13 +48,13 @@ define([
             this.applyQuery(paymentQuery, self);
         },
 
-        onAddressSelect: function() {
+        onAddressSelect: function () {
             var paymentQuery = new Parse.Query(PaymentModel);
             var self = this;
             this.applyQuery(paymentQuery, self);
         },
 
-        applyQuery: function(query, self) {
+        applyQuery: function (query, self) {
             this.$("#buildingLabel").text(this.$("#addressOption").val());
             query.contains("lowercaseLastName", this.$("#searchInput").val().toLowerCase());
             query.equalTo("address", this.$("#addressOption").val());
@@ -61,39 +62,28 @@ define([
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
 
-            //Display the orders which are from yesterday 2pm to today 12pm
-            var lowerDate = new Date(new Date().getTime() - 24*60*60*1000);
-            lowerDate.setHours(14, 0, 0, 0);
-            var upperDate = new Date();
-            upperDate.setHours(12, 0, 0, 0);
+            var current = new Date();
+            var currentHour = current.getHours();
+            if (currentHour > 12) {
+                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                upperDate.setHours(12, 0, 0, 0);
+                var lowerDate = current;
+                lowerDate.setHours(20, 0, 0, 0);
+            }
+            else {
+                var upperDate = current;
+                upperDate.setHours(12, 0, 0, 0);
+                var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                lowerDate.setHours(20, 0, 0, 0);
+            }
 
             query.greaterThan("createdAt", lowerDate);
             query.lessThan("createdAt", upperDate);
-            query.limit(300);
+            query.limit(200);
             query.find({
-                success: function(results) {
-                    for (i = 0; i < results.length; i++) {
+                success: function (results) {
+                    for (var i = 0; i < results.length; i++) {
                         var newEvent = {};
-                        var dishName1 = results[i].get('dishName1');
-                        var dishName2 = results[i].get('dishName2');
-                        var quantity1 = results[i].get('quantity1');
-                        var quantity2 = results[i].get('quantity2');
-                        if (dishName2 != undefined) {
-                            if (dishName2.indexOf("Combo") > -1) {
-                                //Do nothing
-                            } else {
-                                results[i].set('quantity1', quantity2);
-                                results[i].set('quantity2', quantity1);
-                            }
-                        } else {
-                            if (dishName1.indexOf("Combo") > -1) {
-                                results[i].set('quantity2', quantity1);
-                                results[i].set('quantity1', 0);
-                            } else {
-                                //Do nothing
-                                results[i].set('quantity2', 0);
-                            }
-                        }
                         newEvent["click #checkButton-" + results[i].id] = 'onPickupClick';
                         self.delegateEvents(_.extend(self.events, newEvent));
                     }
@@ -102,13 +92,13 @@ define([
                         orders: results
                     }));
                 },
-                error: function(error) {
+                error: function (error) {
                     alert("Error: " + error.code + " " + error.message);
                 }
             });
         },
 
-        onPickupClick: function(ev) {
+        onPickupClick: function (ev) {
             var self = this;
             var orderId = $(ev.currentTarget).data('order');
             var name = $(ev.currentTarget).data('lname') + ", " + $(ev.currentTarget).data('fname');
@@ -117,11 +107,11 @@ define([
             $("#confirmDialogOrderId").text(orderId);
             $("#confirmDialogName").text(name);
             $('#confirmDeliveryPayment').modal({
-                closable  : false,
-                onDeny    : function(){
+                closable: false,
+                onDeny: function () {
 
                 },
-                onApprove : function() {
+                onApprove: function () {
                     self.saveChange(orderId, "isPickedUp", true);
                     self.$("#div-" + orderId).fadeOut();
                     self.$("#divider-" + orderId).fadeOut();
@@ -130,69 +120,70 @@ define([
             }).modal('show');
         },
 
-        saveChange: function(orderId, attributeName, attributeValue) {
+        saveChange: function (orderId, attributeName, attributeValue) {
             var paymentDetail = new PaymentModel();
             paymentDetail.id = orderId;
             paymentDetail.set(attributeName, attributeValue);
             paymentDetail.save(null, {
-                success: function(paymentDetail) {
+                success: function (paymentDetail) {
                     //Do nothing
                 },
-                error: function(error) {
+                error: function (error) {
                     alert("Error: " + error.code + " " + error.message);
                 }
             });
         },
-        
-        //click->save status->retrieve status -> display on the button:text
-        updateStatus: function() {
-            var deliveryDetails = new DeliveryModel({});
-            if ($("#addressOption").val() == "RDPG") {
-                deliveryDetails.set('status1', "我已到达!");
-                deliveryDetails.save();
-            }
-            if ($("#addressOption").val() == "VM") {
-                deliveryDetails.set('status2', "我已到达!");
-                deliveryDetails.save();
-            }
-            if ($("#arriveBtn").val() == "我已到达!" && $("#addressOption").val() == "RDPG") {
-                deliveryDetails.set('status1', "正在路上...");
-                deliveryDetails.save();
-            }
-            if ($("#arriveBtn").val() == "我已到达!" && $("#addressOption").val() == "VM") {
-                deliveryDetails.set('status2', "正在路上...");
-                deliveryDetails.save();
-            }
-            
+
+        searchStatus: function (self) {
+            var lowerDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+            lowerDate.setHours(14, 0, 0, 0);
+            var upperDate = new Date();
+            upperDate.setHours(13, 0, 0, 0);
             var statusQuery = new Parse.Query(DeliveryModel);
-            var today = new Date();
-            today.setHours(0, 0, 0, 0);
-            var tomorrow = new Date();
-            tomorrow.setHours(0, 0, 0, 0);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            statusQuery.greaterThanOrEqualTo("createdAt", today);
-            statusQuery.lessThanOrEqualTo("createdAt", tomorrow);
-            statusQuery.descending("createdAt");
+            statusQuery.equalTo("address", this.$("#addressOption").val());
+            statusQuery.greaterThan("createdAt", lowerDate);
+            statusQuery.lessThan("createdAt", upperDate);
             statusQuery.find({
-                success: function(results) {
-                    _.each(results,function(result){
-                        var status1 = result.get('status1');
-                        var status2 = result.get('status2');
-                        if (status1 === "我已到达!") {
-                            if ($("#addressOption").val() === "RDPG") {
-                                $("#arriveBtn").text("我已到达!");
-                                $("#arriveBtn").addClass("red");
-                            }
-                        }
-                        if (status2 === "我已到达!") {
-                            if ($("#addressOption").val() == "VM") {
-                                $("#arriveBtn").text("我已到达!");
-                                $("#arriveBtn").addClass("red");
-                            }
-                        }
-                    });
+                success: function (results) {
+                    if (results.length == 0) {
+                        self.deliveryDetails = new DeliveryModel();
+                        self.deliveryDetails.set("status", "正在路上...");
+                        self.deliveryDetails.set("address", this.$("#addressOption").val());
+                        self.deliveryDetails.save();
+                    }
                 },
-                error: function(error) {
+                error: function (error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
+        updateStatus: function () {
+            var self = this;
+            var lowerDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+            lowerDate.setHours(14, 0, 0, 0);
+            var upperDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+            upperDate.setHours(14, 0, 0, 0);
+            var arriveQuery = new Parse.Query(DeliveryModel);
+
+            arriveQuery.greaterThan("createdAt", lowerDate);
+            arriveQuery.lessThan("createdAt", upperDate);
+            arriveQuery.equalTo("address", this.$("#addressOption").val());
+            arriveQuery.find({
+                success: function (results) {
+                    console.log(results);
+                    if (results.length > 0) {
+                        _.each(results, function (result) {
+                            if ($("#addressOption").val() == result.get("address")) {
+                                self.deliveryDetails.set('status', "我已到达!");
+                                self.deliveryDetails.save();
+                                $("#arriveBtn").text("我已到达!");
+                                $("#arriveBtn").addClass("red");
+                            }
+                        });
+                    }
+                },
+                error: function (error) {
                     alert("Error: " + error.code + " " + error.message);
                 }
             });

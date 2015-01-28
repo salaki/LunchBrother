@@ -118,19 +118,16 @@ define([
                 }
             });
 
-            var VMQuery = new Parse.Query(PaymentModel);
+
 
             var totalVMCombo = 0;
             var totalVMDish = 0;
             var totalVMPrice = 0;
 
-            VMQuery.equalTo("address", "Van Munching");
-            VMQuery.greaterThan("createdAt", lowerDate);
-            VMQuery.lessThan("createdAt", upperDate);
-            VMQuery.limit(300);
-            
+            query.equalTo("address", "Van Munching");
 
-            VMQuery.find({
+
+            query.find({
                 success: function (results) {
                     for (i = 0; i < results.length; i++) {
                         var newEvent = {};
