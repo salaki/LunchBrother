@@ -18,14 +18,27 @@
             this.deliveryDetails = new DeliveryModel();
             $('.menu li').removeClass('active');
             $('.menu li a[href="#"]').parent().addClass('active');
-            var lowerDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-            lowerDate.setHours(14, 0, 0, 0);
-            var upperDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-            upperDate.setHours(13, 0, 0, 0);
-            var statusQuery = new Parse.Query(DeliveryModel);
-            statusQuery.greaterThan("createdAt", lowerDate);
-            statusQuery.lessThan("createdAt", upperDate);
-            statusQuery.find({
+	    
+            this.$el.html(this.template());
+
+	    var current = new Date();
+	    var currentHour = current.getHours();
+            //Delivery man starts working from 11:00-14:00, otherwise is on rest.
+	    if(currentHour <= 10 || currentHour >= 14) {
+	    
+	            $("#status1").text("Zzzzz...");
+	            $("#status2").text("Zzzzz...");
+               
+	    } else {
+            	var lowerDate = new Date();
+            	lowerDate.setHours(11, 0, 0, 0);
+            	var upperDate = new Date();
+            	upperDate.setHours(13, 0, 0, 0);
+
+           	var statusQuery = new Parse.Query(DeliveryModel);
+            	statusQuery.greaterThan("createdAt", lowerDate);
+            	statusQuery.lessThan("createdAt", upperDate);
+            	statusQuery.find({
                 success: function (results) {
                     _.each(results, function (result) {
                         if (result.get("address") == "Regents Drive Parking Garage") {
@@ -33,16 +46,16 @@
                             $("#status1").addClass("red");
                         }
                         if (result.get("address") == "Van Munching") {
-                            $("#status1").text("我已到达!");
-                            $("#status1").addClass("red");
+                            $("#status2").text("我已到达!");
+                            $("#status2").addClass("red");
                         }
-                    });
+                    	});
                 },
                 error: function (error) {
                     alert("Error: " + error.code + " " + error.message);
-                }
-            });
-            this.$el.html(this.template());
+                	}
+            	});
+	    }
             return this;
         }
     });

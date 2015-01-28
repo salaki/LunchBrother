@@ -30,7 +30,8 @@ define([
             this.$el.html(this.template());
             this.$("#addressOption").dropdown();
             this.applyQuery(paymentQuery, self);
-            this.searchStatus(self);
+            this.$("#arriveBtn").text("我已到达!");
+            this.$("#arriveBtn").addClass("red");
             return this;
         },
 
@@ -125,59 +126,12 @@ define([
             });
         },
 
-        searchStatus: function (self) {
-            var lowerDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-            lowerDate.setHours(14, 0, 0, 0);
-            var upperDate = new Date();
-            upperDate.setHours(13, 0, 0, 0);
-            var statusQuery = new Parse.Query(DeliveryModel);
-            statusQuery.equalTo("address", this.$("#addressOption").val());
-            statusQuery.greaterThan("createdAt", lowerDate);
-            statusQuery.lessThan("createdAt", upperDate);
-            statusQuery.find({
-                success: function (results) {
-                    if (results.length == 0) {
-                        self.deliveryDetails = new DeliveryModel();
-                        self.deliveryDetails.set("status", "正在路上...");
-                        self.deliveryDetails.set("address", this.$("#addressOption").val());
-                        self.deliveryDetails.save();
-                    }
-                },
-                error: function (error) {
-                    alert("Error: " + error.code + " " + error.message);
-                }
-            });
-        },
-
         updateStatus: function () {
             var self = this;
-            var lowerDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-            lowerDate.setHours(14, 0, 0, 0);
-            var upperDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-            upperDate.setHours(14, 0, 0, 0);
-            var arriveQuery = new Parse.Query(DeliveryModel);
-
-            arriveQuery.greaterThan("createdAt", lowerDate);
-            arriveQuery.lessThan("createdAt", upperDate);
-            arriveQuery.equalTo("address", this.$("#addressOption").val());
-            arriveQuery.find({
-                success: function (results) {
-                    console.log(results);
-                    if (results.length > 0) {
-                        _.each(results, function (result) {
-                            if ($("#addressOption").val() == result.get("address")) {
-                                self.deliveryDetails.set('status', "我已到达!");
-                                self.deliveryDetails.save();
-                                $("#arriveBtn").text("我已到达!");
-                                $("#arriveBtn").addClass("red");
-                            }
-                        });
-                    }
-                },
-                error: function (error) {
-                    alert("Error: " + error.code + " " + error.message);
-                }
-            });
+            self.deliveryDetails = new DeliveryModel();
+            self.deliveryDetails.set("status", "正在路上...");
+            self.deliveryDetails.set("address", this.$("#addressOption").val());
+            self.deliveryDetails.save();
         }
     });
 
