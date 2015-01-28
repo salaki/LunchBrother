@@ -92,9 +92,12 @@ header {
 .summary-location{
   color: #454545;
   font-weight: bold;
+	font-size: 11px;
 }
-.summary-status{
+.summary-status,
+.summary-contact{
   color:#A3A3A3;
+	font-size:11px;
 }
 .summary-total{
   color: #E3151E;
