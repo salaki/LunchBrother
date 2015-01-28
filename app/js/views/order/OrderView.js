@@ -88,8 +88,9 @@ define([
             var self = this;
             if (response.error) {
                 // Pop out the error message window
+                //$('#orderBtn').removeClass('grey').addClass('red');
+                //$('#orderBtn').removeClass('grey').addClass('red');
                 self.displayPaymentFailDialog(response.error.message);
-                $('#orderBtn').prop('disabled', false);
             }
             else { // No errors, submit the form.
                 // Get the token from the response:
@@ -139,6 +140,8 @@ define([
                                 $("#paymentForm").remove();
                                 $("#page").prepend(view1.render().el);
                                 $("#page").append(view2.render().el);
+            	                $('#orderBtn').prop('disabled', false);
+                                $('#orderBtn').removeClass('grey').addClass('red');
                                 self.emailService(paymentDetails.id);
                             },
                             error: function (payment, error) {
@@ -148,14 +151,16 @@ define([
                     },
                     error: function (error) {
                         self.displayPaymentFailDialog(error.message);
+            	        $('#orderBtn').prop('disabled', false);
+                        $('#orderBtn').removeClass('grey').addClass('red');
                     }
                 });
             }
 	    //Enable the button
-	    setTimeout(function() {
-            	$('#orderBtn').prop('disabled', false);
-            	$('#orderBtn').removeClass('grey').addClass('red');
-	    }, 2000);
+	    //setTimeout(function() {
+            //	$('#orderBtn').prop('disabled', false);
+            //	$('#orderBtn').removeClass('grey').addClass('red');
+	    //}, 2000);
         },
         orderSubmit: function (e) {
             e.preventDefault();
