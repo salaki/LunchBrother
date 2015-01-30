@@ -50,9 +50,7 @@ define([
       this.stats.tax = parseFloat((this.dishes.charge()*0.1).toFixed(3));
       this.stats.totalCharge = parseFloat((this.dishes.charge()+this.stats.tax).toFixed(3));
       this.$('#orderStats').html(this.statsTemplate(this.stats));
-
       this.delegateEvents();
-
       return this;
     },
 
