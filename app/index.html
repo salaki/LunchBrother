@@ -7,71 +7,192 @@
 <!--<![endif]-->
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <title>带饭大哥</title>
-
-  <link rel="stylesheet" href="css/semantic/semantic.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/semantic/dropdown.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/semantic/icon.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/semantic/label.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/semantic/form.min.css" type="text/css" /> 
-  <link rel="stylesheet" href="css/semantic/input.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/main.css">
+	<title>带饭大哥</title>
+	<!-- 2. Include CSS -->
+	<link type="text/css" rel="stylesheet" href="../darksmo/dist/jquery.localizationTool.css" />
+	<link rel="stylesheet" href="css/semantic/semantic.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/dropdown.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/icon.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/label.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/form.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/input.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-  <header class="ui grid">
-    <div class="computer tablet only row">
-      <div class="ui fixed menu inverted navbar page grid">
-        <a href="" class="brand item">带饭大哥</a>
+	<header class="ui grid">
+		<div class="computer tablet only row">
 
-        <div class="right menu">
-          <a href="" class="item">订餐</a>
-          <a href="#status" class="item">送餐状态查询</a>
-          <!--
+			<div class="ui fixed menu inverted navbar page grid">
+				<a href="" class="brand item">带饭大哥</a>
+
+
+				<div class="right menu">
+					<div class="ui dropdown">
+						<div class="text">中文</div>
+						<i class="dropdown icon"></i>
+						<div class="menu">
+							<div class="item">EN</div>
+							<div class="item">中文</div>
+						</div>
+					</div>
+					<a href="" class="item">订餐</a>
+					<a href="#status" class="item">送餐状态查询</a>
+					<!--
           <a href="" class="item">常见问题</a>
           <a href="" class="item">联系我们</a>
           //-->
-        </div>
-      </div>
-    </div>
-    
-    <div class="mobile only row">
-      <div class="ui fixed inverted navbar menu">
-        <span id="today" class="item left ui small label"></span>
-        <a href="#" id="barTitle" class="center aligned item block ui label">带饭大哥</a>
+					<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
+				</div>
+			</div>
 
-        <div id="hamBtnWrapper" class="right item">
-          <div class="ui icon dropdown">
-            <i class="content icon"></i>
-            <div class="menu">
-              <a href="" class="item">订餐</a>
-              <a href="#status" class="item">送餐状态查询</a>
-              <!--
+		</div>
+
+
+		<div class="mobile only row">
+
+			<div class="ui fixed inverted navbar menu">
+				<span id="today" class="item left ui small label"></span>
+				<a href="#" id="barTitle" class="center aligned item block ui label">带饭大哥</a>
+
+				<div id="hamBtnWrapper" class="right item">
+					<div class="ui dropdown">
+						<div class="text">中文</div>
+						<i class="dropdown icon"></i>
+						<div class="menu">
+
+							<div class="item">EN</div>
+							<div class="item">中文</div>
+
+						</div>
+					</div>
+					<div class="ui icon dropdown">
+
+						<i class="content icon"></i>
+
+						<div class="menu">
+							<a href="" class="item">订餐</a>
+							<a href="#status" class="item">送餐状态查询</a>
+							<!--
               <a href="" class="item">常见问题</a>
               <a href="" class="item">联系我们</a>
               //-->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-  <section class="ui grid main page">
-    <div class="row">
-      <div class="column">
-        <article id="page">
-          Loading....
-        </article>
-      </div>
-    </div>
-  </section>
-  <script data-main="js/app" src="js/libs/require/require.min.js"></script>
+							<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<section class="ui grid main page">
+		<div class="row">
+			<div class="column">
+				<article id="page">
+					Loading....
+				</article>
+			</div>
+		</div>
+	</section>
+	<script data-main="js/app" src="js/libs/require/require.min.js"></script>
+	<script src="../darksmo/src/jquery.localizationTool.js"></script>
+
+	<script>
+		$('#selectLanguageDropdown').localizationTool({
+			'defaultLanguage': 'en_GB',
+			/* (optional) although must be defined if you don't want en_GB */
+			'showFlag': true,
+			/* (optional) show/hide the flag */
+			'showCountry': true,
+			/* (optional) show/hide the country name */
+			'showLanguage': true,
+			/* (optional) show/hide the country language */
+			'languages': { /* (optional) define **ADDITIONAL** custom languages */
+				'italian': {
+					'country': 'Italy',
+					'language': 'Italian',
+					'countryTranslated': 'Italia',
+					'languageTranslated': 'Italiano',
+					'flag': {
+						'url': 'http://upload.wikimedia.org/wikipedia/commons/f/fb/Farm-Fresh_italy.png',
+						/* url of flag image */
+						'class': 'italian-flag' /* (optional) class to assign to the flag (e.g., for css styling) */
+					}
+				},
+				'barletta-dialect': {
+					'country': 'Barletta',
+					'language': 'Barlettano',
+					'countryTranslated': 'Barlett',
+					'languageTranslated': "Barlett'n",
+					'flag': {
+						'url': 'http://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_Barletta.png'
+					}
+				}
+			},
+			/* 
+			 * Translate your strings below
+			 */
+			'strings': {
+				/* 
+				 * You can specify the text string to translate directly...
+				 */
+				'Get started with jquery.localizationTool.js': {
+					'italian': 'Inizia ad usare jquery.localizationTool.js',
+					'barletta-dialect': 'Accumminz a yuse` jquery.localizationTool.js',
+					'jp_JP': '始める jquery.localizationTool.js',
+					'ar_TN': 'تبدأ مع jQuery.localizationTool.js'
+				},
+				/* 
+				 * You can also specify elements by selector, by using the notation
+				 * element:<element-name> OR id:<element-id> OR class:<class-name>
+				 */
+				'element:h2': {
+					'italian': 'visualizza il sorgente per una guida passo passo',
+					'barletta-dialect': "veit u cudc sorgind c ve truinn na gueida vlo'c",
+					'jp_JP': 'ステップバイステップガイドを参照してソースを表示',
+					'ar_TN': 'عرض المصدر لرؤية دليل خطوة بخطوة'
+				},
+				/*
+				 * Example with id. NOTE: ids have priority over any other
+				 * selector in the translation.
+				 */
+				'id:welcomeText': {
+					'italian': 'Benvenuto! il menu a discesa dovrebbe coprire questo testo!',
+					/* NOTE: you can actually use HTML in the translated text! */
+					'barletta-dialect': 'Benvenout! u menu <b>va</b> cupr&iacute; st&iacute; par&oacute;l',
+					'jp_JP': 'ようこそ！ドロップダウンには、このテキストの上に行く必要があります！',
+					'ar_TN': 'أهلا وسهلا! القائمة المنسدلة يجب ان تذهب فوق هذا النص!'
+				},
+				/*
+				 * Example with class. NOTE: classes have precedence on
+				 * element selectors and free-form text during the
+				 * translation!
+				 */
+				'class:subsubtitle': {
+					'italian': 'dovrebbe essere abbastanza semplice',
+					'barletta-dialect': "va jiss f&eacute;cl f&eacute;cl",
+					'jp_JP': 'うまくいけば、十分に簡単であるべき',
+					'ar_TN': '(نأمل أن يكون بسيطا بما فيه الكفاية)'
+				},
+				/*
+				 * You can now translate attributes. The notation is like
+				 * <attribute-name>::<id/class/element>:<name>
+				 */
+				'placeholder::element:input': {
+					'italian': 'esempio segnaposto',
+					'barletta-dialect': "n'esimpj du signapust",
+					'jp_JP': 'サンプルプレースホルダー',
+					'ar_TN': 'نائب عينة'
+				}
+			}
+		});
+	</script>
 </body>
 
 </html>
