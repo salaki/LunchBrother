@@ -12,7 +12,7 @@
       "paymentBtn" : "Brother,Check!",
       "orderDetails" : "Your order summary:",
       "summary-count" : "Quantity",
-      "summary-tax-label" : "Tax & Delivery Fee",
+      "summaryTaxLabel" : "Tax & Delivery Fee",
       "summary-total-label" : "Total：",
       "nameOnOrder" : "Name on Order：",
       "pickUpAddress" : "Pick-Up Address：",

@@ -55,7 +55,7 @@ define([
       //Localization
       $("#dishTitle").html(string.dishTitle);
       $("#orderDetails").html(string.orderDetails);
-      $("#summary-tax-label").html(string.summary-tax-label);
+      $(".summary-tax-label").html(string.summaryTaxLabel);
       this.delegateEvents();
       return this;
     },
