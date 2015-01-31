@@ -7,68 +7,96 @@
 <!--<![endif]-->
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <title></title>
-
-  <link rel="stylesheet" href="css/semantic/semantic.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/semantic/dropdown.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/semantic/icon.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/semantic/label.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/semantic/form.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/semantic/input.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/main.css">
+	<title>带饭大哥</title>
+	<!-- 2. Include CSS -->
+	<link type="text/css" rel="stylesheet" href="../darksmo/dist/jquery.localizationTool.css" />
+	<link rel="stylesheet" href="css/semantic/semantic.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/dropdown.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/icon.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/label.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/form.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/semantic/input.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-  <header class="ui grid">
-    <div class="computer tablet only row">
-      <div class="ui fixed menu inverted navbar page grid">
-        <a href="" class="brand item"></a>
-        <div class="right menu">
-          <a id="orderDish" href="" class="item"></a>
-          <a id="statusCheck" href="#status" class="item"></a>
-          <!--
+	<header class="ui grid">
+		<div class="computer tablet only row">
+			<div class="ui fixed menu inverted navbar page grid">
+				<a href="" class="brand item">带饭大哥</a>
+				<div class="right menu">
+					<a href="" class="item">订餐</a>
+					<a href="#status" class="item">送餐状态查询</a>
+					<!--
           <a href="" class="item">常见问题</a>
           <a href="" class="item">联系我们</a>
           //-->
-        </div>
-      </div>
-    </div>
+					<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
+				</div>
+				<div class="right menu">
+					<a href="" class="item">
+						<div class="ui dropdown">
+							<div class="text">EN</div>
+							<i class="dropdown icon"></i>
+							<div class="menu">
+								<div class="item">EN</div>
+								<div class="item">中文</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
 
-    <div class="mobile only row">
-      <div class="ui fixed inverted navbar menu">
-        <span id="today" class="item left ui small label"></span>
-        <a href="#" id="barTitle" class="center aligned item block ui label">带饭大哥</a>
-        <div id="hamBtnWrapper" class="right item">
-          <div class="ui icon dropdown">
-            <i class="content icon"></i>
-            <div class="menu">
-              <a id="mobileOrder" href="" class="item">订餐</a>
-              <a id="mobileStatus" href="#status" class="item">送餐状态查询</a>
-              <!--
+
+		<div class="mobile only row">
+			<div class="ui fixed inverted navbar menu">
+				<span id="today" class="item left ui small label"></span>
+				<a href="#" id="barTitle" class="center aligned item block ui label">带饭大哥</a>
+				<div id="hamBtnWrapper" class="right item">
+					<div class="ui dropdown">
+						<div class="text">EN</div>
+						<i class="dropdown icon"></i>
+						<div class="menu">
+							<div class="item">EN</div>
+							<div class="item">中文</div>
+						</div>
+					</div>
+					<div class="ui icon dropdown">
+						<i class="content icon"></i>
+						<div class="menu">
+							<a href="" class="item">订餐</a>
+							<a href="#status" class="item">送餐状态查询</a>
+							<!--
               <a href="" class="item">常见问题</a>
               <a href="" class="item">联系我们</a>
               //-->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-  <section class="ui grid main page">
-    <div class="row">
-      <div class="column">
-        <article id="page">
-          Loading....
-        </article>
-      </div>
-    </div>
-  </section>
-  <script data-main="js/app" src="js/libs/require/require.min.js"></script>
+							<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<section class="ui grid main page">
+		<div class="row">
+			<div class="column">
+				<article id="page">
+					Loading....
+				</article>
+			</div>
+		</div>
+	</section>
+	<script data-main="js/app" src="js/libs/require/require.min.js"></script>
+
+
+
 </body>
+
 </html>

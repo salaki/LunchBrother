@@ -11,6 +11,8 @@ header {
   background-color: #E3151A;
 }
 
+
+
 #today{
   margin-top: 4px;
   font-weight: normal;
@@ -21,6 +23,7 @@ header {
   width: 31%;
   text-align: center;
 }
+
 
 #hamBtnWrapper{
   text-align: right;
