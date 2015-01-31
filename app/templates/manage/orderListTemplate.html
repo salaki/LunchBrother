@@ -6,8 +6,8 @@
         </p>
     </div>
     <div class="seven wide white column">
-        <p><span class="gray">订单号:</span><span class="red"><%= order.id %></span>
-        <p><span class="gray">金额:</span><span class="red">$<%= order.get('totalPrice') %></span>
+        <p><span class="gray"><label class="orderListOrderNumber">订单号</label>:</span><span class="red"><%= order.id %></span>
+        <p><span class="gray"><label class="orderListTotal">金额</label>:</span><span class="red">$<%= order.get('totalPrice') %></span>
     </div>
     <a id="checkButton-<%= order.id %>" class="send two wide white column" data-order="<%= order.id %>" data-lname="<%= order.get('lname') %>" data-fname="<%= order.get('fname') %>" data-price="<%= order.get('totalPrice') %>">
         <i class="checkmark icon"></i>
