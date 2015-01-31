@@ -1,9 +1,8 @@
-// var newURL = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname;
-require.config({
+var config = {
     "baseUrl": "js",
     "paths": {
         jquery: 'libs/jquery/jquery-1.11.2.min',
-        i18n:'libs/require/i18n',
+        i18n: 'libs/require/i18n',
         underscore: 'libs/underscore/underscore-min',
         //backbone: 'libs/backbone/backbone-min',
         parse: 'libs/parse/parse-1.3.2.min',
@@ -11,28 +10,45 @@ require.config({
         templates: '../templates',
         semantic: 'libs/semantic/semantic.min'
     },
-    // "locale": "zh-ch",
     shim: {
-        underscore:{
-            exports:'_'
+        underscore: {
+            exports: '_'
         },
-        jquery:{
-          exports: '$'  
+        jquery: {
+            exports: '$'
         },
-        parse:{
-          deps:['jquery', 'underscore'],
-          exports:'Parse'
+        parse: {
+            deps: ['jquery', 'underscore'],
+            exports: 'Parse'
         },
-        'main': ['parse'],
+        'main': ['parse', 'i18n'],
         // 'parse':['jquery', 'underscore'],
         "semantic": ['jquery'],
-        "libs/semantic/dropdown.min" :["jquery", "semantic"],
-        "libs/semantic/checkbox.min" :["jquery", "semantic"],
-        "libs/semantic/form.min" :["jquery", "semantic"],
+        "libs/semantic/dropdown.min": ["jquery", "semantic"],
+        "libs/semantic/checkbox.min": ["jquery", "semantic"],
+        "libs/semantic/form.min": ["jquery", "semantic"],
     }
-});
+};
+
+var locale = getParameterByName('locale');
+if (locale && locale == "zh-cn") {
+    config.config = {
+        i18n: {
+            "locale": "zh-cn"
+        }
+    };
+}
+
+require.config(config);
 
 // Load the main app module to start the app
-require(["main"], function(main){
+require(["main"], function(main) {
     main.initialize();
 });
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
