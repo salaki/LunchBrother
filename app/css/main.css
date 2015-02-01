@@ -38,6 +38,10 @@ header {
   left: auto;
 }
 
+.language-text{
+	float:left;
+}
+
 #page{
   padding-top: 32px;
 }
