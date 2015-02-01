@@ -143,17 +143,25 @@ header {
 	top: 2px;
 }
 
+.notification{
+	margin-top:30px;
+}
 
 #orderMessage{
   box-shadow: none;
   background: none;
-  font-size: 11px;
+	font-size: 12px;
   color: #999;
+	padding: 20px 0 20px 0 !important;
+	margin: 0 !important;
 }
+
 #orderMessage a{
   color: #E3151E;
 }
-
+#statusTracker{
+	font-size: 12px;
+}
 #page .ui.segment{
   padding: 0.4em;
 }

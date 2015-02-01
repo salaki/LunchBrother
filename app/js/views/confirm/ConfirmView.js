@@ -36,7 +36,13 @@ define([
               self.model.set("mapUrl", "./img/map_sml_vm.jpg");
               self.$el.html(self.template(self.model.toJSON()));
             }
-	    $("#nameOnOrder").html(confirm.nameOnOrder);//translation test
+	    this.$("#nameOnOrder").html(confirm.nameOnOrder);//translation test	
+						this.$("#confirmEmail").html(confirm.confirmEmail);
+						this.$("#pickUpAddress").html(confirm.pickUpAddress);
+						//console.log(confirm.pickUpAddress);
+						this.$("#orderMessage").html(confirm.orderMessage);
+					 console.log(confirm.statusTracker); this.$('#statusTracker').text(confirm.statusTracker);
+						
             return this;
           },
 
