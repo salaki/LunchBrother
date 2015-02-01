@@ -3,6 +3,8 @@
       "title" : "Lunchbrother",
       "brand" : "Lunchbrother",
       "barTitle" : "Lunchbrother",
+      "language" : "EN",
+      "mobileLanguage" : "EN",
       "orderDish" : "Order",
       "statusCheck" : "Track Your Order",
       "mobileOrder" : "Order",

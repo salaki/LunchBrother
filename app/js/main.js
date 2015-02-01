@@ -20,14 +20,18 @@ define([
     
     $("title").html(string.title);
     $("#orderDish").html(string.orderDish);
-    		$("#statusCheck").html(string.statusCheck);
+    $("#statusCheck").html(string.statusCheck);
     $(".brand").html(string.brand);
     $("#barTitle").html(string.barTitle);
     $("#mobileOrder").html(string.mobileOrder);
     $("#mobileStatus").html(string.mobileStatus);
+    $("#language,#mobileLanguage").html(string.language,string.mobileLanguage);
+    $("#mobileStatus").html(string.mobileStatus);
+    
     
 
     $('.ui.dropdown').dropdown();
+    
     var cnDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     var today = new Date();
     var dayOfWeek = cnDay[today.getDay()];

@@ -2,6 +2,8 @@
       "title" : "带饭大哥",
       "brand" : "带饭大哥",
       "barTitle" : "带饭大哥",
+      "language" : "中文",
+      "mobileLanguage" : "中文",
       "orderDish" : "订餐",
       "statusCheck" : "送餐状态查询",
       "mobileOrder" : "订餐",
