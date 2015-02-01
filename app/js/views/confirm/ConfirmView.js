@@ -1,10 +1,10 @@
 define([
       'models/order/PaymentModel',
       'views/order/OrderView',
-			'i18n!nls/confirm',
+      'i18n!nls/confirm',
       'text!templates/confirm/confirmTemplate.html'
 			
-    ], function(PaymentModel, OrderView, confirmTemplate, confirm) {
+    ], function(PaymentModel, OrderView, confirm, confirmTemplate) {
 
       var ConfirmView = Parse.View.extend({
 
@@ -36,8 +36,7 @@ define([
               self.model.set("mapUrl", "./img/map_sml_vm.jpg");
               self.$el.html(self.template(self.model.toJSON()));
             }
-						
-						$("#nameOnOrder").html(confirm.nameOnOrder);//translation test
+	    $("#nameOnOrder").html(confirm.nameOnOrder);//translation test
             return this;
           },
 

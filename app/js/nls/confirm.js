@@ -1,8 +1,8 @@
 define({
     "root" : {
-				"nameOnOrder" : "Name:",
+	"nameOnOrder" : "Name:",
       
     },
-    "zh-ch" : true
+    "zh-cn" : true
 });
 

@@ -14,6 +14,6 @@ define({
         "manageCancel": "Cancel",
         "manageConfirm" : "Confirm"
     },
-    "zh-ch" : true
+    "zh-cn" : true
 });
 
