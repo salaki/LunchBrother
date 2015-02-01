@@ -1,8 +1,10 @@
 define([
       'models/order/PaymentModel',
       'views/order/OrderView',
+			'i18n!nls/confirm',
       'text!templates/confirm/confirmTemplate.html'
-    ], function(PaymentModel, OrderView, confirmTemplate) {
+			
+    ], function(PaymentModel, OrderView, confirmTemplate, confirm) {
 
       var ConfirmView = Parse.View.extend({
 
@@ -25,7 +27,7 @@ define([
 
           render: function() {
             var self = this;
-            if (this.model.get('address') == "Regents Drive Parking Garage") {
+            if (this.model.get('address') == "Regents Drive Parking Garage") {document
               self.model.set("mapUrl", "./img/map_sml_rdg.jpg");
               self.$el.html(self.template(self.model.toJSON()));
             }
@@ -34,6 +36,8 @@ define([
               self.model.set("mapUrl", "./img/map_sml_vm.jpg");
               self.$el.html(self.template(self.model.toJSON()));
             }
+						
+						$("#nameOnOrder").html(confirm.nameOnOrder);//translation test
             return this;
           },
 

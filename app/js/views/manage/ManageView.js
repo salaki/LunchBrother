@@ -5,8 +5,9 @@ define([
     'models/manage/DeliveryModel',
     'text!templates/manage/manageTemplate.html',
     'text!templates/manage/orderListTemplate.html',
+    'i18n!nls/manage',
     'libs/semantic/dropdown.min'
-], function (StatusView, PaymentModel, OrderModel, DeliveryModel, manageTemplate, orderListTemplate) {
+], function (StatusView, PaymentModel, OrderModel, DeliveryModel, manageTemplate, orderListTemplate, manageLocal) {
     var ManageView = Parse.View.extend({
         el: $("#page"),
         template: _.template(manageTemplate),
@@ -30,8 +31,13 @@ define([
             this.$el.html(this.template());
             this.$("#addressOption").dropdown();
             this.applyQuery(paymentQuery, self);
-            this.$("#arriveBtn").text("我已到达!");
+            this.$("#arriveBtn").text(manageLocal.arrived);
             this.$("#arriveBtn").addClass("red");
+            $("#manageTitle").text(manageLocal.manageTitle);
+            $("#has").text(manageLocal.hasPhrase);
+            $("#numberOrder").text(manageLocal.numberOrder);
+            $("#manageRemark").text(manageLocal.manageRemark);
+
             return this;
         },
 
@@ -40,7 +46,7 @@ define([
             var searchText = this.$("#searchInput").val().toLowerCase();
             if (searchText != "") {
                 paymentQuery.contains("lowercaseLastName", searchText);
-                this.$("#searchResultLabel").text("符合搜寻");
+                this.$("#searchResultLabel").text(manageLocal.searchResultLabel);
             }
             else {
                 this.$("#searchResultLabel").text("");
@@ -103,6 +109,8 @@ define([
                     self.$("#orderList").html(self.orderListTemplate({
                         orders: results
                     }));
+                    $(".orderListOrderNumber").text(manageLocal.manageOrderNumber);
+                    $(".orderListTotal").text(manageLocal.manageTotal);
                 },
                 error: function (error) {
                     alert("Error: " + error.code + " " + error.message);
@@ -118,6 +126,8 @@ define([
             $("#confirmDialogPay").text(totalPrice);
             $("#confirmDialogOrderId").text(orderId);
             $("#confirmDialogName").text(name);
+            $("#manageCancel").text(manageLocal.manageCancel);
+            $("#manageConfirm").text(manageLocal.manageConfirm);
             $('#confirmDeliveryPayment').modal({
                 closable: false,
                 onDeny: function () {
@@ -149,7 +159,7 @@ define([
         updateStatus: function () {
             var self = this;
             self.deliveryDetails = new DeliveryModel();
-            self.deliveryDetails.set("status", "正在路上...");
+            self.deliveryDetails.set("status", manageLocal.onTheWay);
             self.deliveryDetails.set("address", this.$("#addressOption").val());
             self.deliveryDetails.save();
         }

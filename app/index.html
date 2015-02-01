@@ -13,9 +13,8 @@
 	<meta name="author" content="">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-	<title>带饭大哥</title>
+	<title></title>
 	<!-- 2. Include CSS -->
-	<link type="text/css" rel="stylesheet" href="../darksmo/dist/jquery.localizationTool.css" />
 	<link rel="stylesheet" href="css/semantic/semantic.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/semantic/dropdown.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/semantic/icon.min.css" type="text/css" />
@@ -29,10 +28,10 @@
 	<header class="ui grid">
 		<div class="computer tablet only row">
 			<div class="ui fixed menu inverted navbar page grid">
-				<a href="" class="brand item">带饭大哥</a>
+				<a href="" class="brand item"></a>
 				<div class="right menu">
-					<a href="" class="item">订餐</a>
-					<a href="#status" class="item">送餐状态查询</a>
+					<a id="orderDish" href="" class="item"></a>
+					<a id="statusCheck" href="#status" class="item"></a>
 					<!--
           <a href="" class="item">常见问题</a>
           <a href="" class="item">联系我们</a>
@@ -42,37 +41,36 @@
 				<div class="right menu">
 					<a href="" class="item">
 						<div class="ui dropdown">
-							<div class="text">EN</div>
+							<div class="language-text">EN</div>
 							<i class="dropdown icon"></i>
+							</a>
 							<div class="menu">
-								<div class="item">EN</div>
-								<div class="item">中文</div>
+								<a class="item" href="/app/index.html">EN</a>
+								<a class="item" href="/app/index.html?locale=zh-cn">中文</a>
 							</div>
 						</div>
-					</a>
+					
 				</div>
 			</div>
 		</div>
-
-
 		<div class="mobile only row">
 			<div class="ui fixed inverted navbar menu">
 				<span id="today" class="item left ui small label"></span>
-				<a href="#" id="barTitle" class="center aligned item block ui label">带饭大哥</a>
+				<a href="#" id="barTitle" class="center aligned item block ui label"></a>
 				<div id="hamBtnWrapper" class="right item">
-					<div class="ui dropdown">
-						<div class="text">EN</div>
+					<div class="ui icon dropdown">
+						<div class="language-text">EN</div>
 						<i class="dropdown icon"></i>
 						<div class="menu">
-							<div class="item">EN</div>
-							<div class="item">中文</div>
+							<a class="item" href="/app/index.html">EN</a>
+							<a class="item" href="/app/index.html?locale=zh-cn">中文</a>
 						</div>
 					</div>
 					<div class="ui icon dropdown">
 						<i class="content icon"></i>
 						<div class="menu">
-							<a href="" class="item">订餐</a>
-							<a href="#status" class="item">送餐状态查询</a>
+							<a id="mobileOrder" href="" class="item"></a>
+							<a id="mobileStatus" href="#status" class="item"></a>
 							<!--
               <a href="" class="item">常见问题</a>
               <a href="" class="item">联系我们</a>
@@ -94,9 +92,6 @@
 		</div>
 	</section>
 	<script data-main="js/app" src="js/libs/require/require.min.js"></script>
-
-
-
 </body>
 
 </html>
