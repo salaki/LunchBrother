@@ -136,7 +136,7 @@ define([
             var totalVMDish = 0;
             var totalVMPrice = 0;
 
-            query.equalTo("address", "Van Munching");
+            query.equalTo("address", "McKeldin Library");
 
 
             query.find({

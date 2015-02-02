@@ -107,9 +107,9 @@ define([
             var self = this;
             if (response.error) {
                 // Pop out the error message window
-                //$('#orderBtn').removeClass('grey').addClass('red');
-                //$('#orderBtn').removeClass('grey').addClass('red');
                 self.displayPaymentFailDialog(response.error.message);
+            	$('#orderBtn').prop('disabled', false);
+                $('#orderBtn').removeClass('grey').addClass('red');
             }
             else { // No errors, submit the form.
                 // Get the token from the response:
