@@ -39,7 +39,7 @@ define([
               this.$("#pickUpAddress").html(confirm.pickUpAddress);
              
               this.$("#orderMessage").html(confirm.orderMessage);
-              console.log(confirm.statusTracker); this.$('#statusTracker').text(confirm.statusTracker);
+              
 
             return this;
           },
