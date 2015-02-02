@@ -89,7 +89,7 @@ define([
             query.equalTo("address", "Regents Drive Parking Garage");
             query.find({
                 success: function (results) {
-                    for (i = 0; i < results.length; i++) {
+                    for (var i = 0; i < results.length; i++) {
                         var newEvent = {};
                         var dishName1 = results[i].get('dishName1');
                         var dishName2 = results[i].get('dishName2');
@@ -136,12 +136,12 @@ define([
             var totalVMDish = 0;
             var totalVMPrice = 0;
 
-            query.equalTo("address", "Van Munching");
+            query.equalTo("address", "McKeldin Library");
 
 
             query.find({
                 success: function (results) {
-                    for (i = 0; i < results.length; i++) {
+                    for (var i = 0; i < results.length; i++) {
                         var newEvent = {};
                         var dishName1 = results[i].get('dishName1');
                         var dishName2 = results[i].get('dishName2');
