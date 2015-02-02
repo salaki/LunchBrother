@@ -38,10 +38,8 @@ define([
       var mainQuery = Parse.Query.or(bdQuery, comboQuery);
 
       this.dishes.query = mainQuery;
-
       this.dishes.bind('reset', this.loadAll);
       this.dishes.bind('all', this.render);
-
       this.dishes.fetch();
     },
 
@@ -57,23 +55,31 @@ define([
     },
 
     getDishId: function() {
+      var d = new Date();
+      var target = new Date(d.valueOf());
+      var dayNr = (d.getDay() + 6) % 7;
+      target.setDate(target.getDate() - dayNr + 3);
+      var jan4 = new Date(target.getFullYear(), 0, 4);
+      var dayDiff = (target - jan4) / 86400000;
+      var weekOfYear = 1 + Math.ceil(dayDiff / 7);
       var currentTime = new Date();
-      var today = new Date();
-      var onejan = new Date(today.getFullYear(), 0, 1);
-      var weekOfYear = Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-      var dayOfWeek = today.getDay();
+      // var onejan = new Date(today.getFullYear(), 0, 1);
+      // var number = (this - onejan) / 86400000;
+      // console.log(number);
+      // var weekOfYear = Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+      var dayOfWeek = currentTime.getDay();
       var hours = currentTime.getHours();
       if (dayOfWeek == 0 || dayOfWeek == 6) {
         dayOfWeek = 1;
         weekOfYear++;
       }
+      
+      if (weekOfYear % 2 == 0) {
+        dayOfWeek += 5;
+      }
       //Sunday, Monday to Thursday
       if((hours >= 14 && dayOfWeek == 0) || (hours >= 14 && (dayOfWeek <= 4 && dayOfWeek >= 1))) {
       	dayOfWeek++;
-      }
-
-      if (weekOfYear % 2 == 0) {
-        dayOfWeek += 5;
       }
       return dayOfWeek;
     },
