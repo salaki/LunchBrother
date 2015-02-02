@@ -124,7 +124,12 @@ define([
                 var stripepayment = self.model.totalCharge;
                 var i = 1;
                 _.each(self.model.orders, function (order) {
+                	if(locale == "zh-cn"){
                     var dishName = order.get('Description');
+                   }
+                   if(locale !== "zh-cn"){
+                   	var dishName = order.get('descriptionEn');
+                   }
                     var quantity = order.get('count');
                     paymentDetails.set('dishName' + i, dishName);
                     paymentDetails.set('quantity' + i, quantity);
