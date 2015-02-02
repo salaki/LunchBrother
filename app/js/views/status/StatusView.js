@@ -1,5 +1,4 @@
 ﻿define([
-  //取query
   'models/manage/DeliveryModel',
   'text!templates/status/statusTemplate.html'
 ], function (DeliveryModel, statusTemplate) {
