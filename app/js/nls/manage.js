@@ -4,7 +4,7 @@ define({
         "hasPhrase" : "has",
         "numberOrder" : "orders",
         "searchResultLabel" : "match search result",
-        "manageRemark" : "Note: A is today's special, B is xx cold noodle + xx burger",
+        "manageRemark" : "Note: Combo A is today's special, Combo B is Spicy rice noodle + Chinese burger + soda",
         "arrived" : "Arrived!",
         "onTheWay" : "On my way!",
         "manageConfirmTitle" : "Please make sure this order has been paid",
@@ -12,7 +12,9 @@ define({
         "manageOrderNumber" : "Order Number",
         "manageTotal" : "Total",
         "manageCancel": "Cancel",
-        "manageConfirm" : "Confirm"
+        "manageConfirm" : "Confirm",
+        "comboA" : "Combo A",
+        "comboB" : "Combo B"
     },
     "zh-cn" : true
 });

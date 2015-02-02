@@ -111,6 +111,8 @@ define([
                     }));
                     $(".orderListOrderNumber").text(manageLocal.manageOrderNumber);
                     $(".orderListTotal").text(manageLocal.manageTotal);
+                    $(".comboA").text(manageLocal.comboA);
+                    $(".comboB").text(manageLocal.comboB);
                 },
                 error: function (error) {
                     alert("Error: " + error.code + " " + error.message);
@@ -126,6 +128,10 @@ define([
             $("#confirmDialogPay").text(totalPrice);
             $("#confirmDialogOrderId").text(orderId);
             $("#confirmDialogName").text(name);
+            $("#manageCustomer").text(manageLocal.manageCustomer);
+            $("#manageOrderNumber").text(manageLocal.manageOrderNumber);
+            $("#manageTotal").text(manageLocal.manageTotal);
+            $("#manageConfirmTitle").text(manageLocal.manageConfirmTitle);
             $("#manageCancel").text(manageLocal.manageCancel);
             $("#manageConfirm").text(manageLocal.manageConfirm);
             $('#confirmDeliveryPayment').modal({

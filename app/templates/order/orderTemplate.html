@@ -14,9 +14,8 @@
 			</div>
 			<div class="ui fluid field">
 				<div id="addressoption">
-					<!--<i class="dropdown icon"></i>-->
-					<select id="addressdetails" class="ui dropdown" name="address">
-						<option value="">选择取餐地址</option>
+					<select id="addressdetails" name="address">
+						<option id="pickUpAddress" value="">选择取餐地址</option>
 						<option value="RDPG">Regents Drive Parking Garage</option>
 						<option value="VM">Van Munching</option>
 					</select>
@@ -27,17 +26,14 @@
 	<div class="ui divider"></div>
 	<div class="ui segment">
 		<div id="cardinfo" class="fields">
-			<p>请输入您的信用卡信息：</p>
+			<p id="inputCardInfo">请输入您的信用卡信息：</p>
 			<div class="sixteen wide field">
-				<input class="ui fluid input" placeholder="持卡人姓名" type="text" name="name" />
-			</div>
-			<div class="sixteen wide field">
-				<input class="ui fluid input card-number stripe-sensitive required" name="number" placeholder="卡号" type="text" size="20" data-stripe="number" />
+				<input id="cardNumber" class="ui fluid input card-number stripe-sensitive required" name="number" placeholder="卡号" type="text" size="20" data-stripe="number" />
 			</div>
 		</div>
 		<div id="card-expinfo" class="fields">
 			<div id="exptime" class="four wide field expiry-wrapper">
-				<label>过期日期：</label>
+				<label id="expDate">过期日期：</label>
 				<select id="expMonth" data-stripe="exp-month" name="expMonth" class="ui dropdown card-expiry-month stripe-sensitive required">
 					<option value="01">01</option>
 					<option value="02">02</option>
@@ -65,21 +61,21 @@
 				</select>
 			</div>
 			<div class="four wide field" id="cw2">
-				<label>CVV2验证码:</label>
+				<label id="cvv2VerificationCode">CVV2验证码:</label>
 				<input type="text" class="ui input card-cvc" data-stripe="cvc" size="4">
 			</div>
 		</div>
 		<div id="agreements" class = "two fields">
 			<div id="terms" class="required inline field">
-				<div class="ui checkbox">
+				<div>
 					<input type="checkbox" name="terms">
-					<label>我同意带饭大哥使用协议和条款</label>
+                    <label for="terms">我同意带饭大哥使用协议和条款</label>
 				</div>
 			</div>
 			
 			<div id="termsandconditions" class="inline field">
-				<a href="#policy">阅读协议和条款</a>
-			</div>	
+				<a id="readTermOfUse" href="#policy">阅读协议和条款</a>
+			</div>
 			<!--<div id="rememberme" class="inline field">-->
 			<!--	<div class="ui checkbox">-->
 			<!--		<input type="checkbox">-->
@@ -94,15 +90,15 @@
 
 <div id="failPaymentDialog" class="ui small test modal">
 	<div class="header" style="background-color: #ffffff">
-		付款失败
+		<label id="paymentFail">付款失败</label>
 	</div>
 	<div class="content">
 		<table width="100%">
 			<tr>
 				<td style="font-size: 12pt">
-					失败原因:
+					<label id="failedReason">失败原因:</label>
 					<label id="paymentFailMessage"></label>
-					<br>请确认信用卡信息后再试
+					<br><label id="pleaseDoubleCheckOrder">请确认信用卡信息后和订单内容再试</label>
 				</td>
 			</tr>
 		</table>
@@ -110,7 +106,7 @@
 	<div class="actions">
 		<div class="one fluid ui buttons">
 			<div class="ui ok fluid button">
-				确认
+				<label id="messageConfirm">确认</label>
 			</div>
 		</div>
 	</div>
