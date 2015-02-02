@@ -71,9 +71,9 @@ define([
                 lowerDate.setHours(14, 0, 0, 0);
             } else {
                 //Before 14:00, display the orders from yesterday 2pm to today 12pm
-                upperDate = current;
+                var upperDate = current;
                 upperDate.setHours(12, 0, 0, 0);
-                lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
                 lowerDate.setHours(14, 0, 0, 0);
             }
 
@@ -89,7 +89,7 @@ define([
             query.equalTo("address", "Regents Drive Parking Garage");
             query.find({
                 success: function (results) {
-                    for (var i = 0; i < results.length; i++) {
+                    for (i = 0; i < results.length; i++) {
                         var newEvent = {};
                         var dishName1 = results[i].get('dishName1');
                         var dishName2 = results[i].get('dishName2');
@@ -136,12 +136,12 @@ define([
             var totalVMDish = 0;
             var totalVMPrice = 0;
 
-            query.equalTo("address", "McKeldin Library");
+            query.equalTo("address", "Van Munching");
 
 
             query.find({
                 success: function (results) {
-                    for (var i = 0; i < results.length; i++) {
+                    for (i = 0; i < results.length; i++) {
                         var newEvent = {};
                         var dishName1 = results[i].get('dishName1');
                         var dishName2 = results[i].get('dishName2');

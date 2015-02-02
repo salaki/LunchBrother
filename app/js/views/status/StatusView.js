@@ -1,4 +1,5 @@
-define([
+﻿define([
+  //取query
   'models/manage/DeliveryModel',
   'text!templates/status/statusTemplate.html'
 ], function (DeliveryModel, statusTemplate) {
@@ -44,7 +45,7 @@ define([
                             $("#status1").text("我已到达!");
                             $("#status1").addClass("red");
                         }
-                        if (result.get("address") == "McKeldin Library") {
+                        if (result.get("address") == "Van Munching") {
                             $("#status2").text("我已到达!");
                             $("#status2").addClass("red");
                         }

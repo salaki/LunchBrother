@@ -2,21 +2,14 @@
     <div class="doubling four column row">
         <div class="left floated left aligned eight wide column">
             <p>
-                <strong>
-                    <label id="manageTitle">带饭大哥</label>，
-                    <label id="buildingLabel"></label>
-                    <label id="has">有</label>
-                    <label id="orderNumberLabel"></label>
-                    <label id="numberOrder">个订单</label>
-                    <label id="searchResultLabel"></label>
-                </strong>
+                <strong>带饭大哥，<label id="buildingLabel"></label>有<label id="orderNumberLabel"></label>个订单<label id="searchResultLabel"></label></strong>
             </p>
         </div>
 
         <div class="right floated right aligned eight wide column">
             <select id="addressOption" class="right floated right aligned eight wide column ui dropdown">
                 <option value="Regents Drive Parking Garage" selected="selected">Regents Drive Parking Garage</option>
-                <option value="McKeldin Library">McKeldin Library</option>
+                <option value="Van Munching">Van Munching</option>
             </select>
         </div>
     </div>
@@ -33,7 +26,7 @@
         <div class="ui divided list">
             <div id="orderList">Loading....</div>
             <div class="ui divider"></div>
-            <div class="left aligned sixteen wide column" id="manageRemark">
+            <div class="left aligned sixteen wide column">
                 注：A餐为当日便当，B餐为凉皮+肉夹馍
             </div>
         </div>
@@ -44,18 +37,18 @@
 </div>
 
 <div id="confirmDeliveryPayment" class="ui small test modal">
-    <div class="header" style="background-color: #ffffff" id="manageConfirmTitle">
+    <div class="header" style="background-color: #ffffff">
         请确认这个单子已经付过款
     </div>
     <div class="content">
         <table width="100%">
             <tr>
                 <td style="font-size: 12pt">
-                    <label id="manageCustomer">点餐人</label>: <label id="confirmDialogName"></label><br><br>
-                    <label id="manageOrderNumber">订单号</label>: #<label id="confirmDialogOrderId"></label>
+                    点餐人: <label id="confirmDialogName"></label><br><br>
+                    订单号: #<label id="confirmDialogOrderId"></label>
                 </td>
                 <td style="font-size: 16pt; color: red">
-                    <label id="manageTotal">金額</label>: $<label id="confirmDialogPay"></label>
+                    金額: $<label id="confirmDialogPay"></label>
                 </td>
             </tr>
         </table>
@@ -64,11 +57,11 @@
         <div class="two fluid ui buttons">
             <div class="ui basic cancel button">
                 <i class="remove icon"></i>
-                <label id="manageCancel">取消</label>
+                取消
             </div>
             <div class="ui ok basic button">
                 <i class="checkmark icon"></i>
-                <label id="manageConfirm">确认</label>
+                确认
             </div>
         </div>
     </div>
