@@ -1,5 +1,4 @@
 <h3 class="ui center aligned header">今日送餐概况</h3>
-
 <div class="ui segment">
 	<div class="ui vertical segment">
 		<a class="delivery-order" href="#">
@@ -53,13 +52,10 @@
 			</div>
 			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2 %></span>
 			</div>
-			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp<span class="red">$<%= final.toFixed(2) %></span>
-			</div>
-
+			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp<span class="red">$<%= (final1 + final2).toFixed(2)%></span>
+      </div>
 		</div>
-
 	</div>
-
 </div>
 <div class="ui divider"></div>
 <div class="gray left aligned sixteen wide column">

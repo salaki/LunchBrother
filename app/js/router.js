@@ -67,13 +67,23 @@ define([
         appRouter.on('route:showManage', function () {
             // Call render on the module we loaded in via the dependency array
             var manageView = new ManageView();
-            manageView.render();
+            var currentUser = Parse.User.current();
+            if (currentUser.get('permission') == 1) {
+                 manageView.render();
+            } else {
+                window.location.hash = "#login";
+            }
         });
 
         appRouter.on('route:showDelivery', function () {
             // Call render on the module we loaded in via the dependency array
             var deliveryView = new DeliveryView();
-            deliveryView.render();
+            var currentUser = Parse.User.current();
+            if (currentUser.get('permission') == 2) {
+                 deliveryView.render();
+            } else {
+                window.location.hash = "#login";
+            }
         });
 
         appRouter.on('route:defaultAction', function (actions) {
