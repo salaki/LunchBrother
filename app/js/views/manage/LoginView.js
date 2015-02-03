@@ -48,9 +48,7 @@ define([
         },
 
         continueLogin: function () {
-            var self = this;
-            var username = this.$("#username").val();
-            var password = this.$("#password").val();
+            
             var orderDetails = new OrderModel();
             orderDetails.set('comboQuantity1', 0);
             orderDetails.set('dishQuantity1', 0);
@@ -71,9 +69,9 @@ define([
                 lowerDate.setHours(14, 0, 0, 0);
             } else {
                 //Before 14:00, display the orders from yesterday 2pm to today 12pm
-                var upperDate = current;
+                upperDate = current;
                 upperDate.setHours(12, 0, 0, 0);
-                var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
                 lowerDate.setHours(14, 0, 0, 0);
             }
 
@@ -181,26 +179,24 @@ define([
                     alert("Error: " + error.code + " " + error.message);
                 }
             });
-
+            
+            var self = this;
+            var username = this.$("#username").val();
+            var password = this.$("#password").val();
             Parse.User.logIn(username, password, {
-                //lunchbrother:manage
-                //chef:delivery
-                //getcurrentuser's permission
                 success: function (user) {
                     var permission = user.get('permission');
 
                     if (permission == 1) {
                         var manageView = new ManageView();
-                        $("#reminder,#loginInfo").remove();
-                        $("#page").append(manageView.render().el);
+                        manageView.render();
                     }
 
                     if (permission == 2) {
                         var deliveryView = new DeliveryView({
                             model: orderDetails
                         });
-                        $("#reminder,#loginInfo").remove();
-                        $("#page").append(deliveryView.render().el);
+                        deliveryView.render();
                     }
                 },
                 error: function (user, error) {
