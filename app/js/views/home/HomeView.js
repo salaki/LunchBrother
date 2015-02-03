@@ -67,7 +67,7 @@ define([
       var currentTime = new Date();
       var today = new Date();
       var onejan = new Date(today.getFullYear(), 0, 1);
-      var weekOfYear = Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+      var weekOfYear = Math.ceil((((today - onejan) / 86400000) + onejan.getDay() + 1) / 7);
       var dayOfWeek = today.getDay();
       var hours = currentTime.getHours();
       if (dayOfWeek == 0 || dayOfWeek == 6) {
