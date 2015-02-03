@@ -38,6 +38,10 @@ header {
   left: auto;
 }
 
+#language{
+	display: inline-block;
+}
+
 .language-text{
 	float:left;
 }
