@@ -128,7 +128,7 @@ header {
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
   width: 100%;
-	position: relative;
+  position: relative;
 }
 
 #orderBtn.grey,#loginBtn.grey{
@@ -330,5 +330,12 @@ header {
 }
 
 #loginorsignup{
-	margin-top:360px;
+	margin-top:0;
+}
+#logo{
+	text-align: center;
+}
+#img{
+	width: 50%;
+	height: 50%;
 }

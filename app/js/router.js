@@ -7,9 +7,10 @@ define([
   'views/manage/LoginView',
   'views/manage/ManageView',
   'views/manage/DeliveryView',
-	'views/account/LoginorsignupView'
+  'views/account/LoginorsignupView',
+  'views/account/SignupemailView'
 	
-], function (HomeView, OrderView, PolicyView, ConfirmView, StatusView, LoginView, ManageView, DeliveryView, LoginorsignupView) {
+], function (HomeView, OrderView, PolicyView, ConfirmView, StatusView, LoginView, ManageView, DeliveryView, LoginorsignupView, SignupemailView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -21,7 +22,8 @@ define([
             'login': 'showLogin',
             'manage': 'showManage',
             'delivery': 'showDelivery',
-						'loginorsignup' : 'showLoginorsignup',
+			'loginorsignup' : 'showLoginorsignup',
+			'signupemail' : 'showSignupemail',			
             // Default
             '*actions': 'defaultAction'
         }
@@ -78,13 +80,19 @@ define([
             deliveryView.render();
         });
 			
-				appRouter.on('route:showLoginorsignup', function () {
+		appRouter.on('route:showLoginorsignup', function () {
             // Call render on the module we loaded in via the dependency array
-						console.log("showLoginorsignup");
+			console.log("showLoginorsignup");
             var loginorsignupView = new LoginorsignupView();
             loginorsignupView.render();
         });
-
+		
+		appRouter.on('route:showSignupemail', function () {
+            // Call render on the module we loaded in via the dependency array
+            var signupemailView = new SignupemailView();
+            signupemailView.render();
+        });
+		
         appRouter.on('route:defaultAction', function (actions) {
 
             // We have no matching route, lets display the home page 
