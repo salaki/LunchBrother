@@ -2,12 +2,13 @@ define([
     'views/status/StatusView',
     'models/order/PaymentModel',
     'models/order/OrderModel',
+    'models/order/NotificationModel',
     'models/manage/DeliveryModel',
     'text!templates/manage/manageTemplate.html',
     'text!templates/manage/orderListTemplate.html',
     'i18n!nls/manage',
     'libs/semantic/dropdown.min'
-], function (StatusView, PaymentModel, OrderModel, DeliveryModel, manageTemplate, orderListTemplate, manageLocal) {
+], function (StatusView, PaymentModel, OrderModel, NotificationModel, DeliveryModel, manageTemplate, orderListTemplate, manageLocal) {
     var ManageView = Parse.View.extend({
         el: $("#page"),
         template: _.template(manageTemplate),
@@ -82,7 +83,7 @@ define([
                 success: function (results) {
                     for (var i = 0; i < results.length; i++) {
                         var newEvent = {};
-			var dishName1 = results[i].get('dishName1');
+			            var dishName1 = results[i].get('dishName1');
                         var dishName2 = results[i].get('dishName2');
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
@@ -168,6 +169,84 @@ define([
             self.deliveryDetails.set("status", manageLocal.onTheWay);
             self.deliveryDetails.set("address", this.$("#addressOption").val());
             self.deliveryDetails.save();
+            self.checkIfNotificationSent();
+        },
+
+        sendNotification: function() {
+            var query = new Parse.Query(PaymentModel);
+            query.equalTo("address", address);
+            query.equalTo("paymentCheck", true);
+            query.notEqualTo("isPickedUp", true);
+
+            //Display the orders which are from yesterday 2pm to today 12pm
+            var lowerDate = new Date(new Date().getTime() - 24*60*60*1000);
+            lowerDate.setHours(14, 0, 0, 0);
+            var upperDate = new Date();
+            upperDate.setHours(12, 0, 0, 0);
+
+            var orders = [];
+            query.greaterThan("createdAt", lowerDate);
+            query.lessThan("createdAt", upperDate);
+            query.limit(300);
+            query.find({
+                success: function (results) {
+                    for (var i=0; i<results.length; i++) {
+                        orders[i] = results[i].get('fname') + ",";
+                        orders[i] += results[i].get('lname') + ",";
+                        orders[i] += results[i].get('email');
+                    }
+
+                    Parse.Cloud.run('emailNotification', {
+                        pickupAddress: address,
+                        ordersToSend: orders
+                    }, {
+                        success: function () {
+                            console.log("Arrival notification has been sent successfully!");
+                            var notification = new NotificationModel();
+                            notification.set("key", this.getNotificationKey(address));
+                            notification.save({
+                                success: function(notification) {
+                                    console.log("Notification saved successfully!");
+                                },
+                                error: function(error) {
+                                    console.log("Notification saved failed! Reason: " + error.message);
+                                }
+                            });
+                        },
+                        error: function (error) {
+                            console.log("Notification failed to send. Error: " + error.message);
+                        }
+                    });
+                },
+                error: function (error) {
+                    console.log("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
+        checkIfNotificationSent: function() {
+            var notificationQuery = new Parse.Query(NotificationModel);
+            notificationQuery.equalTo("key", this.getNotificationKey());
+            notificationQuery.find({
+                success: function (results) {
+                    if(results.length > 0){
+                        console.log("Notification email has already been sent before!");
+                    }else{
+                        this.sendNotification();
+                    }
+                },
+                error: function (error) {
+                    console.log("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
+        getNotificationKey: function() {
+            var date = new Date().getDate();
+            var month = new Date().getMonth() + 1;
+            var year = new Date().getFullYear();
+            var key = this.$("#addressOption").val() + "-" + year + month + date;
+            return key;
         }
     });
 
