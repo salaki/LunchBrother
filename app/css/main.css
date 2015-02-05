@@ -339,3 +339,14 @@ header {
 	width: 50%;
 	height: 50%;
 }
+#signupReminder{
+	font-size: 15px;
+	color: #999;
+	text-align: center;
+	margin: 10px;
+}
+#copyright{
+	font-size: 15px;
+	text-align:center;
+	margin: 10px;
+}

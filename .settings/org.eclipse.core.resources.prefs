@@ -1,5 +1,7 @@
-#Thu Feb 05 01:45:58 EST 2015
+#Thu Feb 05 11:49:58 EST 2015
 eclipse.preferences.version=1
 encoding//app/index.html=UTF-8
 encoding//app/js/views/home/HomeView.js=UTF-8
+encoding//app/templates/account/loginorsignupTemplate.html=UTF-8
+encoding//app/templates/home/homeTemplate.html=UTF-8
 encoding//app/templates/order/orderTemplate.html=UTF-8
