@@ -8,9 +8,10 @@ define([
   'text!templates/home/statsTemplate.html',
   'text!templates/order/orderTemplate.html',
   'stripe',
+  'i18n!nls/order',
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
-], function (DishCollection, OrderModel, PaymentModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe) {
+], function (DishCollection, OrderModel, PaymentModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe, OrderViewLocal) {
     Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
     var OrderView = Parse.View.extend({
 
@@ -80,6 +81,24 @@ define([
                 on: 'blur',
                 inline: 'true'
             });
+
+            //Localization
+            this.$("#first_name").attr("placeholder", OrderViewLocal.firstName);
+            this.$("#last_name").attr("placeholder", OrderViewLocal.lastName);
+            this.$("#email").attr("placeholder", OrderViewLocal.emailAddress);
+            this.$("#pickUpAddress").text(OrderViewLocal.pickUpAddress);
+            this.$("#addressdetails").dropdown();
+            this.$("#inputCardInfo").text(OrderViewLocal.inputCardInfo);
+            this.$("#cardNumber").attr("placeholder", OrderViewLocal.cardNumber);
+            this.$("#expDate").text(OrderViewLocal.expirationDate);
+            this.$("#cvv2VerificationCode").text(OrderViewLocal.cvv2VerificationCode);
+            this.$("label[for=terms]").text(OrderViewLocal.termOfUse);
+            this.$("#readTermOfUse").text(OrderViewLocal.readTermOfUse);
+            this.$("#orderBtn").text(OrderViewLocal.orderBtn);
+            this.$("#paymentFail").text(OrderViewLocal.orderBtn);
+            this.$("#failedReason").text(OrderViewLocal.failedReason);
+            this.$("#pleaseDoubleCheckOrder").text(OrderViewLocal.pleaseDoubleCheckOrder);
+
             return this;
         },
 
@@ -89,7 +108,6 @@ define([
             if (response.error) {
                 // Pop out the error message window
                 self.displayPaymentFailDialog(response.error.message);
-		// Enable paymentBtn
             	$('#orderBtn').prop('disabled', false);
                 $('#orderBtn').removeClass('grey').addClass('red');
             }
@@ -106,7 +124,12 @@ define([
                 var stripepayment = self.model.totalCharge;
                 var i = 1;
                 _.each(self.model.orders, function (order) {
+                	if(locale == "zh-cn"){
                     var dishName = order.get('Description');
+                   }
+                   if(locale !== "zh-cn"){
+                   	var dishName = order.get('descriptionEn');
+                   }
                     var quantity = order.get('count');
                     paymentDetails.set('dishName' + i, dishName);
                     paymentDetails.set('quantity' + i, quantity);

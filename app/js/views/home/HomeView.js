@@ -3,10 +3,11 @@ define([
   'views/order/OrderView',
   'models/dish/DishModel',
   'models/dish/DishCollection',
+  'i18n!nls/string',
   'text!templates/home/homeTemplate.html',
   'text!templates/home/statsTemplate.html',
   'text!templates/order/orderTemplate.html'
-], function(DishView, OrderView, DishModel, DishCollection, homeTemplate, statsTemplate, orderTemplate) {
+], function(DishView, OrderView, DishModel, DishCollection, string, homeTemplate, statsTemplate, orderTemplate) {
 
   var HomeView = Parse.View.extend({
     // tagName: 'ul', // required, but defaults to 'div' if not set
@@ -41,6 +42,7 @@ define([
       this.dishes.bind('reset', this.loadAll);
       this.dishes.bind('all', this.render);
       this.dishes.fetch();
+
     },
 
     render: function() {
@@ -48,9 +50,14 @@ define([
       this.stats.tax = parseFloat((this.dishes.charge()*0.1).toFixed(3));
       this.stats.totalCharge = parseFloat((this.dishes.charge()+this.stats.tax).toFixed(3));
       this.$('#orderStats').html(this.statsTemplate(this.stats));
-
+      //Localization
+      $("#dishTitle").html(string.dishTitle);
+      $("#orderDetails").html(string.orderDetails);
+      $("#orderMessage").html(string.orderMessage);
+      $("#paymentBtn").html(string.paymentBtn);
+      $(".summary-tax-label").html(string.summaryTaxLabel);
+      $(".summary-total-label").html(string.summaryTotalLabel);
       this.delegateEvents();
-
       return this;
     },
 

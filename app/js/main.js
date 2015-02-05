@@ -1,8 +1,12 @@
 define([
   'router',
+  'jquery',
+  "i18n!nls/string",
   'semantic',
   'libs/semantic/dropdown.min'
-], function(router) {
+], function(router,$,string) {
+   'use strict';
+   
   var initialize = function() {
     console.log("main init");
     
@@ -11,10 +15,24 @@ define([
 
     Parse.initialize(appId, jsKey);
     
+    
     router.initialize();
+    
+    $("title").html(string.title);
+    $("#orderDish").html(string.orderDish);
+    $("#statusCheck").html(string.statusCheck);
+    $(".brand").html(string.brand);
+    $("#barTitle").html(string.barTitle);
+    $("#mobileOrder").html(string.mobileOrder);
+    $("#mobileStatus").html(string.mobileStatus);
+    $("#language,#mobileLanguage").html(string.language,string.mobileLanguage);
+    $("#mobileStatus").html(string.mobileStatus);
+    
+    
 
     $('.ui.dropdown').dropdown();
-    var cnDay = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+    
+    var cnDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     var today = new Date();
     var dayOfWeek = cnDay[today.getDay()];
     var date = today.toLocaleDateString();

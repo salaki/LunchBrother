@@ -1,7 +1,8 @@
-require.config({
+var config = {
     "baseUrl": "js",
     "paths": {
-        jquery: 'libs/jquery/jquery-1.9.1.min',
+        jquery: 'libs/jquery/jquery-1.11.2.min',
+        i18n: 'libs/require/i18n',
         underscore: 'libs/underscore/underscore-min',
         //backbone: 'libs/backbone/backbone-min',
         parse: 'libs/parse/parse-1.3.2.min',
@@ -10,17 +11,44 @@ require.config({
         semantic: 'libs/semantic/semantic.min'
     },
     shim: {
-        'main': ['parse'],
-        'parse':['jquery', 'underscore'],
-        "semantic": ["jquery"],
-        "libs/semantic/dropdown.min" :["jquery", "semantic"],
-        "libs/semantic/checkbox.min" :["jquery", "semantic"],
-        "libs/semantic/form.min" :["jquery", "semantic"],
-        
+        underscore: {
+            exports: '_'
+        },
+        jquery: {
+            exports: '$'
+        },
+        parse: {
+            deps: ['jquery', 'underscore'],
+            exports: 'Parse'
+        },
+        'main': ['parse', 'i18n'],
+        // 'parse':['jquery', 'underscore'],
+        "semantic": ['jquery'],
+        "libs/semantic/dropdown.min": ["jquery", "semantic"],
+        "libs/semantic/checkbox.min": ["jquery", "semantic"],
+        "libs/semantic/form.min": ["jquery", "semantic"],
     }
-});
+};
+
+var locale = getParameterByName('locale');
+if (locale && locale == "zh-cn") {
+    config.config = {
+        i18n: {
+            "locale": "zh-cn"
+        }
+    };
+}
+
+require.config(config);
 
 // Load the main app module to start the app
-require(["main"], function(main){
+require(["main"], function(main) {
     main.initialize();
 });
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}

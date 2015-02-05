@@ -8,9 +8,18 @@ header {
   min-width: 320px;
 }
 .ui.inverted.menu{
-  background-color: #E3151A;
+  background-color: #E3151A; 
+	opacity: 0.9;
+	-moz-box-shadow:0 0 5px rgba(0, 0, 0, 0.5);
+	box-shadow:0 0 5px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow:0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+.space{
+	width:100%;
+	clear: both;
+	height: 100px;
+}
 #today{
   margin-top: 4px;
   font-weight: normal;
@@ -36,6 +45,14 @@ header {
 #hamBtnWrapper .ui.dropdown .menu{
   right: 0px;
   left: auto;
+}
+
+#language{
+	display: inline-block;
+}
+
+.language-text{
+	float:left;
 }
 
 #page{
@@ -106,7 +123,7 @@ header {
 .summary-tax-label{
   font-size: 12px;
 }
-#orderBtn.red, #paymentBtn.red, #loginBtn.red,#arriveBtn.red{
+#orderBtn.red, #paymentBtn.red, #loginBtn.red,#arriveBtn.red,#signUpBtn.red{
   background-color: #e3151e;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
@@ -114,8 +131,9 @@ header {
 	position: relative;
 }
 
-#orderBtn.grey{
+#orderBtn.grey,#loginBtn.grey{
 	background-color: #dddddd;
+	box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   color:#888888;
   padding: 1em 2em 1.35em;
   width: 100%;
@@ -129,27 +147,47 @@ header {
 	position: relative;
 }
   
-#orderBtn.red:hover, #paymentBtn.red:hover, #loginBtn.red:hover,#arriveBtn.red:hover {
+#orderBtn.red:hover, #paymentBtn.red:hover, #loginBtn.red:hover,#arriveBtn.red:hover, #signUpBtn.red:hover {
 	box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
 	top: 1px;
 }
 
-#orderBtn.red:active, #paymentBtn.red:active, #loginBtn.red:active,#arriveBtn.red:active  {
+#orderBtn.red:active, #paymentBtn.red:active, #loginBtn.red:active,#arriveBtn.red:active,
+#signUpBtn.red:active{
 	box-shadow: 0 0 #ab3c3c;
 	top: 2px;
 }
 
 
+#loginBtn.grey:hover{
+	box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+	top: 1px;
+}
+
+#loginBtn.grey:active {
+	box-shadow: 0 0 #ab3c3c;
+	top: 2px;
+}
+
+.notification{
+	margin-top:30px;
+}
+
 #orderMessage{
   box-shadow: none;
   background: none;
-  font-size: 11px;
+	font-size: 12px;
   color: #999;
+	padding: 20px 0 20px 0 !important;
+	margin: 0 !important;
 }
+
 #orderMessage a{
   color: #E3151E;
 }
-
+#statusTracker{
+	font-size: 12px;
+}
 #page .ui.segment{
   padding: 0.4em;
 }
@@ -289,4 +327,8 @@ header {
 
 #termsandconditions > a{
   padding-left:8%;
+}
+
+#loginorsignup{
+	margin-top:360px;
 }

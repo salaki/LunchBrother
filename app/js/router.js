@@ -6,8 +6,10 @@ define([
   'views/status/StatusView',
   'views/manage/LoginView',
   'views/manage/ManageView',
-  'views/manage/DeliveryView'
-], function (HomeView, OrderView, PolicyView, ConfirmView, StatusView, LoginView, ManageView, DeliveryView) {
+  'views/manage/DeliveryView',
+	'views/account/LoginorsignupView'
+	
+], function (HomeView, OrderView, PolicyView, ConfirmView, StatusView, LoginView, ManageView, DeliveryView, LoginorsignupView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -19,7 +21,7 @@ define([
             'login': 'showLogin',
             'manage': 'showManage',
             'delivery': 'showDelivery',
-
+						'loginorsignup' : 'showLoginorsignup',
             // Default
             '*actions': 'defaultAction'
         }
@@ -84,6 +86,13 @@ define([
             } else {
                 window.location.hash = "#login";
             }
+        });
+			
+				appRouter.on('route:showLoginorsignup', function () {
+            // Call render on the module we loaded in via the dependency array
+						console.log("showLoginorsignup");
+            var loginorsignupView = new LoginorsignupView();
+            loginorsignupView.render();
         });
 
         appRouter.on('route:defaultAction', function (actions) {

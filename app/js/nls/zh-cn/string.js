@@ -1,0 +1,18 @@
+ define({
+      "title" : "带饭大哥",
+      "brand" : "带饭大哥",
+      "barTitle" : "带饭大哥",
+      "language" : "中文",
+      "mobileLanguage" : "中文",
+      "orderDish" : "订餐",
+      "statusCheck" : "送餐状态查询",
+      "mobileOrder" : "订餐",
+      "mobileStatus" : "送餐状态查询",
+      "dishTitle" : "今日可选菜品",
+      "orderMessage" : "带饭大哥每天中午12:00-12:30会送餐到马大，请各位顾客老爷小姐注意查看送餐状态,准时取餐.",
+      "paymentBtn" : "大哥，买单!",
+      "orderDetails" : "您的订单如下:",
+      "summaryCount" : "份",
+      "summaryTaxLabel" : "税和运费：",
+      "summaryTotalLabel" : "合计：",
+    });

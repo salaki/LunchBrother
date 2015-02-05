@@ -5,7 +5,12 @@
   <div class="content">
     <div class="ui two column grid">
       <div class="column dish-desc">
+      	<% if(locale == "zh-cn"){%>
        <%=Description%>
+        <%}%>
+        <% if(locale !== "zh-cn"){%>
+        <%=descriptionEn %>
+        <%}%>
       </div>
       <div class="column">
         <div class="ui three column grid">

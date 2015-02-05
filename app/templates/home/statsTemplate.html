@@ -1,26 +1,30 @@
 <div class="ui vertical segment">
-	<h2 style="padding:1px 0 0;" class="ui header small">您的订单如下：</h2>
+	<h2 id="orderDetails" style="padding:1px 0 0;" class="ui header small"></h2>
 	<% _.each(orders, function(order) { %>
-		<div class="ui column grid summary-list">
-			<div class="eight wide column">
-				<span class="summary-name">
-        <%= order.get('type') %>
-        </span>
-			</div>
-			<div class="four wide column right aligned"><span class="summary-count">
-          <%= order.get('count') %>
-          份</span>
-			</div>
-			<div class="four wide column right aligned"><span class="summary-price">$
-          <%= (order.get('Unit_Price')*order.get('count')).toFixed(2) %>
-          </span>
-			</div>
+	<div class="ui column grid summary-list">
+		<div class="eight wide column">
+			<span class="summary-name"> <%if(locale == "zh-cn"){%>
+				<%= order.get('type') %>
+				<%}%>
+				<%if(locale !== "zh-cn"){%>
+				<%= order.get('typeEn') %>
+				<%}%> </span>
 		</div>
-		<% }); %>
+		<div class="four wide column right aligned">
+			<span class="summary-count"> <%= order.get('count') %> </span>
+		</div>
+		<div class="four wide column right aligned">
+			<span class="summary-price">$
+				<%= (order.get('Unit_Price')*order.get('count')).toFixed(2) %> </span>
+		</div>
+	</div>
+	<% }); %>
 </div>
-<div class="ui vertical segment right aligned"><strong class="summary-tax-label">税和运费：</strong><span class="summary-tax">$<%= tax %></span>
+<div class="ui vertical segment right aligned">
+	<strong class="summary-tax-label"></strong><span class="summary-tax">$<%= tax %></span>
 </div>
 
 </div>
-<div class="ui vertical segment right aligned"><strong class="summary-total-label">合计：</strong><span class="summary-total">$<%= totalCharge %></span>
+<div class="ui vertical segment right aligned">
+	<strong class="summary-total-label"></strong><span class="summary-total">$<%= totalCharge %></span>
 </div>
