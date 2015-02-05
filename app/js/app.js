@@ -27,6 +27,7 @@ var config = {
         "libs/semantic/dropdown.min": ["jquery", "semantic"],
         "libs/semantic/checkbox.min": ["jquery", "semantic"],
         "libs/semantic/form.min": ["jquery", "semantic"],
+				"libs/semantic/sidebar.min": ["jquery", "semantic"],
     }
 };
 
