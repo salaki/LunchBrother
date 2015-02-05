@@ -8,9 +8,18 @@ header {
   min-width: 320px;
 }
 .ui.inverted.menu{
-  background-color: #E3151A;
+  background-color: #E3151A; 
+	opacity: 0.9;
+	-moz-box-shadow:0 0 5px rgba(0, 0, 0, 0.5);
+	box-shadow:0 0 5px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow:0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+.space{
+	width:100%;
+	clear: both;
+	height: 100px;
+}
 #today{
   margin-top: 4px;
   font-weight: normal;
