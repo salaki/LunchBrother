@@ -16,14 +16,15 @@ define([
         routes: {
             // Define some URL routes
             'order': 'showOrder',
+            'home': 'showHome',
             'policy': 'showPolicy',
             'confirm': 'showConfirm',
             'status': 'showStatus',
             'login': 'showLogin',
             'manage': 'showManage',
             'delivery': 'showDelivery',
-			'loginorsignup' : 'showLoginorsignup',
-			'signupemail' : 'showSignupemail',			
+	    //'loginorsignup' : 'showLoginorsignup',
+	    'signupemail' : 'showSignupemail',			
             // Default
             '*actions': 'defaultAction'
         }
@@ -71,33 +72,53 @@ define([
         appRouter.on('route:showManage', function () {
             // Call render on the module we loaded in via the dependency array
             var manageView = new ManageView();
-            manageView.render();
+            var currentUser = Parse.User.current();
+            if (currentUser.get('permission') == 1) {
+                 manageView.render();
+            } else {
+                window.location.hash = "#login";
+            }
         });
 
         appRouter.on('route:showDelivery', function () {
             // Call render on the module we loaded in via the dependency array
             var deliveryView = new DeliveryView();
-            deliveryView.render();
+            var currentUser = Parse.User.current();
+            if (currentUser.get('permission') == 2) {
+                 deliveryView.render();
+            } else {
+                window.location.hash = "#login";
+            }
         });
 			
-		appRouter.on('route:showLoginorsignup', function () {
+	//appRouter.on('route:showLoginorsignup', function () {
             // Call render on the module we loaded in via the dependency array
-			console.log("showLoginorsignup");
-            var loginorsignupView = new LoginorsignupView();
-            loginorsignupView.render();
-        });
+	//    console.log("showLoginorsignup");
+        //    var loginorsignupView = new LoginorsignupView();
+        //    loginorsignupView.render();
+        //});
 		
-		appRouter.on('route:showSignupemail', function () {
+        appRouter.on('route:showSignupemail', function () {
             // Call render on the module we loaded in via the dependency array
             var signupemailView = new SignupemailView();
             signupemailView.render();
         });
+
+        appRouter.on('route:showHome', function () {
+
+            var homeview = new homeView();
+	    homeView.render();
+        });
 		
         appRouter.on('route:defaultAction', function (actions) {
 
-            // We have no matching route, lets display the home page 
-            var homeView = new HomeView();
+            // we have no matching route, lets display the signup&login page 
+	    console.log("showLoginorsignup");
+            var loginorsignupView = new LoginorsignupView();
+	    loginorsignupView.render();
+
         });
+
 
         Parse.history.start();
     };
