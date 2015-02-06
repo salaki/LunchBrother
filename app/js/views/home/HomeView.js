@@ -59,6 +59,7 @@ define([
       $("#paymentBtn").html(string.paymentBtn);
       $(".summary-tax-label").html(string.summaryTaxLabel);
       $(".summary-total-label").html(string.summaryTotalLabel);
+      $('#account').show();
       this.delegateEvents();
       return this;
     },

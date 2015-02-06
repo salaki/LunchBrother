@@ -36,9 +36,19 @@ define([
     var dayOfWeek = cnDay[today.getDay()];
     var date = today.toLocaleDateString();
     $('#today').text(dayOfWeek + ', ' + date);
-    $('#account').click(function() {
-             $('.ui.sidebar').sidebar('toggle');
+
+    $('#signOutBtn').click(function() {
+          $('.ui.sidebar').sidebar('hide');
+          Parse.User.logOut();
+	  window.location.href='#login';
+	  location.reload();
     });
+
+    $('#account').click(function() {
+         $('.ui.sidebar').sidebar('toggle');
+    });
+
+    $('#account').hide();
   };
 
   return {

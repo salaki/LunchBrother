@@ -37,7 +37,15 @@ define([
 
         var currentUser = Parse.User.current();
 
-        var permission = currentUser.get('permission');
+	var permission = 0;
+
+	console.log(currentUser);
+
+	if(currentUser != null) {
+
+            permission = currentUser.get('permission');
+
+	}
 
         if(permission >= 1) {
 
@@ -72,8 +80,8 @@ define([
           appRouter.on('route:showHome', function () {
 
               // Call render on the module we loaded in via the dependency array
-              var homeview = new HomeView();
-	      homeView.render();
+              var homeView = new HomeView();
+	      homeview.render();
           });
 
        }
@@ -112,14 +120,14 @@ define([
         });
 			
 
-				appRouter.on('route:showLoginorsignup', function () {
+	appRouter.on('route:showLoginorsignup', function () {
             // Call render on the module we loaded in via the dependency array
 						console.log("showLoginorsignup");
             var loginorsignupView = new LoginorsignupView();
             loginorsignupView.render();
         });
 			
-				appRouter.on('route:showSignup', function () {
+	appRouter.on('route:showSignup', function () {
             // Call render on the module we loaded in via the dependency array
             var signupView = new SignupView();
             signupView.render();
@@ -128,7 +136,6 @@ define([
         appRouter.on('route:defaultAction', function (actions) {
 
             // we have no matching route, lets display the signup&login page 
-	    console.log("showLoginorsignup");
             var loginorsignupView = new LoginorsignupView();
 	    loginorsignupView.render();
 
