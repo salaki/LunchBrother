@@ -81,7 +81,7 @@ define([
 
               // Call render on the module we loaded in via the dependency array
               var homeView = new HomeView();
-	      homeview.render();
+	            homeView.render();
           });
 
        }
