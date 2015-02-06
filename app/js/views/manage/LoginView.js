@@ -190,13 +190,13 @@ define([
                 success: function (user) {
                     var permission = user.get('permission');
 
-                    if (permission == 0) {
+                    if (permission == 1) {
                         var homeView = new HomeView();
                         $("#reminder,#loginInfo").remove();
                         $("#page").append(homeView.render().el);
                     }
 
-                    if (permission == 1) {
+                    if (permission == 3) {
                         var manageView = new ManageView();
                         $("#reminder,#loginInfo").remove();
                         $("#page").append(manageView.render().el);

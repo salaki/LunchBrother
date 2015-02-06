@@ -39,7 +39,7 @@ define([
 
         var permission = currentUser.get('permission');
 
-        if(permission >= 0) {
+        if(permission >= 1) {
 
           appRouter.on('route:showOrder', function () {
 
@@ -71,7 +71,8 @@ define([
 
           appRouter.on('route:showHome', function () {
 
-              var homeview = new homeView();
+              // Call render on the module we loaded in via the dependency array
+              var homeview = new HomeView();
 	      homeView.render();
           });
 
@@ -92,7 +93,7 @@ define([
         appRouter.on('route:showManage', function () {
             // Call render on the module we loaded in via the dependency array
             var manageView = new ManageView();
-            if (permission == 1) {
+            if (permission == 3) {
                  manageView.render();
             } else {
                 window.location.hash = "#login";
