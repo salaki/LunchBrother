@@ -350,3 +350,22 @@ header {
 	text-align:center;
 	margin: 10px;
 }
+
+.profilePic {
+	border-radius: 100%;
+	overflow: hidden;
+	-webkit-box-sizing: content-box;
+  	-moz-box-sizing: content-box;
+  	box-sizing: content-box;
+	
+	margin: 0 auto;		
+		border: 5px solid #dddddd;
+		width: 150px;
+		height: 150px;
+}
+
+#accountBalance{
+	float:none;
+	max-width: 400px;
+}
+
