@@ -31,12 +31,14 @@ define([
     
 
     $('.ui.dropdown').dropdown();
-    
     var cnDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     var today = new Date();
     var dayOfWeek = cnDay[today.getDay()];
     var date = today.toLocaleDateString();
     $('#today').text(dayOfWeek + ', ' + date);
+    $('#account').click(function() {
+             $('.ui.sidebar').sidebar('toggle');
+    });
   };
 
   return {
