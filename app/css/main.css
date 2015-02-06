@@ -335,9 +335,19 @@ header {
 #logo{
 	text-align: center;
 }
-#img{
+
+@media (max-width: 736px){
+	#img{
+	width: 100%;
+	height: 100%;
+	}
+}
+
+@media (min-width: 736px){
+	#img{
 	width: 50%;
 	height: 50%;
+	}
 }
 #signupReminder{
 	font-size: 15px;
@@ -346,9 +356,10 @@ header {
 	margin: 10px;
 }
 #copyright{
-	font-size: 15px;
+	font-size: 12px;
 	text-align:center;
 	margin: 10px;
+	color: #888888;
 }
 
 .profilePic {
