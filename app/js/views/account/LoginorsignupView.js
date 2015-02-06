@@ -1,5 +1,7 @@
 define([
-  'text!templates/account/loginorsignupTemplate.html'
+        'text!templates/account/loginorsignupTemplate.html',
+
+  
 ], function (loginorsignupTemplate) {
 
     var LoginorsignupView = Parse.View.extend({
@@ -16,7 +18,6 @@ define([
             this.$el.html(this.template());
             return this;
         }
-
     });
     return LoginorsignupView;
 });

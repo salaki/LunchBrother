@@ -7,21 +7,24 @@ define([
   'views/manage/LoginView',
   'views/manage/ManageView',
   'views/manage/DeliveryView',
-	'views/account/LoginorsignupView'
+  'views/account/LoginorsignupView',
+  'views/account/SignupemailView'
 	
-], function (HomeView, OrderView, PolicyView, ConfirmView, StatusView, LoginView, ManageView, DeliveryView, LoginorsignupView) {
+], function (HomeView, OrderView, PolicyView, ConfirmView, StatusView, LoginView, ManageView, DeliveryView, LoginorsignupView, SignupemailView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
             // Define some URL routes
             'order': 'showOrder',
+            'home': 'showHome',
             'policy': 'showPolicy',
             'confirm': 'showConfirm',
             'status': 'showStatus',
             'login': 'showLogin',
             'manage': 'showManage',
             'delivery': 'showDelivery',
-						'loginorsignup' : 'showLoginorsignup',
+	    //'loginorsignup' : 'showLoginorsignup',
+	    'signupemail' : 'showSignupemail',			
             // Default
             '*actions': 'defaultAction'
         }
@@ -32,33 +35,47 @@ define([
 
         var appRouter = new AppRouter();
 
-        appRouter.on('route:showOrder', function () {
+        var currentUser = Parse.User.current();
 
-            // Call render on the module we loaded in via the dependency array
-            var orderView = new OrderView();
-            orderView.render();
-        });
+        var permission = currentUser.get('permission');
 
-        appRouter.on('route:showPolicy', function () {
-            // Call render on the module we loaded in via the dependency array
-            var policyView = new PolicyView();
-            policyView.render();
-        });
+        if(permission >= 0) {
 
-        appRouter.on('route:showConfirm', function () {
+          appRouter.on('route:showOrder', function () {
 
-            // Call render on the module we loaded in via the dependency array
-            var confirmView = new ConfirmView();
-            confirmView.render();
+              // Call render on the module we loaded in via the dependency array
+              var orderView = new OrderView();
+              orderView.render();
+          });
 
-        });
+          appRouter.on('route:showPolicy', function () {
+              // Call render on the module we loaded in via the dependency array
+              var policyView = new PolicyView();
+              policyView.render();
+          });
 
-        appRouter.on('route:showStatus', function () {
+          appRouter.on('route:showConfirm', function () {
 
-            // Call render on the module we loaded in via the dependency array
-            var statusView = new StatusView();
-            statusView.render();
-        });
+              // Call render on the module we loaded in via the dependency array
+              var confirmView = new ConfirmView();
+              confirmView.render();
+
+          });
+
+          appRouter.on('route:showStatus', function () {
+
+              // Call render on the module we loaded in via the dependency array
+              var statusView = new StatusView();
+              statusView.render();
+          });
+
+          appRouter.on('route:showHome', function () {
+
+              var homeview = new homeView();
+	      homeView.render();
+          });
+
+       }
 
         appRouter.on('route:showLogin', function () {
             // Call render on the module we loaded in via the dependency array
@@ -66,18 +83,34 @@ define([
             loginView.render();
         });
 
+        appRouter.on('route:showSignupemail', function () {
+            // Call render on the module we loaded in via the dependency array
+            var signupemailView = new SignupemailView();
+            signupemailView.render();
+        });
+
         appRouter.on('route:showManage', function () {
             // Call render on the module we loaded in via the dependency array
             var manageView = new ManageView();
-            manageView.render();
+            if (permission == 1) {
+                 manageView.render();
+            } else {
+                window.location.hash = "#login";
+            }
         });
 
         appRouter.on('route:showDelivery', function () {
             // Call render on the module we loaded in via the dependency array
             var deliveryView = new DeliveryView();
-            deliveryView.render();
+            var currentUser = Parse.User.current();
+            if (permission == 2) {
+                 deliveryView.render();
+            } else {
+                window.location.hash = "#login";
+            }
         });
 			
+
 				appRouter.on('route:showLoginorsignup', function () {
             // Call render on the module we loaded in via the dependency array
 						console.log("showLoginorsignup");
@@ -93,9 +126,13 @@ define([
 
         appRouter.on('route:defaultAction', function (actions) {
 
-            // We have no matching route, lets display the home page 
-            var homeView = new HomeView();
+            // we have no matching route, lets display the signup&login page 
+	    console.log("showLoginorsignup");
+            var loginorsignupView = new LoginorsignupView();
+	    loginorsignupView.render();
+
         });
+
 
         Parse.history.start();
     };

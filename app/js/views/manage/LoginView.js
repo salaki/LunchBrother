@@ -3,8 +3,9 @@ define([
     'models/order/OrderModel',
     'views/manage/DeliveryView',
     'views/manage/ManageView',
+    'views/home/HomeView',
     'text!templates/manage/loginTemplate.html'
-], function (PaymentModel, OrderModel, DeliveryView, ManageView, loginTemplate) {
+], function (PaymentModel, OrderModel, DeliveryView, ManageView, HomeView, loginTemplate) {
 
     var LoginView = Parse.View.extend({
         el: $("#page"),
@@ -188,6 +189,12 @@ define([
                 //getcurrentuser's permission
                 success: function (user) {
                     var permission = user.get('permission');
+
+                    if (permission == 0) {
+                        var homeView = new HomeView();
+                        $("#reminder,#loginInfo").remove();
+                        $("#page").append(homeView.render().el);
+                    }
 
                     if (permission == 1) {
                         var manageView = new ManageView();
