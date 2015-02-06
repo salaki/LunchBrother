@@ -84,6 +84,12 @@ define([
             var loginorsignupView = new LoginorsignupView();
             loginorsignupView.render();
         });
+			
+				appRouter.on('route:showSignup', function () {
+            // Call render on the module we loaded in via the dependency array
+            var signupView = new SignupView();
+            signupView.render();
+        });
 
         appRouter.on('route:defaultAction', function (actions) {
 
