@@ -180,11 +180,6 @@ define([
                     }
                 });
             }
-	    //Enable the button
-	    //setTimeout(function() {
-            //	$('#orderBtn').prop('disabled', false);
-            //	$('#orderBtn').removeClass('grey').addClass('red');
-	    //}, 2000);
         },
         orderSubmit: function (e) {
             e.preventDefault();
