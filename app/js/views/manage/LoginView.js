@@ -189,6 +189,11 @@ define([
                 //getcurrentuser's permission
                 success: function (user) {
                     var permission = user.get('permission');
+                    this.$("#userEmail").text(user.get('email'));
+                    this.$("#userPhone").text(user.get('telnum'));
+                    this.$("#userFullName").text(user.get('firstName') + " " + user.get('lastName'));
+                    this.$("#userCreditBalance").text(user.get('creditBalance'));
+                    this.$("#accountBarFirstName").text(user.get('firstName'));
 
                     if (permission == 1) {
                         var homeView = new HomeView();

@@ -34,57 +34,67 @@ define([
         console.log('router initialize');
 
         var appRouter = new AppRouter();
-
-        var currentUser = Parse.User.current();
-
-	var permission = 0;
-
-	console.log(currentUser);
-
-	if(currentUser != null) {
-
-            permission = currentUser.get('permission');
-
-	}
-
-        if(permission >= 1) {
+	    var permission = 0;
 
           appRouter.on('route:showOrder', function () {
-
-              // Call render on the module we loaded in via the dependency array
-              var orderView = new OrderView();
-              orderView.render();
+              var currentUser = Parse.User.current();
+              if(currentUser != null) {
+                  permission = currentUser.get('permission');
+              }
+              if(permission >=1){
+                  // Call render on the module we loaded in via the dependency array
+                  var orderView = new OrderView();
+                  orderView.render();
+              }
           });
 
           appRouter.on('route:showPolicy', function () {
-              // Call render on the module we loaded in via the dependency array
-              var policyView = new PolicyView();
-              policyView.render();
+              var currentUser = Parse.User.current();
+              if(currentUser != null) {
+                  permission = currentUser.get('permission');
+              }
+              if(permission >=1) {
+                  // Call render on the module we loaded in via the dependency array
+                  var policyView = new PolicyView();
+                  policyView.render();
+              }
           });
 
           appRouter.on('route:showConfirm', function () {
-
-              // Call render on the module we loaded in via the dependency array
-              var confirmView = new ConfirmView();
-              confirmView.render();
-
+              var currentUser = Parse.User.current();
+              if(currentUser != null) {
+                  permission = currentUser.get('permission');
+              }
+              if(permission >=1) {
+                  // Call render on the module we loaded in via the dependency array
+                  var confirmView = new ConfirmView();
+                  confirmView.render();
+              }
           });
 
           appRouter.on('route:showStatus', function () {
-
-              // Call render on the module we loaded in via the dependency array
-              var statusView = new StatusView();
-              statusView.render();
+              var currentUser = Parse.User.current();
+              if(currentUser != null) {
+                  permission = currentUser.get('permission');
+              }
+              if(permission >=1) {
+                  // Call render on the module we loaded in via the dependency array
+                  var statusView = new StatusView();
+                  statusView.render();
+              }
           });
 
           appRouter.on('route:showHome', function () {
-
-              // Call render on the module we loaded in via the dependency array
-              var homeView = new HomeView();
-	            homeView.render();
+              var currentUser = Parse.User.current();
+              if(currentUser != null) {
+                  permission = currentUser.get('permission');
+              }
+              if(permission >=1) {
+                  // Call render on the module we loaded in via the dependency array
+                  var homeView = new HomeView();
+                  homeView.render();
+              }
           });
-
-       }
 
         appRouter.on('route:showLogin', function () {
             // Call render on the module we loaded in via the dependency array
@@ -101,6 +111,10 @@ define([
         appRouter.on('route:showManage', function () {
             // Call render on the module we loaded in via the dependency array
             var manageView = new ManageView();
+            var currentUser = Parse.User.current();
+            if(currentUser != null) {
+                permission = currentUser.get('permission');
+            }
             if (permission == 3) {
                  manageView.render();
             } else {
@@ -112,6 +126,9 @@ define([
             // Call render on the module we loaded in via the dependency array
             var deliveryView = new DeliveryView();
             var currentUser = Parse.User.current();
+            if(currentUser != null) {
+                permission = currentUser.get('permission');
+            }
             if (permission == 2) {
                  deliveryView.render();
             } else {
@@ -126,7 +143,7 @@ define([
             var loginorsignupView = new LoginorsignupView();
             loginorsignupView.render();
         });
-			
+
 	appRouter.on('route:showSignup', function () {
             // Call render on the module we loaded in via the dependency array
             var signupView = new SignupView();

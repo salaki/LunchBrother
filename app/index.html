@@ -99,23 +99,23 @@
 
 				<div class="sixteen wide column center aligned">
 					<div class="profilePic clear">
-						<img width="150px" alt="Anne Hathaway picture" src="http://upload.wikimedia.org/wikipedia/commons/e/e1/Anne_Hathaway_Face.jpg">
+						<img id="userImage" width="150px" alt="Anne Hathaway picture" src="http://upload.wikimedia.org/wikipedia/commons/e/e1/Anne_Hathaway_Face.jpg">
 					</div>
-					<h5 class="user-name">Anne Hathaway</h5>
+					<h5 class="user-name" id="userFullName"></h5>
 					<div class="ui divider"></div>
 					<div class="ui medium label">
-						<i class="mail icon"></i> Email:<span>abc@gmail.com</span>
+						<i class="mail icon"></i> Email:<span id="userEmail"></span>
 					</div>
 					<div class="ui divider"></div>
 					<div class="ui medium label">
-						<i class="mobile icon"></i> Mobile:<span>3292838232</span>
+						<i class="mobile icon"></i> Mobile:<span id="userPhone"></span>
 					</div>
 					<div class="ui divider"></div>
 					<div class="ui divider hidden"></div>
 					<div class="ui statistics clearfix">
 						<div id="accountBalance" class="statistic">
 							<div class="value">
-								<i class="dollar icon"></i> 30
+								<i class="dollar icon"></i><span id="userCreditBalance"></span>
 							</div>
 							<div class="ui divider hidden"></div>
 							<div class="label">
@@ -136,7 +136,7 @@
 	<div class="ui fixed bottom inverted menu navbar page grid">
 		<a href="" class="item">
 			<div class="right menu">
-				<a id="account" class="item">Hi, abc <i class="user icon"></i>
+				<a id="account" class="item">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i>
 				</a>
 			</div>
 		</a>

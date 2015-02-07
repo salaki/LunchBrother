@@ -40,6 +40,11 @@ define([
                         user.set("telnum", Number(this.$("#phonenumber").val()));
                         user.signUp(null, {
                             success: function(user) {
+                                this.$("#userEmail").text(user.get("email"));
+                                this.$("#userPhone").text(user.get("telnum"));
+                                this.$("#userFullName").text(user.get("firstName") + " " + user.get("lastName"));
+                                this.$("#userCreditBalance").text(user.get("creditBalance"));
+                                this.$("#accountBarFirstName").text(user.get("firstName"));
                                 window.location.href = '#home';
                             },
                             error: function(user, error) {
