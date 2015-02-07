@@ -98,7 +98,7 @@ define([
             this.$("#paymentFail").text(OrderViewLocal.orderBtn);
             this.$("#failedReason").text(OrderViewLocal.failedReason);
             this.$("#pleaseDoubleCheckOrder").text(OrderViewLocal.pleaseDoubleCheckOrder);
-
+					
             return this;
         },
 

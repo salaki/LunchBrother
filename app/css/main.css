@@ -290,12 +290,12 @@ header {
   margin-top: 0;
 }
 
-#contactinfo,#cardinfo,#agreements,#card-expinfo,#basicinfo{
+#contactinfo,#cardinfo,#agreements,#card-expinfo,#basicinfo,#cardselector{
   margin:2%;
 }
 
 #cw2{
-   width:25% !important;
+   max-width:160px !important;
 }
 
 .clearfix:after{ 

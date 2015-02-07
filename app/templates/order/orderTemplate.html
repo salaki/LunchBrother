@@ -25,8 +25,46 @@
 	</div>
 	<div class="ui divider"></div>
 	<div class="ui segment">
+		<div id="cardselector" class="grouped fields">
+
+			<div class="ui basic segment">
+				<h5 class="ui left floated header">
+    Your cards:
+  </h5>
+				
+    <div id="newCard" class="ui basic right floated button">
+  <i class="icon payment"></i>
+  Add a Card
+</div>
+
+			</div>
+
+			<div class="field">
+				<div class="ui radio checkbox checked">
+					<input type="radio" name="card" checked="">
+					<label>xxxx-xxxx-xxxx-<span>1234</span>
+					</label>
+				</div>
+			</div>
+			<div class="field">
+				<div class="ui radio checkbox">
+					<input type="radio" name="card">
+					<label>xxxx-xxxx-xxxx-<span>1234</span>
+					</label>
+				</div>
+			</div>
+			<div class="field">
+				<div class="ui radio checkbox">
+					<input type="radio" name="card">
+					<label>xxxx-xxxx-xxxx-<span>1234</span>
+					</label>
+				</div>
+			</div>
+
+		</div>
 		<div id="cardinfo" class="field">
-			<p id="inputCardInfo">请输入您的信用卡信息：</p>
+			<div class="ui divider"></div>
+			<h5 id="inputCardInfo">请输入您的信用卡信息：</h5>
 			<!-- <div class="sixteen wide field">
 				<input class="ui fluid input" placeholder="持卡人姓名" type="text" name="name" />
 			</div> -->
@@ -34,6 +72,7 @@
 				<input class="ui fluid input card-number stripe-sensitive required" id="cardNumber" name="number" placeholder="卡号" type="text" size="20" data-stripe="number" />
 			</div>
 		</div>
+		<div class="ui divider hidden"></div>
 		<div id="card-expinfo" class="fields">
 			<div id="exptime" class="four wide field expiry-wrapper">
 				<label id="expDate">过期日期：</label>
@@ -52,7 +91,7 @@
 					<option value="12">12</option>
 				</select>
 			</div>
-		<div id="expyear" class="card-expyear four wide field">
+			<div id="expyear" class="card-expyear four wide field">
 				<label>&nbsp;</label>
 				<select id="expYear" data-stripe="exp-year" class="ui dropdown card-expiry-year stripe-sensitive required">
 					<option value="2015">2015</option>
@@ -68,14 +107,14 @@
 				<input type="text" class="ui input card-cvc" data-stripe="cvc" size="4">
 			</div>
 		</div>
-		<div id="agreements" class = "two fields">
+		<div id="agreements" class="two fields">
 			<div id="terms" class="required inline field">
 				<div>
 					<input type="checkbox" name="terms">
-                    <label for="terms">我同意带饭大哥使用协议和条款</label>
+					<label for="terms">我同意带饭大哥使用协议和条款</label>
 				</div>
 			</div>
-			
+
 			<div id="termsandconditions" class="inline field">
 				<a id="readTermOfUse" href="#policy">阅读协议和条款</a>
 			</div>
@@ -101,7 +140,8 @@
 				<td style="font-size: 12pt">
 					<label id="failedReason">失败原因:</label>
 					<label id="paymentFailMessage"></label>
-					<br><label id="pleaseDoubleCheckOrder">请确认信用卡信息后和订单内容再试</label>
+					<br>
+					<label id="pleaseDoubleCheckOrder">请确认信用卡信息后和订单内容再试</label>
 				</td>
 			</tr>
 		</table>
