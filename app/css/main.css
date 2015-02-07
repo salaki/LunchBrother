@@ -371,16 +371,14 @@ header {
 	
 	margin: 0 auto;		
 		border: 5px solid #dddddd;
-		width: 150px;
-		height: 150px;
+		width: 120px;
+		height: 120px;
 }
 
-#accountBalance{
-	float:none;
-	max-width: 400px;
+#accountBalance .label{
+		max-width: 200px;
 }
 
 #referlink {
-	width: 90%;
 	margin:0 auto;
 }
