@@ -189,22 +189,17 @@ define([
                 //getcurrentuser's permission
                 success: function (user) {
                     var permission = user.get('permission');
-                    this.$("#userEmail").text(user.get('email'));
-                    this.$("#userPhone").text(user.get('telnum'));
-                    this.$("#userFullName").text(user.get('firstName') + " " + user.get('lastName'));
-                    this.$("#userCreditBalance").text(user.get('creditBalance'));
-                    this.$("#accountBarFirstName").text(user.get('firstName'));
 
                     if (permission == 1) {
                         var homeView = new HomeView();
                         $("#reminder,#loginInfo").remove();
-                        $("#page").append(homeView.render().el);
+                        window.location.href = '#home';
                     }
 
                     if (permission == 3) {
                         var manageView = new ManageView();
                         $("#reminder,#loginInfo").remove();
-                        $("#page").append(manageView.render().el);
+                        window.location.href = '#manage';
                     }
 
                     if (permission == 2) {
@@ -212,7 +207,7 @@ define([
                             model: orderDetails
                         });
                         $("#reminder,#loginInfo").remove();
-                        $("#page").append(deliveryView.render().el);
+                        window.location.href = '#delivery';
                     }
                 },
                 error: function (user, error) {
