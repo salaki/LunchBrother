@@ -192,22 +192,19 @@ define([
 
                     if (permission == 1) {
                         var homeView = new HomeView();
-                        $("#reminder,#loginInfo").remove();
-                        window.location.href = '#home';
+                        window.location.hash = '#home';
                     }
 
                     if (permission == 3) {
                         var manageView = new ManageView();
-                        $("#reminder,#loginInfo").remove();
-                        window.location.href = '#manage';
+                        window.location.hash = '#manage';
                     }
 
                     if (permission == 2) {
                         var deliveryView = new DeliveryView({
                             model: orderDetails
                         });
-                        $("#reminder,#loginInfo").remove();
-                        window.location.href = '#delivery';
+                        window.location.hash = '#delivery';
                     }
                 },
                 error: function (user, error) {
