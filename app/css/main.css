@@ -95,13 +95,15 @@ header {
 .summary-count,
 .summary-price,
 .summary-total,
-.summary-tax{
+.summary-tax,
+.summary-coupon{
   font-size: 12px;
   color: #888;
 }
 
 .summary-total,
-.summary-tax{
+.summary-tax,
+.summary-coupon{
 	display: inline-block;
 	width: 40px;
 }
@@ -120,7 +122,8 @@ header {
   color: #E3151E;
 }
 .summary-total-label,
-.summary-tax-label{
+.summary-tax-label,
+.summary-coupon-label{
   font-size: 12px;
 }
 #orderBtn.red, #paymentBtn.red, #loginBtn.red,#arriveBtn.red,#signUpBtn.red{

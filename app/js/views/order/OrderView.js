@@ -107,16 +107,20 @@ define([
                         success: function (customer) {
                         	self.charge({
                 				totalCharge: self.model.totalCharge,
-                				customerId: customer
+                				customerId: customer,
+                				coupon: self.model.coupon
                 			});
+                        	console.log(self.model.coupon);
                         }
                     });
             	}
             	else{
 	                this.charge({
 	                    totalCharge: this.model.totalCharge,
-	                    paymentToken: response.id
+	                    paymentToken: response.id,
+	                    coupon: this.model.coupon
 	                });
+	                console.log(this.model.coupon);
             	}
             }
         },
@@ -139,7 +143,8 @@ define([
             else{
         		this.charge({
         			customerId: this.$('input[type=radio]:checked', '#userCardList').val(), 
-        			totalCharge: this.model.totalCharge
+        			totalCharge: this.model.totalCharge,
+        			coupon: this.model.coupon
         		});
             }
         },
@@ -153,7 +158,19 @@ define([
                 }
             }).modal('show');
         },
-
+        
+        chargeCreditBalance: function(coupon){
+        	var currentUser = Parse.User.current();
+        	console.log(currentUser.get('creditBalance'));
+        	console.log(coupon);
+        	var currentCredit = currentUser.get('creditBalance') - coupon;
+            	console.log(currentCredit);
+            	currentUser.set('creditBalance', currentCredit);
+            	currentUser.save();
+            	console.log(currentUser.get('creditBalance'));
+        },
+        
+        
         emailService: function (orderId) {
             Parse.Cloud.run('email', {
                 orderId: orderId
@@ -220,6 +237,7 @@ define([
         	                $('#orderBtn').prop('disabled', false);
                             $('#orderBtn').removeClass('grey').addClass('red');
                             self.emailService(paymentDetails.id);
+                            self.chargeCreditBalance(params.coupon);
                         },
                         error: function (payment, error) {
                             alert('Failed to create new object, with error code: ' + error.message);

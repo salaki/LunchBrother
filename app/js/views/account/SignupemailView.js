@@ -15,8 +15,51 @@ define([
         template: _.template(signupemailTemplate),
 
         render: function () {
-            this.$el.html(this.template());
-            return this;
+        	 this.$el.html(this.template());
+             this.$('.ui.form').form({
+                 'first_name': {
+                     identifier: 'first_name',
+                     rules: [{
+                         type: 'empty',
+                         prompt: 'Please enter your first name'
+                     }]
+                 },
+                 'last_name': {
+                     identifier: 'last_name',
+                     rules: [{
+                         type: 'empty',
+                         prompt: 'Please enter your last name'
+                     }]
+                 },
+                 email: {
+                     identifier: 'email',
+                     rules: [{
+                         type: 'empty',
+                         prompt: 'Please enter your e-mail'
+                     }, {
+                         type: 'email',
+                         prompt: 'Please enter a valid e-mail'
+                     }]
+                 },
+                 phonenumber: {
+                     identifier: 'phonenumber',
+                     rules: [{
+                         type: 'empty',
+                         prompt: 'Please enter your phone number'
+                     }]
+                 },
+                 password: {
+                     identifier: 'password',
+                     rules: [{
+                         type: 'empty',
+                         prompt: 'Please enter your password'
+                     }]
+                 }
+             }, {
+                 on: 'blur',
+                 inline: 'true'
+             });
+             return this;
         },
 
         createAccount: function() {

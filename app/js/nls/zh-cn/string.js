@@ -13,6 +13,7 @@
       "paymentBtn" : "大哥，买单!",
       "orderDetails" : "您的订单如下:",
       "summaryCount" : "份",
+      "summaryCouponLabel" : "本次可以使用代金卷：",
       "summaryTaxLabel" : "税和运费：",
       "summaryTotalLabel" : "合计：",
     });

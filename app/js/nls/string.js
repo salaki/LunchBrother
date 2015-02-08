@@ -15,6 +15,7 @@
       "orderDetails" : "Your Order Summary:",
       "summaryCount" : "Quantity",
       "summaryTaxLabel" : "Tax & Delivery Fee：",
+      "summaryCouponLabel" : "Coupon For This Order: ",
       "summaryTotalLabel" : "Total：",
       },
       "zh-cn" : true // The system will accept Chinese
