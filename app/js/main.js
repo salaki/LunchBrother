@@ -38,17 +38,16 @@ define([
     $('#today').text(dayOfWeek + ', ' + date);
 
     $('#signOutBtn').click(function() {
-          $('.ui.sidebar').sidebar('hide');
-          Parse.User.logOut();
-	  window.location.href='#login';
-	  location.reload();
+        $('.ui.sidebar').sidebar('hide');
+        Parse.User.logOut();
+	    window.location.href='#login';
+	    location.reload();
+        $('#account').hide();
     });
 
     $('#account').click(function() {
          $('.ui.sidebar').sidebar('toggle');
     });
-
-    $('#account').hide();
   };
 
   return {

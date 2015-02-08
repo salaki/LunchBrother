@@ -37,6 +37,7 @@ define([
             $("#userCreditBalance").text(currentUser.get('creditBalance'));
             $("#accountBarFirstName").text(currentUser.get('firstName'));
         }
+        $('#account').show();
 
       this.dishes = new DishCollection;
 
@@ -68,7 +69,7 @@ define([
       $("#paymentBtn").html(string.paymentBtn);
       $(".summary-tax-label").html(string.summaryTaxLabel);
       $(".summary-total-label").html(string.summaryTotalLabel);
-      $('#account').show();
+
       this.delegateEvents();
       return this;
     },

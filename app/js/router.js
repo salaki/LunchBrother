@@ -151,11 +151,15 @@ define([
         });
 
         appRouter.on('route:defaultAction', function (actions) {
-
-            // we have no matching route, lets display the signup&login page 
-            var loginorsignupView = new LoginorsignupView();
-	    loginorsignupView.render();
-
+            var currentUser = Parse.User.current();
+            // we have no matching route, lets display the signup&login page
+            if(currentUser != null) {
+                var homeView = new HomeView();
+                homeView.render();
+            }else{
+                var loginorsignupView = new LoginorsignupView();
+                loginorsignupView.render();
+            }
         });
 
 

@@ -8,6 +8,15 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render');
+            var currentUser = Parse.User.current();
+            if(currentUser != null) {
+                $("#userEmail").text(currentUser.get('email'));
+                $("#userPhone").text(currentUser.get('telnum'));
+                $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
+                $("#userCreditBalance").text(currentUser.get('creditBalance'));
+                $("#accountBarFirstName").text(currentUser.get('firstName'));
+            }
+            $('#account').show();
         },
 
         template: _.template(deliveryTemplate),
