@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "LunchBrotherV1": {
+            "applicationId": "shB8up4c14Idr6eFH4SBjzqZ1vdYT0Q79LSaPQwT", 
+            "masterKey": "qsbgC34rXaeNjkT5R6x6U2HRsRGYwAtj7GBAH38N"
+        }, 
+        "_default": {
+            "link": "LunchBrotherV1"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.2"
+    }
+}
