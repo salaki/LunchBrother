@@ -355,7 +355,7 @@ header {
 	text-align: center;
 	margin: 10px;
 }
-#copyright{
+#copyright,#signupReminder{
 	font-size: 12px;
 	text-align:center;
 	margin: 10px;
