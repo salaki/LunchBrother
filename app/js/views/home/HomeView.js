@@ -25,9 +25,20 @@ define([
     },
 
     initialize: function() {
-
+    	// Move to account panel view when added
+    	$('#referlink input').val('https://www.lunchbrother.com/?refer=' + Parse.User.current().id);
+    	
       _.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
       this.$el.html(_.template(homeTemplate)());
+
+        var currentUser = Parse.User.current();
+        if(currentUser != null) {
+            $("#userEmail").text(currentUser.get('email'));
+            $("#userPhone").text(currentUser.get('telnum'));
+            $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
+            $("#userCreditBalance").text(currentUser.get('creditBalance'));
+            $("#accountBarFirstName").text(currentUser.get('firstName'));
+        }
 
       this.dishes = new DishCollection;
 
