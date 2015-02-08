@@ -295,3 +295,26 @@ Parse.Cloud.beforeSave("Payment",
         }
     }
 );
+
+Parse.Cloud.beforeSave(Parse.User, function(request, response) {
+
+    // If a new user is about to be created and it has a referredBy user, 
+    // then increase the referredBy user's credit by 10
+    if (request.object.isNew() && request.object.get('referredBy')) {
+        Parse.Cloud.useMasterKey();
+        var query = new Parse.Query(Parse.User);
+        query.get(request.object.get('referredBy').id, {
+            success: function (referredBy){
+                referredBy.set('creditBalance', referredBy.get('creditBalance') + 10);
+                referredBy.save();
+                response.success();
+            },
+            error: function (error){
+                response.error('Invitation link is not correct.');
+            }
+        });
+    }
+    else{
+        response.success();
+    }
+});

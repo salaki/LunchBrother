@@ -104,7 +104,12 @@ define([
 
         appRouter.on('route:showSignupemail', function () {
             // Call render on the module we loaded in via the dependency array
-            var signupemailView = new SignupemailView();
+            var signupemailView = new SignupemailView({ 
+            	model: {
+            		refer: getParameterByName('refer')
+        		}
+        	});
+            
             signupemailView.render();
         });
 
