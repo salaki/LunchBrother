@@ -8,7 +8,8 @@ var config = {
         parse: 'libs/parse/parse-1.3.2.min',
         stripe: 'libs/stripe/stripe.v2',
         templates: '../templates',
-        semantic: 'libs/semantic/semantic.min'
+        semantic: 'libs/semantic/semantic.min',
+        facebook: 'http://connect.facebook.net/en_US/sdk'
     },
     shim: {
         underscore: {
@@ -27,7 +28,10 @@ var config = {
         "libs/semantic/dropdown.min": ["jquery", "semantic"],
         "libs/semantic/checkbox.min": ["jquery", "semantic"],
         "libs/semantic/form.min": ["jquery", "semantic"],
-	"libs/semantic/sidebar.min": ["jquery", "semantic"],
+		"libs/semantic/sidebar.min": ["jquery", "semantic"],
+	    "facebook": {
+	    	exports: 'FB'
+	    }
     }
 };
 

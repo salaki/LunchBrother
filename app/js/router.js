@@ -8,9 +8,21 @@ define([
   'views/manage/ManageView',
   'views/manage/DeliveryView',
   'views/account/LoginorsignupView',
-  'views/account/SignupemailView'
-	
-], function (HomeView, OrderView, PolicyView, ConfirmView, StatusView, LoginView, ManageView, DeliveryView, LoginorsignupView, SignupemailView) {
+  'views/account/SignupemailView',
+  'views/account/FbLoginView',
+  'views/account/ProfileView'
+], function (HomeView, 
+		OrderView, 
+		PolicyView, 
+		ConfirmView, 
+		StatusView, 
+		LoginView, 
+		ManageView, 
+		DeliveryView, 
+		LoginorsignupView, 
+		SignupemailView,
+		FbLoginView,
+		ProfileView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -24,6 +36,7 @@ define([
             'manage': 'showManage',
             'delivery': 'showDelivery',
 	    //'loginorsignup' : 'showLoginorsignup',
+            'profile': 'showProfile',
 	    'signupemail' : 'showSignupemail',			
             // Default
             '*actions': 'defaultAction'
@@ -140,16 +153,19 @@ define([
                 window.location.hash = "#login";
             }
         });
-			
 
-	appRouter.on('route:showLoginorsignup', function () {
+        appRouter.on( 'route:showProfile', function () {
+            var profileView = new ProfileView();
+            profileView.render();
+        });
+        appRouter.on('route:showLoginorsignup', function () {
             // Call render on the module we loaded in via the dependency array
-						console.log("showLoginorsignup");
+			console.log("showLoginorsignup");
             var loginorsignupView = new LoginorsignupView();
             loginorsignupView.render();
         });
 
-	appRouter.on('route:showSignup', function () {
+        appRouter.on('route:showSignup', function () {
             // Call render on the module we loaded in via the dependency array
             var signupView = new SignupView();
             signupView.render();
