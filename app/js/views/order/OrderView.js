@@ -196,6 +196,7 @@ define([
                     var fname = user.get('firstName');
                     var lname = user.get('lastName');
                     var email = user.get('email');
+                    var phoneNumber = user.get('telnum');
                     var address = $('#addressdetails option:selected').text();
                     
                     var i = 1;
@@ -211,6 +212,7 @@ define([
                         i++;
                     });
 
+                    paymentDetails.set('telnum', phoneNumber);
                     paymentDetails.set('fname', fname);
                     paymentDetails.set('lname', lname);
                     paymentDetails.set('lowercaseLastName', lname.toLowerCase());

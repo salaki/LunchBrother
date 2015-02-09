@@ -6,6 +6,7 @@
         </p>
     </div>
     <div class="seven wide white column">
+        <p><span class="gray"><label class="phoneNumber">电话</label>:</span><span class="red"><%= order.get('telnum') %></span>
         <p><span class="gray"><label class="orderListOrderNumber">订单号</label>:</span><span class="red"><%= order.id %></span>
         <p><span class="gray"><label class="orderListTotal">金额</label>:</span><span class="red">$<%= order.get('totalPrice') %></span>
     </div>
