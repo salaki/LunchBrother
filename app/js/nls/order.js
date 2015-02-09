@@ -17,7 +17,8 @@ define({
         "failedReason" : "Reason of fail:",
         "pleaseDoubleCheckOrder" : "Please double check card information and your order then try again",
         "messageConfirm" : "OK",
-        "cvv2VerificationCode" : "CVV2 Verification Code:"
+        "cvv2VerificationCode" : "CVV2 Verification Code:",
+        "rememberMe" : "Remember this card"
     },
     "zh-cn" : true
 });

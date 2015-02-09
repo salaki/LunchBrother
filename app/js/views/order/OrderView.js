@@ -74,6 +74,7 @@ define([
         		  that.$("#expDate").text(OrderViewLocal.expirationDate);
         		  that.$("#cvv2VerificationCode").text(OrderViewLocal.cvv2VerificationCode);
         		  that.$("label[for=terms]").text(OrderViewLocal.termOfUse);
+        		  that.$("label[for=rememberme]").text(OrderViewLocal.rememberMe);
         		  that.$("#readTermOfUse").text(OrderViewLocal.readTermOfUse);
         		  that.$("#orderBtn").text(OrderViewLocal.orderBtn);
         		  that.$("#paymentFail").text(OrderViewLocal.orderBtn);
@@ -163,7 +164,7 @@ define([
         	var currentUser = Parse.User.current();
         	console.log(currentUser.get('creditBalance'));
         	console.log(coupon);
-        	var currentCredit = currentUser.get('creditBalance') - coupon;
+        	var currentCredit = parseFloat((currentUser.get('creditBalance') - coupon).toFixed(2));
             	console.log(currentCredit);
             	currentUser.set('creditBalance', currentCredit);
             	currentUser.save();
