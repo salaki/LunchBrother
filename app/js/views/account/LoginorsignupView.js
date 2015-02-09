@@ -12,7 +12,7 @@ define([
         },
 
         initialize: function () {
-            _.bindAll(this, 'render', 'fbLogin');
+            _.bindAll(this, 'render');
         },
 
         template: _.template(loginorsignupTemplate),

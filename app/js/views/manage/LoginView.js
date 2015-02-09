@@ -4,9 +4,10 @@ define([
     'views/manage/DeliveryView',
     'views/manage/ManageView',
     'views/home/HomeView',
+    'views/account/FbLoginView',
     'i18n!nls/login',
     'text!templates/manage/loginTemplate.html'
-], function (PaymentModel, OrderModel, DeliveryView, ManageView, HomeView, login, loginTemplate) {
+], function (PaymentModel, OrderModel, DeliveryView, ManageView, HomeView, FbLoginView, login, loginTemplate) {
 
     var LoginView = Parse.View.extend({
         el: $("#page"),
@@ -14,7 +15,8 @@ define([
         orderDetails: {},
 
         events: {
-            'submit #loginForm': 'continueLogin'
+            'submit #loginForm': 'continueLogin',
+            'click #fbLoginBtn': 'fbLogin'
         },
 
         initialize: function () {
@@ -218,6 +220,11 @@ define([
             var $form = this.$('form');
             $form.find('#loginBtn').prop('disabled', true);
             return false;
+        },
+        
+        fbLogin: function(){
+        	var fbLoginView = new FbLoginView();
+        	fbLoginView.render();
         }
     });
     return LoginView;
