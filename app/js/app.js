@@ -9,7 +9,7 @@ var config = {
         stripe: 'libs/stripe/stripe.v2',
         templates: '../templates',
         semantic: 'libs/semantic/semantic.min',
-        facebook: 'http://connect.facebook.net/en_US/sdk'
+        facebook: '//connect.facebook.net/en_US/sdk'
     },
     shim: {
         underscore: {
