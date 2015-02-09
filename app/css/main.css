@@ -406,6 +406,12 @@ color:#ffffff;
 		height: 90px;
 }
 
+#userFullName{
+	margin: 15px 0;
+	color: #e3151e;
+	font-weight: bold;
+}
+
 #accountBalance .label{
 		max-width: 120px;
 }
