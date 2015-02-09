@@ -63,15 +63,15 @@ define([
 
     render: function() {
       this.stats.orders = this.dishes.orders();
-      this.stats.tax = parseFloat((this.dishes.charge()*0.1).toFixed(3));
+      this.stats.tax = parseFloat((this.dishes.charge()*0.11).toFixed(2));
       var currentUser = Parse.User.current();
-      var ordercoupon = parseFloat((this.dishes.charge()*0.3).toFixed(2));
+      var ordercoupon = 3*this.dishes.totalCount();
       if(ordercoupon <= currentUser.get('creditBalance')){
     	  this.stats.coupon = ordercoupon;
       }else{
     	  this.stats.coupon = currentUser.get('creditBalance');
       }
-	  this.stats.totalCharge = parseFloat((this.dishes.charge()+this.stats.tax - this.stats.coupon).toFixed(2));
+	  this.stats.totalCharge = parseFloat((this.dishes.charge() + this.stats.tax - this.stats.coupon).toFixed(2));
       this.$('#orderStats').html(this.statsTemplate(this.stats));
       //Localization
       $("#dishTitle").html(string.dishTitle);
