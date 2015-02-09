@@ -40,7 +40,12 @@ define([
     $('#signOutBtn').click(function() {
         $('.ui.sidebar').sidebar('hide');
         Parse.User.logOut();
-	    window.location.href='#login';
+        $("#userEmail").text("");
+        $("#userPhone").text("");
+        $("#userFullName").text("");
+        $("#userCreditBalance").text("");
+        $("#accountBarFirstName").text("");
+	    window.location.href='#';
 	    location.reload();
         $('#account').hide();
     });
