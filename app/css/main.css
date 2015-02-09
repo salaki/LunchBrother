@@ -15,6 +15,10 @@ header {
 	-webkit-box-shadow:0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+#mobileLanguage{
+	font-size:12px;
+}
+
 .space{
 	width:100%;
 	clear: both;
@@ -106,6 +110,10 @@ header {
 .summary-coupon{
 	display: inline-block;
 	width: 40px;
+}
+
+.summary-coupon{
+	color:#5bbd72;
 }
 
 .summary-location{
