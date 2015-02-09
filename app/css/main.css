@@ -402,12 +402,12 @@ color:#ffffff;
 	
 	margin: 0 auto;		
 		border: 5px solid #dddddd;
-		width: 120px;
-		height: 120px;
+		width: 90px;
+		height: 90px;
 }
 
 #accountBalance .label{
-		max-width: 200px;
+		max-width: 120px;
 }
 
 #referlink {
