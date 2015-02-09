@@ -130,7 +130,11 @@ define([
       
       if((weekday == 6)||(weekday == 0 && hours < 20)){
            $("#paymentBtn").addClass('disabled');
-           $("#timeAlert").text("不好意思，带饭大哥周末不订餐，周一订餐从周日晚八点开始");
+		   if(locale == "zh-cn") {
+				$("#timeAlert").text("不好意思，带饭大哥周末不订餐，周一订餐从周日晚八点开始");
+		   } else {
+		        $("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 8:00PM.");
+		   }
       }else if((weekday == 0 && hours >= 14)||(weekday == 5 && hours <= 10) && ($("#order").length == 0)){
            $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
            $("#page").append(view.render().el);
@@ -139,7 +143,11 @@ define([
            $("#page").append(view.render().el);
       }else{
            $("#paymentBtn").addClass('disabled');
-           $("#timeAlert").text("不好意思，带饭大哥订餐11点结束，明天请早儿吧");
+		   if(locale == "zh-cn") {
+				$("#timeAlert").text("不好意思，带饭大哥订餐11点结束，明天请早儿吧");
+		   } else {
+			    $("#timeAlert").text("Sorry, we don't take order after 11:00AM. Our order time is 2:00PM-11:00AM.");
+		   }
       }
     }
   });
