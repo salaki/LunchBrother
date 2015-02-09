@@ -98,14 +98,14 @@ define([
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
                         if (dishName2 != undefined) {
-                            if (dishName2.indexOf("Combo") > -1) {
+                            if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
                                 //Do nothing
                             } else {
                                 results[i].set('quantity1', quantity2);
                                 results[i].set('quantity2', quantity1);
                             }
                         } else {
-                            if (dishName1.indexOf("Combo") > -1) {
+                            if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
                                 results[i].set('quantity2', quantity1);
                                 results[i].set('quantity1', 0);
                             } else {
