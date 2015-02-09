@@ -4,8 +4,9 @@ define([
     'views/manage/DeliveryView',
     'views/manage/ManageView',
     'views/home/HomeView',
+    'i18n!nls/login',
     'text!templates/manage/loginTemplate.html'
-], function (PaymentModel, OrderModel, DeliveryView, ManageView, HomeView, loginTemplate) {
+], function (PaymentModel, OrderModel, DeliveryView, ManageView, HomeView, login, loginTemplate) {
 
     var LoginView = Parse.View.extend({
         el: $("#page"),
@@ -45,6 +46,8 @@ define([
                 on: 'blur',
                 inline: 'true'
             });
+            $("#reminder").html(login.Reminder);
+            $("#loginBtnContent").html(login.LoginButton);
             return this;
         },
 

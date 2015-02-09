@@ -1,5 +1,5 @@
 <!-- login -->
-<h3 id="reminder" class="ui center aligned header">大哥， 请登录您的账户！</h3>
+<h3 id="reminder" class="ui center aligned header"></h3>
 <div class="ui hidden divider"></div>
 <div id="loginInfo" class="ui centered grid">
 	<div class="ten wide column">
@@ -7,22 +7,22 @@
 			<div class="two fields">
 				<div class="required sixteen wide field">
 					<div class="ui icon input">
-						<input id="username" type="text" placeholder="请输入账号..." name="username" />
+						<input id="username" type="text" placeholder="Username" name="username" />
 						<i class="user icon"></i>
 					</div>
 				</div>
 				<div class="ui hidden divider"></div>
 				<div class="required sixteen wide field">
 					<div class="ui icon input">
-						<input id="password" type="password" placeholder="请输入密码..." name="password" />
+						<input id="password" type="password" placeholder="Password" name="password" />
 						<i class="lock icon"></i>
 					</div>
 				</div>
 			</div>
 			<div class="ui hidden divider"></div>
-			<button id="loginBtn" type="submit" class="center aligned ui red button"><i class="sign in icon"></i>登&nbsp录</button>
+			<button id="loginBtn" type="submit" class="center aligned ui red button"><i class="sign in icon"></i><a id="loginBtnContent" class="red"></a></button>
 			<div class="ui divider hidden"></div>
-			<div class="ui facebook fluid button">
+			<div id= "fbLoginBtn" class="ui facebook fluid button">
 				<i class="facebook icon"></i> Facebook
 			</div>
 		</form>

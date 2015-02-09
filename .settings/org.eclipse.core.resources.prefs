@@ -1,4 +1,4 @@
-#Sun Feb 08 15:57:48 EST 2015
+#Sun Feb 08 21:35:44 EST 2015
 eclipse.preferences.version=1
 encoding//app/index.html=UTF-8
 encoding//app/js/nls/string.js=UTF-8
@@ -6,4 +6,5 @@ encoding//app/js/nls/zh-cn/string.js=UTF-8
 encoding//app/js/views/home/HomeView.js=UTF-8
 encoding//app/templates/account/loginorsignupTemplate.html=UTF-8
 encoding//app/templates/home/homeTemplate.html=UTF-8
+encoding//app/templates/manage/loginTemplate.html=UTF-8
 encoding//app/templates/order/orderTemplate.html=UTF-8

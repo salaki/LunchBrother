@@ -133,7 +133,18 @@ header {
   width: 100%;
   position: relative;
 }
-
+#fbLoginBtn{
+  box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
+  padding: 1em 2em 1.35em;
+  width: 100%;
+  position: relative;
+}
+#loginBtnContent.grey{
+color:#888888;
+}
+#loginBtnContent.red{
+color:#ffffff;
+}
 #orderBtn.grey,#loginBtn.grey{
 	background-color: #dddddd;
 	box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
@@ -154,13 +165,20 @@ header {
 	box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
 	top: 1px;
 }
+#fbLoginBtn:hover{
+	box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+	top: 1px;
+}
 
 #orderBtn.red:active, #paymentBtn.red:active, #loginBtn.red:active,#arriveBtn.red:active,
 #signUpBtn.red:active{
 	box-shadow: 0 0 #ab3c3c;
 	top: 2px;
 }
-
+#fbLoginBtn:active{
+	box-shadow: 0 0 #ab3c3c;
+	top: 2px;
+}
 
 #loginBtn.grey:hover{
 	box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;

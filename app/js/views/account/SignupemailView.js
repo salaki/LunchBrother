@@ -1,6 +1,7 @@
 define([
-  'text!templates/account/signupemailTemplate.html'
-], function (signupemailTemplate) {
+  'text!templates/account/signupemailTemplate.html',
+  'i18n!nls/login'
+], function (signupemailTemplate, login) {
 
     var SignupemailView = Parse.View.extend({
         el: $("#page"),
@@ -59,6 +60,7 @@ define([
                  on: 'blur',
                  inline: 'true'
              });
+             $("#signUpBtn").html(login.SignUpButton);
              return this;
         },
 
