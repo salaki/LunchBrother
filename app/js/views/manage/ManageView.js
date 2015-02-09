@@ -120,6 +120,7 @@ define([
                     self.$("#orderList").html(self.orderListTemplate({
                         orders: results
                     }));
+
                     $(".orderListOrderNumber").text(manageLocal.manageOrderNumber);
                     $(".orderListTotal").text(manageLocal.manageTotal);
                     $(".comboA").text(manageLocal.comboA);
