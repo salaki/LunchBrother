@@ -47,7 +47,7 @@ define( [
                                 user.save( null, {
                                     success: function ( u )
                                     {
-                                        window.location.hash = 'home';
+                                        window.location.hash = '#home';
                                     },
                                     error: function ( u, error )
                                     {
@@ -65,7 +65,7 @@ define( [
                     } else
                     {
                         console.log( "User logged in through Facebook!" );
-                        window.location.hash = 'home';
+                        window.location.hash = '#home';
                     }
                 },
                 error: function ( user, error )
