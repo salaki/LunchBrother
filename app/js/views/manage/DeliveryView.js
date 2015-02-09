@@ -10,6 +10,7 @@ define([
             _.bindAll(this, 'render');
             var currentUser = Parse.User.current();
             if(currentUser != null) {
+                currentUser.fetch();
                 $("#userEmail").text(currentUser.get('email'));
                 $("#userPhone").text(currentUser.get('telnum'));
                 $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
