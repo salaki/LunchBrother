@@ -27,7 +27,7 @@ define([
 
     initialize: function() {
     	// Move to account panel view when added
-    	$('#referlink input').val('https://www.lunchbrother.com/?refer=' + Parse.User.current().id);
+    	$('#referlink input').val('https://www.lunchbrother.com/?refer=' + Parse.User.current().id + '#signupemail');
     	
       _.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
       this.$el.html(_.template(homeTemplate)());
