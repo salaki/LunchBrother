@@ -14,7 +14,7 @@ define([
                 $("#userEmail").text(currentUser.get('email'));
                 $("#userPhone").text(currentUser.get('telnum'));
                 $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
-                $("#userCreditBalance").text(currentUser.get('creditBalance'));
+                $("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
                 $("#accountBarFirstName").text(currentUser.get('firstName'));
             }
             $('#account').show();
