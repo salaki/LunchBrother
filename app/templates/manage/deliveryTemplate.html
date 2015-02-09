@@ -1,71 +1,63 @@
 <h3 class="ui center aligned header">今日送餐概况</h3>
-
 <div class="ui segment">
-	<div class="ui vertical segment">
-		<a class="delivery-order" href="#">
-			<div class="ui column grid summary-list">
-				<div class="four wide right aligned column"><span class="summary-location">Regents Drive Parking Garage</span>:</span>
-				</div>
-				<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity1 %>,&nbspB餐:&nbsp<%= comboQuantity1 %></span>
-				</div>
-				<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final1.toFixed(2) %></span>
-				</div>
-				<div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
-				</div>
-			</div>
-		</a>
-	</div>
+    <div class="ui vertical segment">
+        <a class="delivery-order" href="#">
+            <div class="ui column grid summary-list">
+                <div class="four wide right aligned column"><span class="summary-location">Regents Drive Parking Garage</span>:</span>
+                </div>
+                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity1 %>,&nbspB餐:&nbsp<%= comboQuantity1 %></span>
+                </div>
+                <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final1.toFixed(2) %></span>
+                </div>
+                <div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
+                </div>
+            </div>
+        </a>
+    </div>
 
-	<div class="ui vertical segment">
-		<a href="#" class="delivery-order">
-			<div class="ui column grid summary-list">
-				<div class="four wide right aligned column"><span class="summary-location">McKeldin Library</span>:</span>
-				</div>
-				<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity2 %>,&nbspB餐:&nbsp<%= comboQuantity2 %></span>
-				</div>
-				<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final2.toFixed(2) %></span>
-				</div>
-				<div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
-				</div>
-			</div>
-		</a>
-	</div>
+    <div class="ui vertical segment">
+        <a href="#" class="delivery-order">
+            <div class="ui column grid summary-list">
+                <div class="four wide right aligned column"><span class="summary-location">McKeldin Library</span>:</span>
+                </div>
+                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity2 %>,&nbspB餐:&nbsp<%= comboQuantity2 %></span>
+                </div>
+                <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final2.toFixed(2) %></span>
+                </div>
+                <div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
+                </div>
+            </div>
+        </a>
+    </div>
 
-	<!--<div class="ui vertical segment">-->
-	<!--	<a class="delivery-order" href="#manage">-->
-	<!--		<div class="ui column grid summary-list">-->
-	<!--			<div class="four wide right aligned column"><span class="summary-location">GWU:</span>-->
-	<!--			</div>-->
-	<!--			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp1,&nbspB餐:&nbsp2</span>-->
-	<!--			</div>-->
-	<!--			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$30.00</span>-->
-	<!--			</div>-->
-	<!--			<div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>-->
-	<!--			</div>-->
-	<!--		</div>-->
-	<!--	</a>-->
-	<!--</div>-->
+    <!--<div class="ui vertical segment">-->
+    <!--	<a class="delivery-order" href="#manage">-->
+    <!--		<div class="ui column grid summary-list">-->
+    <!--			<div class="four wide right aligned column"><span class="summary-location">GWU:</span>-->
+    <!--			</div>-->
+    <!--			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp1,&nbspB餐:&nbsp2</span>-->
+    <!--			</div>-->
+    <!--			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$30.00</span>-->
+    <!--			</div>-->
+    <!--			<div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>-->
+    <!--			</div>-->
+    <!--		</div>-->
+    <!--	</a>-->
+    <!--</div>-->
 
 
-	<div class="summary-order ui vertical segment">
-		<div class="ui column grid summary-list">
-			<div class="four wide right aligned column"><span class="summary-location">总计:</span>
-			</div>
-			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2 %></span>
-			</div>
-			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp<span class="red">$<%= final.toFixed(2) %></span>
-			</div>
-
-		</div>
-
-	</div>
-
+    <div class="summary-order ui vertical segment">
+        <div class="ui column grid summary-list">
+            <div class="four wide right aligned column"><span class="summary-location">总计:</span>
+            </div>
+            <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2 %></span>
+            </div>
+            <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp<span class="red">$<%= (final1 + final2).toFixed(2)%></span>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="ui divider"></div>
 <div class="gray left aligned sixteen wide column">
-	注：A餐为当日便当，B餐为凉皮+肉夹馍
-</div>
-<div id="user-info">
-	Signed in as
-	<%=Parse.User.current().escape( "username") %> (<a href="#" class="log-out">Log out</a>)
+    注：A餐为当日便当，B餐为凉皮+肉夹馍
 </div>
