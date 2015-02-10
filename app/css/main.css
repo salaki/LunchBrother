@@ -135,6 +135,10 @@ header {
 .summary-coupon-label{
   font-size: 12px;
 }
+
+#timeAlert {
+	display:none;
+}
 #orderBtn.red, #paymentBtn.red, #loginBtn.red,#arriveBtn.red,#signUpBtn.red{
   background-color: #e3151e;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;

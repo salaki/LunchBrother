@@ -130,6 +130,7 @@ define([
       
       if((weekday == 6)||(weekday == 0 && hours < 20)){
            $("#paymentBtn").addClass('disabled');
+           $("#timeAlert").removeClass("display");
 		   if(locale == "zh-cn") {
 				$("#timeAlert").removeClass("hidden").text("不好意思，带饭大哥周末不订餐，周一订餐从周日晚八点开始");
 		   } else {
@@ -143,6 +144,7 @@ define([
            $("#page").append(view.render().el);
       }else{
            $("#paymentBtn").addClass('disabled');
+           $("#timeAlert").removeClass("display");
 		   if(locale == "zh-cn") {
 				$("#timeAlert").removeClass("hidden").text("不好意思，带饭大哥订餐11点结束，明天请早儿吧");
 		   } else {
