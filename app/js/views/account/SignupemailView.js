@@ -2,7 +2,6 @@ define([
   'text!templates/account/signupemailTemplate.html',
   'i18n!nls/login'
 ], function (signupemailTemplate, login) {
-
     var SignupemailView = Parse.View.extend({
         el: $("#page"),
         events: {
@@ -11,6 +10,7 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render', 'createAccount');
+            
         },
 
         template: _.template(signupemailTemplate),
@@ -18,14 +18,14 @@ define([
         render: function () {
         	 this.$el.html(this.template());
              this.$('.ui.form').form({
-                 'first_name': {
+                 first_name: {
                      identifier: 'first_name',
                      rules: [{
                          type: 'empty',
                          prompt: 'Please enter your first name'
                      }]
                  },
-                 'last_name': {
+                 last_name: {
                      identifier: 'last_name',
                      rules: [{
                          type: 'empty',
@@ -47,6 +47,9 @@ define([
                      rules: [{
                          type: 'empty',
                          prompt: 'Please enter your phone number'
+                     },{
+                     	type: 'length[10]',
+                     	prompt:'Your phone number must be 10 digits'
                      }]
                  },
                  password: {
