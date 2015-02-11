@@ -119,15 +119,15 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 				model : this.stats
 			});
 
-			if ((weekday == 6) || (weekday == 0 && hours < 20)) {
+			if ((weekday == 6) || (weekday == 0 && hours < 14)) {
 				$("#timeAlert").css("display", "block");
 				$("#paymentBtn").addClass('disabled');
 				if (locale == "zh-cn") {
 					$("#timeAlert").text("不好意思，带饭大哥周末不订餐，周一订餐从周日晚八点开始");
 				} else {
-					$("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 8:00PM.");
+					$("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 2:00PM.");
 				}
-			} else if(weekday !== 0 && (hours>=10 && hours<=14)) {
+			} else if(weekday !== 0 && (hours>=11 && hours<=13)) {
 				$("#timeAlert").css("display", "block");
 				$("#paymentBtn").addClass('disabled');
 				if (locale == "zh-cn") {
