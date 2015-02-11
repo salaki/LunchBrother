@@ -10,7 +10,8 @@ define([
   'views/account/LoginorsignupView',
   'views/account/SignupemailView',
   'views/account/FbLoginView',
-  'views/account/ProfileView'
+  'views/account/ProfileView',
+	'views/account/ForgotpasswordView'
 ], function (HomeView, 
 		OrderView, 
 		PolicyView, 
@@ -22,7 +23,8 @@ define([
 		LoginorsignupView, 
 		SignupemailView,
 		FbLoginView,
-		ProfileView) {
+		ProfileView,
+		ForgotpasswordView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -37,7 +39,8 @@ define([
             'delivery': 'showDelivery',
 	    //'loginorsignup' : 'showLoginorsignup',
             'profile': 'showProfile',
-	    'signupemail' : 'showSignupemail',			
+	    			'signupemail' : 'showSignupemail',
+						'forgotpassword' : 'showForgotpassword',
             // Default
             '*actions': 'defaultAction'
         }
@@ -170,7 +173,13 @@ define([
             var signupView = new SignupView();
             signupView.render();
         });
-
+			
+				appRouter.on('route:showForgotpassword', function () {
+            // Call render on the module we loaded in via the dependency array
+            var forgotpasswordView = new ForgotpasswordView();
+            forgotpasswordView.render();
+        });
+			
         appRouter.on('route:defaultAction', function (actions) {
             var currentUser = Parse.User.current();
             // we have no matching route, lets display the signup&login page
