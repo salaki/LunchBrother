@@ -269,10 +269,11 @@ Parse.Cloud.define("saveResetKeyForUser", function(request, response) {
         success: function(user) {
             if(user == null || user == undefined) {
                 response.error("This email address is not in our system, please verify the email address and try again.");
+            } else {
+                user.set("resetKey", resetKey);
+                user.save();
+                response.success(user);
             }
-            user.set("resetKey", resetKey);
-            user.save();
-            response.success(user);
         },
         error: function(error){
             response.error(error.message);

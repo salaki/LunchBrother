@@ -30,27 +30,24 @@ define([
                 resetKey: resetKey
             }, {
                 success: function (user) {
-                    if (user == null || user == undefined) {
-                        alert("We cannot find this email in our system, please check it and try again!");
-                    } else {
-                        var verificationLink = config.appUrl + "#resetPassword?userId=" + user.id + "&resetKey=" + resetKey;
-                        Parse.Cloud.run('emailResetPasswordLink', {
-                            firstName: user.get("firstName"),
-                            emailAddress: email,
-                            verificationLink: verificationLink
-                        }, {
-                            success: function () {
-                                console.log("Verification link sent to " + email + " successfully!");
-                            },
-                            error: function (error) {
-                                console.log("Verification link failed to send. Error: " + error.message);
-                            }
-                        });
-                        alert("An email has been sent to " + email + " to reset your password!");
-                    }
+                    var verificationLink = config.appUrl + "#resetPassword?userId=" + user.id + "&resetKey=" + resetKey;
+                    Parse.Cloud.run('emailResetPasswordLink', {
+                        firstName: user.get("firstName"),
+                        emailAddress: email,
+                        verificationLink: verificationLink
+                    }, {
+                        success: function () {
+                            console.log("Verification link sent to " + email + " successfully!");
+                        },
+                        error: function (error) {
+                            console.log("Verification link failed to send. Error: " + error.message);
+                        }
+                    });
+                    alert("An email has been sent to " + email + ", please follow the instructions to reset your password!");
+                    window.location.href = "#";
                 },
                 error: function (error) {
-                    console.log(error.message);
+                    alert(error.message);
                 }
             });
         },
