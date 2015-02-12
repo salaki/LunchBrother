@@ -30,7 +30,7 @@ define([
                 resetKey: resetKey
             }, {
                 success: function (user) {
-                    var verificationLink = config.appUrl + "#resetPassword?userId=" + user.id + "&resetKey=" + resetKey;
+                    var verificationLink = config.appUrl + "#resetPassword?userId=" + user.id + "&resetKey=" + user.get('resetKey');
                     Parse.Cloud.run('emailResetPasswordLink', {
                         firstName: user.get("firstName"),
                         emailAddress: email,

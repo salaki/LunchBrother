@@ -80,8 +80,8 @@ define([
                     }
                 },
                 error: function (user, error) {
-                    alert("Invalid username or password. Please try again.");
-                    self.$("#loginInfo .error").html("Invalid username or password. Please try again.").show();
+                	self.$("#loginError").removeClass("hidden");
+                    self.$("#loginError").text("Invalid Username or Password");
                     self.$("#loginForm button").removeAttr("disabled");
                 }
             });

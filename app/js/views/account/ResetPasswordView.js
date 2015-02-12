@@ -1,6 +1,7 @@
 define([
+	'views/account/ForgotpasswordView',
     'text!templates/account/resetpasswordTemplate.html'
-], function (resetPasswordTemplate) {
+], function (ForgotpasswordView,resetPasswordTemplate) {
 
     var resetPasswordView = Parse.View.extend({
         el: $("#page"),
@@ -17,7 +18,25 @@ define([
         template: _.template(resetPasswordTemplate),
 
         render: function () {
-            this.$el.html(this.template());
+        	var self = this;
+        	var exception = "Your resetkey is invalid, please try again";
+        	var subquery = new Parse.Query(Parse.User);
+        	var currentURL = window.location.href;
+        	var linkResetKey = currentURL.substring(currentURL.length-5,currentURL.length);
+        	var userId = this.options.userId;
+        	Parse.Cloud.run("matchResetKey", {
+        		userId : userId,
+        		resetKey:linkResetKey
+        	    },{
+        	    	success:function(user){
+        	    	   self.$el.html(self.template());
+        	    	},
+        	    	error:function(error){
+        	    	   alert("Your resetKey is invalid,please try again");
+        	    	    var forgotpasswordView = new ForgotpasswordView();
+                        window.location.hash = "#forgotpassword"; 	
+        	    	}
+        	    });
             return this;
         },
 
