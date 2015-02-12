@@ -11,7 +11,8 @@ define([
   'views/account/SignupemailView',
   'views/account/FbLoginView',
   'views/account/ProfileView',
-	'views/account/ForgotpasswordView'
+	'views/account/ForgotpasswordView',
+    'views/account/ResetPasswordView'
 ], function (HomeView, 
 		OrderView, 
 		PolicyView, 
@@ -24,7 +25,8 @@ define([
 		SignupemailView,
 		FbLoginView,
 		ProfileView,
-		ForgotpasswordView) {
+		ForgotpasswordView,
+        ResetPasswordView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -39,12 +41,35 @@ define([
             'delivery': 'showDelivery',
 	    //'loginorsignup' : 'showLoginorsignup',
             'profile': 'showProfile',
-	    			'signupemail' : 'showSignupemail',
-						'forgotpassword' : 'showForgotpassword',
+            'signupemail' : 'showSignupemail',
+            'forgotpassword' : 'showForgotpassword',
+            'resetPassword?*queryString' : 'showResetPassword',
             // Default
             '*actions': 'defaultAction'
         }
     });
+
+    var ParseQueryString = function(queryString){
+            var params = {};
+            if(queryString){
+                _.each(
+                    _.map(decodeURI(queryString).split(/&/g),function(el,i){
+                        var aux = el.split('='), o = {};
+                        if(aux.length >= 1){
+                            var val = undefined;
+                            if(aux.length == 2)
+                                val = aux[1];
+                            o[aux[0]] = val;
+                        }
+                        return o;
+                    }),
+                    function(o){
+                        _.extend(params,o);
+                    }
+                );
+            }
+            return params;
+        }
 
     var initialize = function () {
         console.log('router initialize');
@@ -161,6 +186,7 @@ define([
             var profileView = new ProfileView();
             profileView.render();
         });
+
         appRouter.on('route:showLoginorsignup', function () {
             // Call render on the module we loaded in via the dependency array
 			console.log("showLoginorsignup");
@@ -174,12 +200,21 @@ define([
             signupView.render();
         });
 			
-				appRouter.on('route:showForgotpassword', function () {
+        appRouter.on('route:showForgotpassword', function () {
             // Call render on the module we loaded in via the dependency array
             var forgotpasswordView = new ForgotpasswordView();
             forgotpasswordView.render();
         });
-			
+
+        appRouter.on('route:showResetPassword', function (queryString) {
+            var params = new ParseQueryString(queryString);
+            var resetPasswordView = new ResetPasswordView({
+                userId: params.userId,
+                resetKey: params.resetKey
+            });
+            resetPasswordView.render();
+        });
+
         appRouter.on('route:defaultAction', function (actions) {
             var currentUser = Parse.User.current();
             // we have no matching route, lets display the signup&login page
@@ -191,7 +226,6 @@ define([
                 loginorsignupView.render();
             }
         });
-
 
         Parse.history.start();
     };

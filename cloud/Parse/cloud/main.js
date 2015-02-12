@@ -70,7 +70,7 @@ Parse.Cloud.define("email",
                 else {
                     text = " Dish " + dishName2 + " " + quantity2;
                 }
- 
+
                 if (address == "Regents Drive Parking Garage") {
                     var addressDetails = "Regents Drive Parking Garage, College Park, MD 20740";
                     var addressNotes = "Meter space, Ground Floor, next to the elevator in the South-East corner.";
@@ -81,7 +81,7 @@ Parse.Cloud.define("email",
                     addressNotes = "Meter space, next to the health center.";
                     contactInfo = "Rachel：3013124798";
                 }
- 
+
                 sendEmail({
                     message: {
                         html: '<p style="position: relative" align="middle"><b><big>' + fname + '</big></b></p><p style="position: relative" align="middle"><b><big>Thank you for placing your order at <a href="http://www.lunchbrother.com" style="color: blue">lunchbrother.com</a>!</big></b></p>' +
@@ -105,7 +105,7 @@ Parse.Cloud.define("email",
                             '</tr>' +
                             '<tr>' +
                             '<th align="right">Pick-Up Time:</th>' +
-                            '<td> 12:30-13:00* Weekdays </td>' +
+                            '<td> 12:00-13:00* Weekdays </td>' +
                             '</tr>' +
                             '<tr>' +
                             '<th align="right">ContactInfo</th>' +
@@ -135,12 +135,12 @@ Parse.Cloud.define("email",
             }
         });
     });
- 
+
 Parse.Cloud.define("emailNotification",
     function (request, response) {
         var pickupAddress = request.params.pickupAddress;
         var orders = request.params.ordersToSend;
- 
+
         if (pickupAddress == "Regents Drive Parking Garage") {
             var addressDetails = "Regents Drive Parking Garage, College Park, MD 20740";
             var addressNotes = "Meter space, Ground Floor, next to the elevator in the South-East corner.";
@@ -151,13 +151,13 @@ Parse.Cloud.define("emailNotification",
             addressNotes = "Meter space, next to the health center.";
             contactInfo = "Rachel：3013124798";
         }
- 
+
         for (var i=0; i<orders.length; i++) {
             var emailInfo = orders[i].split(",");
             var fname = emailInfo[0];
             var lname = emailInfo[1];
             var email = emailInfo[2];
- 
+
             sendEmail({
                 message: {
                     html: '<p style="position: relative" align="middle"><b><big>' + fname + '</big></b> </p>' +
@@ -192,7 +192,30 @@ Parse.Cloud.define("emailNotification",
             });
         }
     });
- 
+
+Parse.Cloud.define("emailResetPasswordLink",
+    function (request, response) {
+        var fname = request.params.firstName;
+        var email = request.params.emailAddress;
+        var verificationLink = request.params.verificationLink;
+        sendEmail({
+            message: {
+                html: '<p style="position: relative" align="middle"><b><big>' + fname + '</big></b> </p>' +
+                    '<p style="position: relative" align="middle"><b><big>You have requested to reset your password, please click the following link and proceed to reset your password.</big></b></p>' +
+                    '<p style="position: relative" align="middle"><b><big><a href="' + verificationLink + '" style="color: blue">' + verificationLink + '</a></big></b></p>',
+                subject: "Reset your password for your LunchBrother account",
+                from_email: "orders@lunchbrother.com",
+                from_name: "LunchBrother",
+                to: [{
+                    email: email
+                }],
+                inline_css: true
+            },
+            success: function (httpResponse) { response.success("Verification link sent!"); },
+            error: function (httpResponse) { response.error("Uh oh, something went wrong"); }
+        });
+    });
+
 function sendEmail(options) {
     Parse.Cloud.httpRequest({
         method: 'POST',
@@ -208,17 +231,17 @@ function sendEmail(options) {
         error: options.error
     });
 }
- 
+
 Parse.Cloud.define("sms",
     function (request, response) {
         var targetNumber = request.params.targetNumber;
         var accountSID = request.params.accountSID;
         var authToken = request.params.authToken;
         var messageBody = request.params.messageBody;
- 
+
         // Require and initialize the Twilio module with your credentials
         var client = require('twilio')(accountSID, authToken);
- 
+
         // Send an SMS message
         client.sendSms({
                 to: '+1' + targetNumber,
@@ -235,7 +258,46 @@ Parse.Cloud.define("sms",
         );
     }
 );
- 
+
+Parse.Cloud.define("saveResetKeyForUser", function(request, response) {
+    var email = request.params.emailAddress;
+    var resetKey = request.params.resetKey;
+    Parse.Cloud.useMasterKey();
+    var query = new Parse.Query(Parse.User);
+    query.equalTo("username", email);
+    query.first({
+        success: function(user) {
+            if(user == null || user == undefined) {
+                response.error("This email address is not in our system, please verify the email address and try again.");
+            }
+            user.set("resetKey", resetKey);
+            user.save();
+            response.success(user);
+        },
+        error: function(error){
+            response.error(error.message);
+        }
+    });
+});
+
+Parse.Cloud.define("saveNewPassword", function(request, response) {
+    var userId = request.params.userId;
+    var password = request.params.password;
+    Parse.Cloud.useMasterKey();
+    var query = new Parse.Query(Parse.User);
+    query.get(userId, {
+        success: function(user) {
+            user.set("password", password);
+            user.set("resetKey", null);
+            user.save();
+            response.success();
+        },
+        error: function(error){
+            response.error(error.message);
+        }
+    });
+});
+
 function getSequence(callback) {
     var Test = Parse.Object.extend("Sequence");
     var query = new Parse.Query(Test);
@@ -313,8 +375,7 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response) {
                 response.error('Invitation link is not correct.');
             }
         });
-    }
-    else{
+    }else{
         response.success();
     }
 });

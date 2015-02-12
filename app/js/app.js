@@ -1,4 +1,6 @@
 var config = {
+//    "appUrl": "https://lunchbrother.com/"
+    "appUrl": "http://localhost:63342/public/app/index.html",
     "baseUrl": "js",
     "paths": {
         jquery: 'libs/jquery/jquery-1.11.2.min',
