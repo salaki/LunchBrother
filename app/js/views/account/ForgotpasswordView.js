@@ -17,12 +17,29 @@ define([
 
         render: function () {
             this.$el.html(this.template());
+            this.$('.ui.form').form({
+                resetEmail: {
+                    identifier: 'resetEmail',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter your email'
+                    }]
+                }
+            }, {
+                on: 'blur',
+                inline: 'true'
+            });
             return this;
         },
 
         onSendResetPasswordEmailClick: function() {
             var self = this;
             var email = this.$("#resetEmail").val();
+
+            if(email.trim() == ""){
+                return;
+            }
+
             var resetKey = self.generateResetKey();
 
             Parse.Cloud.run('saveResetKeyForUser', {
@@ -43,11 +60,25 @@ define([
                             console.log("Verification link failed to send. Error: " + error.message);
                         }
                     });
-                    alert("An email has been sent to " + email + ", please follow the instructions to reset your password!");
-                    window.location.href = "#";
+
+                    $("#alertTitle").text("Success");
+                    $("#alertMessage").text("An email has been sent to " + email + ", please follow the instructions to reset your password!");
+                    $('#alertDialog').modal({
+                        closable: false,
+                        onApprove: function () {
+                            window.location.hash = "#";
+                        }
+                    }).modal('show');
                 },
                 error: function (error) {
-                    alert(error.message);
+                    $("#alertTitle").text("Error");
+                    $("#alertMessage").text(error.message);
+                    $('#alertDialog').modal({
+                        closable: false,
+                        onApprove: function () {
+                            window.location.hash = "#forgotpassword";
+                        }
+                    }).modal('show');
                 }
             });
         },

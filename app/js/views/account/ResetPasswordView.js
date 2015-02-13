@@ -29,13 +29,52 @@ define([
         		resetKey:linkResetKey
         	    },{
         	    	success:function(user){
-        	    	   self.$el.html(self.template());
-        	    	},
-        	    	error:function(error){
-        	    	   alert("Your resetKey is invalid,please try again");
-        	    	    var forgotpasswordView = new ForgotpasswordView();
-                        window.location.hash = "#forgotpassword"; 	
-        	    	}
+                        var current = new Date();
+                        var updateTime = user.updatedAt;
+                        var timeDifference = (current.getTime() - updateTime.getTime())/1000/60;
+
+                        if (timeDifference > 5) {
+                            $("#alertTitle").text("Reset Link Expired");
+                            $("#alertMessage").text("Your reset password link is expired, please submit the request again.");
+                            $('#alertDialog').modal({
+                                closable: false,
+                                onApprove: function () {
+                                    window.location.hash = "#forgotpassword";
+                                }
+                            }).modal('show');
+                        } else {
+                            self.$el.html(self.template());
+                            self.$('.ui.form').form({
+                                'newPassword': {
+                                    identifier: 'newPassword',
+                                    rules: [{
+                                        type: 'empty',
+                                        prompt: 'Please enter your new password'
+                                    }]
+                                },
+                                'confirmPassword': {
+                                    identifier: 'confirmPassword',
+                                    rules: [{
+                                        type: 'empty',
+                                        prompt: 'Please confirm your password'
+                                    }]
+                                }
+                            }, {
+                                on: 'blur',
+                                inline: 'true'
+                            });
+                        }
+                    },
+                error:function(error){
+                    $("#alertTitle").text("Invalid Reset Key");
+                    $("#alertMessage").text("Your reset key is invalid, please try again");
+                    $('#alertDialog').modal({
+                        closable: false,
+                        onApprove: function () {
+                            window.location.hash = "#forgotpassword";
+                        }
+                    }).modal('show');
+                }
         	    });
             return this;
         },
@@ -43,33 +82,48 @@ define([
         resetPassword: function() {
             var query = new Parse.Query(Parse.User);
             var linkResetKey = this.options.resetKey;
-            if(this.$("#newPassword").val() != this.$("#confirmPassword").val()) {
-                alert("Passwords do not match, please check them and try again.");
+            var confirmPassword = this.$("#confirmPassword").val();
+            var newPassword = this.$("#newPassword").val();
+            if( newPassword.trim() == "" || confirmPassword.trim() == "") {
+                //do nothing
             } else {
-                query.get(this.options.userId, {
-                    success: function(user) {
-                        var userResetKey = user.get('resetKey');
-                        if (linkResetKey == userResetKey){
-                            Parse.Cloud.run("saveNewPassword", {
-                                userId: user.id,
-                                password: this.$("#newPassword").val()
-                            },{
-                                success: function() {
-                                    alert("Your password has been reset, now you can login with your new password!");
-                                    window.location.href = "#";
-                                },
-                                error: function(error) {
-                                    console.log("Save new password failed! Reason: " + error.message);
-                                }
-                            });
-                        }else {
-                            console.log("Reset key does not match!");
+                if( newPassword != confirmPassword) {
+                    $("#alertTitle").text("Passwords Mismatch");
+                    $("#alertMessage").text("Your passwords do not match, please check them and try again.");
+                    $('#alertDialog').modal('show');
+                } else {
+                    query.get(this.options.userId, {
+                        success: function(user) {
+                            var userResetKey = user.get('resetKey');
+                            if (linkResetKey == userResetKey){
+                                Parse.Cloud.run("saveNewPassword", {
+                                    userId: user.id,
+                                    password: this.$("#newPassword").val()
+                                },{
+                                    success: function() {
+                                        $("#alertTitle").text("Success");
+                                        $("#alertMessage").text("Your password has been reset, now you can login with your new password!");
+                                        $('#alertDialog').modal({
+                                            closable: false,
+                                            onApprove: function () {
+                                                window.location.hash = "#";
+                                            }
+                                        }).modal('show');
+                                    },
+                                    error: function(error) {
+                                        console.log("Save new password failed! Reason: " + error.message);
+                                    }
+                                });
+                            }else {
+                                console.log("Reset key does not match!");
+                            }
+                        },
+                        error: function() {
+                            console.log("Can't find this user!");
                         }
-                    },
-                    error: function() {
-                        console.log("Can't find this user!");
-                    }
-                });
+                    });
+                }
+
             }
         }
     });
