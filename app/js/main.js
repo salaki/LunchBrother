@@ -53,6 +53,10 @@ define([
     $('#account').click(function() {
          $('.ui.sidebar').sidebar('toggle');
     });
+    
+    $('.refer').click(function(){
+    	this.setSelectionRange(0, this.value.length);
+    });
   };
 
   return {
