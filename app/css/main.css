@@ -430,3 +430,8 @@ color:#ffffff;
 	font-size:14px;
 	float: right;
 }
+
+#sidebarWrapper{
+	padding-left: 14px !important;
+	padding-right: 14px !important;
+}

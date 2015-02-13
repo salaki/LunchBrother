@@ -94,14 +94,19 @@
 	</section>
 
 	<div id="accountBar" class="ui right vertical push sidebar menu">
-		<div class="ui grid main page">
+		<div id="sidebarWrapper" class="ui grid">
 			<div class="row">
-				<div class="column">
 					<div class="ui divider hidden"></div>
 
 					<div class="sixteen wide column center aligned">
+						<div class="profilePic clear">
+							<img id="userImage" width="150px" alt="Anne Hathaway picture" src="img/account_placeholder.JPG">
+						</div>
+						<p class="user-name" id="userFullName"></p>
+						<div class="ui divider"></div>
+
 						<div id="referlink" class="ui fluid input">
-							<input type="text" value="">
+							<input type="text" readonly="readonly" value="">
 						</div>
 
 						<div class="ui red icon small message">
@@ -114,10 +119,7 @@
 							</div>
 						</div>
 
-						<div class="profilePic clear">
-							<img id="userImage" width="150px" alt="Anne Hathaway picture" src="img/account_placeholder.JPG">
-						</div>
-						<p class="user-name" id="userFullName"></p>
+						
 						<div class="ui horizontal very small statistics">
 							<div id="accountBalance" class="statistic">
 								<div class="value">
@@ -142,9 +144,8 @@
 							<i class="icon sign out"></i> Sign Out
 						</div>
 					</div>
-				</div>
 			</div>
-		</div>
+		</div>	
 	</div>
 
 	<div class="space"></div>
