@@ -46,6 +46,12 @@ define([
               self.model.set("mapUrl", "./img/map_sml_mck.jpg");
               self.$el.html(self.template(self.model.toJSON()));
             }
+
+          if (this.model.get('address') == "AV Williams Bldg") {
+              self.model.set("mapUrl", "./img/av_sml.jpg");
+              self.$el.html(self.template(self.model.toJSON()));
+          }
+
 	    this.$("#nameOnOrder").html(confirm.nameOnOrder);//translation test	
 						this.$("#confirmEmail").html(confirm.confirmEmail);
 						this.$("#pickUpAddress").html(confirm.pickUpAddress);

@@ -34,6 +34,9 @@ var config = {
 	    "facebook": {
 	    	exports: 'FB'
 	    }
+    },
+    pickUpLocations: {
+        "UMCP" : ['AV Williams Bldg', 'McKeldin Library', 'Regents Drive Parking Garage']
     }
 };
 

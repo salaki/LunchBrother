@@ -39,8 +39,11 @@ define([
             self.orderDetails.set('dishQuantity1', 0);
             self.orderDetails.set('comboQuantity2', 0);
             self.orderDetails.set('dishQuantity2', 0);
+            self.orderDetails.set('comboQuantity3', 0);
+            self.orderDetails.set('dishQuantity3', 0);
             self.orderDetails.set('final1', 0);
             self.orderDetails.set('final2', 0);
+            self.orderDetails.set('final3', 0);
 
 
             //Create new attributes
@@ -52,7 +55,11 @@ define([
             var totalVMDish = 0;
             var totalVMPrice = 0;
 
-            //Display the order between a durantion
+            var totalAVCombo = 0;
+            var totalAVDish = 0;
+            var totalAVPrice = 0;
+
+            //Display the order between a duration
             var current = new Date();
             var currentHour = current.getHours();
             if (currentHour > 14) {
@@ -152,6 +159,51 @@ define([
                     self.orderDetails.set('comboQuantity2', totalVMCombo);
                     self.orderDetails.set('dishQuantity2', totalVMDish);
                     self.orderDetails.set('final2', totalVMPrice);
+                    self.$el.html(self.template(
+                        self.orderDetails.toJSON()
+                    ));
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+            query.equalTo("address", "AV Williams Bldg");
+            query.find({
+                success: function(results) {
+                    for (var i = 0; i < results.length; i++) {
+                        var dishName1 = results[i].get('dishName1');
+                        var dishName2 = results[i].get('dishName2');
+                        var quantity1 = results[i].get('quantity1');
+                        var quantity2 = results[i].get('quantity2');
+                        if (dishName2 != undefined) {
+                            if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
+                                //Do nothing
+                            }
+                            else {
+                                results[i].set('quantity1', quantity2);
+                                results[i].set('quantity2', quantity1);
+                            }
+                        }
+                        else {
+                            if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                                results[i].set('quantity2', quantity1);
+                                results[i].set('quantity1', 0);
+                            }
+                            else {
+                                //Do nothing
+                                results[i].set('quantity2', 0);
+                            }
+                        }
+
+                        totalAVDish = results[i].get('quantity1') + totalAVDish;
+                        totalAVCombo = results[i].get('quantity2') + totalAVCombo;
+                        totalAVPrice = results[i].get('totalPrice') + totalAVPrice;
+                    }
+
+
+                    self.orderDetails.set('comboQuantity3', totalAVCombo);
+                    self.orderDetails.set('dishQuantity3', totalAVDish);
+                    self.orderDetails.set('final3', totalAVPrice);
                     self.$el.html(self.template(
                         self.orderDetails.toJSON()
                     ));

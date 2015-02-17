@@ -6,10 +6,10 @@ Parse.Cloud.define("pay",
             amount: request.params.totalCharge * 100,
             currency: "usd"
         };
-        if(request.params.paymentToken){
+        if (request.params.paymentToken) {
             params.card = request.params.paymentToken;
         }
-        else{
+        else {
             params.customer = request.params.customerId;
         }
         Stripe.Charges.create(params, {
@@ -24,14 +24,14 @@ Parse.Cloud.define("pay",
         );
     }
 );
-Parse.Cloud.define("saveCard", function(request, response){
+Parse.Cloud.define("saveCard", function (request, response) {
     var Stripe = require("stripe");
     Stripe.initialize('sk_live_NmS6fDdb0AKJ6ajHw3rXmxun');
     var last4Digit = request.params.last4Digit;
     Stripe.Customers.create({
         card: request.params.card,
         description: Parse.User.current().get('username') + ' - ' + last4Digit
-    }).then(function(customer){
+    }).then(function (customer) {
         console.log('Stripe customer created with info', customer);
         var Card = Parse.Object.extend("Card");
         var card = new Card();
@@ -79,6 +79,11 @@ Parse.Cloud.define("email",
                 if (address == "McKeldin Library") {
                     addressDetails = "Library Ln,College Park, MD 20740";
                     addressNotes = "Meter space, next to the health center.";
+                    contactInfo = "Jabber：2028124286";
+                }
+                if (address == "AV Williams Bldg") {
+                    addressDetails = "AV Williams Building, College Park, MD 20740, XX5 parking lot";
+                    addressNotes = "Side entrance of A.V.W. close to Kim BLD";
                     contactInfo = "Rachel：3013124798";
                 }
 
@@ -149,10 +154,15 @@ Parse.Cloud.define("emailNotification",
         if (pickupAddress == "McKeldin Library") {
             addressDetails = "Library Ln,College Park, MD 20740";
             addressNotes = "Meter space, next to the health center.";
+            contactInfo = "Jabber：2028124286";
+        }
+        if (pickupAddress == "AV Williams Bldg") {
+            addressDetails = "AV Williams Building, College Park, MD 20740, XX5 parking lot";
+            addressNotes = "Side entrance of A.V.W. close to Kim BLD";
             contactInfo = "Rachel：3013124798";
         }
 
-        for (var i=0; i<orders.length; i++) {
+        for (var i = 0; i < orders.length; i++) {
             var emailInfo = orders[i].split(",");
             var fname = emailInfo[0];
             var lname = emailInfo[1];
@@ -170,7 +180,7 @@ Parse.Cloud.define("emailNotification",
                         '</tr>' +
                         '<tr>' +
                         '<td>&nbsp;</td>' +
-                        '<td>'+ addressNotes + '</td>' +
+                        '<td>' + addressNotes + '</td>' +
                         '</tr>' +
                         '<tr>' +
                         '<th align="right">Contact Info</th>' +
@@ -258,16 +268,15 @@ Parse.Cloud.define("sms",
         );
     }
 );
-
-Parse.Cloud.define("saveResetKeyForUser", function(request, response) {
+Parse.Cloud.define("saveResetKeyForUser", function (request, response) {
     var email = request.params.emailAddress;
     var resetKey = request.params.resetKey;
     Parse.Cloud.useMasterKey();
     var query = new Parse.Query(Parse.User);
     query.equalTo("username", email);
     query.first({
-        success: function(user) {
-            if(user == null || user == undefined) {
+        success: function (user) {
+            if (user == null || user == undefined) {
                 response.error("This email address is not in our system, please verify the email address and try again.");
             } else {
                 user.set("resetKey", resetKey);
@@ -275,25 +284,56 @@ Parse.Cloud.define("saveResetKeyForUser", function(request, response) {
                 response.success(user);
             }
         },
-        error: function(error){
+        error: function (error) {
             response.error(error.message);
         }
     });
 });
 
-Parse.Cloud.define("saveNewPassword", function(request, response) {
+Parse.Cloud.define("matchResetKey", function (request, response) {
+    var resetLinkKey = request.params.resetKey;
+    var userId = request.params.userId;
+    getUser(userId).then(
+        function (user) {
+            var resetKey = user.get('resetKey');
+            if (resetLinkKey == resetKey) {
+                response.success(user);
+            }
+        },
+        function (error) {
+            response.error(error);
+        }
+    );
+});
+
+function getUser(userId){
+    Parse.Cloud.useMasterKey();
+    var userQuery = new Parse.Query(Parse.User);
+    userQuery.equalTo("objectId",userId);
+    return userQuery.first({
+        success:function(userRetrieved){
+            return userRetrieved;
+        },
+        error: function(error){
+            return error;
+        }
+    });
+};
+
+
+Parse.Cloud.define("saveNewPassword", function (request, response) {
     var userId = request.params.userId;
     var password = request.params.password;
     Parse.Cloud.useMasterKey();
     var query = new Parse.Query(Parse.User);
     query.get(userId, {
-        success: function(user) {
+        success: function (user) {
             user.set("password", password);
             user.set("resetKey", null);
             user.save();
             response.success();
         },
-        error: function(error){
+        error: function (error) {
             response.error(error.message);
         }
     });
@@ -359,7 +399,7 @@ Parse.Cloud.beforeSave("Payment",
     }
 );
 
-Parse.Cloud.beforeSave(Parse.User, function(request, response) {
+Parse.Cloud.beforeSave(Parse.User, function (request, response) {
 
     // If a new user is about to be created and it has a referredBy user, 
     // then increase the referredBy user's credit by 10
@@ -367,16 +407,16 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response) {
         Parse.Cloud.useMasterKey();
         var query = new Parse.Query(Parse.User);
         query.get(request.object.get('referredBy').id, {
-            success: function (referredBy){
+            success: function (referredBy) {
                 referredBy.set('creditBalance', referredBy.get('creditBalance') + 10);
                 referredBy.save();
                 response.success();
             },
-            error: function (error){
+            error: function (error) {
                 response.error('Invitation link is not correct.');
             }
         });
-    }else{
+    } else {
         response.success();
     }
 });

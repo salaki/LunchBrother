@@ -35,11 +35,12 @@ define([
         },
 
         render: function () {
+            var pickUpLocations = config.pickUpLocations.UMCP;
+            this.$el.html(this.template({pickUpLocations: pickUpLocations}));
             $('.menu li').removeClass('active');
             $('.menu li a[href="#"]').parent().addClass('active');
             var paymentQuery = new Parse.Query(PaymentModel);
             var self = this;
-            this.$el.html(this.template());
             this.$("#addressOption").dropdown();
             this.applyQuery(paymentQuery, self);
             this.$("#arriveBtn").text(manageLocal.arrived);
@@ -192,12 +193,12 @@ define([
             self.deliveryDetails.set("status", manageLocal.onTheWay);
             self.deliveryDetails.set("address", this.$("#addressOption").val());
             self.deliveryDetails.save();
-            self.checkIfNotificationSent();
+            self.checkIfNotificationSent(this.$("#addressOption").val());
         },
 
         sendNotification: function() {
             var query = new Parse.Query(PaymentModel);
-            query.equalTo("address", address);
+            query.equalTo("address", this.$("#addressOption").val());
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
 

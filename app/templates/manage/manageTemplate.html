@@ -15,8 +15,14 @@
 
         <div class="right floated right aligned eight wide column">
             <select id="addressOption" class="right floated right aligned eight wide column ui dropdown">
-                <option value="Regents Drive Parking Garage" selected="selected">Regents Drive Parking Garage</option>
-                <option value="McKeldin Library">McKeldin Library</option>
+                <option id="pickUpAddress" value="">选择取餐地址</option>
+                <% _.each(pickUpLocations, function(pickUpLocation){ %>
+                    <% if(pickUpLocation == "AV Williams Bldg"){ %>
+                        <option value="<%= pickUpLocation %>" selected="selected"><%= pickUpLocation %></option>
+                    <% }else{ %>
+                        <option value="<%= pickUpLocation %>"><%= pickUpLocation %></option>
+                    <% } %>
+                <% }); %>
             </select>
         </div>
     </div>
