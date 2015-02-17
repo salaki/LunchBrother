@@ -16,8 +16,9 @@
 				<div id="addressoption">
 					<select id="addressdetails" name="address">
 						<option id="pickUpAddress" value="">选择取餐地址</option>
-						<option value="RDPG">Regents Drive Parking Garage</option>
-						<option value="ML">McKeldin Library</option>
+                        <% _.each(pickUpLocations, function(pickUpLocation){ %>
+                            <option value="<%= pickUpLocation %>"><%= pickUpLocation %></option>                        
+                        <% }); %>
 					</select>
 				</div>
 			</div>

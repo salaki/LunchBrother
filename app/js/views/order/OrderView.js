@@ -39,10 +39,11 @@ define([
         render: function () {
         	var that = this;
         	var query = new Parse.Query(CardModel);
+            var pickUpLocations = config.pickUpLocations.UMCP;
         	query.equalTo("createdBy", Parse.User.current());
         	query.find({
         	  success: function(cards) {
-        		  $(that.el).html(that.template({ cards: cards }));
+        		  $(that.el).html(that.template({ cards: cards, pickUpLocations: pickUpLocations }));
         		  that.$('.ui.checkbox').checkbox();
         		  that.$('select.dropdown').dropdown();
         		  that.$('.ui.form').form({
@@ -197,7 +198,7 @@ define([
                     var lname = user.get('lastName');
                     var email = user.get('email');
                     var phoneNumber = user.get('telnum');
-                    var address = $('#addressdetails option:selected').text();
+                    var address = $('#addressdetails option:selected').val();
                     
                     var i = 1;
                     

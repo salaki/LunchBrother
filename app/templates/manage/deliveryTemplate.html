@@ -1,13 +1,13 @@
 <h3 class="ui center aligned header">今日送餐概况</h3>
 <div class="ui segment">
     <div class="ui vertical segment">
-        <a class="delivery-order" href="#">
+        <a href="#" class="delivery-order">
             <div class="ui column grid summary-list">
-                <div class="four wide right aligned column"><span class="summary-location">Regents Drive Parking Garage</span>:</span>
+                <div class="four wide right aligned column"><span class="summary-location">AV Williams Bldg</span>:</span>
                 </div>
-                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity1 %>,&nbspB餐:&nbsp<%= comboQuantity1 %></span>
+                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity3 %>,&nbspB餐:&nbsp<%= comboQuantity3 %></span>
                 </div>
-                <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final1.toFixed(2) %></span>
+                <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final3.toFixed(2) %></span>
                 </div>
                 <div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
                 </div>
@@ -30,29 +30,28 @@
         </a>
     </div>
 
-    <!--<div class="ui vertical segment">-->
-    <!--	<a class="delivery-order" href="#manage">-->
-    <!--		<div class="ui column grid summary-list">-->
-    <!--			<div class="four wide right aligned column"><span class="summary-location">GWU:</span>-->
-    <!--			</div>-->
-    <!--			<div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp1,&nbspB餐:&nbsp2</span>-->
-    <!--			</div>-->
-    <!--			<div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$30.00</span>-->
-    <!--			</div>-->
-    <!--			<div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>-->
-    <!--			</div>-->
-    <!--		</div>-->
-    <!--	</a>-->
-    <!--</div>-->
-
+    <div class="ui vertical segment">
+        <a class="delivery-order" href="#">
+            <div class="ui column grid summary-list">
+                <div class="four wide right aligned column"><span class="summary-location">Regents Drive Parking Garage</span>:</span>
+                </div>
+                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity1 %>,&nbspB餐:&nbsp<%= comboQuantity1 %></span>
+                </div>
+                <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final1.toFixed(2) %></span>
+                </div>
+                <div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
+                </div>
+            </div>
+        </a>
+    </div>
 
     <div class="summary-order ui vertical segment">
         <div class="ui column grid summary-list">
             <div class="four wide right aligned column"><span class="summary-location">总计:</span>
             </div>
-            <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2 %></span>
+            <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 + dishQuantity3 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2+comboQuantity3 %></span>
             </div>
-            <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp<span class="red">$<%= (final1 + final2).toFixed(2)%></span>
+            <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp<span class="red">$<%= (final1 + final2 + final3).toFixed(2)%></span>
             </div>
         </div>
     </div>
