@@ -34,8 +34,10 @@
             $("h1.ui.small.center.aligned.header").html(status.statusHeader);
             $("#contact1").html(status.contact1);
             $("#contact2").html(status.contact2);
+            $("#contact3").html(status.contact3);
             $("#status1").html(status.status1);
             $("#status2").html(status.status2);
+            $("#status3").html(status.status3);
 
             var current = new Date();
             var currentHour = current.getHours();
@@ -44,6 +46,7 @@
             
                 $("#status1").text("Zzzzz...");
                 $("#status2").text("Zzzzz...");
+                $("#status3").text("Zzzzz...");
 
             } else {
                 var lowerDate = new Date();
@@ -76,6 +79,16 @@
                             $("#status2").text("Arrived!");
                             $("#status2").addClass("red");
                            }
+                        }
+                        if (result.get("address") == "AV Williams Bldg") {
+                            if(locale == "zh-cn"){
+                                $("#status3").text("我已到达!");
+                                $("#status3").addClass("red");
+                            }
+                            if(locale !== "zh-cn"){
+                                $("#status3").text("Arrived!");
+                                $("#status3").addClass("red");
+                            }
                         }
                         });
                 },
