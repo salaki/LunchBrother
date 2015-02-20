@@ -1,9 +1,8 @@
 define([
         'text!templates/account/loginorsignupTemplate.html',
-        'views/account/FbLoginView',
         'i18n!nls/login'
   
-], function (loginorsignupTemplate, FbLoginView, login) {
+], function (loginorsignupTemplate, login) {
 
     var LoginorsignupView = Parse.View.extend({
         el: $("#page"),

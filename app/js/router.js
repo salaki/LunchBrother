@@ -9,7 +9,6 @@ define([
   'views/manage/DeliveryView',
   'views/account/LoginorsignupView',
   'views/account/SignupemailView',
-  'views/account/FbLoginView',
   'views/account/ProfileView',
 	'views/account/ForgotpasswordView',
     'views/account/ResetPasswordView'
@@ -23,7 +22,6 @@ define([
 		DeliveryView, 
 		LoginorsignupView, 
 		SignupemailView,
-		FbLoginView,
 		ProfileView,
 		ForgotpasswordView,
         ResetPasswordView) {
