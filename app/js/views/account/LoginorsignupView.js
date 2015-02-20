@@ -7,9 +7,6 @@ define([
 
     var LoginorsignupView = Parse.View.extend({
         el: $("#page"),
-        events:{
-        	"click #fbLoginBtn": "fbLogin"
-        },
 
         initialize: function () {
             _.bindAll(this, 'render');
@@ -23,11 +20,6 @@ define([
             $("#signUpBtn").html(login.SignUpButton);
             $("#loginBtnContent").html(login.LoginButton);
             return this;
-        },
-        
-        fbLogin: function(){
-        	var fbLoginView = new FbLoginView();
-        	fbLoginView.render();
         }
     });
     return LoginorsignupView;
