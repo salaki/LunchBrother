@@ -83,14 +83,17 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			var onejan = new Date(day.getFullYear(), 0, 1);
                         var today = new Date(day.getFullYear(),day.getMonth(),day.getDate());
   			var dayOfYear = ((today - onejan + 86400000)/86400000);
-			var weekOfYear = Math.ceil(dayOfYear/7); 
+			var weekOfYear = Math.ceil(dayOfYear/7)+1; 
 			var dayOfWeek = today.getDay();
 			var hours = currentTime.getHours();
 
 			//Sunday and Saturday show Monday Pic
-			if (dayOfWeek == 0 || dayOfWeek == 6) {
+			if (dayOfWeek == 6) {
 				dayOfWeek = 1;
 				weekOfYear++;
+			}
+			else if(dayOfWeek == 0) {
+				dayOfWeek = 1;
 			}
 			//Monday to Thursday
 			else if (hours >= 14 && (dayOfWeek <= 4 && dayOfWeek >= 1)) {
