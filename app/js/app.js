@@ -1,4 +1,6 @@
 var config = {
+    "appUrl": "https://lunchbrother.com",
+//    "appUrl": "http://localhost/lunchbrother/app/index.html",
     "baseUrl": "js",
     "paths": {
         jquery: 'libs/jquery/jquery-1.11.2.min',
@@ -8,7 +10,8 @@ var config = {
         parse: 'libs/parse/parse-1.3.2.min',
         stripe: 'libs/stripe/stripe.v2',
         templates: '../templates',
-        semantic: 'libs/semantic/semantic.min'
+        semantic: 'libs/semantic/semantic.min',
+        facebook: '//connect.facebook.net/en_US/sdk'
     },
     shim: {
         underscore: {
@@ -27,6 +30,13 @@ var config = {
         "libs/semantic/dropdown.min": ["jquery", "semantic"],
         "libs/semantic/checkbox.min": ["jquery", "semantic"],
         "libs/semantic/form.min": ["jquery", "semantic"],
+		"libs/semantic/sidebar.min": ["jquery", "semantic"],
+	    "facebook": {
+	    	exports: 'FB'
+	    }
+    },
+    pickUpLocations: {
+        "UMCP" : ['AV Williams Bldg', 'McKeldin Library', 'Regents Drive Parking Garage']
     }
 };
 

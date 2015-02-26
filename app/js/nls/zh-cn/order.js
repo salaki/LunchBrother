@@ -13,5 +13,6 @@ define({
     "failedReason" : "失败原因:",
     "pleaseDoubleCheckOrder" : "请确认信用卡信息和订单内容后再试",
     "messageConfirm" : "确认",
-    "cvv2VerificationCode" : "CVV2验证码:"
+    "cvv2VerificationCode" : "CVV2验证码:",
+    "rememberMe":"记住这张卡的信息，方便下次支付"
 });

@@ -1,0 +1,530 @@
+//colors
+$color_red: #e3151a;
+$color_green: #5bbd72;
+$color_lgrey: #f7f7f7;
+$color_dgrey: #454545;
+$color_grey: #888888;
+$white: white;
+$color_border: rgba(39, 41, 43, 0.15);
+$color_loginbtn: #dddddd;
+$color_btn_active: #ab3c3c;
+$color_text_whiteshadow: rgba(255, 255, 255, 1);
+$black_50: rgba(0, 0, 0, 0.5);
+$black_15: rgba(0,0,0,.15);
+
+//@extend-elements
+//original selectors
+//#orderBtn.red, #paymentBtn.red, #loginBtn.red, #arriveBtn.red, #signUpBtn.red, #sendemailBtn.red, #resetBtn.red
+%redBtn {
+	background-color: $color_red;
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 -0.3em 0 0 $color_border inset;
+	padding: 1em 2em 1.35em;
+	width: 100%;
+	position: relative;
+}
+
+//original selectors
+//#orderBtn.grey, #loginBtn.grey
+%greyBtn {
+	background-color: $color_loginbtn;
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 -0.3em 0 0 $color_border inset;
+	color: $color_grey;
+	padding: 1em 2em 1.35em;
+	width: 100%;
+	position: relative;
+}
+
+//original selectors
+//#copyright, #signupReminder
+%hint {
+	font-size: 12px;
+	text-align: center;
+	margin: 10px;
+	color: $color_grey;
+}
+
+
+html {
+	overflow-x: hidden;
+	overflow-y: auto;
+	background-color: $color_lgrey;
+}
+header {
+	min-width: 320px;
+}
+#mobileLanguage {
+	font-size: 12px;
+}
+.space {
+	width: 100%;
+	clear: both;
+	height: 100px;
+}
+#barTitle {
+	width: 31%;
+	text-align: center;
+	float: left;
+}
+#hamBtnWrapper {
+	text-align: right;
+	width: 33.33%;
+	padding: 0;
+	> div {
+		margin: 0;
+		padding-top: 11px;
+		padding-bottom: 11px;
+		width: 40%;
+	}
+	.ui.dropdown .menu {
+	}
+}
+#language {
+	display: inline-block;
+}
+.language-text {
+	float: left;
+}
+#page {
+	padding-top: 32px;
+	.dish-desc {
+		font-size: 12px;
+		padding-left: 10px;
+		color: $color_grey;
+	}
+	.minus-btn-wrapper {
+		padding-left: 0;
+		padding-right: 0;
+		button {
+			border: 1px solid $color_border;
+		}
+	}
+	.plus-btn-wrapper {
+		padding-left: 0;
+		padding-right: 0;
+		button {
+			border: 1px solid $color_border;
+		}
+	}
+	.order-count-wrapper {
+		padding-left: 0.6em;
+		padding-right: 0.6em;
+	}
+	.dish-count {
+		background-color: $white;
+		border: 1px solid $color_border;
+		width: 100%;
+		padding: 7px 11px;
+		font-size: 12px;
+		font-weight: normal;
+	}
+	.ui.segment {
+		padding: 0.4em;
+	}
+	.card .content .ui.button {
+		font-size: 0.7rem;
+	}
+}
+.summary-name {
+	font-size: 12px;
+	color: $color_grey;
+}
+.summary-count {
+	font-size: 12px;
+	color: $color_grey;
+}
+.summary-price {
+	font-size: 12px;
+	color: $color_grey;
+}
+.summary-total {
+	font-size: 12px;
+	color: $color_grey;
+	display: inline-block;
+	width: 40px;
+	color: $color_red;
+}
+.summary-tax {
+	font-size: 12px;
+	color: $color_grey;
+	display: inline-block;
+	width: 40px;
+}
+.summary-coupon {
+	font-size: 12px;
+	color: $color_grey;
+	display: inline-block;
+	width: 40px;
+	color: $color_green;
+}
+.summary-location {
+	color: $color_dgrey;
+	font-weight: bold;
+	font-size: 11px;
+}
+.summary-status {
+	color: $color_grey;
+	font-size: 11px;
+}
+.summary-contact {
+	color: $color_grey;
+	font-size: 11px;
+}
+.summary-total-label {
+	font-size: 12px;
+}
+.summary-tax-label {
+	font-size: 12px;
+}
+.summary-coupon-label {
+	font-size: 12px;
+}
+#timeAlert {
+	display: none;
+}
+#orderBtn {
+	&.red {
+		@extend %redBtn;
+		&:hover {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 -0.25em 0 0 $color_border inset;
+			top: 1px;
+		}
+		&:active {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 0 $color_btn_active;
+			top: 2px;
+		}
+	}
+	&.grey {
+		@extend %greyBtn;
+	}
+}
+#loginBtn {
+	&.red {
+		@extend %redBtn;
+		&:hover {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 -0.25em 0 0 $color_border inset;
+			top: 1px;
+		}
+		&:active {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 0 $color_btn_active;
+			top: 2px;
+		}
+	}
+	&.grey {
+		@extend %greyBtn;
+		&:hover {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 -0.25em 0 0 $color_border inset;
+			top: 1px;
+		}
+		&:active {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 0 $color_btn_active;
+			top: 2px;
+		}
+	}
+}
+#arriveBtn {
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 -0.3em 0 0 $color_border inset;
+	padding: 1em 2em 1.35em;
+	width: 100%;
+	position: relative;
+	&.red {
+		@extend %redBtn;
+		&:hover {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 -0.25em 0 0 $color_border inset;
+			top: 1px;
+		}
+		&:active {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 0 $color_btn_active;
+			top: 2px;
+		}
+	}
+}
+#fbLoginBtn {
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 -0.3em 0 0 $color_border inset;
+	padding: 1em 2em 1.35em;
+	width: 100%;
+	position: relative;
+	&:hover {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.25em 0 0 $color_border inset;
+		top: 1px;
+	}
+	&:active {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 0 $color_btn_active;
+		top: 2px;
+	}
+}
+#loginBtnContent {
+	&.grey {
+		color: $color_grey;
+	}
+	&.red {
+		color: $white;
+	}
+}
+.notification {
+	margin-top: 30px;
+}
+#orderMessage {
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: none;
+	background: none;
+	font-size: 12px;
+	color: $color_grey;
+	padding: 20px 0 20px 0 !important;
+	margin: 0 !important;
+	a {
+		color: $color_red;
+	}
+}
+#statusTracker {
+	font-size: 12px;
+}
+#payment {
+	padding: 15px;
+}
+#addressOption {
+	min-width: 150px;
+	margin-left: 2%;
+	.default {
+		float: left;
+		width: 75%;
+		//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		text-shadow: 0.5px -0.5px $color_text_whiteshadow;
+	}
+	.dropdown.icon {
+		margin-bottom: 10px;
+	}
+}
+#expyear {
+	min-width: 150px;
+}
+.check {
+	width: 85%;
+	margin-left: 20px;
+}
+.thanks {
+	color: #E3151A;
+}
+#customerinfo {
+	padding: 10px;
+}
+.order-detail {
+	border: 1px solid $black_15;
+}
+.send {
+	opacity: 1;
+	//Instead of the line below you could use @includetransition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: opacity .25s ease-in-out;
+	line-height: 50px;
+	background: #E3151A !important;
+	height: 78px;
+	&:hover {
+		opacity: 0.8;
+	}
+	i {
+		color: $white;
+		margin: 0 auto;
+		width: 100%;
+	}
+}
+.red {
+	color: #E3151A;
+}
+.gray {
+	color: $color_grey;
+}
+#orderStats {
+	.column {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	.summary-list {
+		margin-bottom: 0;
+		margin-top: 0;
+	}
+}
+#newCardInfo {
+	//Instead of the line below you could use @includetransform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
+	transform: none;
+	margin: 2%;
+}
+#contactinfo {
+	margin: 2%;
+}
+#agreements {
+	margin: 2%;
+}
+#basicinfo {
+	margin: 2%;
+}
+#cardselector {
+	margin: 2%;
+}
+#cw2 {
+	max-width: 160px !important;
+}
+#fullscreen {
+	display: none;
+}
+#smallmap {
+	width: 100%;
+}
+.arrived {
+	color: $color_red;
+}
+#loginorsignup {
+	margin-top: 0;
+}
+#logo {
+	text-align: center;
+}
+@media(max-width: 736px) {
+	#img {
+		width: 100%;
+		height: 100%;
+	}
+}
+@media(min-width: 736px) {
+	#img {
+		width: 50%;
+		height: 50%;
+	}
+}
+#signupReminder {
+	font-size: 15px;
+	color: $color_grey;
+	text-align: center;
+	margin: 10px;
+	@extend %hint;
+}
+#copyright {
+	@extend %hint;
+}
+.profilePic {
+	//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+	border-radius: 100%;
+	overflow: hidden;
+	//Instead of the line below you could use @includebox-sizing($bs)
+	box-sizing: content-box;
+	margin: 0 auto;
+	border: 5px solid $color_lgrey;
+	width: 90px;
+	height: 90px;
+}
+#userFullName {
+	margin: 15px 0;
+	color: $color_red;
+	font-weight: bold;
+}
+#referlink {
+	margin: 0 auto;
+}
+#forgotlink {
+	font-size: 14px;
+	float: right;
+}
+#sidebarWrapper {
+	padding-left: 14px !important;
+	padding-right: 14px !important;
+}
+.ui.inverted.menu {
+	background-color: #E3151A;
+	opacity: 0.9;
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 0 5px $black_50;
+}
+.dishes .card {
+	width: 100%;
+}
+#paymentBtn.red {
+	@extend %redBtn;
+	&:hover {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.25em 0 0 $color_border inset;
+		top: 1px;
+	}
+	&:active {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 0 $color_btn_active;
+		top: 2px;
+	}
+}
+#signUpBtn.red {
+	@extend %redBtn;
+	&:hover {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.25em 0 0 $color_border inset;
+		top: 1px;
+	}
+	&:active {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 0 $color_btn_active;
+		top: 2px;
+	}
+}
+#sendemailBtn.red {
+	@extend %redBtn;
+	&:hover {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.25em 0 0 $color_border inset;
+		top: 1px;
+	}
+	&:active {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 0 $color_btn_active;
+		top: 2px;
+	}
+}
+#resetBtn.red {
+	@extend %redBtn;
+	&:hover {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.25em 0 0 $color_border inset;
+		top: 1px;
+	}
+	&:active {
+		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 0 $color_btn_active;
+		top: 2px;
+	}
+}
+.ui.form {
+	.field > .selection.dropdown {
+		width: 25%;
+	}
+	.fields .wide.field {
+		width: 6.25%;
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+.ui.mini.input {
+	width: 25%;
+}
+.clearfix:after {
+	content: ".";
+	visibility: hidden;
+	display: block;
+	height: 0;
+	clear: both;
+}
+#termsandconditions > a {
+	padding-left: 8%;
+}
+#accountBalance .label {
+	max-width: 100px;
+	font-size: 12px;
+}

@@ -22,14 +22,25 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render', 'updateStatus');
+            var currentUser = Parse.User.current();
+            if(currentUser != null) {
+                currentUser.fetch();
+                $("#userEmail").text(currentUser.get('email'));
+                $("#userPhone").text(currentUser.get('telnum'));
+                $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
+                $("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
+                $("#accountBarFirstName").text(currentUser.get('firstName'));
+            }
+            $('#account').show();
         },
 
         render: function () {
+            var pickUpLocations = config.pickUpLocations.UMCP;
+            this.$el.html(this.template({pickUpLocations: pickUpLocations}));
             $('.menu li').removeClass('active');
             $('.menu li a[href="#"]').parent().addClass('active');
             var paymentQuery = new Parse.Query(PaymentModel);
             var self = this;
-            this.$el.html(this.template());
             this.$("#addressOption").dropdown();
             this.applyQuery(paymentQuery, self);
             this.$("#arriveBtn").text(manageLocal.arrived);
@@ -70,11 +81,23 @@ define([
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
 
-            //Display the orders which are from yesterday 2pm to today 12pm
-            var lowerDate = new Date(new Date().getTime() - 24*60*60*1000);
-            lowerDate.setHours(14, 0, 0, 0);
-            var upperDate = new Date();
-            upperDate.setHours(12, 0, 0, 0);
+            //Display the order between a durantion
+            var current = new Date();
+            var currentHour = current.getHours();
+            if (currentHour > 14) {
+                //After 14:00, display the orders from today 2pm to tomorrow 12pm
+                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                upperDate.setHours(12, 0, 0, 0);
+                var lowerDate = current;
+                lowerDate.setHours(14, 0, 0, 0);
+            }
+            else {
+                //Before 14:00, display the orders from yesterday 2pm to today 12pm
+                upperDate = current;
+                upperDate.setHours(12, 0, 0, 0);
+                lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                lowerDate.setHours(14, 0, 0, 0);
+            }
 
             query.greaterThan("createdAt", lowerDate);
             query.lessThan("createdAt", upperDate);
@@ -88,14 +111,14 @@ define([
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
                         if (dishName2 != undefined) {
-                            if (dishName2.indexOf("Combo") > -1) {
+                            if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
                                 //Do nothing
                             } else {
                                 results[i].set('quantity1', quantity2);
                                 results[i].set('quantity2', quantity1);
                             }
                         } else {
-                            if (dishName1.indexOf("Combo") > -1) {
+                            if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
                                 results[i].set('quantity2', quantity1);
                                 results[i].set('quantity1', 0);
                             } else {
@@ -110,6 +133,7 @@ define([
                     self.$("#orderList").html(self.orderListTemplate({
                         orders: results
                     }));
+
                     $(".orderListOrderNumber").text(manageLocal.manageOrderNumber);
                     $(".orderListTotal").text(manageLocal.manageTotal);
                     $(".comboA").text(manageLocal.comboA);
@@ -169,12 +193,12 @@ define([
             self.deliveryDetails.set("status", manageLocal.onTheWay);
             self.deliveryDetails.set("address", this.$("#addressOption").val());
             self.deliveryDetails.save();
-            self.checkIfNotificationSent();
+            self.checkIfNotificationSent(this.$("#addressOption").val());
         },
 
         sendNotification: function() {
             var query = new Parse.Query(PaymentModel);
-            query.equalTo("address", address);
+            query.equalTo("address", this.$("#addressOption").val());
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
 

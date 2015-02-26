@@ -1,13 +1,13 @@
 <% _.each(orders, function(order) { %>
 <div id="div-<%= order.id %>" class="order-detail ui padded grid">
     <div class="seven wide white column">
-        <h4 class="ui header"><%= order.get('lname') %>, <%= order.get('fname') %></h4>
+        <h4 class="ui header"><%= order.get('lname') %>, <%= order.get('fname') %> (<%= order.get('telnum') %>)</h4>
         <p><span class="gray"><label class="comboA">A餐</label>:</span><span class="red"><%= order.get('quantity1') %></span><span class="gray">,</span><span class="gray"><label class="comboB">B餐</label>:</span><span class="red"><%= order.get('quantity2') %></span>
         </p>
     </div>
     <div class="seven wide white column">
-        <p><span class="gray"><label class="orderListOrderNumber">订单号</label>:</span><span class="red"><%= order.id %></span>
-        <p><span class="gray"><label class="orderListTotal">金额</label>:</span><span class="red">$<%= order.get('totalPrice') %></span>
+        <p><span class="gray"><label class="orderListOrderNumber">订单号</label>:</span><span class="red"><%= order.id %></span></p>
+        <p><span class="gray"><label class="orderListTotal">金额</label>:</span><span class="red">$<%= order.get('totalPrice') %></span></p>
     </div>
     <a id="checkButton-<%= order.id %>" class="send two wide white column" data-order="<%= order.id %>" data-lname="<%= order.get('lname') %>" data-fname="<%= order.get('fname') %>" data-price="<%= order.get('totalPrice') %>">
         <i class="checkmark icon"></i>

@@ -31,12 +31,32 @@ define([
     
 
     $('.ui.dropdown').dropdown();
-    
     var cnDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     var today = new Date();
     var dayOfWeek = cnDay[today.getDay()];
     var date = today.toLocaleDateString();
     $('#today').text(dayOfWeek + ', ' + date);
+
+    $('#signOutBtn').click(function() {
+        $('.ui.sidebar').sidebar('hide');
+        Parse.User.logOut();
+        $("#userEmail").text("");
+        $("#userPhone").text("");
+        $("#userFullName").text("");
+        $("#userCreditBalance").text("");
+        $("#accountBarFirstName").text("");
+	    window.location.href='#';
+	    location.reload();
+        $('#account').hide();
+    });
+
+    $('#account').click(function() {
+         $('.ui.sidebar').sidebar('toggle');
+    });
+    
+    $('.refer').click(function(){
+    	this.setSelectionRange(0, this.value.length);
+    });
   };
 
   return {

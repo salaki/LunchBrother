@@ -1,7 +1,7 @@
 <form action="" method="POST" id="paymentForm" class="ui form">
 	<div class="ui segment">
 		<div id="basicinfo">
-			<div id="nameinfo" class="two fields">
+			<!-- <div id="nameinfo" class="two fields">
 				<div class="ui fluid field">
 					<input id="first_name" class="ui input fname" placeholder="取餐人名" type="text" name="first_name" value="">
 				</div>
@@ -11,13 +11,14 @@
 			</div>
 			<div class="ui fluid field">
 				<input id="email" class="ui input required email" placeholder="E-mail" type="text" name="email">
-			</div>
+			</div> -->
 			<div class="ui fluid field">
 				<div id="addressoption">
 					<select id="addressdetails" name="address">
 						<option id="pickUpAddress" value="">选择取餐地址</option>
-						<option value="RDPG">Regents Drive Parking Garage</option>
-                                                <option value="ML">McKeldin Library</option>
+                        <% _.each(pickUpLocations, function(pickUpLocation){ %>
+                            <option value="<%= pickUpLocation %>"><%= pickUpLocation %></option>                        
+                        <% }); %>
 					</select>
 				</div>
 			</div>
@@ -25,66 +26,97 @@
 	</div>
 	<div class="ui divider"></div>
 	<div class="ui segment">
-		<div id="cardinfo" class="field">
-			<p id="inputCardInfo">请输入您的信用卡信息：</p>
-			<!-- <div class="sixteen wide field">-->
-			<!--<input class="ui fluid input" placeholder="持卡人姓名" type="text" name="name" />-->
-			<!--</div> -->
-			<div class="sixteen wide field">
-				<input class="ui fluid input card-number stripe-sensitive required" id="cardNumber" name="number" placeholder="卡号" type="text" size="20" data-stripe="number" />
+		<% if(cards.length > 0){ %>
+			<div id="cardselector" class="grouped fields">
+	
+				<div class="ui basic segment">
+					<h5 class="ui left floated header">
+					    Your cards:
+					</h5>
+					
+				    	<div id="newCard" class="ui basic right floated button">
+				  			<i class="icon payment"></i>
+				  			Add a Card
+						</div>
+					
+				</div>
+				<div id="userCardList">
+					<% _.each(cards, function(card){ 
+						var customerId = card.get('customerId');
+						var digit = card.get('last4Digit');%>
+						<div class="field">
+							<div class="ui radio checkbox checked">
+								<input type="radio" name="card" value="<%= customerId %>">
+								<label>xxxx-xxxx-xxxx-<span><%= digit %></span>
+								</label>
+							</div>
+						</div>
+	        		<% }); %>
+				</div>
+				<div class="ui divider"></div>
 			</div>
-		</div>
-		<div id="card-expinfo" class="fields">
-			<div id="exptime" class="four wide field expiry-wrapper">
-				<label id="expDate">过期日期：</label>
-				<select id="expMonth" data-stripe="exp-month" name="expMonth" class="ui dropdown card-expiry-month stripe-sensitive required">
-					<option value="01">01</option>
-					<option value="02">02</option>
-					<option value="03">03</option>
-					<option value="04">04</option>
-					<option value="05">05</option>
-					<option value="06">06</option>
-					<option value="07">07</option>
-					<option value="08">08</option>
-					<option value="09">09</option>
-					<option value="10">10</option>
-					<option value="11">11</option>
-					<option value="12">12</option>
-				</select>
-			</div>
-		<div id="expyear" class="card-expyear four wide field">
-				<label>&nbsp;</label>
-				<select id="expYear" data-stripe="exp-year" class="ui dropdown card-expiry-year stripe-sensitive required">
-					<option value="2015">2015</option>
-					<option value="2016">2016</option>
-					<option value="2017">2017</option>
-					<option value="2018">2018</option>
-					<option value="2019">2019</option>
-					<option value="2020">2020</option>
-				</select>
-			</div>
-			<div class="four wide field" id="cw2">
-				<label id="cvv2VerificationCode">CVV2验证码:</label>
-				<input type="text" class="ui input card-cvc" data-stripe="cvc" size="4">
-			</div>
-		</div>
-		<div id="agreements" class = "two fields">
-			<div id="terms" class="required inline field">
-				<div>
-					<input type="checkbox" name="terms">
-                    <label for="terms">我同意带饭大哥使用协议和条款</label>
+		<% } %>
+		<div id="newCardInfo" class="<%= cards.length > 0? 'transition hidden' : '' %>">
+			<div id="cardinfo" class="field">
+				<h5 id="inputCardInfo">请输入您的信用卡信息：</h5>
+				<!-- <div class="sixteen wide field">
+					<input class="ui fluid input" placeholder="持卡人姓名" type="text" name="name" />
+				</div> -->
+				<div class="sixteen wide field">
+					<input class="ui fluid input card-number stripe-sensitive required" id="cardNumber" name="number" placeholder="卡号" type="text" size="20" data-stripe="number" />
 				</div>
 			</div>
-			
+			<div class="ui divider hidden"></div>
+			<div id="card-expinfo" class="fields">
+				<div id="exptime" class="four wide field expiry-wrapper">
+					<label id="expDate">过期日期：</label>
+					<select id="expMonth" data-stripe="exp-month" name="expMonth" class="ui dropdown card-expiry-month stripe-sensitive required">
+						<option value="01">01</option>
+						<option value="02">02</option>
+						<option value="03">03</option>
+						<option value="04">04</option>
+						<option value="05">05</option>
+						<option value="06">06</option>
+						<option value="07">07</option>
+						<option value="08">08</option>
+						<option value="09">09</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+				</div>
+				<div id="expyear" class="card-expyear four wide field">
+					<label>&nbsp;</label>
+					<select id="expYear" data-stripe="exp-year" class="ui dropdown card-expiry-year stripe-sensitive required">
+						<option value="2015">2015</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+					</select>
+				</div>
+				<div class="four wide field" id="cw2">
+					<label id="cvv2VerificationCode">CVV2验证码:</label>
+					<input type="text" class="ui input card-cvc" data-stripe="cvc" size="4">
+				</div>
+			</div>
+			<div id="rememberme" class="inline field">
+
+					<input type="checkbox" name="rememberme">
+					<label for = "rememberme">记住这张卡的信息，方便下次支付</label>
+
+			</div>
+		</div>
+		<div id="agreements" class="two fields">
+			<div id="terms" class="required inline field">
+                <input type="checkbox" name="terms">
+                <label for="terms">我同意带饭大哥使用协议和条款</label>
+			</div>
+
 			<div id="termsandconditions" class="inline field">
 				<a id="readTermOfUse" href="#policy">阅读协议和条款</a>
 			</div>
-			<!--<div id="rememberme" class="inline field">-->
-			<!--	<div class="ui checkbox">-->
-			<!--		<input type="checkbox">-->
-			<!--		<label>记住这张卡的信息，方便下次支付</label>-->
-			<!--	</div>-->
-			<!--</div>-->
 		</div>
 	</div>
 	<button id="orderBtn" type="submit" class="center aligned ui red button">确定买单</button>
@@ -101,7 +133,8 @@
 				<td style="font-size: 12pt">
 					<label id="failedReason">失败原因:</label>
 					<label id="paymentFailMessage"></label>
-					<br><label id="pleaseDoubleCheckOrder">请确认信用卡信息后和订单内容再试</label>
+					<br>
+					<label id="pleaseDoubleCheckOrder">请确认信用卡信息后和订单内容再试</label>
 				</td>
 			</tr>
 		</table>
