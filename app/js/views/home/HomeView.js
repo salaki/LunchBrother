@@ -79,12 +79,10 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 
 		getDishId : function() {
 			var currentTime = new Date();
-			var day = new Date();
-			var onejan = new Date(day.getFullYear(), 0, 1);
-                        var today = new Date(day.getFullYear(),day.getMonth(),day.getDate());
-  			var dayOfYear = ((today - onejan + 86400000)/86400000);
-			var weekOfYear = Math.ceil(dayOfYear/7)+1; 
-			var dayOfWeek = today.getDay();
+			var now = new Date();
+			var onejan = new Date(now.getFullYear(), 0, 1);
+			var weekOfYear = Math.ceil( (((now - onejan) / 86400000) + onejan.getDay() + 1) / 7 );
+			var dayOfWeek = now.getDay();
 			var hours = currentTime.getHours();
 
 			//Sunday and Saturday show Monday Pic
