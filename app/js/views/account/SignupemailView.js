@@ -1,7 +1,8 @@
 define([
   'text!templates/account/signupemailTemplate.html',
+  'models/Grid',
   'i18n!nls/login'
-], function (signupemailTemplate, login) {
+], function (signupemailTemplate, GridModel, login) {
     var SignupemailView = Parse.View.extend({
         el: $("#page"),
         events: {
@@ -16,54 +17,64 @@ define([
         template: _.template(signupemailTemplate),
 
         render: function () {
-        	 this.$el.html(this.template());
-             this.$('.ui.form').form({
-                 first_name: {
-                     identifier: 'first_name',
-                     rules: [{
-                         type: 'empty',
-                         prompt: 'Please enter your first name'
-                     }]
-                 },
-                 last_name: {
-                     identifier: 'last_name',
-                     rules: [{
-                         type: 'empty',
-                         prompt: 'Please enter your last name'
-                     }]
-                 },
-                 email: {
-                     identifier: 'email',
-                     rules: [{
-                         type: 'empty',
-                         prompt: 'Please enter your e-mail'
+             var gridQuery = new Parse.Query(GridModel);
+             var self = this;
+             gridQuery.find({
+                 success: function(grids) {
+                     self.$el.html(self.template({grids: grids}));
+                     self.$('.ui.form').form({
+                         first_name: {
+                             identifier: 'first_name',
+                             rules: [{
+                                 type: 'empty',
+                                 prompt: 'Please enter your first name'
+                             }]
+                         },
+                         last_name: {
+                             identifier: 'last_name',
+                             rules: [{
+                                 type: 'empty',
+                                 prompt: 'Please enter your last name'
+                             }]
+                         },
+                         email: {
+                             identifier: 'email',
+                             rules: [{
+                                 type: 'empty',
+                                 prompt: 'Please enter your e-mail'
+                             }, {
+                                 type: 'email',
+                                 prompt: 'Please enter a valid e-mail'
+                             }]
+                         },
+                         phonenumber: {
+                             identifier: 'phonenumber',
+                             rules: [{
+                                 type: 'empty',
+                                 prompt: 'Please enter your phone number'
+                             },{
+                                 type: 'length[10]',
+                                 prompt:'Your phone number must be 10 digits'
+                             }]
+                         },
+                         password: {
+                             identifier: 'password',
+                             rules: [{
+                                 type: 'empty',
+                                 prompt: 'Please enter your password'
+                             }]
+                         }
                      }, {
-                         type: 'email',
-                         prompt: 'Please enter a valid e-mail'
-                     }]
+                         on: 'blur',
+                         inline: 'true'
+                     });
+                     $("#gridOptionLabel").text(login.gridName);
+                     $("#signUpBtn").html(login.SignUpButton);
                  },
-                 phonenumber: {
-                     identifier: 'phonenumber',
-                     rules: [{
-                         type: 'empty',
-                         prompt: 'Please enter your phone number'
-                     },{
-                     	type: 'length[10]',
-                     	prompt:'Your phone number must be 10 digits'
-                     }]
-                 },
-                 password: {
-                     identifier: 'password',
-                     rules: [{
-                         type: 'empty',
-                         prompt: 'Please enter your password'
-                     }]
+                 error: function(){
+                     console.log("Error finding grid data.");
                  }
-             }, {
-                 on: 'blur',
-                 inline: 'true'
              });
-             $("#signUpBtn").html(login.SignUpButton);
              return this;
         },
 
@@ -77,8 +88,10 @@ define([
                         alert("This username already exists!");
                     } else {
                         var user = new Parse.User();
-                        
-                        user.set("gridName", "UMCP");
+                        var grid = new GridModel();
+                        grid.id = this.$("#gridOptions").val();
+
+                        user.set("gridId", grid);
                         user.set("firstName", this.$("#first_name").val());
                         user.set("lastName", this.$("#last_name").val());
                         user.set("username", this.$("#email").val());

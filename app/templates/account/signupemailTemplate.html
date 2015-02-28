@@ -18,6 +18,16 @@
 			<div class="ui fluid field">
 				<input id="password" class="ui input required password" placeholder="Password" type="password" name="password">
 			</div>
+            <div class="ui fluid field">
+                <div id="gridOptionDiv">
+                    <select id="gridOptions" name="gridOptions">
+                        <option id="gridOptionLabel" value="">选择您所在位置</option>
+                        <% _.each(grids, function(grid){ %>
+                        <option value="<%= grid.id %>"><%= grid.get('name') %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
 		</div>
 	</div>
 	<button id="signUpBtn" class="center aligned ui fluid red button"></button>
