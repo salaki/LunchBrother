@@ -63,6 +63,13 @@ define([
                                  type: 'empty',
                                  prompt: 'Please enter your password'
                              }]
+                         },
+                         gridOptions: {
+                             identifier: 'gridOptions',
+                             rules: [{
+                                 type: 'empty',
+                                 prompt: 'Please select an area for you'
+                             }]
                          }
                      }, {
                          on: 'blur',

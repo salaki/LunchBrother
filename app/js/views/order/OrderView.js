@@ -3,6 +3,8 @@ define([
   'models/order/OrderModel',
   'models/order/PaymentModel',
   'models/user/CardModel',
+  'models/PickUpLocation',
+  'models/Grid',
   'views/home/DishCollectionView',
   'views/confirm/ConfirmView',
   'views/confirm/TextView',
@@ -12,7 +14,7 @@ define([
   'i18n!nls/order',
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
-], function (DishCollection, OrderModel, PaymentModel, CardModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe, OrderViewLocal) {
+], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe, OrderViewLocal) {
     Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
     var OrderView = Parse.View.extend({
 
@@ -39,50 +41,124 @@ define([
         render: function () {
         	var that = this;
         	var query = new Parse.Query(CardModel);
-            var pickUpLocations = config.pickUpLocations.UMCP;
-        	query.equalTo("createdBy", Parse.User.current());
-        	query.find({
-        	  success: function(cards) {
-        		  $(that.el).html(that.template({ cards: cards, pickUpLocations: pickUpLocations }));
-        		  that.$('.ui.checkbox').checkbox();
-        		  that.$('select.dropdown').dropdown();
-        		  that.$('.ui.form').form({
-                      
-                      address: {
-                          identifier: 'address',
-                          rules: [{
-                              type: 'empty',
-                              prompt: 'Please select a location'
-                          }]
-                      },
-                      terms: {
-                          identifier: 'terms',
-                          rules: [{
-                              type: 'checked',
-                              prompt: 'You must agree to the terms and conditions'
-                          }]
-                      }
-                  }, {
-                      on: 'blur',
-                      inline: 'true'
-                  });
-                  
-                  //Localization
-        		  that.$("#pickUpAddress").text(OrderViewLocal.pickUpAddress);
-        		  that.$("#addressdetails").dropdown();
-        		  that.$("#inputCardInfo").text(OrderViewLocal.inputCardInfo);
-        		  that.$("#cardNumber").attr("placeholder", OrderViewLocal.cardNumber);
-        		  that.$("#expDate").text(OrderViewLocal.expirationDate);
-        		  that.$("#cvv2VerificationCode").text(OrderViewLocal.cvv2VerificationCode);
-        		  that.$("label[for=terms]").text(OrderViewLocal.termOfUse);
-        		  that.$("label[for=rememberme]").text(OrderViewLocal.rememberMe);
-        		  that.$("#readTermOfUse").text(OrderViewLocal.readTermOfUse);
-        		  that.$("#orderBtn").text(OrderViewLocal.orderBtn);
-        		  that.$("#paymentFail").text(OrderViewLocal.orderBtn);
-        		  that.$("#failedReason").text(OrderViewLocal.failedReason);
-        		  that.$("#pleaseDoubleCheckOrder").text(OrderViewLocal.pleaseDoubleCheckOrder);
-        	  }
-        	});
+
+            var grid = Parse.User.current().get('gridId');
+            if (grid == undefined) {
+                var gridQuery = new Parse.Query(GridModel);
+                gridQuery.get("nmbyDzTp7m", {
+                    success: function(defaultGrid) {
+                        var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+                        pickUpLocationQuery.equalTo('gridId', defaultGrid);
+                        pickUpLocationQuery.find({
+                            success: function(pickUpLocations) {
+                                query.equalTo("createdBy", Parse.User.current());
+                                query.find({
+                                    success: function(cards) {
+                                        $(that.el).html(that.template({ cards: cards, pickUpLocations: pickUpLocations }));
+                                        that.$('.ui.checkbox').checkbox();
+                                        that.$('select.dropdown').dropdown();
+                                        that.$('.ui.form').form({
+                                            address: {
+                                                identifier: 'address',
+                                                rules: [{
+                                                    type: 'empty',
+                                                    prompt: 'Please select a location'
+                                                }]
+                                            },
+                                            terms: {
+                                                identifier: 'terms',
+                                                rules: [{
+                                                    type: 'checked',
+                                                    prompt: 'You must agree to the terms and conditions'
+                                                }]
+                                            }
+                                        }, {
+                                            on: 'blur',
+                                            inline: 'true'
+                                        });
+
+                                        //Localization
+                                        that.$("#pickUpAddress").text(OrderViewLocal.pickUpAddress);
+                                        that.$("#addressdetails").dropdown();
+                                        that.$("#inputCardInfo").text(OrderViewLocal.inputCardInfo);
+                                        that.$("#cardNumber").attr("placeholder", OrderViewLocal.cardNumber);
+                                        that.$("#expDate").text(OrderViewLocal.expirationDate);
+                                        that.$("#cvv2VerificationCode").text(OrderViewLocal.cvv2VerificationCode);
+                                        that.$("label[for=terms]").text(OrderViewLocal.termOfUse);
+                                        that.$("label[for=rememberme]").text(OrderViewLocal.rememberMe);
+                                        that.$("#readTermOfUse").text(OrderViewLocal.readTermOfUse);
+                                        that.$("#orderBtn").text(OrderViewLocal.orderBtn);
+                                        that.$("#paymentFail").text(OrderViewLocal.orderBtn);
+                                        that.$("#failedReason").text(OrderViewLocal.failedReason);
+                                        that.$("#pleaseDoubleCheckOrder").text(OrderViewLocal.pleaseDoubleCheckOrder);
+                                    }
+                                });
+                            },
+                            error: function(error) {
+                                console.log(error.message);
+                            }
+                        });
+                    },
+                    error: function(object, error) {
+                        console.log(error.message);
+                    }
+                });
+            } else {
+                var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+                pickUpLocationQuery.equalTo('gridId', grid);
+                pickUpLocationQuery.addAscending('address');
+                pickUpLocationQuery.find({
+                    success: function(pickUpLocations) {
+                        query.equalTo("createdBy", Parse.User.current());
+                        query.find({
+                            success: function(cards) {
+                                $(that.el).html(that.template({ cards: cards, pickUpLocations: pickUpLocations }));
+                                that.$('.ui.checkbox').checkbox();
+                                that.$('select.dropdown').dropdown();
+                                that.$('.ui.form').form({
+                                    address: {
+                                        identifier: 'address',
+                                        rules: [{
+                                            type: 'empty',
+                                            prompt: 'Please select a location'
+                                        }]
+                                    },
+                                    terms: {
+                                        identifier: 'terms',
+                                        rules: [{
+                                            type: 'checked',
+                                            prompt: 'You must agree to the terms and conditions'
+                                        }]
+                                    }
+                                }, {
+                                    on: 'blur',
+                                    inline: 'true'
+                                });
+
+                                //Localization
+                                that.$("#pickUpAddress").text(OrderViewLocal.pickUpAddress);
+                                that.$("#addressdetails").dropdown();
+                                that.$("#inputCardInfo").text(OrderViewLocal.inputCardInfo);
+                                that.$("#cardNumber").attr("placeholder", OrderViewLocal.cardNumber);
+                                that.$("#expDate").text(OrderViewLocal.expirationDate);
+                                that.$("#cvv2VerificationCode").text(OrderViewLocal.cvv2VerificationCode);
+                                that.$("label[for=terms]").text(OrderViewLocal.termOfUse);
+                                that.$("label[for=rememberme]").text(OrderViewLocal.rememberMe);
+                                that.$("#readTermOfUse").text(OrderViewLocal.readTermOfUse);
+                                that.$("#orderBtn").text(OrderViewLocal.orderBtn);
+                                that.$("#paymentFail").text(OrderViewLocal.orderBtn);
+                                that.$("#failedReason").text(OrderViewLocal.failedReason);
+                                that.$("#pleaseDoubleCheckOrder").text(OrderViewLocal.pleaseDoubleCheckOrder);
+                            }
+                        });
+                    },
+                    error: function(error) {
+                        console.log(error.message);
+                    }
+                });
+            }
+
+
         	
             return this;
         },

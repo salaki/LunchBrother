@@ -17,7 +17,7 @@
 					<select id="addressdetails" name="address">
 						<option id="pickUpAddress" value="">选择取餐地址</option>
                         <% _.each(pickUpLocations, function(pickUpLocation){ %>
-                            <option value="<%= pickUpLocation %>"><%= pickUpLocation %></option>                        
+                            <option value="<%= pickUpLocation.id %>"><%= pickUpLocation.get('address') %></option>
                         <% }); %>
 					</select>
 				</div>

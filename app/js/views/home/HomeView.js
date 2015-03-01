@@ -1,4 +1,12 @@
-define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel', 'models/dish/DishCollection', 'i18n!nls/string', 'text!templates/home/homeTemplate.html', 'text!templates/home/statsTemplate.html', 'text!templates/order/orderTemplate.html'], function(DishView, OrderView, DishModel, DishCollection, string, homeTemplate, statsTemplate, orderTemplate) {
+define(['views/home/DishView',
+    'views/order/OrderView',
+    'models/dish/DishModel',
+    'models/dish/DishCollection',
+    'i18n!nls/string',
+    'text!templates/home/homeTemplate.html',
+    'text!templates/home/statsTemplate.html',
+    'text!templates/order/orderTemplate.html'],
+    function(DishView, OrderView, DishModel, DishCollection, string, homeTemplate, statsTemplate, orderTemplate) {
 
 	var HomeView = Parse.View.extend({
 		// tagName: 'ul', // required, but defaults to 'div' if not set
