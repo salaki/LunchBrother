@@ -2,11 +2,12 @@ define(['views/home/DishView',
     'views/order/OrderView',
     'models/dish/DishModel',
     'models/dish/DishCollection',
+    'models/Grid',
     'i18n!nls/string',
     'text!templates/home/homeTemplate.html',
     'text!templates/home/statsTemplate.html',
     'text!templates/order/orderTemplate.html'],
-    function(DishView, OrderView, DishModel, DishCollection, string, homeTemplate, statsTemplate, orderTemplate) {
+    function(DishView, OrderView, DishModel, DishCollection, GridModel, string, homeTemplate, statsTemplate, orderTemplate) {
 
 	var HomeView = Parse.View.extend({
 		// tagName: 'ul', // required, but defaults to 'div' if not set
@@ -35,6 +36,20 @@ define(['views/home/DishView',
 			if (currentUser != null) {
 				currentUser.fetch();
 				$("#userEmail").text(currentUser.get('email'));
+                if (currentUser.get('gridId') == undefined) {
+                    $("#userGrid").text("University of Maryland College Park");
+                }else {
+                    var gridQuery = new Parse.Query(GridModel);
+                    gridQuery.get(currentUser.get('gridId').id, {
+                        success: function(grid) {
+                            $("#userGrid").text(grid.get('name'));
+                        },
+                        error: function(object, error) {
+                            console.log(error.message);
+                        }
+                    });
+                }
+
 				$("#userPhone").text(currentUser.get('telnum'));
 				$("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
 				$("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
@@ -50,6 +65,8 @@ define(['views/home/DishView',
 			comboQuery.equalTo("Dish_Id", 11);
 
 			var mainQuery = Parse.Query.or(bdQuery, comboQuery);
+//            var mainQuery = new Parse.Query(DishModel);
+//            mainQuery.equalTo("active", true);
 
 			this.dishes.query = mainQuery;
 
