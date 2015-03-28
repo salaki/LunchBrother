@@ -5,7 +5,7 @@
             <div class="ui column grid summary-list">
                 <div class="four wide right aligned column"><span class="summary-location">AV Williams Bldg</span>:</span>
                 </div>
-                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity3 %>,&nbspB餐:&nbsp<%= comboQuantity3 %></span>
+                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity3 %>,&nbspB餐:&nbsp<%= comboQuantity3 %>,&nbspC餐:&nbsp<%= comboCQuantity3 %></span>
                 </div>
                 <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final3.toFixed(2) %></span>
                 </div>
@@ -20,7 +20,7 @@
             <div class="ui column grid summary-list">
                 <div class="four wide right aligned column"><span class="summary-location">McKeldin Library</span>:</span>
                 </div>
-                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity2 %>,&nbspB餐:&nbsp<%= comboQuantity2 %></span>
+                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity2 %>,&nbspB餐:&nbsp<%= comboQuantity2 %>,&nbspC餐:&nbsp<%= comboCQuantity2 %></span>
                 </div>
                 <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final2.toFixed(2) %></span>
                 </div>
@@ -35,7 +35,7 @@
             <div class="ui column grid summary-list">
                 <div class="four wide right aligned column"><span class="summary-location">Regents Drive Parking Garage</span>:</span>
                 </div>
-                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity1 %>,&nbspB餐:&nbsp<%= comboQuantity1 %></span>
+                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity1 %>,&nbspB餐:&nbsp<%= comboQuantity1 %>,&nbspC餐:&nbsp<%= comboCQuantity1 %></span>
                 </div>
                 <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final1.toFixed(2) %></span>
                 </div>
@@ -49,7 +49,7 @@
         <div class="ui column grid summary-list">
             <div class="four wide right aligned column"><span class="summary-location">总计:</span>
             </div>
-            <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 + dishQuantity3 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2+comboQuantity3 %></span>
+            <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 + dishQuantity3 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2+comboQuantity3 %></span>,&nbspC餐:&nbsp<span class="red"><%= comboCQuantity1+comboCQuantity2+comboCQuantity3 %></span>
             </div>
             <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp<span class="red">$<%= (final1 + final2 + final3).toFixed(2)%></span>
             </div>
@@ -58,5 +58,5 @@
 </div>
 <div class="ui divider"></div>
 <div class="gray left aligned sixteen wide column">
-    注：A餐为当日便当，B餐为凉皮+肉夹馍
+    注：A餐为当日便当，B餐为凉皮+肉夹馍，C餐为
 </div>

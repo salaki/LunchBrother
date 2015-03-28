@@ -2,7 +2,15 @@
 <div id="div-<%= order.id %>" class="order-detail ui padded grid">
     <div class="seven wide white column">
         <h4 class="ui header"><%= order.get('lname') %>, <%= order.get('fname') %> (<%= order.get('telnum') %>)</h4>
-        <p><span class="gray"><label class="comboA">A餐</label>:</span><span class="red"><%= order.get('quantity1') %></span><span class="gray">,</span><span class="gray"><label class="comboB">B餐</label>:</span><span class="red"><%= order.get('quantity2') %></span>
+        <p>
+            <span class="gray"><label class="comboA">A餐</label>:</span>
+            <span class="red"><%= order.get('quantity1') %></span>
+            <span class="gray">,</span>
+            <span class="gray"><label class="comboB">B餐</label>:</span>
+            <span class="red"><%= order.get('quantity2') %></span>
+            <span class="gray">,</span>
+            <span class="gray"><label class="comboC">C餐</label>:</span>
+            <span class="red"><%= order.get('quantity3') %></span>
         </p>
     </div>
     <div class="seven wide white column">

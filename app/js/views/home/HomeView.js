@@ -40,8 +40,11 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			bdQuery.equalTo("Dish_Id", this.getDishId());
 			var comboQuery = new Parse.Query(DishModel);
 			comboQuery.equalTo("Dish_Id", 11);
+            var comboCQuery = new Parse.Query(DishModel);
+            comboCQuery.equalTo("Dish_Id", 13);
 
-			var mainQuery = Parse.Query.or(bdQuery, comboQuery);
+
+			var mainQuery = Parse.Query.or(bdQuery, comboQuery, comboCQuery);
 
 			this.dishes.query = mainQuery;
 
@@ -127,7 +130,7 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			});
 
             var currentUserEmail = Parse.User.current().get('email');
-            if (currentUserEmail == 'jackypig0906@gmail.com' || currentUserEmail == 'quqing11@gmail.com') {
+            if (currentUserEmail == 'jackypig0906@gmail.com' || currentUserEmail == 'quqing11@gmail.com' || currentUserEmail == 'zhengzho@umd.edu') {
                 if (($("#order").length == 0)) {
                     $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
                     $("#page").append(view.render().el);
