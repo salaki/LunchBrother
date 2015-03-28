@@ -47,7 +47,7 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 //			var mainQuery = Parse.Query.or(bdQuery, comboQuery, comboCQuery);
             var mainQuery = Parse.Query.or(bdQuery, comboQuery);
 
-			this.dishes.query = mainQuery;
+			this.dishes.query = mainQuery.ascending('descriptionEn');
 
 			this.dishes.bind('reset', this.loadAll);
 			this.dishes.bind('all', this.render);
