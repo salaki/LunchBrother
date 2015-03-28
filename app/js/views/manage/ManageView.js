@@ -169,23 +169,6 @@ define([
                             }
                         }
 
-//                        if (dishName2 != undefined) {
-//                            if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
-//                                //Do nothing
-//                            } else {
-//                                results[i].set('quantity1', quantity2);
-//                                results[i].set('quantity2', quantity1);
-//                            }
-//                        } else {
-//                            if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-//                                results[i].set('quantity2', quantity1);
-//                                results[i].set('quantity1', 0);
-//                            } else {
-//                                //Do nothing
-//                                results[i].set('quantity2', 0);
-//                            }
-//                        }
-
                         newEvent["click #checkButton-" + results[i].id] = 'onPickupClick';
                         self.delegateEvents(_.extend(self.events, newEvent));
                     }

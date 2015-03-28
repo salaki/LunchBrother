@@ -40,11 +40,12 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			bdQuery.equalTo("Dish_Id", this.getDishId());
 			var comboQuery = new Parse.Query(DishModel);
 			comboQuery.equalTo("Dish_Id", 11);
-            var comboCQuery = new Parse.Query(DishModel);
-            comboCQuery.equalTo("Dish_Id", 13);
+//            var comboCQuery = new Parse.Query(DishModel);
+//            comboCQuery.equalTo("Dish_Id", 13);
 
 
-			var mainQuery = Parse.Query.or(bdQuery, comboQuery, comboCQuery);
+//			var mainQuery = Parse.Query.or(bdQuery, comboQuery, comboCQuery);
+            var mainQuery = Parse.Query.or(bdQuery, comboQuery);
 
 			this.dishes.query = mainQuery;
 
