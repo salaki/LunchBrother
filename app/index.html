@@ -1,176 +1,182 @@
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en">
-<!--<![endif]-->
+	<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+		<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+			<!--[if gt IE 8]><!-->
+			<html class="no-js" lang="en">
+				<!--<![endif]-->
+				<head>
+					<meta charset="utf-8">
+					<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+					<meta name="description" content="">
+					<meta name="author" content="">
+					<meta name="viewport" content="width=device-width,initial-scale=1">
+					<title></title>
+					<!-- 2. Include CSS -->
+					<link rel="stylesheet" href="stylesheets/semantic/semantic.min.css" type="text/css" />
+					<link rel="stylesheet" href="stylesheets/semantic/dropdown.min.css" type="text/css" />
+					<link rel="stylesheet" href="stylesheets/semantic/icon.min.css" type="text/css" />
+					<link rel="stylesheet" href="stylesheets/semantic/label.min.css" type="text/css" />
+					<link rel="stylesheet" href="stylesheets/semantic/form.min.css" type="text/css" />
+					<link rel="stylesheet" href="stylesheets/semantic/input.min.css" type="text/css" />
+					<link rel="stylesheet" href="stylesheets/semantic/sidebar.min.css" type="text/css" />
+					<link rel="stylesheet" href="stylesheets/screen.css">
+				</head>
+				<body>
+					<header class="ui grid">
+					<div class="computer tablet only row">
+						<div class="ui fixed menu inverted navbar page grid">
+							<a href="#home" class="brand item"></a>
+							<div class="right menu">
+								<a id="orderDish" href="#home" class="item"></a>
+								<a id="statusCheck" href="#status" class="item"></a>
+								<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
+							</div>
+							<div class="right menu">
+								<div class="ui icon dropdown">
+									<a href="" class="item">
+										<div id="language" class="text"></div>
+										<i class="dropdown icon"></i>
+									</a>
+									<div id="computermenu" class="menu">
+										<a class="item" href="index.html">EN</a>
+										<a class="item" href="index.html?locale=zh-cn">中文</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="mobile only row">
+						<div class="ui fixed inverted navbar menu">
+							<a href="#" id="barTitle" class="item block ui label"></a>
+							<div class="ui icon dropdown right item">
+								<i class="content icon"></i>
+								<div class="menu">
+									<a id="mobileOrder" href="#home" class="item"></a>
+									<a id="mobileStatus" href="#status" class="item"></a>
+									<!--
+									<a href="" class="item">常见问题</a>
+									<a href="" class="item">联系我们</a>
+									//-->
+									<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
+								</div>
+							</div>
+							<div id="hamBtnWrapper" class="right item">
+								<div class="ui icon dropdown">
+									<div id="mobileLanguage" class="language-text">
+									</div>
+									<i class="dropdown icon">
+									</i>
+									<div id="mobilemenu" class="menu">
+										<a class="item" href="index.html">EN</a>
+										<a class="item" href="index.html?locale=zh-cn">中文</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					</header>
+					<section class="ui grid main page">
+					<div class="row">
+						<div class="column">
+							<article id="page">
+							Loading....
+							</article>
+						</div>
+					</div>
+					</section>
+					<div id="accountBar" class="ui right vertical push sidebar menu">
+						<div id="sidebarWrapper" class="ui grid">
+							<div class="row">
+								<div class="ui divider hidden"></div>
+								<div class="sixteen wide column center aligned">
+									<div class="profilePic clear">
+										<img id="userImage" width="150px" alt="Anne Hathaway picture" src="img/account_placeholder.JPG">
+									</div>
+									<p class="user-name" id="userFullName"></p>
+									<div class="ui divider"></div>
+									<div id="referlink" class="ui fluid input">
+										<input class="refer" type="text" readonly="readonly" value="">
+									</div>
+									<div class="ui red icon small message">
+										<i class="tag icon"></i>
+										<div class="content">
+											<div class="header">
+												Get $10 now!
+											</div>
+											<p>Just send the invitation link to your friends!</p>
+										</div>
+									</div>
 
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+									<div class="ui horizontal very small statistics">
+										<div id="accountBalance" class="statistic">
+											<div class="value">
+												<i class="dollar icon"></i><span id="userCreditBalance"></span>
+											</div>
+											<div class="label">
+												$3 off on every single order!
+											</div>
+										</div>
+									</div>
+									<!-- old account info		
+									<div class="ui medium label">
+										<i class="mail icon"></i><span id="userEmail"></span>
+									</div>
+									<div class="ui divider"></div>
+									<div class="ui medium label">
+										<i class="mobile icon"></i><span id="userPhone"></span>
+									</div>
+									-->
+
+									<div class="ui divider hidden"></div>
+									<div class="gear">
+										<span id="account_email" class="datainfo"><i class="mail icon"></i>123321@gmail.com</span>
+
+										<a href="#" class="editlink">Edit</a>
+
+										<a class="savebtn">
+											Save
+										</a>
+									</div>
+
+									<div class="gear">
+										<span id="account_tel" class="datainfo"><i class="mobile icon"></i>3012013233</span>
 
 
-	<title></title>
-	<!-- 2. Include CSS -->
-	<link rel="stylesheet" href="css/semantic/semantic.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/semantic/dropdown.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/semantic/icon.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/semantic/label.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/semantic/form.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/semantic/input.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/semantic/sidebar.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/main.css">
-</head>
+										<a href="#" class="editlink">Edit</a>
 
-<body>
-	<header class="ui grid">
-		<div class="computer tablet only row">
-			<div class="ui fixed menu inverted navbar page grid">
-				<a href="#home" class="brand item"></a>
-				<div class="right menu">
-					<a id="orderDish" href="#home" class="item"></a>
-					<a id="statusCheck" href="#status" class="item"></a>
-					<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
-				</div>
-				<div class="right menu">
-					<div class="ui icon dropdown">
+										<a class="savebtn">
+											Save
+										</a>
+									</div>
+								        <div class="ui divider hidden"></div>
+									<div id="signOutBtn" class="ui basic button">
+										<i class="icon sign out"></i> Sign Out
+									</div>
+								</div>
+							</div>
+						</div>	
+					</div>
+					<div class="space"></div>
+					<div id="account" class="ui fixed bottom inverted menu navbar page grid" style="display: none">
 						<a href="" class="item">
-							<div id="language" class="text"></div>
-							<i class="dropdown icon"></i>
-					    </a>
-					<div id="computermenu" class="menu">
-						<a class="item" href="index.html">EN</a>
-						<a class="item" href="index.html?locale=zh-cn">中文</a>
+							<div class="right menu">
+								<a class="item">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i>
+								</a>
+							</div>
+						</a>
 					</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="mobile only row">
-			<div class="ui fixed inverted navbar menu">
-
-				<a href="#" id="barTitle" class="item block ui label"></a>
-				<div class="ui icon dropdown right item">
-					<i class="content icon"></i>
-					<div class="menu">
-						<a id="mobileOrder" href="#home" class="item"></a>
-						<a id="mobileStatus" href="#status" class="item"></a>
-						<!--
-
-								<a href="" class="item">常见问题</a>
-								<a href="" class="item">联系我们</a>
-								//-->
-						<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
-					</div>
-				</div>
-				<div id="hamBtnWrapper" class="right item">
-					<div class="ui icon dropdown">
-						<div id="mobileLanguage" class="language-text">
+					<div id="alertDialog" class="ui small test modal">
+						<i class="close icon"></i>
+						<div class="header" id="alertTitle"></div>
+						<div class="content" id="alertMessage">
 						</div>
-						<i class="dropdown icon">
-							</i>
-						<div id="mobilemenu" class="menu">
-							<a class="item" href="index.html">EN</a>
-							<a class="item" href="index.html?locale=zh-cn">中文</a>
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</header>
-	<section class="ui grid main page">
-		<div class="row">
-			<div class="column">
-				<article id="page">
-					Loading....
-				</article>
-			</div>
-		</div>
-	</section>
-
-	<div id="accountBar" class="ui right vertical push sidebar menu">
-		<div id="sidebarWrapper" class="ui grid">
-			<div class="row">
-					<div class="ui divider hidden"></div>
-
-					<div class="sixteen wide column center aligned">
-						<div class="profilePic clear">
-							<img id="userImage" width="150px" alt="Anne Hathaway picture" src="img/account_placeholder.JPG">
-						</div>
-						<p class="user-name" id="userFullName"></p>
-						<div class="ui divider"></div>
-
-						<div id="referlink" class="ui fluid input">
-							<input class="refer" type="text" readonly="readonly" value="">
-						</div>
-
-						<div class="ui red icon small message">
-							<i class="tag icon"></i>
-							<div class="content">
-								<div class="header">
-									Get $10 now!
-								</div>
-								<p>Just send the invitation link to your friends!</p>
+						<div class="actions">
+							<div class="green one fluid ui button">
+								OK
 							</div>
 						</div>
-
-						
-						<div class="ui horizontal very small statistics">
-							<div id="accountBalance" class="statistic">
-								<div class="value">
-									<i class="dollar icon"></i><span id="userCreditBalance"></span>
-								</div>
-								<div class="label">
-									$3 off on every single order!
-								</div>
-							</div>
-						</div>
-						
-						<div class="ui medium label">
-							<i class="mail icon"></i><span id="userEmail"></span>
-						</div>
-						<div class="ui divider"></div>
-						<div class="ui medium label">
-							<i class="mobile icon"></i><span id="userPhone"></span>
-						</div>
-						<div class="ui divider"></div>
-
-						<div id="signOutBtn" class="ui basic button">
-							<i class="icon sign out"></i> Sign Out
-						</div>
 					</div>
-			</div>
-		</div>	
-	</div>
-
-	<div class="space"></div>
-
-	<div id="account" class="ui fixed bottom inverted menu navbar page grid" style="display: none">
-		<a href="" class="item">
-			<div class="right menu">
-				<a class="item">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i>
-				</a>
-			</div>
-		</a>
-	</div>
-    <div id="alertDialog" class="ui small test modal">
-			<i class="close icon"></i>
-        <div class="header" id="alertTitle"></div>
-        <div class="content" id="alertMessage">
-        </div>
-        <div class="actions">
-            <div class="green one fluid ui button">
-                    OK
-            </div>
-        </div>
-    </div>
-
-	<script data-main="js/app" src="js/libs/require/require.min.js"></script>
-</body>
-
-</html>
+					<script data-main="js/app" src="js/libs/require/require.min.js"></script>
+					</body>
+				</html>

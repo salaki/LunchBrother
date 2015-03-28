@@ -1,0 +1,773 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+@import url(http://fonts.googleapis.com/css?family=Roboto);
+/* line 17, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 3, ../sass/partials/_sidebar.scss */
+.savebtn {
+  padding: 4px 9px;
+  background: #5972a8;
+  font-size: 1.2em;
+  cursor: pointer;
+  border: 1px solid #1a356e;
+  color: #fff;
+  -webkit-box-shadow: inset 0 1px 0 #8a9cc2;
+  -moz-box-shadow: inset 0 1px 0 #8a9cc2;
+  box-shadow: inset 0 1px 0 #8a9cc2;
+  margin-bottom: 5px;
+  margin-top: -5px;
+  display: none;
+}
+
+/* line 5, ../sass/partials/_sidebar.scss */
+.savebtn:hover {
+  color: #fff;
+  background: #607db7;
+  text-decoration: none;
+}
+
+/* line 6, ../sass/partials/_sidebar.scss */
+.savebtn:active {
+  background: #556790;
+}
+
+/* line 8, ../sass/partials/_sidebar.scss */
+.profileinfo {
+  background: #f2f2f2;
+  width: 100%;
+  padding: 4px 10px;
+  border-left: 1px solid #b3b3b3;
+  border-right: 1px solid #b3b3b3;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+/* line 9, ../sass/partials/_sidebar.scss */
+.profileinfo h2 {
+  position: relative;
+  left: -250px;
+}
+
+/* line 11, ../sass/partials/_sidebar.scss */
+.gear {
+  position: relative;
+  display: block;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+/* line 12, ../sass/partials/_sidebar.scss */
+.gear a.editlink {
+  float: right;
+  font-size: 12px;
+}
+
+/* line 18, ../sass/partials/_sidebar.scss */
+.datainfo {
+  float: left;
+  font-size: 12px;
+  color: #333;
+}
+
+/* line 20, ../sass/partials/_sidebar.scss */
+label {
+  display: inline-block;
+  font-weight: bold;
+  color: #696969;
+  font-size: 12px;
+  width: 100px;
+}
+
+/* line 22, ../sass/partials/_sidebar.scss */
+.hlite {
+  background: #e2e8f6;
+  border: 1px solid #bdc7d8;
+  width: 250px;
+  margin-left: -7px;
+  padding: 4px 7px;
+  color: #565656;
+  font-size: 12px;
+}
+
+/* line 25, ../sass/screen.scss */
+#orderBtn.red, #loginBtn.red, #arriveBtn.red, #paymentBtn.red, #signUpBtn.red, #sendemailBtn.red, #resetBtn.red {
+  background-color: #e3151a;
+  box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
+  padding: 1em 2em 1.35em;
+  width: 100%;
+  position: relative;
+}
+
+/* line 36, ../sass/screen.scss */
+#orderBtn.grey, #loginBtn.grey {
+  background-color: #dddddd;
+  box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
+  color: #888888;
+  padding: 1em 2em 1.35em;
+  width: 100%;
+  position: relative;
+}
+
+/* line 48, ../sass/screen.scss */
+#signupReminder, #copyright {
+  font-size: 12px;
+  text-align: center;
+  margin: 10px;
+  color: #888888;
+}
+
+/* line 56, ../sass/screen.scss */
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #f7f7f7;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* line 62, ../sass/screen.scss */
+header {
+  min-width: 320px;
+}
+
+/* line 65, ../sass/screen.scss */
+#mobileLanguage {
+  font-size: 12px;
+}
+
+/* line 68, ../sass/screen.scss */
+.space {
+  width: 100%;
+  clear: both;
+  height: 100px;
+}
+
+/* line 73, ../sass/screen.scss */
+#today {
+  margin-top: 4px;
+  font-weight: normal;
+  width: 33.33%;
+}
+
+/* line 78, ../sass/screen.scss */
+#barTitle {
+  width: 31%;
+  text-align: center;
+  float: right;
+}
+
+/* line 83, ../sass/screen.scss */
+#hamBtnWrapper {
+  text-align: right;
+  width: 33.33%;
+  padding: 0;
+}
+/* line 87, ../sass/screen.scss */
+#hamBtnWrapper > div {
+  margin: 0;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  width: 40%;
+}
+
+/* line 96, ../sass/screen.scss */
+#language {
+  display: inline-block;
+}
+
+/* line 99, ../sass/screen.scss */
+.language-text {
+  float: left;
+}
+
+/* line 102, ../sass/screen.scss */
+#page {
+  padding-top: 32px;
+}
+/* line 104, ../sass/screen.scss */
+#page .dish-desc {
+  font-size: 12px;
+  padding-left: 10px;
+  color: #888888;
+}
+/* line 109, ../sass/screen.scss */
+#page .minus-btn-wrapper {
+  padding-left: 0;
+  padding-right: 0;
+}
+/* line 112, ../sass/screen.scss */
+#page .minus-btn-wrapper button {
+  border: 1px solid #888888;
+}
+/* line 116, ../sass/screen.scss */
+#page .plus-btn-wrapper {
+  padding-left: 0;
+  padding-right: 0;
+}
+/* line 119, ../sass/screen.scss */
+#page .plus-btn-wrapper button {
+  border: 1px solid #888888;
+}
+/* line 123, ../sass/screen.scss */
+#page .order-count-wrapper {
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+}
+/* line 127, ../sass/screen.scss */
+#page .dish-count {
+  background-color: white;
+  border: 1px solid #888888;
+  width: 100%;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: normal;
+}
+/* line 135, ../sass/screen.scss */
+#page .ui.segment {
+  padding: 0.4em;
+}
+/* line 138, ../sass/screen.scss */
+#page .card .content .ui.button {
+  font-size: 0.7rem;
+}
+
+/* line 142, ../sass/screen.scss */
+.summary-name {
+  font-size: 12px;
+  color: #888888;
+}
+
+/* line 146, ../sass/screen.scss */
+.summary-count {
+  font-size: 12px;
+  color: #888888;
+}
+
+/* line 150, ../sass/screen.scss */
+.summary-price {
+  font-size: 12px;
+  color: #888888;
+}
+
+/* line 154, ../sass/screen.scss */
+.summary-total {
+  font-size: 12px;
+  color: #888888;
+  display: inline-block;
+  width: 40px;
+  color: #E3151E;
+}
+
+/* line 161, ../sass/screen.scss */
+.summary-tax {
+  font-size: 12px;
+  color: #888888;
+  display: inline-block;
+  width: 40px;
+}
+
+/* line 167, ../sass/screen.scss */
+.summary-coupon {
+  font-size: 12px;
+  color: #888888;
+  display: inline-block;
+  width: 40px;
+  color: #5bbd72;
+}
+
+/* line 174, ../sass/screen.scss */
+.summary-location {
+  color: #454545;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+/* line 179, ../sass/screen.scss */
+.summary-status {
+  color: #A3A3A3;
+  font-size: 11px;
+}
+
+/* line 183, ../sass/screen.scss */
+.summary-contact {
+  color: #A3A3A3;
+  font-size: 11px;
+}
+
+/* line 187, ../sass/screen.scss */
+.summary-total-label {
+  font-size: 12px;
+}
+
+/* line 190, ../sass/screen.scss */
+.summary-tax-label {
+  font-size: 12px;
+}
+
+/* line 193, ../sass/screen.scss */
+.summary-coupon-label {
+  font-size: 12px;
+}
+
+/* line 196, ../sass/screen.scss */
+#timeAlert {
+  display: none;
+}
+
+/* line 202, ../sass/screen.scss */
+#orderBtn.red:hover {
+  box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+  top: 1px;
+}
+/* line 207, ../sass/screen.scss */
+#orderBtn.red:active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 2px;
+}
+
+/* line 220, ../sass/screen.scss */
+#loginBtn.red:hover {
+  box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+  top: 1px;
+}
+/* line 225, ../sass/screen.scss */
+#loginBtn.red:active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 2px;
+}
+/* line 233, ../sass/screen.scss */
+#loginBtn.grey:hover {
+  box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+  top: 1px;
+}
+/* line 238, ../sass/screen.scss */
+#loginBtn.grey:active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 2px;
+}
+
+/* line 245, ../sass/screen.scss */
+#arriveBtn {
+  box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
+  padding: 1em 2em 1.35em;
+  width: 100%;
+  position: relative;
+}
+/* line 253, ../sass/screen.scss */
+#arriveBtn.red:hover {
+  box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+  top: 1px;
+}
+/* line 258, ../sass/screen.scss */
+#arriveBtn.red:active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 2px;
+}
+
+/* line 265, ../sass/screen.scss */
+#fbLoginBtn {
+  box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
+  padding: 1em 2em 1.35em;
+  width: 100%;
+  position: relative;
+}
+/* line 271, ../sass/screen.scss */
+#fbLoginBtn:hover {
+  box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+  top: 1px;
+}
+/* line 276, ../sass/screen.scss */
+#fbLoginBtn:active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 2px;
+}
+
+/* line 283, ../sass/screen.scss */
+#loginBtnContent.grey {
+  color: #888888;
+}
+/* line 286, ../sass/screen.scss */
+#loginBtnContent.red {
+  color: white;
+}
+
+/* line 290, ../sass/screen.scss */
+.notification {
+  margin-top: 30px;
+}
+
+/* line 293, ../sass/screen.scss */
+#orderMessage {
+  box-shadow: none;
+  background: none;
+  font-size: 12px;
+  color: #888888;
+  padding: 20px 0 20px 0 !important;
+  margin: 0 !important;
+}
+/* line 301, ../sass/screen.scss */
+#orderMessage a {
+  color: #E3151E;
+}
+
+/* line 305, ../sass/screen.scss */
+#statusTracker {
+  font-size: 12px;
+}
+
+/* line 308, ../sass/screen.scss */
+#payment {
+  padding: 15px;
+}
+
+/* line 311, ../sass/screen.scss */
+#addressOption {
+  min-width: 150px;
+  margin-left: 2%;
+}
+/* line 314, ../sass/screen.scss */
+#addressOption .default {
+  float: left;
+  width: 75%;
+  text-shadow: 0.5px -0.5px white;
+}
+/* line 320, ../sass/screen.scss */
+#addressOption .dropdown.icon {
+  margin-bottom: 10px;
+}
+
+/* line 324, ../sass/screen.scss */
+#expyear {
+  min-width: 150px;
+}
+
+/* line 327, ../sass/screen.scss */
+.check {
+  width: 85%;
+  margin-left: 20px;
+}
+
+/* line 331, ../sass/screen.scss */
+.thanks {
+  color: #E3151A;
+}
+
+/* line 334, ../sass/screen.scss */
+#customerinfo {
+  padding: 10px;
+}
+
+/* line 337, ../sass/screen.scss */
+.order-detail {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* line 340, ../sass/screen.scss */
+.send {
+  opacity: 1;
+  transition: opacity .25s ease-in-out;
+  line-height: 50px;
+  background: #E3151A !important;
+  height: 78px;
+}
+/* line 347, ../sass/screen.scss */
+.send:hover {
+  opacity: 0.8;
+}
+/* line 350, ../sass/screen.scss */
+.send i {
+  color: white;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* line 356, ../sass/screen.scss */
+.red {
+  color: #E3151A;
+}
+
+/* line 359, ../sass/screen.scss */
+.gray {
+  color: #888888;
+}
+
+/* line 363, ../sass/screen.scss */
+#orderStats .column {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+/* line 367, ../sass/screen.scss */
+#orderStats .summary-list {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+/* line 372, ../sass/screen.scss */
+#newCardInfo {
+  transform: none;
+  margin: 2%;
+}
+
+/* line 377, ../sass/screen.scss */
+#contactinfo {
+  margin: 2%;
+}
+
+/* line 380, ../sass/screen.scss */
+#agreements {
+  margin: 2%;
+}
+
+/* line 383, ../sass/screen.scss */
+#basicinfo {
+  margin: 2%;
+}
+
+/* line 386, ../sass/screen.scss */
+#cardselector {
+  margin: 2%;
+}
+
+/* line 389, ../sass/screen.scss */
+#cw2 {
+  max-width: 160px !important;
+}
+
+/* line 392, ../sass/screen.scss */
+#fullscreen {
+  display: none;
+}
+
+/* line 395, ../sass/screen.scss */
+#smallmap {
+  width: 100%;
+}
+
+/* line 398, ../sass/screen.scss */
+.arrived {
+  color: #e3151a;
+}
+
+/* line 401, ../sass/screen.scss */
+#loginorsignup {
+  margin-top: 0;
+}
+
+/* line 404, ../sass/screen.scss */
+#logo {
+  text-align: center;
+}
+
+@media (max-width: 736px) {
+  /* line 408, ../sass/screen.scss */
+  #img {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media (min-width: 736px) {
+  /* line 414, ../sass/screen.scss */
+  #img {
+    width: 50%;
+    height: 50%;
+  }
+}
+/* line 419, ../sass/screen.scss */
+#signupReminder {
+  font-size: 15px;
+  color: #888888;
+  text-align: center;
+  margin: 10px;
+}
+
+/* line 429, ../sass/screen.scss */
+.profilePic {
+  border-radius: 100%;
+  overflow: hidden;
+  box-sizing: content-box;
+  margin: 0 auto;
+  border: 5px solid #f7f7f7;
+  width: 90px;
+  height: 90px;
+}
+
+/* line 440, ../sass/screen.scss */
+#userFullName {
+  margin: 15px 0;
+  color: #e3151a;
+  font-weight: bold;
+}
+
+/* line 445, ../sass/screen.scss */
+#referlink {
+  margin: 0 auto;
+}
+
+/* line 448, ../sass/screen.scss */
+#forgotlink {
+  font-size: 14px;
+  float: right;
+}
+
+/* line 452, ../sass/screen.scss */
+#sidebarWrapper {
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+}
+
+/* line 456, ../sass/screen.scss */
+.ui.inverted.menu {
+  background-color: #E3151A;
+  opacity: 0.9;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* line 462, ../sass/screen.scss */
+.dishes .card {
+  width: 100%;
+}
+
+/* line 467, ../sass/screen.scss */
+#paymentBtn.red:hover {
+  box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+  top: 1px;
+}
+/* line 472, ../sass/screen.scss */
+#paymentBtn.red:active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 2px;
+}
+
+/* line 480, ../sass/screen.scss */
+#signUpBtn.red:hover {
+  box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+  top: 1px;
+}
+/* line 485, ../sass/screen.scss */
+#signUpBtn.red:active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 2px;
+}
+
+/* line 493, ../sass/screen.scss */
+#sendemailBtn.red:hover {
+  box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+  top: 1px;
+}
+/* line 498, ../sass/screen.scss */
+#sendemailBtn.red:active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 2px;
+}
+
+/* line 506, ../sass/screen.scss */
+#resetBtn.red:hover {
+  box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
+  top: 1px;
+}
+/* line 511, ../sass/screen.scss */
+#resetBtn.red:active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 2px;
+}
+
+/* line 518, ../sass/screen.scss */
+.ui.form .field > .selection.dropdown {
+  width: 25%;
+}
+/* line 521, ../sass/screen.scss */
+.ui.form .fields .wide.field {
+  width: 6.25%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* line 527, ../sass/screen.scss */
+.ui.mini.input {
+  width: 25%;
+}
+
+/* line 530, ../sass/screen.scss */
+.clearfix:after {
+  content: ".";
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+/* line 537, ../sass/screen.scss */
+#termsandconditions > a {
+  padding-left: 8%;
+}
+
+/* line 540, ../sass/screen.scss */
+#accountBalance .label {
+  max-width: 100px;
+  font-size: 12px;
+  color: #e3151a;
+}
