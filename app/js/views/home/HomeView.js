@@ -31,10 +31,50 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 				$("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
 				$("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
 				$("#accountBarFirstName").text(currentUser.get('firstName'));
+
+                $(".editlink").on("click", function(e){
+                    e.preventDefault();
+                    var dataset = $(this).prev(".datainfo");
+                    var savebtn = $(this).next(".savebtn");
+                    var theid   = dataset.attr("id");
+                    var newid   = theid+"-form";
+                    var currval = dataset.text();
+                    dataset.empty();
+                    $('<input type="text" name="'+newid+'" id="'+newid+'" value="'+currval+'" class="hlite">').appendTo(dataset);
+                    $(this).css("display", "none");
+                    savebtn.css("display", "block");
+                });
+                $(".savebtn").on("click", function(e){
+                    e.preventDefault();
+                    var elink   = $(this).prev(".editlink");
+                    var dataset = elink.prev(".datainfo");
+                    var newid   = dataset.attr("id");
+                    var cinput  = "#"+newid+"-form";
+                    var newval  = $(cinput).val();
+                    $(this).css("display", "none");
+                    dataset.html(newval);
+                    elink.css("display", "block");
+
+                    if (newid.indexOf('Email') > -1) {
+                        currentUser.set( "email", newval );
+                    } else {
+                        currentUser.set( "telnum", Number(newval) );
+                    }
+                    currentUser.save( null, {
+                        success: function ( user )
+                        {
+                            //Do nothing
+                        },
+                        error: function ( user, error )
+                        {
+                            alert( "Error: " + error.code + " " + error.message );
+                        }
+                    } );
+                });
 			}
 			$('#account').show();
 
-			this.dishes = new DishCollection;
+            this.dishes = new DishCollection;
 
 			var bdQuery = new Parse.Query(DishModel);
 			bdQuery.equalTo("Dish_Id", this.getDishId());
