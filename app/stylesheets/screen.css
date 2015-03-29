@@ -70,33 +70,29 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 /* line 3, ../sass/partials/_sidebar.scss */
 .savebtn {
-  padding: 4px 9px;
-  background: #5972a8;
-  font-size: 1.2em;
+  padding: 5px 9px;
+  background: #d95c5c;
+  font-size: 0.8em;
   cursor: pointer;
-  border: 1px solid #1a356e;
   color: #fff;
-  -webkit-box-shadow: inset 0 1px 0 #8a9cc2;
-  -moz-box-shadow: inset 0 1px 0 #8a9cc2;
-  box-shadow: inset 0 1px 0 #8a9cc2;
-  margin-bottom: 5px;
-  margin-top: -5px;
+  @box-shadow :inset 0 1px 0 #8a9cc2;
+  float: right;
   display: none;
 }
 
-/* line 5, ../sass/partials/_sidebar.scss */
+/* line 14, ../sass/partials/_sidebar.scss */
 .savebtn:hover {
   color: #fff;
-  background: #607db7;
+  background: #e3151a;
   text-decoration: none;
 }
 
-/* line 6, ../sass/partials/_sidebar.scss */
+/* line 15, ../sass/partials/_sidebar.scss */
 .savebtn:active {
-  background: #556790;
+  background: #d95c5c;
 }
 
-/* line 8, ../sass/partials/_sidebar.scss */
+/* line 17, ../sass/partials/_sidebar.scss */
 .profileinfo {
   background: #f2f2f2;
   width: 100%;
@@ -106,35 +102,35 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   border-bottom: 1px solid #b3b3b3;
 }
 
-/* line 9, ../sass/partials/_sidebar.scss */
+/* line 18, ../sass/partials/_sidebar.scss */
 .profileinfo h2 {
   position: relative;
   left: -250px;
 }
 
-/* line 11, ../sass/partials/_sidebar.scss */
+/* line 20, ../sass/partials/_sidebar.scss */
 .gear {
   position: relative;
   display: block;
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #d9d9d9;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #efefef;
 }
 
-/* line 12, ../sass/partials/_sidebar.scss */
+/* line 27, ../sass/partials/_sidebar.scss */
 .gear a.editlink {
   float: right;
   font-size: 12px;
 }
 
-/* line 18, ../sass/partials/_sidebar.scss */
+/* line 33, ../sass/partials/_sidebar.scss */
 .datainfo {
   float: left;
   font-size: 12px;
   color: #333;
 }
 
-/* line 20, ../sass/partials/_sidebar.scss */
+/* line 35, ../sass/partials/_sidebar.scss */
 label {
   display: inline-block;
   font-weight: bold;
@@ -143,12 +139,11 @@ label {
   width: 100px;
 }
 
-/* line 22, ../sass/partials/_sidebar.scss */
+/* line 37, ../sass/partials/_sidebar.scss */
 .hlite {
-  background: #e2e8f6;
+  background: #efefef;
   border: 1px solid #bdc7d8;
-  width: 250px;
-  margin-left: -7px;
+  width: 160px;
   padding: 4px 7px;
   color: #565656;
   font-size: 12px;
