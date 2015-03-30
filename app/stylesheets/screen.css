@@ -362,7 +362,7 @@ header {
 #barTitle {
   width: 31%;
   text-align: center;
-  float: right;
+  float: left;
 }
 
 /* line 41, ../sass/screen.scss */
