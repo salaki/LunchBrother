@@ -167,17 +167,18 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			var currentTime = new Date();
 			var weekday = currentTime.getDay();
 			var hours = currentTime.getHours();
+            var mins = currentTime.getMinutes();
 			var view = new OrderView({
 				model : this.stats
 			});
 
             var currentUserEmail = Parse.User.current().get('email');
-            if (currentUserEmail == 'jackypig0906@gmail.com' || currentUserEmail == 'quqing11@gmail.com' || currentUserEmail == 'zhengzho@umd.edu') {
-                if (($("#order").length == 0)) {
-                    $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-                    $("#page").append(view.render().el);
-                }
-            } else {
+//            if (currentUserEmail == 'jackypig0906@gmail.com' || currentUserEmail == 'quqing11@gmail.com' || currentUserEmail == 'zhengzho@umd.edu') {
+//                if (($("#order").length == 0)) {
+//                    $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
+//                    $("#page").append(view.render().el);
+//                }
+//            } else {
                 if ((weekday == 6) || (weekday == 0 && hours < 14)) {
                     $("#timeAlert").css("display", "block");
                     $("#paymentBtn").addClass('disabled');
@@ -201,7 +202,7 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
                     $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
                     $("#page").append(view.render().el);
                 }
-            }
+//            }
 		}
 	});
 	return HomeView;
