@@ -145,8 +145,8 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			if (weekOfYear % 2 == 0) {
 				dayOfWeek += 5;
 			}
-                        console.log(weekOfYear);
-                        console.log(dayOfWeek);
+            console.log(weekOfYear);
+            console.log(dayOfWeek);
 			return dayOfWeek;
 		},
 
@@ -166,7 +166,7 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			var currentTime = new Date();
 			var weekday = currentTime.getDay();
 			var hours = currentTime.getHours();
-                        var mins = currentTime.getMinutes();
+            var mins = currentTime.getMinutes();
 			var view = new OrderView({
 				model : this.stats
 			});

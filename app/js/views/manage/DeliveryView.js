@@ -92,66 +92,12 @@ define([
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
                         var quantity3 = results[i].get('quantity3');
-                        if (dishName3 != undefined) {
-                            if (dishName2 != undefined) {
-                                if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
-                                    //Do nothing
-                                } else {
-                                    results[i].set('quantity1', quantity2);
-                                    results[i].set('quantity2', quantity1);
-                                }
-                            } else {
-                                if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                    results[i].set('quantity2', quantity1);
-                                    results[i].set('quantity1', 0);
-                                } else {
-                                    //Do nothing
-                                    results[i].set('quantity2', 0);
-                                }
-                            }
-                        } else {
-                            if (dishName2 != undefined) {
-                                if (dishName2.indexOf("Combo C") > -1) {
-                                    results[i].set('quantity3', quantity2);
-                                    if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                        results[i].set('quantity2', quantity1);
-                                        results[i].set('quantity1', 0);
-                                    } else {
-                                        results[i].set('quantity2', 0);
-                                    }
-                                } else {
-                                    if (dishName1.indexOf("Combo C") > -1) {
-                                        results[i].set('quantity3', quantity1);
-                                        results[i].set('quantity2', 0);
-                                        results[i].set('quantity1', 0);
-                                    } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                        results[i].set('quantity3', 0);
-                                        results[i].set('quantity2', quantity1);
-                                        results[i].set('quantity1', 0);
-                                    } else {
-                                        results[i].set('quantity3', 0);
-                                        results[i].set('quantity2', 0);
-                                    }
-                                }
-                            } else {
-                                if (dishName1.indexOf("Combo C") > -1) {
-                                    results[i].set('quantity3', quantity1);
-                                    results[i].set('quantity2', 0);
-                                    results[i].set('quantity1', 0);
-                                } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                    results[i].set('quantity3', 0);
-                                    results[i].set('quantity2', quantity1);
-                                    results[i].set('quantity1', 0);
-                                } else {
-                                    results[i].set('quantity3', 0);
-                                    results[i].set('quantity2', 0);
-                                }
-                            }
-                        }
-                        totalDish = results[i].get('quantity1') + totalDish;
-                        totalCombo = results[i].get('quantity2') + totalCombo;
-                        totalComboC = results[i].get('quantity3') + totalComboC;
-                        totalPrice = results[i].get('totalPrice') + totalPrice;
+                        var sortedResults = self.assignQuantityProperly(dishName1, dishName2, dishName3, quantity1, quantity2, quantity3, results[i]);
+
+                        totalDish = sortedResults.get('quantity1') + totalDish;
+                        totalCombo = sortedResults.get('quantity2') + totalCombo;
+                        totalComboC = sortedResults.get('quantity3') + totalComboC;
+                        totalPrice = sortedResults.get('totalPrice') + totalPrice;
                     }
 
                     self.orderDetails.set('dishQuantity1', totalDish);
@@ -176,67 +122,12 @@ define([
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
                         var quantity3 = results[i].get('quantity3');
-                        if (dishName3 != undefined) {
-                            if (dishName2 != undefined) {
-                                if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
-                                    //Do nothing
-                                } else {
-                                    results[i].set('quantity1', quantity2);
-                                    results[i].set('quantity2', quantity1);
-                                }
-                            } else {
-                                if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                    results[i].set('quantity2', quantity1);
-                                    results[i].set('quantity1', 0);
-                                } else {
-                                    //Do nothing
-                                    results[i].set('quantity2', 0);
-                                }
-                            }
-                        } else {
-                            if (dishName2 != undefined) {
-                                if (dishName2.indexOf("Combo C") > -1) {
-                                    results[i].set('quantity3', quantity2);
-                                    if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                        results[i].set('quantity2', quantity1);
-                                        results[i].set('quantity1', 0);
-                                    } else {
-                                        results[i].set('quantity2', 0);
-                                    }
-                                } else {
-                                    if (dishName1.indexOf("Combo C") > -1) {
-                                        results[i].set('quantity3', quantity1);
-                                        results[i].set('quantity2', 0);
-                                        results[i].set('quantity1', 0);
-                                    } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                        results[i].set('quantity3', 0);
-                                        results[i].set('quantity2', quantity1);
-                                        results[i].set('quantity1', 0);
-                                    } else {
-                                        results[i].set('quantity3', 0);
-                                        results[i].set('quantity2', 0);
-                                    }
-                                }
-                            } else {
-                                if (dishName1.indexOf("Combo C") > -1) {
-                                    results[i].set('quantity3', quantity1);
-                                    results[i].set('quantity2', 0);
-                                    results[i].set('quantity1', 0);
-                                } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                    results[i].set('quantity3', 0);
-                                    results[i].set('quantity2', quantity1);
-                                    results[i].set('quantity1', 0);
-                                } else {
-                                    results[i].set('quantity3', 0);
-                                    results[i].set('quantity2', 0);
-                                }
-                            }
-                        }
+                        var sortedResults = self.assignQuantityProperly(dishName1, dishName2, dishName3, quantity1, quantity2, quantity3, results[i]);
 
-                        totalVMDish = results[i].get('quantity1') + totalVMDish;
-                        totalVMCombo = results[i].get('quantity2') + totalVMCombo;
-                        totalVMComboC = results[i].get('quantity3') + totalVMComboC;
-                        totalVMPrice = results[i].get('totalPrice') + totalVMPrice;
+                        totalVMDish = sortedResults.get('quantity1') + totalVMDish;
+                        totalVMCombo = sortedResults.get('quantity2') + totalVMCombo;
+                        totalVMComboC = sortedResults.get('quantity3') + totalVMComboC;
+                        totalVMPrice = sortedResults.get('totalPrice') + totalVMPrice;
                     }
 
                     self.orderDetails.set('dishQuantity2', totalVMDish);
@@ -261,67 +152,12 @@ define([
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
                         var quantity3 = results[i].get('quantity3');
-                        if (dishName3 != undefined) {
-                            if (dishName2 != undefined) {
-                                if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
-                                    //Do nothing
-                                } else {
-                                    results[i].set('quantity1', quantity2);
-                                    results[i].set('quantity2', quantity1);
-                                }
-                            } else {
-                                if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                    results[i].set('quantity2', quantity1);
-                                    results[i].set('quantity1', 0);
-                                } else {
-                                    //Do nothing
-                                    results[i].set('quantity2', 0);
-                                }
-                            }
-                        } else {
-                            if (dishName2 != undefined) {
-                                if (dishName2.indexOf("Combo C") > -1) {
-                                    results[i].set('quantity3', quantity2);
-                                    if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                        results[i].set('quantity2', quantity1);
-                                        results[i].set('quantity1', 0);
-                                    } else {
-                                        results[i].set('quantity2', 0);
-                                    }
-                                } else {
-                                    if (dishName1.indexOf("Combo C") > -1) {
-                                        results[i].set('quantity3', quantity1);
-                                        results[i].set('quantity2', 0);
-                                        results[i].set('quantity1', 0);
-                                    } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                        results[i].set('quantity3', 0);
-                                        results[i].set('quantity2', quantity1);
-                                        results[i].set('quantity1', 0);
-                                    } else {
-                                        results[i].set('quantity3', 0);
-                                        results[i].set('quantity2', 0);
-                                    }
-                                }
-                            } else {
-                                if (dishName1.indexOf("Combo C") > -1) {
-                                    results[i].set('quantity3', quantity1);
-                                    results[i].set('quantity2', 0);
-                                    results[i].set('quantity1', 0);
-                                } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                    results[i].set('quantity3', 0);
-                                    results[i].set('quantity2', quantity1);
-                                    results[i].set('quantity1', 0);
-                                } else {
-                                    results[i].set('quantity3', 0);
-                                    results[i].set('quantity2', 0);
-                                }
-                            }
-                        }
+                        var sortedResults = self.assignQuantityProperly(dishName1, dishName2, dishName3, quantity1, quantity2, quantity3, results[i]);
 
-                        totalAVDish = results[i].get('quantity1') + totalAVDish;
-                        totalAVCombo = results[i].get('quantity2') + totalAVCombo;
-                        totalAVComboC = results[i].get('quantity3') + totalAVComboC;
-                        totalAVPrice = results[i].get('totalPrice') + totalAVPrice;
+                        totalAVDish = sortedResults.get('quantity1') + totalAVDish;
+                        totalAVCombo = sortedResults.get('quantity2') + totalAVCombo;
+                        totalAVComboC = sortedResults.get('quantity3') + totalAVComboC;
+                        totalAVPrice = sortedResults.get('totalPrice') + totalAVPrice;
                     }
 
                     self.orderDetails.set('dishQuantity3', totalAVDish);
@@ -339,6 +175,56 @@ define([
             //  var finalPrice = self.orderDetails.get('final1') + self.orderDetails.get('final2');
             //  self.orderDetails.set('final', finalPrice);
             //  self.$el.html(self.template(self.orderDetails.toJSON()));
+        },
+
+        assignQuantityProperly: function(dishName1, dishName2, dishName3, quantity1, quantity2, quantity3, result) {
+            if (dishName3 != undefined) {
+                if (dishName2 != undefined) {
+                    if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
+                        //Do nothing
+                    } else {
+                        result.set('quantity1', quantity2);
+                        result.set('quantity2', quantity1);
+                    }
+                } else {
+                    if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                        result.set('quantity2', quantity1);
+                        result.set('quantity1', 0);
+                    } else {
+                        //Do nothing
+                        result.set('quantity2', 0);
+                    }
+                }
+            } else {
+                if (dishName2 != undefined) {
+                    if (dishName2.indexOf("Combo C") > -1 || dishName2.indexOf("C餐") > -1) {
+                        result.set('quantity3', quantity2);
+                        if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                            result.set('quantity2', quantity1);
+                            result.set('quantity1', 0);
+                        } else {
+                            result.set('quantity2', 0);
+                        }
+                    } else {
+                        result.set('quantity3', 0);
+                    }
+                } else {
+                    if (dishName1.indexOf("Combo C") > -1 || dishName1.indexOf("C餐") > -1) {
+                        result.set('quantity3', quantity1);
+                        result.set('quantity2', 0);
+                        result.set('quantity1', 0);
+                    } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                        result.set('quantity3', 0);
+                        result.set('quantity2', quantity1);
+                        result.set('quantity1', 0);
+                    } else {
+                        result.set('quantity3', 0);
+                        result.set('quantity2', 0);
+                    }
+                }
+            }
+
+            return result;
         }
     });
     return DeliveryView;
