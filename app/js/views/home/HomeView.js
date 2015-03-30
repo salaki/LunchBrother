@@ -128,7 +128,6 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			var weekOfYear = Math.ceil( (((now - onejan) / 86400000) + onejan.getDay() + 1) / 7 );
 			var dayOfWeek = now.getDay();
 			var hours = currentTime.getHours();
-			var mins = currentTime.getMinutes();
 
 			//Sunday and Saturday show Monday Pic
 			if (dayOfWeek == 6) {
@@ -167,7 +166,7 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			var currentTime = new Date();
 			var weekday = currentTime.getDay();
 			var hours = currentTime.getHours();
-            var mins = currentTime.getMinutes();
+                        var mins = currentTime.getMinutes();
 			var view = new OrderView({
 				model : this.stats
 			});
