@@ -186,7 +186,7 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
                     } else {
                         $("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 2:00PM.");
                     }
-                } else if(weekday !== 0 && ((hours==10 && mins >= 30) || (hours >= 11 && hours<=13))) {
+                } else if(weekday !== 0 && ((hours==10 && mins > 30) || (hours >= 11 && hours<=13))) {
                     $("#timeAlert").css("display", "block");
                     $("#paymentBtn").addClass('disabled');
                     if (locale == "zh-cn") {
