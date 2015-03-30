@@ -1,0 +1,48 @@
+
+//colors
+$color_red: #e3151a;
+$color_green: #5bbd72;
+$color_lgrey: #f7f7f7;
+$color_dgrey: #454545;
+$color_grey: #888888;
+$white: white;
+$color_btn_shadow: rgba(39, 41, 43, 0.15);
+$color_loginbtn: #dddddd;
+$color_btn_active: #ab3c3c;
+$color_text_whiteshadow: rgba(255, 255, 255, 1);
+$black_50: rgba(0, 0, 0, 0.5);
+$black_15: rgba(0,0,0,.15);
+
+//extends
+%extend_1 {
+	background-color: $color_red;
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 -0.3em 0 0 $color_btn_shadow inset;
+	padding: 1em 2em 1.35em;
+	width: 100%;
+	position: relative;
+}
+
+//original selectors
+//#orderBtn.grey, #loginBtn.grey
+%extend_2 {
+	background-color: $color_loginbtn;
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 -0.3em 0 0 $color_btn_shadow inset;
+	color: $color_grey;
+	padding: 1em 2em 1.35em;
+	width: 100%;
+	position: relative;
+}
+
+//original selectors
+//#copyright, #signupReminder
+%extend_3 {
+	font-size: 12px;
+	text-align: center;
+	margin: 10px;
+	color: $color_grey;
+}
+
+
+
