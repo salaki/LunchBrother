@@ -10,7 +10,7 @@
       "mobileOrder" : "Order",
       "mobileStatus" : "Track Your Order",
       "dishTitle" : "Today's Special",
-      "orderMessage" : "We are early now! Your lunch will be delivered to UMD before 12:00PM, please track your lunch and pick it up on your schedule. (no later than 1:15PM :P)",
+      "orderMessage" : "We are early now! We guarantee your lunch will be delivered to UMD before 12:00PM, please track your lunch and pick it up on your schedule. (no later than 1:15PM :P)",
       "paymentBtn" : "Check Out",
       "orderDetails" : "Your Order Summary:",
       "summaryCount" : "Quantity",
