@@ -15,7 +15,8 @@ define([
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
 ], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe, OrderViewLocal) {
-    Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
+//    Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAdxGxWv5AkH');
+    Stripe.setPublishableKey('pk_test_pb95pxk797ZxEFRk55wswMRk');
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -35,7 +36,8 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render', 'stripeResponseHandler', 'orderSubmit', 'toggleNewCardForm', 'charge');
-            Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
+//            Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
+            Stripe.setPublishableKey('pk_test_pb95pxk797ZxEFRk55wswMRk');
         },
 
         render: function () {
@@ -249,9 +251,9 @@ define([
         },
         
         
-        emailService: function (orderId) {
+        emailService: function (paymentId) {
             Parse.Cloud.run('email', {
-                orderId: orderId
+                orderId: paymentId
 
             }, {
                 success: function () {
@@ -274,20 +276,8 @@ define([
                     var lname = user.get('lastName');
                     var email = user.get('email');
                     var phoneNumber = user.get('telnum');
-                    var address = $('#addressdetails option:selected').val();
+                    var pickUpLocationId = $('#addressdetails option:selected').val();
                     
-                    var i = 1;
-                    
-                    _.each(self.model.orders, function (order) {
-                	   var dishName = order.get('descriptionEn');
-                       if(locale == "zh-cn"){
-                        dishName = order.get('Description');
-                       }
-                        var quantity = order.get('count');
-                        paymentDetails.set('dishName' + i, dishName);
-                        paymentDetails.set('quantity' + i, quantity);
-                        i++;
-                    });
 
                     paymentDetails.set('telnum', phoneNumber);
                     paymentDetails.set('fname', fname);
@@ -300,7 +290,9 @@ define([
                     else{
                     	paymentDetails.set('stripeToken', params.paymentToken);
                     }
-                    paymentDetails.set('address', address);
+                    var pickUpLocation = new PickUpLocationModel();
+                    pickUpLocation.id = pickUpLocationId;
+                    paymentDetails.set('pickUpLocation', pickUpLocation);
                     paymentDetails.set('totalPrice', params.totalCharge);
                     paymentDetails.set('paymentCheck', true);
                     paymentDetails.save(null, {
@@ -316,6 +308,7 @@ define([
                             $("#page").append(view2.render().el);
         	                $('#orderBtn').prop('disabled', false);
                             $('#orderBtn').removeClass('grey').addClass('red');
+                            self.saveOrders(paymentDetails);
                             self.emailService(paymentDetails.id);
                             self.chargeCreditBalance(params.coupon);
                         },
@@ -329,6 +322,29 @@ define([
         	        $('#orderBtn').prop('disabled', false);
                     $('#orderBtn').removeClass('grey').addClass('red');
                 }
+            });
+        },
+
+        saveOrders: function(paymentDetails) {
+            _.each(this.model.orders, function (dish) {
+                var orderDetails = new OrderModel();
+                orderDetails.set('dishId', dish);
+                orderDetails.set('quantity', dish.get('count'));
+                orderDetails.set('paymentId', paymentDetails);
+                orderDetails.set('orderBy', Parse.User.current());
+                orderDetails.set('unitPrice', dish.get('Unit_Price'));
+                orderDetails.set('subTotalPrice', dish.get('Unit_Price') * dish.get('count'));
+                orderDetails.set('restaurantId', dish.get('restaurant'));
+                orderDetails.set('pickUpLocation', paymentDetails.get('pickUpLocation'));
+                orderDetails.save(null, {
+                        success: function() {
+                            //Do nothing
+                        },
+                        error: function(err) {
+                            console.log("Failed to save orders. Reason: " + err.message);
+                        }
+                    }
+                );
             });
         }
     });

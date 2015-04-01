@@ -1,9 +1,12 @@
 define([
     'models/order/PaymentModel',
     'models/order/OrderModel',
+    'models/Grid',
+    'models/Restaurant',
+    'models/PickUpLocation',
     'views/manage/LoginView',
     'text!templates/manage/deliveryTemplate.html'
-], function(PaymentModel, OrderModel, LoginView, deliveryTemplate) {
+], function(PaymentModel, OrderModel, GridModel, RestaurantModel, PickUpLocationModel, LoginView, deliveryTemplate) {
 
     var DeliveryView = Parse.View.extend({
         el: $("#page"),
@@ -14,6 +17,21 @@ define([
             if(currentUser != null) {
                 currentUser.fetch();
                 $("#userEmail").text(currentUser.get('email'));
+                var gridId = "nmbyDzTp7m";
+                if (currentUser.get('gridId') == undefined) {
+                    $("#userGrid").text("University of Maryland College Park");
+                }else {
+                    var gridQuery = new Parse.Query(GridModel);
+                    gridId = currentUser.get('gridId').id;
+                    gridQuery.get(currentUser.get('gridId').id, {
+                        success: function(grid) {
+                            $("#userGrid").text(grid.get('name'));
+                        },
+                        error: function(object, error) {
+                            console.log(error.message);
+                        }
+                    });
+                }
                 $("#userPhone").text(currentUser.get('telnum'));
                 $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
                 $("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
@@ -25,13 +43,92 @@ define([
         template: _.template(deliveryTemplate),
 
         render: function() {
-            var query = new Parse.Query(PaymentModel);
             var self = this;
-            this.applyQuery(query, self);
+//            var query = new Parse.Query(PaymentModel);
+//            this.applyQuery(query, self);
+            this.applyQuery2(self);
             return this;
         },
 
+        applyQuery2: function(self) {
+            var restaurantQuery = new Parse.Query(RestaurantModel);
+            restaurantQuery.equalTo("manager", Parse.User.current());
+            restaurantQuery.find({
+                success: function(restaurants) {
+                    var orderQuery = new Parse.Query(OrderModel);
+                    var chefGrid = Parse.User.current().get('gridId');
+                    //default chef's grid to University of Maryland College Park
+                    if (chefGrid == undefined){
+                        chefGrid = new GridModel();
+                        chefGrid.id = "nmbyDzTp7m";
+                    }
+                    var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+                    pickUpLocationQuery.equalTo("gridId", chefGrid);
+                    pickUpLocationQuery.find({
+                        success: function(locations) {
+                            var orderSummary = [];
+                            orderQuery.equalTo("restaurantId", restaurants[0]);
+                            orderQuery.find({
+                                success: function(orders) {
+                                    var locationNames = [locationName1, locationName2, locationName3, 'total'];
+                                    var orderMap =
+                                    {
+                                        locationName1: {
+                                            dishNames: [],
+                                            quantities: [],
+                                            subTotalPrices: []
+                                        },
+
+                                        locationName2: {
+                                            dishNames: [],
+                                            quantities: [],
+                                            subTotalPrices: []
+                                        }
+                                    };
+                                    for (var i=0; i<locations.length; i++) {
+                                        var address = locations[i].get('address');
+                                        var ordersByLocation = {};
+                                        ordersByLocation[address] = {};
+                                        for (var j=0; j<orders.length; j++) {
+                                            var pickUpLocation = orders[j].get("pickUpLocation");
+                                            var dish = orders[j].get('dishId');
+                                            if (orders[j].get("pickUpLocation").id == locations[i].id) {
+                                                if (dish.id in ordersByLocation[address]) {
+                                                    ordersByLocation[address][dish.id]['quantity'] += orders[j].get('quantity');
+                                                    ordersByLocation[address][dish.id]['subTotalPrice'] += orders[j].get('subTotalPrice');
+                                                } else {
+                                                    ordersByLocation[address][dish.id] = {
+                                                        quantity: orders[j].get('quantity'),
+                                                        subTotalPrice: orders[j].get('subTotalPrice')
+                                                    };
+                                                }
+                                            }
+                                        }
+                                        alert(Object.keys(ordersByLocation)[0]);
+                                        orderSummary.push(ordersByLocation);
+                                    }
+
+                                    alert(JSON.stringify(orderSummary));
+                                    self.$el.html(self.template({ordersByLocations: orderSummary}));
+                                },
+                                error: function(error) {
+                                    console.log(error.message);
+                                }
+                            });
+                        },
+                        error: function(error) {
+                            console.log(error.message);
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.log(error.message);
+                }
+            })
+        },
+
         applyQuery: function(query, self) {
+            var query = new Parse.Query(PaymentModel);
             query.equalTo("address", "Regents Drive Parking Garage");
             //Create a OrderModel
             self.orderDetails = new OrderModel();
