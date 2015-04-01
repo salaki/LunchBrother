@@ -15,7 +15,6 @@ define([
 
     Parse.initialize(appId, jsKey);
     
-    
     router.initialize();
     
     $("title").html(string.title);
@@ -72,7 +71,6 @@ define([
           $(this).css("display", "none");
           dataset.html(newval);
           elink.css("display", "block");
-
           var currentUser = Parse.User.current();
           if (newid.indexOf('Email') > -1) {
               currentUser.set( "email", newval );
@@ -90,10 +88,27 @@ define([
               }
           } );
       });
+      $("#smsCheckbox").on("change", function(e){
+          e.preventDefault();
+          var currentUser = Parse.User.current();
+          if ($(this).is(':checked')) {
+              currentUser.set( "smsEnabled", true );
+          } else {
+              currentUser.set( "smsEnabled", false );
+          }
+          currentUser.save( null, {
+              success: function ( user )
+              {
+                  //Do nothing
+              },
+              error: function ( user, error )
+              {
+                  alert( "Error: " + error.code + " " + error.message );
+              }
+          } );
+      });
 
-
-
-    $('#account').click(function() {
+      $('#account').click(function() {
          $('.ui.sidebar').sidebar('toggle');
     });
     
