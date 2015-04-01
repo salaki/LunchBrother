@@ -4,7 +4,7 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 @import url(http://fonts.googleapis.com/css?family=Roboto);
 /* line 17, ../sass/global/_variable.scss */
-#orderBtn.red, loginBtn.red, #arriveBtn.red, #paymentBtn.red, #signUpBtn.red, #sendemailBtn.red, #resetBtn.red {
+#orderBtn.red, #loginBtn.red, #arriveBtn.red, #paymentBtn.red, #signUpBtn.red, #sendemailBtn.red, #resetBtn.red {
   background-color: #e3151a;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
@@ -13,7 +13,7 @@
 }
 
 /* line 28, ../sass/global/_variable.scss */
-#orderBtn.grey, loginBtn.grey {
+#orderBtn.grey, #loginBtn.grey {
   background-color: #dddddd;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   color: #888888;
@@ -158,9 +158,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 /* line 35, ../sass/partials/_sidebar.scss */
-label {
+#accountBalance .label {
   display: inline-block;
-  font-weight: bold;
   color: #696969;
   font-size: 12px;
   width: 100px;
@@ -390,22 +389,22 @@ header {
 }
 
 /* line 63, ../sass/screen.scss */
-loginBtn.red:hover {
+#loginBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
 /* line 68, ../sass/screen.scss */
-loginBtn.red:active {
+#loginBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 /* line 76, ../sass/screen.scss */
-loginBtn.grey:hover {
+#loginBtn.grey:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
 /* line 81, ../sass/screen.scss */
-loginBtn.grey:active {
+#loginBtn.grey:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
@@ -763,11 +762,4 @@ loginBtn.grey:active {
 /* line 380, ../sass/screen.scss */
 #termsandconditions > a {
   padding-left: 8%;
-}
-
-/* line 383, ../sass/screen.scss */
-#accountBalance .label {
-  max-width: 100px;
-  font-size: 12px;
-  color: #e3151a;
 }

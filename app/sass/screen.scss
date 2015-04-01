@@ -57,7 +57,7 @@ header {
 .language-text {
 	float: left;
 }
-loginBtn {
+#loginBtn {
 	&.red {
 		@extend %extend_1;
 		&:hover {
@@ -379,9 +379,4 @@ loginBtn {
 }
 #termsandconditions > a {
 	padding-left: 8%;
-}
-#accountBalance .label {
-	max-width: 100px;
-	font-size: 12px;
-	color:$color_red;
 }
