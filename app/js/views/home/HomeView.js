@@ -31,46 +31,6 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 				$("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
 				$("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
 				$("#accountBarFirstName").text(currentUser.get('firstName'));
-
-                $(".editlink").on("click", function(e){
-                    e.preventDefault();
-                    var dataset = $(this).prev(".datainfo");
-                    var savebtn = $(this).next(".savebtn");
-                    var theid   = dataset.attr("id");
-                    var newid   = theid+"-form";
-                    var currval = dataset.text();
-                    dataset.empty();
-                    $('<input type="text" name="'+newid+'" id="'+newid+'" value="'+currval+'" class="hlite">').appendTo(dataset);
-                    $(this).css("display", "none");
-                    savebtn.css("display", "block");
-                });
-                $(".savebtn").on("click", function(e){
-                    e.preventDefault();
-                    var elink   = $(this).prev(".editlink");
-                    var dataset = elink.prev(".datainfo");
-                    var newid   = dataset.attr("id");
-                    var cinput  = "#"+newid+"-form";
-                    var newval  = $(cinput).val();
-                    $(this).css("display", "none");
-                    dataset.html(newval);
-                    elink.css("display", "block");
-
-                    if (newid.indexOf('Email') > -1) {
-                        currentUser.set( "email", newval );
-                    } else {
-                        currentUser.set( "telnum", Number(newval) );
-                    }
-                    currentUser.save( null, {
-                        success: function ( user )
-                        {
-                            //Do nothing
-                        },
-                        error: function ( user, error )
-                        {
-                            alert( "Error: " + error.code + " " + error.message );
-                        }
-                    } );
-                });
 			}
 			$('#account').show();
 
@@ -128,7 +88,6 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			var weekOfYear = Math.ceil( (((now - onejan) / 86400000) + onejan.getDay() + 1) / 7 );
 			var dayOfWeek = now.getDay();
 			var hours = currentTime.getHours();
-			var mins = currentTime.getMinutes();
 
 			//Sunday and Saturday show Monday Pic
 			if (dayOfWeek == 6) {
@@ -146,8 +105,8 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			if (weekOfYear % 2 == 0) {
 				dayOfWeek += 5;
 			}
-                        console.log(weekOfYear);
-                        console.log(dayOfWeek);
+            console.log(weekOfYear);
+            console.log(dayOfWeek);
 			return dayOfWeek;
 		},
 
@@ -167,17 +126,18 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			var currentTime = new Date();
 			var weekday = currentTime.getDay();
 			var hours = currentTime.getHours();
+            var mins = currentTime.getMinutes();
 			var view = new OrderView({
 				model : this.stats
 			});
 
             var currentUserEmail = Parse.User.current().get('email');
-            if (currentUserEmail == 'jackypig0906@gmail.com' || currentUserEmail == 'quqing11@gmail.com' || currentUserEmail == 'zhengzho@umd.edu') {
-                if (($("#order").length == 0)) {
-                    $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-                    $("#page").append(view.render().el);
-                }
-            } else {
+//            if (currentUserEmail == 'jackypig0906@gmail.com' || currentUserEmail == 'quqing11@gmail.com' || currentUserEmail == 'zhengzho@umd.edu') {
+//                if (($("#order").length == 0)) {
+//                    $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
+//                    $("#page").append(view.render().el);
+//                }
+//            } else {
                 if ((weekday == 6) || (weekday == 0 && hours < 14)) {
                     $("#timeAlert").css("display", "block");
                     $("#paymentBtn").addClass('disabled');
@@ -201,7 +161,7 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
                     $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
                     $("#page").append(view.render().el);
                 }
-            }
+//            }
 		}
 	});
 	return HomeView;

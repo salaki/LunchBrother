@@ -212,6 +212,16 @@ header {
 		margin-top: 0;
 	}
 }
+#inputCardInfo {
+        display: block;
+	margin: 0 0 .2857rem;
+	color: rgba(0,0,0,.8);
+	font-size: .9285em;
+	font-weight: 700;
+	text-transform: none;
+		  
+}
+
 #newCardInfo {
 	//Instead of the line below you could use @includetransform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
 	transform: none;
