@@ -109,6 +109,12 @@ define([
       });
 
       $('#account').click(function() {
+          var currentUser = Parse.User.current();
+          if (currentUser.get('smsEnabled') == undefined || currentUser.get('smsEnabled') == true) {
+              $("#smsCheckbox").prop('checked', true);
+          } else {
+              $("#smsCheckbox").prop('checked', false);
+          }
          $('.ui.sidebar').sidebar('toggle');
     });
     
