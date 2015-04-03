@@ -41,16 +41,22 @@
 					
 				</div>
 				<div id="userCardList">
-					<% _.each(cards, function(card){ 
+                    <% var count = 0; %>
+					<% _.each(cards, function(card){
 						var customerId = card.get('customerId');
 						var digit = card.get('last4Digit');%>
 						<div class="field">
 							<div class="ui radio checkbox checked">
-								<input type="radio" name="card" value="<%= customerId %>">
+                                <% if(count === 0){ %>
+								<input type="radio" name="card" value="<%= customerId %>" checked >
+                                <% } else { %>
+                                <input type="radio" name="card" value="<%= customerId %>" >
+                                <% } %>
 								<label>xxxx-xxxx-xxxx-<span><%= digit %></span>
 								</label>
 							</div>
 						</div>
+                    <% count++; %>
 	        		<% }); %>
 				</div>
 				<div class="ui divider"></div>
@@ -110,7 +116,7 @@
 		</div>
 		<div id="agreements" class="two fields">
 			<div id="terms" class="required inline field">
-                <input type="checkbox" name="terms">
+                <input type="checkbox" name="terms" id="termsInput">
                 <label for="terms">我同意带饭大哥使用协议和条款</label>
 			</div>
 

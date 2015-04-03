@@ -43,6 +43,7 @@ define([
         	var query = new Parse.Query(CardModel);
             var pickUpLocations = config.pickUpLocations.UMCP;
         	query.equalTo("createdBy", Parse.User.current());
+            query.descending('createdAt');
         	query.find({
         	  success: function(cards) {
         		  $(that.el).html(that.template({ cards: cards, pickUpLocations: pickUpLocations }));
@@ -70,6 +71,7 @@ define([
                   });
                   
                   //Localization
+                  that.$("#termsInput").prop('checked', true);
         		  that.$("#pickUpAddress").text(OrderViewLocal.pickUpAddress);
         		  that.$("#addressdetails").dropdown();
         		  that.$("#inputCardInfo").text(OrderViewLocal.inputCardInfo);
