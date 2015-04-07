@@ -195,9 +195,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 /* line 7, ../sass/partials/_dish.scss */
 .ui .card {
-  -moz-box-shadow: 0 0.1em 0 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-  -webkit-box-shadow: 0 0.1em 0 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-  box-shadow: 0 0.1em 0 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+  -moz-box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
+  -webkit-box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
+  box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
 }
 
 /* line 11, ../sass/partials/_dish.scss */
@@ -259,6 +259,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 57, ../sass/partials/_dish.scss */
 #page .active.item {
   border-left: none;
+}
+
+/* line 62, ../sass/partials/_dish.scss */
+.ui.segment.attached {
+  border: none;
 }
 
 /* line 3, ../sass/partials/_home.scss */
