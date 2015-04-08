@@ -13,6 +13,11 @@ $color_text_whiteshadow: rgba(255, 255, 255, 1);
 $black_50: rgba(0, 0, 0, 0.5);
 $black_15: rgba(0,0,0,.15);
 
+//font-size
+$sm: 0.8em;
+$md: 1em;
+$lg: 1.2em;
+
 //extends
 %extend_1 {
 	background-color: $color_red;
