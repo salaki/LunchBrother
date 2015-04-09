@@ -19,9 +19,8 @@ define([
     initialize: function() {
       _.bindAll(this, 'render', 'addOne', 'minusOne');
       this.model.bind('change:count', this.render);
+      $('.pointing.menu .item').tab();
     },
-
-
 
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
@@ -36,6 +35,7 @@ define([
     minusOne: function() {
       this.model.minusOne();
     },
+
   });
   return DishView;
 });

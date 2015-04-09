@@ -44,7 +44,6 @@ define([
         render: function () {
         	var that = this;
         	var query = new Parse.Query(CardModel);
-<<<<<<< HEAD
 
             var grid = Parse.User.current().get('gridId');
             if (grid == undefined) {
