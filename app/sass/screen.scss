@@ -4,8 +4,10 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 @import "global/variable";
 @import url(http://fonts.googleapis.com/css?family=Roboto);
+@import "compass/css3";
 @import "compass/reset";
 @import "partials/sidebar";
+@import "partials/dish";
 @import "partials/home";
 //@extend-elements
 //original selectors
