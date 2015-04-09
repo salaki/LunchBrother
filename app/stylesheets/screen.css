@@ -272,8 +272,13 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   color: #454545;
   font-size: 0.8em;
 }
+/* line 71, ../sass/partials/_dish.scss */
+#page .dish-intro {
+  font-size: 0.8em;
+  color: #888888;
+}
 
-/* line 73, ../sass/partials/_dish.scss */
+/* line 77, ../sass/partials/_dish.scss */
 .ui.segment.attached {
   border: none;
   width: 100%;
