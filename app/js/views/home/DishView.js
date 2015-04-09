@@ -4,14 +4,13 @@ define([
 ], function(DishModel, dishTemplate) {
 
   var DishView = Parse.View.extend({
-
+   
     tagName: "div",
     attributes: {
       class: 'column'
     },
-
     template: _.template(dishTemplate),
-
+   
     events: {
       'click .plusone': 'addOne',
       'click .minusone': 'minusOne'

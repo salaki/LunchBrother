@@ -14,6 +14,7 @@ define([
   'i18n!nls/order',
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
+
 ], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe, OrderViewLocal) {
 //    Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAdxGxWv5AkH');
     Stripe.setPublishableKey('pk_test_pb95pxk797ZxEFRk55wswMRk');
@@ -38,11 +39,12 @@ define([
             _.bindAll(this, 'render', 'stripeResponseHandler', 'orderSubmit', 'toggleNewCardForm', 'charge');
 //            Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
             Stripe.setPublishableKey('pk_test_pb95pxk797ZxEFRk55wswMRk');
-        },
+       },
 
         render: function () {
         	var that = this;
         	var query = new Parse.Query(CardModel);
+<<<<<<< HEAD
 
             var grid = Parse.User.current().get('gridId');
             if (grid == undefined) {
@@ -161,7 +163,7 @@ define([
             }
 
 
-        	
+       	
             return this;
         },
 

@@ -59,7 +59,7 @@ define(['views/home/DishView',
 			}
 			$('#account').show();
 
-			this.dishes = new DishCollection;
+            this.dishes = new DishCollection;
 
             //TODO - Create an UI to set dishes to true for restaurants
             var mainQuery = new Parse.Query(DishModel);
@@ -119,6 +119,7 @@ define(['views/home/DishView',
 
 		getDayOfWeekAndWeekOfYearCode: function() {
 			var currentTime = new Date();
+
 			var day = new Date();
 			var onejan = new Date(day.getFullYear(), 0, 1);
                         var today = new Date(day.getFullYear(),day.getMonth(),day.getDate());
@@ -127,7 +128,6 @@ define(['views/home/DishView',
             var weekOfYearCode = 11;
 			var dayOfWeek = today.getDay();
 			var hours = currentTime.getHours();
-
 			//Sunday and Saturday show Monday Pic
 			if (dayOfWeek == 6) {
 				dayOfWeek = 1;
@@ -166,6 +166,7 @@ define(['views/home/DishView',
 			var currentTime = new Date();
 			var weekday = currentTime.getDay();
 			var hours = currentTime.getHours();
+            var mins = currentTime.getMinutes();
 			var view = new OrderView({
 				model : this.stats
 			});

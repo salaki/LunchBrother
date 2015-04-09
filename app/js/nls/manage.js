@@ -14,7 +14,8 @@ define({
         "manageCancel": "Cancel",
         "manageConfirm" : "Confirm",
         "comboA" : "Combo A",
-        "comboB" : "Combo B"
+        "comboB" : "Combo B",
+        "comboC" : "Combo C"
     },
     "zh-cn" : true
 });

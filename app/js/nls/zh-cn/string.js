@@ -9,7 +9,7 @@
       "mobileOrder" : "订餐",
       "mobileStatus" : "送餐状态查询",
       "dishTitle" : "今日可选菜品",
-      "orderMessage" : "带饭大哥每天中午12:15-12:45会送餐到马大，请各位顾客老爷小姐注意查看送餐状态,准时取餐.",
+      "orderMessage" : "带饭大哥提前了！我们保证每天中午12:00前会送午餐到马大，请各位顾客老爷小姐注意查看送餐状态,准时取餐(不晚于1:15PM:P).",
       "paymentBtn" : "大哥，买单!",
       "orderDetails" : "您的订单如下:",
       "summaryCount" : "份",

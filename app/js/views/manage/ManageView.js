@@ -123,24 +123,56 @@ define([
                         var newEvent = {};
 			            var dishName1 = results[i].get('dishName1');
                         var dishName2 = results[i].get('dishName2');
+                        var dishName3 = results[i].get('dishName3');
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
-                        if (dishName2 != undefined) {
-                            if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
-                                //Do nothing
+                        var quantity3 = results[i].get('quantity3');
+                        if (dishName3 != undefined) {
+                            if (dishName2 != undefined) {
+                                if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
+                                    //Do nothing
+                                } else {
+                                    results[i].set('quantity1', quantity2);
+                                    results[i].set('quantity2', quantity1);
+                                }
                             } else {
-                                results[i].set('quantity1', quantity2);
-                                results[i].set('quantity2', quantity1);
+                                if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                                    results[i].set('quantity2', quantity1);
+                                    results[i].set('quantity1', 0);
+                                } else {
+                                    //Do nothing
+                                    results[i].set('quantity2', 0);
+                                }
                             }
                         } else {
-                            if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                results[i].set('quantity2', quantity1);
-                                results[i].set('quantity1', 0);
+                            if (dishName2 != undefined) {
+                                if (dishName2.indexOf("Combo C") > -1 || dishName2.indexOf("C餐") > -1) {
+                                    results[i].set('quantity3', quantity2);
+                                    if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                                        results[i].set('quantity2', quantity1);
+                                        results[i].set('quantity1', 0);
+                                    } else {
+                                        results[i].set('quantity2', 0);
+                                    }
+                                } else {
+                                    results[i].set('quantity3', 0);
+                                }
                             } else {
-                                //Do nothing
-                                results[i].set('quantity2', 0);
+                                if (dishName1.indexOf("Combo C") > -1 || dishName1.indexOf("C餐") > -1) {
+                                    results[i].set('quantity3', quantity1);
+                                    results[i].set('quantity2', 0);
+                                    results[i].set('quantity1', 0);
+                                } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                                    results[i].set('quantity3', 0);
+                                    results[i].set('quantity2', quantity1);
+                                    results[i].set('quantity1', 0);
+                                } else {
+                                    results[i].set('quantity3', 0);
+                                    results[i].set('quantity2', 0);
+                                }
                             }
                         }
+
                         newEvent["click #checkButton-" + results[i].id] = 'onPickupClick';
                         self.delegateEvents(_.extend(self.events, newEvent));
                     }
@@ -153,6 +185,7 @@ define([
                     $(".orderListTotal").text(manageLocal.manageTotal);
                     $(".comboA").text(manageLocal.comboA);
                     $(".comboB").text(manageLocal.comboB);
+                    $(".comboC").text(manageLocal.comboC);
                 },
                 error: function (error) {
                     alert("Error: " + error.code + " " + error.message);

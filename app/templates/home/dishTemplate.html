@@ -1,32 +1,91 @@
 <div class="ui card">
-  <div class="image">
-    <img src="<%= Image_File.url%>" />
-  </div>
-  <div class="content">
-    <div class="ui two column grid">
-      <div class="column dish-desc">
-      	<% if(locale == "zh-cn"){%>
-        <%=Description %>
-        <%}%>
-        <% if(locale !== "zh-cn"){%>
-        <%=descriptionEn %>
-        <%}%>
-      </div>
-      <div class="column">
-        <div class="ui three column grid">
-          <div class="column minus-btn-wrapper">
-            <button class="minusone ui center aligned right floated button icon"><i class="minus icon"></i>
-            </button>
-          </div>
-          <div class="column order-count-wrapper">
-            <span class="dissph-counter ui center aligned label dish-count"><%=count %></span>
-          </div>
-          <div class="column plus-btn-wrapper">
-            <button class="plusone ui button icon center aligned"><i class="plus icon"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+	<div class="image">
+		<img src="<%= Image_File.url%>" />
+	</div>
+	<div class="content">
+		<div class="ui grid">
+			<div class="nine wide column dish-desc">
+				<% if(locale == "zh-cn"){%>
+				<%=Description %>
+				<%}%>
+				<% if(locale !== "zh-cn"){%>
+				<%=descriptionEn %>
+				<%}%>
+			</div>
+			<div class="seven wide column">
+				<div class="ui three column grid">
+					<div class="column minus-btn-wrapper">
+						<button class="minusone ui center aligned right floated button icon"><i class="minus icon"></i>
+						</button>
+					</div>
+					<div class="column order-count-wrapper">
+						<span class="dissph-counter ui center aligned label dish-count"><%=count %></span>
+					</div>
+					<div class="column plus-btn-wrapper">
+						<button class="plusone ui button icon center aligned"><i class="plus icon"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ui pointing secondary menu">
+		<a class="active item" data-tab="first">First</a>
+		<a class="item" data-tab="second">Second</a>
+	</div>
+	<div class="ui grid bottom attached active tab segment" data-tab="first">
+		<div class="dishinfo six wide column">
+			<div class="ui list">
+				<div class="item">
+					<i class="wait icon"></i>
+					<div class="content">
+						360 Cal
+					</div>
+				</div>		 
+				<div class="item">
+					<i class="help icon"></i>
+					<div class="content">
+						360 Cal
+					</div>
+				</div>		 
+				<div class="item">
+					<i class="help icon"></i>
+					<div class="content">
+						360 Cal
+					</div>
+				</div>		 
+			</div>
+		</div><!--end of dishinfo-->		 
+		<div class="dish-ingredients ten wide column">
+			<div class="ui white mini labels">
+				<a class="ui label">
+					Fun
+					<a class="ui label">
+						Beef
+					</a>
+					<a class="ui label">
+						Egg
+					</a>
+					<a class="ui label">
+						Green pepper
+					</a>
+					<a class="ui label">
+						Onion
+					</a>
+					<a class="ui label">
+						Tofu
+					</a>
+					<a class="ui label">
+						Ground pork
+					</a>
+					<a class="ui label">
+						Garlic
+					</a>
+
+				</div>
+			</div><!--end of dishinfo-->		 
+		</div>
+		<div class="ui bottom attached tab segment" data-tab="second">
+			Second
+		</div>
+	</div>
