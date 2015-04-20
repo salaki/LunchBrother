@@ -81,6 +81,7 @@ define([
                                         });
 
                                         //Localization
+                                        that.$("#termsInput").prop('checked', true);
                                         that.$("#pickUpAddress").text(OrderViewLocal.pickUpAddress);
                                         that.$("#addressdetails").dropdown();
                                         that.$("#inputCardInfo").text(OrderViewLocal.inputCardInfo);
