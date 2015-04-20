@@ -1,12 +1,13 @@
 define([
     'models/order/PaymentModel',
     'models/order/OrderModel',
+    'models/dish/DishModel',
     'models/Grid',
     'models/Restaurant',
     'models/PickUpLocation',
     'views/manage/LoginView',
     'text!templates/manage/deliveryTemplate.html'
-], function(PaymentModel, OrderModel, GridModel, RestaurantModel, PickUpLocationModel, LoginView, deliveryTemplate) {
+], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, LoginView, deliveryTemplate) {
 
     var DeliveryView = Parse.View.extend({
         el: $("#page"),
@@ -67,49 +68,67 @@ define([
                     pickUpLocationQuery.find({
                         success: function(locations) {
                             var orderSummary = [];
+                            var locationNames = [];
+                            for (var i=0; i<locations.length; i++) {
+                                locationNames.push(locations[i].get('address'));
+                            }
                             orderQuery.equalTo("restaurantId", restaurants[0]);
+                            orderQuery.include("dishId");
                             orderQuery.find({
                                 success: function(orders) {
-                                    var locationNames = [locationName1, locationName2, locationName3, 'total'];
-                                    var orderMap =
-                                    {
-                                        locationName1: {
-                                            dishNames: [],
-                                            quantities: [],
-                                            subTotalPrices: []
-                                        },
-
-                                        locationName2: {
-                                            dishNames: [],
-                                            quantities: [],
-                                            subTotalPrices: []
-                                        }
-                                    };
-                                    for (var i=0; i<locations.length; i++) {
-                                        var address = locations[i].get('address');
-                                        var ordersByLocation = {};
-                                        ordersByLocation[address] = {};
+//                                    var locationNames = [locationName1, locationName2, locationName3, 'total'];
+//                                    var orderMap =
+//                                    {
+//                                        locationName1: {
+//                                            dishNames: [],
+//                                            quantities: [],
+//                                            subTotalPrices: []
+//                                        },
+//
+//                                        locationName2: {
+//                                            dishNames: [],
+//                                            quantities: [],
+//                                            subTotalPrices: []
+//                                        }
+//                                    };
+                                    var ordersByLocations = [];
+                                    for (var i=0; i<locationNames.length; i++) {
+                                        var address = locationNames[i];
+                                        var orderDetailMap = {};
+                                        orderDetailMap["dishNames"] = [];
+                                        orderDetailMap["dishTypes"] = [];
+                                        orderDetailMap["quantity"] = [];
+                                        orderDetailMap["subTotalPrice"] = [];
                                         for (var j=0; j<orders.length; j++) {
                                             var pickUpLocation = orders[j].get("pickUpLocation");
                                             var dish = orders[j].get('dishId');
+                                            console.log(dish);
                                             if (orders[j].get("pickUpLocation").id == locations[i].id) {
-                                                if (dish.id in ordersByLocation[address]) {
-                                                    ordersByLocation[address][dish.id]['quantity'] += orders[j].get('quantity');
-                                                    ordersByLocation[address][dish.id]['subTotalPrice'] += orders[j].get('subTotalPrice');
+                                                var index = orderDetailMap["dishNames"].indexOf(dish.id);
+                                                if (index > 0) {
+                                                    orderDetailMap["quantity"][index] += orders[j].get('quantity');
+                                                    orderDetailMap["subTotalPrice"][index] += orders[j].get('subTotalPrice');
                                                 } else {
-                                                    ordersByLocation[address][dish.id] = {
-                                                        quantity: orders[j].get('quantity'),
-                                                        subTotalPrice: orders[j].get('subTotalPrice')
-                                                    };
+                                                    orderDetailMap["dishNames"].push(dish.id);
+                                                    orderDetailMap["dishTypes"].push(dish.get('typeEn'));
+                                                    orderDetailMap["quantity"].push(orders[j].get('quantity'));
+                                                    orderDetailMap["subTotalPrice"].push(orders[j].get('subTotalPrice'));
                                                 }
                                             }
                                         }
-                                        alert(Object.keys(ordersByLocation)[0]);
-                                        orderSummary.push(ordersByLocation);
+//                                        alert(Object.keys(ordersByLocation)[0]);
+//                                        orderSummary.push(ordersByLocation);
+                                        var orderDetailZip = _.zip(orderDetailMap["dishTypes"], orderDetailMap["quantity"], orderDetailMap["subTotalPrice"]);
+                                        ordersByLocations.push(orderDetailZip);
                                     }
 
-                                    alert(JSON.stringify(orderSummary));
-                                    self.$el.html(self.template({ordersByLocations: orderSummary}));
+//                                    alert(JSON.stringify(orderSummary));
+                                    console.log(ordersByLocations);
+                                    console.log(locationNames);
+//                                    self.$el.html(self.template({ordersByLocations: orderSummary}));
+                                    var zipped = _.zip(locationNames, ordersByLocations);
+//                                    self.$el.html(self.template({locationNames: locationNames, ordersByLocations: ordersByLocations}));
+                                    self.$el.html(self.template({ordersByLocations: zipped}));
                                 },
                                 error: function(error) {
                                     console.log(error.message);
