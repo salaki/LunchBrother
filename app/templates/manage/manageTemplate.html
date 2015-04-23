@@ -16,12 +16,14 @@
         <div class="right floated right aligned eight wide column">
             <select id="addressOption" class="right floated right aligned eight wide column ui dropdown">
                 <option id="pickUpAddress" value="">选择取餐地址</option>
+                <% var count = 0; %>
                 <% _.each(pickUpLocations, function(pickUpLocation){ %>
-                    <% if(pickUpLocation == "AV Williams Bldg"){ %>
-                        <option value="<%= pickUpLocation %>" selected="selected"><%= pickUpLocation %></option>
-                    <% }else{ %>
-                        <option value="<%= pickUpLocation %>"><%= pickUpLocation %></option>
+                    <% if(count === 0){ %>
+                        <option value="<%= pickUpLocation.id %>" selected><%= pickUpLocation.get('address') %></option>
+                    <% } else { %>
+                        <option value="<%= pickUpLocation.id %>"><%= pickUpLocation.get('address') %></option>
                     <% } %>
+                    <% count++; %>
                 <% }); %>
             </select>
         </div>
@@ -39,9 +41,9 @@
         <div class="ui divided list">
             <div id="orderList">Loading....</div>
             <div class="ui divider"></div>
-            <div class="left aligned sixteen wide column" id="manageRemark">
-                注：A餐为当日便当，B餐为凉皮+肉夹馍，C餐为当日经济便当
-            </div>
+            <!--<div class="left aligned sixteen wide column" id="manageRemark">-->
+                <!--注：A餐为当日便当，B餐为凉皮+肉夹馍，C餐为当日经济便当-->
+            <!--</div>-->
         </div>
     </div>
     <div class="sixteen wide column">

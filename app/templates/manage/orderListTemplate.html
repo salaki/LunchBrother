@@ -1,25 +1,18 @@
-<% _.each(orders, function(order) { %>
-<div id="div-<%= order.id %>" class="order-detail ui padded grid">
+<% _.each(payments, function(payment) { %>
+<div id="div-<%= payment.orderNumber %>" class="order-detail ui padded grid">
     <div class="seven wide white column">
-        <h4 class="ui header"><%= order.get('lname') %>, <%= order.get('fname') %> (<%= order.get('telnum') %>)</h4>
+        <h4 class="ui header"><%= payment.lastName %>, <%= payment.firstName %> (<%= payment.telNum %>)</h4>
         <p>
-            <span class="gray"><label class="comboA">A餐</label>:</span>
-            <span class="red"><%= order.get('quantity1') %></span>
-            <span class="gray">,</span>
-            <span class="gray"><label class="comboB">B餐</label>:</span>
-            <span class="red"><%= order.get('quantity2') %></span>
-            <span class="gray">,</span>
-            <span class="gray"><label class="comboC">C餐</label>:</span>
-            <span class="red"><%= order.get('quantity3') %></span>
+            <span class="red"><%= payment.orderSummary %></span>
         </p>
     </div>
     <div class="seven wide white column">
-        <p><span class="gray"><label class="orderListOrderNumber">订单号</label>:</span><span class="red"><%= order.id %></span></p>
-        <p><span class="gray"><label class="orderListTotal">金额</label>:</span><span class="red">$<%= order.get('totalPrice') %></span></p>
+        <p><span class="gray"><label class="orderListOrderNumber">订单号</label>:</span><span class="red"><%= payment.orderNumber %></span></p>
+        <p><span class="gray"><label class="orderListTotal">金额</label>:</span><span class="red">$<%= payment.totalPrice %></span></p>
     </div>
-    <a id="checkButton-<%= order.id %>" class="send two wide white column" data-order="<%= order.id %>" data-lname="<%= order.get('lname') %>" data-fname="<%= order.get('fname') %>" data-price="<%= order.get('totalPrice') %>">
+    <a id="checkButton-<%= payment.orderNumber %>" class="send two wide white column" data-order="<%= payment.orderNumber %>" data-lname="<%= payment.lastName %>" data-fname="<%= payment.firstName %>" data-price="<%= payment.totalPrice %>">
         <i class="checkmark icon"></i>
     </a>
 </div>
-<div id="divider-<%= order.id %>" class="ui hidden divider"></div>
+<div id="divider-<%= payment.orderNumber %>" class="ui hidden divider"></div>
 <% })%>

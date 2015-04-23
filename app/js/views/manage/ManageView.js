@@ -2,13 +2,16 @@ define([
     'views/status/StatusView',
     'models/order/PaymentModel',
     'models/order/OrderModel',
+    'models/dish/DishModel',
+    'models/Grid',
+    'models/PickUpLocation',
     'models/order/NotificationModel',
     'models/manage/DeliveryModel',
     'text!templates/manage/manageTemplate.html',
     'text!templates/manage/orderListTemplate.html',
     'i18n!nls/manage',
     'libs/semantic/dropdown.min'
-], function (StatusView, PaymentModel, OrderModel, NotificationModel, DeliveryModel, manageTemplate, orderListTemplate, manageLocal) {
+], function (StatusView, PaymentModel, OrderModel, DishModel, GridModel, PickUpLocationModel, NotificationModel, DeliveryModel, manageTemplate, orderListTemplate, manageLocal) {
     var ManageView = Parse.View.extend({
         el: $("#page"),
         template: _.template(manageTemplate),
@@ -50,22 +53,32 @@ define([
         },
 
         render: function () {
-            var pickUpLocations = config.pickUpLocations.UMCP;
-            this.$el.html(this.template({pickUpLocations: pickUpLocations}));
-            $('.menu li').removeClass('active');
-            $('.menu li a[href="#"]').parent().addClass('active');
-            var paymentQuery = new Parse.Query(PaymentModel);
+//            var pickUpLocations = config.pickUpLocations.UMCP;
             var self = this;
-            this.$("#addressOption").dropdown();
-            this.applyQuery(paymentQuery, self);
-            this.$("#arriveBtn").text(manageLocal.arrived);
-            this.$("#arriveBtn").addClass("red");
-            $("#manageTitle").text(manageLocal.manageTitle);
-            $("#has").text(manageLocal.hasPhrase);
-            $("#numberOrder").text(manageLocal.numberOrder);
-            $("#manageRemark").text(manageLocal.manageRemark);
+            var currentUser = Parse.User.current();
+            var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+            pickUpLocationQuery.equalTo("gridId", currentUser.get("gridId"));
+            pickUpLocationQuery.find({
+                success: function(pickUpLocations) {
+                    self.$el.html(self.template({pickUpLocations: pickUpLocations}));
+                    $('.menu li').removeClass('active');
+                    $('.menu li a[href="#"]').parent().addClass('active');
+                    var paymentQuery = new Parse.Query(PaymentModel);
+                    self.$("#addressOption").dropdown();
+                    self.applyQuery(paymentQuery, self);
+                    self.$("#arriveBtn").text(manageLocal.arrived);
+                    self.$("#arriveBtn").addClass("red");
+                    $("#manageTitle").text(manageLocal.manageTitle);
+                    $("#has").text(manageLocal.hasPhrase);
+                    $("#numberOrder").text(manageLocal.numberOrder);
+//                    $("#manageRemark").text(manageLocal.manageRemark);
+                },
+                error: function(error) {
+                    alert("Pick Up Location Query Error: " + error.code + " " + error.message);
+                }
+            });
 
-            return this;
+            return self;
         },
 
         onSearchBarInput: function () {
@@ -89,14 +102,14 @@ define([
         },
 
         applyQuery: function (query, self) {
-            this.$("#buildingLabel").text(this.$("#addressOption").val());
+            this.$("#buildingLabel").text(this.$("#addressOption option:selected").text());
             query.contains("lowercaseLastName", this.$("#searchInput").val().toLowerCase());
-            query.equalTo("address", this.$("#addressOption").val());
             query.ascending("lowercaseLastName");
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
+            query.include("pickUpLocation");
 
-            //Display the order between a durantion
+            //Display the order between a duration
             var current = new Date();
             var currentHour = current.getHours();
             if (currentHour > 14) {
@@ -118,79 +131,71 @@ define([
             query.lessThan("createdAt", upperDate);
             query.limit(300);
             query.find({
-                success: function (results) {
-                    for (var i = 0; i < results.length; i++) {
-                        var newEvent = {};
-			            var dishName1 = results[i].get('dishName1');
-                        var dishName2 = results[i].get('dishName2');
-                        var dishName3 = results[i].get('dishName3');
-                        var quantity1 = results[i].get('quantity1');
-                        var quantity2 = results[i].get('quantity2');
-                        var quantity3 = results[i].get('quantity3');
-                        if (dishName3 != undefined) {
-                            if (dishName2 != undefined) {
-                                if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
-                                    //Do nothing
-                                } else {
-                                    results[i].set('quantity1', quantity2);
-                                    results[i].set('quantity2', quantity1);
-                                }
-                            } else {
-                                if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                    results[i].set('quantity2', quantity1);
-                                    results[i].set('quantity1', 0);
-                                } else {
-                                    //Do nothing
-                                    results[i].set('quantity2', 0);
-                                }
-                            }
-                        } else {
-                            if (dishName2 != undefined) {
-                                if (dishName2.indexOf("Combo C") > -1 || dishName2.indexOf("C餐") > -1) {
-                                    results[i].set('quantity3', quantity2);
-                                    if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                        results[i].set('quantity2', quantity1);
-                                        results[i].set('quantity1', 0);
-                                    } else {
-                                        results[i].set('quantity2', 0);
-                                    }
-                                } else {
-                                    results[i].set('quantity3', 0);
-                                }
-                            } else {
-                                if (dishName1.indexOf("Combo C") > -1 || dishName1.indexOf("C餐") > -1) {
-                                    results[i].set('quantity3', quantity1);
-                                    results[i].set('quantity2', 0);
-                                    results[i].set('quantity1', 0);
-                                } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                    results[i].set('quantity3', 0);
-                                    results[i].set('quantity2', quantity1);
-                                    results[i].set('quantity1', 0);
-                                } else {
-                                    results[i].set('quantity3', 0);
-                                    results[i].set('quantity2', 0);
-                                }
-                            }
-                        }
-
-                        newEvent["click #checkButton-" + results[i].id] = 'onPickupClick';
-                        self.delegateEvents(_.extend(self.events, newEvent));
-                    }
-                    self.$("#orderNumberLabel").text(results.length);
-                    self.$("#orderList").html(self.orderListTemplate({
-                        orders: results
-                    }));
-
-                    $(".orderListOrderNumber").text(manageLocal.manageOrderNumber);
-                    $(".orderListTotal").text(manageLocal.manageTotal);
-                    $(".comboA").text(manageLocal.comboA);
-                    $(".comboB").text(manageLocal.comboB);
-                    $(".comboC").text(manageLocal.comboC);
+                success: function (payments) {
+                    self.queryOrder(payments);
                 },
                 error: function (error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    alert("Payment Query Error: " + error.code + " " + error.message);
                 }
             });
+        },
+
+        queryOrder: function(payments) {
+            var self = this;
+            var orderQuery = new Parse.Query(OrderModel);
+            orderQuery.include("dishId");
+            orderQuery.include("restaurantId");
+            orderQuery.find({
+                success: function (orders) {
+                    self.populateManageView(payments, orders);
+                },
+                error: function (error) {
+                    alert("Order Query Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
+        populateManageView: function(payments, orders) {
+            var self = this;
+            var currentUser = Parse.User.current();
+            var newResults = [];
+            var newEvent = {};
+            _.each(payments, function(payment) {
+                if (payment.get("pickUpLocation") !== undefined) {
+                    var paymentGridId = "nmbyDzTp7m";  //For old user backward compatibility
+                    if (payment.get("pickUpLocation") !== undefined) {
+                        paymentGridId = payment.get("pickUpLocation").get("gridId").id;
+                    }
+
+                    var paymentDetailMap = {
+                        firstName: payment.get('fname'),
+                        lastName: payment.get('lname'),
+                        telNum: payment.get('telnum'),
+                        totalPrice: payment.get('totalPrice'),
+                        orderNumber: payment.id,
+                        orderSummary: ""
+                    };
+
+                    if (paymentGridId === currentUser.get("gridId").id && payment.get("pickUpLocation").id === self.$("#addressOption").val()) {
+                        _.each(orders, function(order){
+                            if (order.get("paymentId") !== undefined && order.get("paymentId").id === payment.id) {
+                                paymentDetailMap.orderSummary += order.get("dishId").get("type") + ":" + order.get("quantity") + ", ";
+                            }
+                        });
+                        paymentDetailMap.orderSummary = paymentDetailMap.orderSummary.substring(0, paymentDetailMap.orderSummary.length - 2);
+//                        alert(paymentDetailMap.orderSummary);
+                        newResults.push(paymentDetailMap);
+                        newEvent["click #checkButton-" + paymentDetailMap.orderNumber] = 'onPickupClick';
+                        self.delegateEvents(_.extend(self.events, newEvent));
+                    }
+                }
+            });
+            self.$("#orderNumberLabel").text(newResults.length);
+            self.$("#orderList").html(self.orderListTemplate({
+                payments: newResults
+            }));
+            $(".orderListOrderNumber").text(manageLocal.manageOrderNumber);
+            $(".orderListTotal").text(manageLocal.manageTotal);
         },
 
         onPickupClick: function (ev) {
