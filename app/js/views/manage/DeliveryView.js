@@ -72,7 +72,29 @@ define([
                             for (var i=0; i<locations.length; i++) {
                                 locationNames.push(locations[i].get('address'));
                             }
+
+                            //Display the order between a duration
+                            var current = new Date();
+                            var currentHour = current.getHours();
+                            if (currentHour > 14) {
+                                //After 14:00, display the orders from today 2pm to tomorrow 12pm
+                                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                                upperDate.setHours(12, 0, 0, 0);
+                                var lowerDate = current;
+                                lowerDate.setHours(14, 0, 0, 0);
+                            }
+                            else {
+                                //Before 14:00, display the orders from yesterday 2pm to today 12pm
+                                upperDate = current;
+                                upperDate.setHours(12, 0, 0, 0);
+                                lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                                lowerDate.setHours(14, 0, 0, 0);
+                            }
+
+                            orderQuery.greaterThan("createdAt", lowerDate);
+                            orderQuery.lessThan("createdAt", upperDate);
                             orderQuery.equalTo("restaurantId", restaurants[0]);
+
                             orderQuery.include("dishId");
                             orderQuery.find({
                                 success: function(orders) {
