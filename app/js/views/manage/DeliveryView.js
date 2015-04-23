@@ -76,21 +76,6 @@ define([
                             orderQuery.include("dishId");
                             orderQuery.find({
                                 success: function(orders) {
-//                                    var locationNames = [locationName1, locationName2, locationName3, 'total'];
-//                                    var orderMap =
-//                                    {
-//                                        locationName1: {
-//                                            dishNames: [],
-//                                            quantities: [],
-//                                            subTotalPrices: []
-//                                        },
-//
-//                                        locationName2: {
-//                                            dishNames: [],
-//                                            quantities: [],
-//                                            subTotalPrices: []
-//                                        }
-//                                    };
                                     var ordersByLocations = [];
                                     for (var i=0; i<locationNames.length; i++) {
                                         var address = locationNames[i];
@@ -116,13 +101,10 @@ define([
                                                 }
                                             }
                                         }
-//                                        alert(Object.keys(ordersByLocation)[0]);
-//                                        orderSummary.push(ordersByLocation);
                                         var orderDetailZip = _.zip(orderDetailMap["dishTypes"], orderDetailMap["quantity"], orderDetailMap["subTotalPrice"]);
                                         ordersByLocations.push(orderDetailZip);
                                     }
 
-//                                    alert(JSON.stringify(orderSummary));
                                     console.log(ordersByLocations);
                                     console.log(locationNames);
 //                                    self.$el.html(self.template({ordersByLocations: orderSummary}));
