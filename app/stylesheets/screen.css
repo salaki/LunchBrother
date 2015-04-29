@@ -206,9 +206,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 /* line 13, ../sass/partials/_dish.scss */
 #page .dish-desc {
-  font-size: 12px;
+  font-size: 20px;
   padding-left: 10px;
-  color: #888888;
+  color: #454545;
 }
 /* line 18, ../sass/partials/_dish.scss */
 #page .minus-btn-wrapper {
