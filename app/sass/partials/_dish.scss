@@ -68,10 +68,22 @@
 			font-size:$sm;
 		}
 	}
+    .dish-detail{
+        line-height:1.2;    
+    }
 	.dish-intro{
 		font-size:$sm;
 		color:$color-grey;
 	}
+    .dish-ingredients {
+        font-size:$xsm;
+        color:$color-grey;    
+        margin-top:15px;
+        .header{
+          color:$color_dgrey;
+        }
+    }
+
 }
 
 .ui.segment.attached{
