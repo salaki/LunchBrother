@@ -2,9 +2,7 @@ define(function() {
   var DishModel = Parse.Object.extend("Dish", {
 
     initialize: function() {
-      if(!this.get('count')){
         this.set({count: 0});
-      }
     },
 
     addOne: function() {
