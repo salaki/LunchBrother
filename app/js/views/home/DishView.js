@@ -17,6 +17,7 @@ define([
     },
 
     initialize: function() {
+    	this.model.initialize();
       _.bindAll(this, 'render', 'addOne', 'minusOne');
       this.model.bind('change:count', this.render);
       $('.pointing.menu .item').tab();
