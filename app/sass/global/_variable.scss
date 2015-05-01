@@ -4,7 +4,7 @@ $color_red: #e3151a;
 $color_green: #5bbd72;
 $color_lgrey: #f7f7f7;
 $color_dgrey: #454545;
-$color_grey: #888888;
+$color_grey: #9b9b9b;
 $white: white;
 $color_btn_shadow: rgba(39, 41, 43, 0.15);
 $color_loginbtn: #dddddd;
@@ -14,9 +14,10 @@ $black_50: rgba(0, 0, 0, 0.5);
 $black_15: rgba(0,0,0,.15);
 
 //font-size
-$sm: 0.8em;
-$md: 1em;
-$lg: 1.2em;
+$xsm:0.6rem;
+$sm: 0.8rem;
+$md: 1rem;
+$lg: 1.2rem;
 
 //extends
 %extend_1 {

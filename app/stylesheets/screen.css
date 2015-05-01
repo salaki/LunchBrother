@@ -3,7 +3,7 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 @import url(http://fonts.googleapis.com/css?family=Roboto);
-/* line 22, ../sass/global/_variable.scss */
+/* line 23, ../sass/global/_variable.scss */
 #orderBtn.red, #loginBtn.red, #arriveBtn.red, #paymentBtn.red, #signUpBtn.red, #sendemailBtn.red, #resetBtn.red {
   background-color: #e3151a;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
@@ -12,22 +12,22 @@
   position: relative;
 }
 
-/* line 33, ../sass/global/_variable.scss */
+/* line 34, ../sass/global/_variable.scss */
 #orderBtn.grey, #loginBtn.grey {
   background-color: #dddddd;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
-  color: #888888;
+  color: #9b9b9b;
   padding: 1em 2em 1.35em;
   width: 100%;
   position: relative;
 }
 
-/* line 45, ../sass/global/_variable.scss */
+/* line 46, ../sass/global/_variable.scss */
 #signupReminder, #copyright {
   font-size: 12px;
   text-align: center;
   margin: 10px;
-  color: #888888;
+  color: #9b9b9b;
 }
 
 /* line 5, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
@@ -206,9 +206,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 /* line 13, ../sass/partials/_dish.scss */
 #page .dish-desc {
-  font-size: 12px;
+  font-size: 20px;
   padding-left: 10px;
-  color: #888888;
+  color: #454545;
 }
 /* line 18, ../sass/partials/_dish.scss */
 #page .minus-btn-wrapper {
@@ -217,7 +217,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 /* line 21, ../sass/partials/_dish.scss */
 #page .minus-btn-wrapper button {
-  border: 1px solid #888888;
+  border: 1px solid #9b9b9b;
 }
 /* line 25, ../sass/partials/_dish.scss */
 #page .plus-btn-wrapper {
@@ -226,7 +226,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 /* line 28, ../sass/partials/_dish.scss */
 #page .plus-btn-wrapper button {
-  border: 1px solid #888888;
+  border: 1px solid #9b9b9b;
 }
 /* line 32, ../sass/partials/_dish.scss */
 #page .order-count-wrapper {
@@ -236,7 +236,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 36, ../sass/partials/_dish.scss */
 #page .dish-count {
   background-color: white;
-  border: 1px solid #888888;
+  border: 1px solid #9b9b9b;
   width: 100%;
   padding: 7px 11px;
   font-weight: normal;
@@ -252,7 +252,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 51, ../sass/partials/_dish.scss */
 #page .ui.pointing.secondary.menu
 .item {
-  color: #888888;
+  color: #9b9b9b;
   width: 50%;
   text-align: center;
   border-radius: 0;
@@ -260,7 +260,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 57, ../sass/partials/_dish.scss */
 #page .ui.pointing.secondary.menu
 .item:hover {
-  color: #888888;
+  color: #9b9b9b;
 }
 /* line 61, ../sass/partials/_dish.scss */
 #page .active.item {
@@ -270,15 +270,33 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 66, ../sass/partials/_dish.scss */
 #page .dishinfo .item {
   color: #454545;
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
-/* line 71, ../sass/partials/_dish.scss */
+/* line 70, ../sass/partials/_dish.scss */
+#page .dishinfo .icon-spicy {
+  background: url("../../img/hot-icon.png");
+}
+/* line 74, ../sass/partials/_dish.scss */
+#page .dish-detail {
+  line-height: 1.2;
+}
+/* line 77, ../sass/partials/_dish.scss */
 #page .dish-intro {
-  font-size: 0.8em;
-  color: #888888;
+  font-size: 0.8rem;
+  color: #9b9b9b;
+}
+/* line 81, ../sass/partials/_dish.scss */
+#page .dish-ingredients {
+  font-size: 0.6rem;
+  color: #9b9b9b;
+  margin-top: 15px;
+}
+/* line 85, ../sass/partials/_dish.scss */
+#page .dish-ingredients .header {
+  color: #454545;
 }
 
-/* line 77, ../sass/partials/_dish.scss */
+/* line 92, ../sass/partials/_dish.scss */
 .ui.segment.attached {
   border: none;
   width: 100%;
@@ -293,25 +311,25 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 7, ../sass/partials/_home.scss */
 .summary-name {
   font-size: 12px;
-  color: #888888;
+  color: #9b9b9b;
 }
 
 /* line 12, ../sass/partials/_home.scss */
 .summary-count {
   font-size: 12px;
-  color: #888888;
+  color: #9b9b9b;
 }
 
 /* line 16, ../sass/partials/_home.scss */
 .summary-price {
   font-size: 12px;
-  color: #888888;
+  color: #9b9b9b;
 }
 
 /* line 20, ../sass/partials/_home.scss */
 .summary-total {
   font-size: 12px;
-  color: #888888;
+  color: #9b9b9b;
   display: inline-block;
   width: 40px;
   color: #E3151E;
@@ -320,7 +338,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 27, ../sass/partials/_home.scss */
 .summary-tax {
   font-size: 12px;
-  color: #888888;
+  color: #9b9b9b;
   display: inline-block;
   width: 40px;
 }
@@ -328,7 +346,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 33, ../sass/partials/_home.scss */
 .summary-coupon {
   font-size: 12px;
-  color: #888888;
+  color: #9b9b9b;
   display: inline-block;
   width: 40px;
   color: #5bbd72;
@@ -506,7 +524,7 @@ header {
 
 /* line 128, ../sass/screen.scss */
 #loginBtnContent.grey {
-  color: #888888;
+  color: #9b9b9b;
 }
 /* line 131, ../sass/screen.scss */
 #loginBtnContent.red {
@@ -523,7 +541,7 @@ header {
   box-shadow: none;
   background: none;
   font-size: 12px;
-  color: #888888;
+  color: #9b9b9b;
   padding: 20px 0 20px 0 !important;
   margin: 0 !important;
 }
@@ -610,7 +628,7 @@ header {
 
 /* line 204, ../sass/screen.scss */
 .gray {
-  color: #888888;
+  color: #9b9b9b;
 }
 
 /* line 208, ../sass/screen.scss */
@@ -707,7 +725,7 @@ header {
 /* line 274, ../sass/screen.scss */
 #signupReminder {
   font-size: 15px;
-  color: #888888;
+  color: #9b9b9b;
   text-align: center;
   margin: 10px;
 }
