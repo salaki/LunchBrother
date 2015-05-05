@@ -114,12 +114,12 @@ define([
                                                 var index = orderDetailMap["dishNames"].indexOf(dish.id);
                                                 if (index > 0) {
                                                     orderDetailMap["quantity"][index] += orders[j].get('quantity');
-                                                    orderDetailMap["subTotalPrice"][index] += orders[j].get('subTotalPrice');
+                                                    orderDetailMap["subTotalPrice"][index] += orders[j].get('subTotalPrice').toFixed(2);
                                                 } else {
                                                     orderDetailMap["dishNames"].push(dish.id);
                                                     orderDetailMap["dishTypes"].push(dish.get('typeEn'));
                                                     orderDetailMap["quantity"].push(orders[j].get('quantity'));
-                                                    orderDetailMap["subTotalPrice"].push(orders[j].get('subTotalPrice'));
+                                                    orderDetailMap["subTotalPrice"].push(orders[j].get('subTotalPrice').toFixed(2));
                                                 }
                                             }
                                         }
@@ -317,7 +317,7 @@ define([
                 }
             } else {
                 if (dishName2 != undefined) {
-                    if (dishName2.indexOf("Combo C") > -1 || dishName2.indexOf("C餐") > -1) {
+                    if (dishName2.indexOf("Combo C") > -1 || dishName2.indexOf("C椁�") > -1) {
                         result.set('quantity3', quantity2);
                         if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
                             result.set('quantity2', quantity1);
@@ -329,7 +329,7 @@ define([
                         result.set('quantity3', 0);
                     }
                 } else {
-                    if (dishName1.indexOf("Combo C") > -1 || dishName1.indexOf("C餐") > -1) {
+                    if (dishName1.indexOf("Combo C") > -1 || dishName1.indexOf("C椁�") > -1) {
                         result.set('quantity3', quantity1);
                         result.set('quantity2', 0);
                         result.set('quantity1', 0);
