@@ -207,8 +207,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 11, ../sass/partials/_dish.scss */
 #page .dimmer {
   z-index: 0;
+  background: rgba(0, 0, 0, 0.65);
 }
-/* line 13, ../sass/partials/_dish.scss */
+/* line 14, ../sass/partials/_dish.scss */
 #page .dimmer .dimmer-content {
   position: relative;
   top: 50%;
@@ -216,36 +217,36 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 18, ../sass/partials/_dish.scss */
+/* line 19, ../sass/partials/_dish.scss */
 #page .dish-desc {
   font-size: 20px;
   padding-left: 10px;
   color: #454545;
 }
-/* line 23, ../sass/partials/_dish.scss */
+/* line 24, ../sass/partials/_dish.scss */
 #page .minus-btn-wrapper {
   padding-left: 0;
   padding-right: 0;
 }
-/* line 26, ../sass/partials/_dish.scss */
+/* line 27, ../sass/partials/_dish.scss */
 #page .minus-btn-wrapper button {
   border: 1px solid #9b9b9b;
 }
-/* line 30, ../sass/partials/_dish.scss */
+/* line 31, ../sass/partials/_dish.scss */
 #page .plus-btn-wrapper {
   padding-left: 0;
   padding-right: 0;
 }
-/* line 33, ../sass/partials/_dish.scss */
+/* line 34, ../sass/partials/_dish.scss */
 #page .plus-btn-wrapper button {
   border: 1px solid #9b9b9b;
 }
-/* line 37, ../sass/partials/_dish.scss */
+/* line 38, ../sass/partials/_dish.scss */
 #page .order-count-wrapper {
   padding-left: 0.6em;
   padding-right: 0.6em;
 }
-/* line 41, ../sass/partials/_dish.scss */
+/* line 42, ../sass/partials/_dish.scss */
 #page .dish-count {
   background-color: white;
   border: 1px solid #9b9b9b;
@@ -253,15 +254,15 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   padding: 7px 11px;
   font-weight: normal;
 }
-/* line 48, ../sass/partials/_dish.scss */
+/* line 49, ../sass/partials/_dish.scss */
 #page .ui.segment {
   padding: 0.4em;
 }
-/* line 51, ../sass/partials/_dish.scss */
+/* line 52, ../sass/partials/_dish.scss */
 #page .card .content .ui.button {
   font-size: 0.7rem;
 }
-/* line 56, ../sass/partials/_dish.scss */
+/* line 57, ../sass/partials/_dish.scss */
 #page .ui.pointing.secondary.menu
 .item {
   color: #9b9b9b;
@@ -269,42 +270,42 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   text-align: center;
   border-radius: 0;
 }
-/* line 62, ../sass/partials/_dish.scss */
+/* line 63, ../sass/partials/_dish.scss */
 #page .ui.pointing.secondary.menu
 .item:hover {
   color: #9b9b9b;
 }
-/* line 66, ../sass/partials/_dish.scss */
+/* line 67, ../sass/partials/_dish.scss */
 #page .active.item {
   border-left: none;
   border-color: #e3151a;
 }
-/* line 71, ../sass/partials/_dish.scss */
+/* line 72, ../sass/partials/_dish.scss */
 #page .dishinfo .item {
   color: #454545;
   font-size: 0.8rem;
 }
-/* line 76, ../sass/partials/_dish.scss */
+/* line 77, ../sass/partials/_dish.scss */
 #page .dish-detail {
   line-height: 1.2;
 }
-/* line 79, ../sass/partials/_dish.scss */
+/* line 80, ../sass/partials/_dish.scss */
 #page .dish-intro {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 83, ../sass/partials/_dish.scss */
+/* line 84, ../sass/partials/_dish.scss */
 #page .dish-ingredients {
   font-size: 0.6rem;
   color: #9b9b9b;
   margin-top: 15px;
 }
-/* line 87, ../sass/partials/_dish.scss */
+/* line 88, ../sass/partials/_dish.scss */
 #page .dish-ingredients .header {
   color: #454545;
 }
 
-/* line 94, ../sass/partials/_dish.scss */
+/* line 95, ../sass/partials/_dish.scss */
 .ui.segment.attached {
   border: none;
   width: 100%;
