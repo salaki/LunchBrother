@@ -2,8 +2,9 @@ Parse.Cloud.define("pay",
     function (request, response) {
         var Stripe = require("stripe");
         Stripe.initialize('sk_live_NmS6fDdb0AKJ6ajHw3rXmxun');
+        var tempAmount = request.params.totalCharge * 100;
         var params = {
-            amount: request.params.totalCharge * 100,
+            amount: tempAmount.toFixed(0),
             currency: "usd"
         };
         if (request.params.paymentToken) {
