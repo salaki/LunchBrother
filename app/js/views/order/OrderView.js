@@ -218,7 +218,6 @@ define([
             //Disable the button
             $('#orderBtn').removeClass('red').addClass('grey');
             $('#orderBtn').prop('disabled', true);
-            console.log(this.$('#userCardList'));
             if(this.$('#userCardList').length == 0 || this.$('#userCardList').find('.disabled').length > 0){
         		Stripe.card.createToken($form, this.stripeResponseHandler);
             }
@@ -243,13 +242,9 @@ define([
         
         chargeCreditBalance: function(coupon){
         	var currentUser = Parse.User.current();
-        	console.log(currentUser.get('creditBalance'));
-        	console.log(coupon);
         	var currentCredit = parseFloat((currentUser.get('creditBalance') - coupon).toFixed(2));
-            	console.log(currentCredit);
             	currentUser.set('creditBalance', currentCredit);
             	currentUser.save();
-            	console.log(currentUser.get('creditBalance'));
         },
         
         
@@ -263,7 +258,7 @@ define([
                 },
 
                 error: function (error) {
-                    console.log("Fail to send email...");
+                    console.log("Fail to send email. Reason: " + error.message);
                 }
             });
         },
