@@ -13,13 +13,13 @@ define([
    
     events: {
       'click .plusone': 'addOne',
-      'click .minusone': 'minusOne'
+      'click .minusone': 'minusOne',
+      'click .pointing.menu': 'tab'
     },
 
     initialize: function() {
       _.bindAll(this, 'render', 'addOne', 'minusOne');
       this.model.bind('change:count', this.render);
-      $('.pointing.menu .item').tab();
     },
 
     render: function() {
@@ -36,6 +36,9 @@ define([
       this.model.minusOne();
     },
 
+    tab: function() {
+      this.$('.pointing.menu .item').tab();
+    }
   });
   return DishView;
 });
