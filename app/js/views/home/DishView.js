@@ -13,8 +13,7 @@ define([
    
     events: {
       'click .plusone': 'addOne',
-      'click .minusone': 'minusOne',
-      'click .pointing.menu': 'tab'
+      'click .minusone': 'minusOne'
     },
 
     initialize: function() {
@@ -23,7 +22,8 @@ define([
     },
 
     render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
+        $(this.el).html(this.template(this.model.toJSON()));
+        $('#' + this.model.id + ' .menu .item').tab({context: $('#' + this.model.id)});
       //this.delegateEvents();
       return this;
     },
@@ -34,10 +34,6 @@ define([
 
     minusOne: function() {
       this.model.minusOne();
-    },
-
-    tab: function() {
-      this.$('.pointing.menu .item').tab();
     }
   });
   return DishView;
