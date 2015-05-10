@@ -155,6 +155,7 @@ define(['views/home/DishView',
 				model : dish
 			});
 			this.$("#dishList").append(view.render().el);
+            $('#' + dish.id + ' .menu .item').tab({context: $('#' + dish.id)});
 		},
 
 		loadAll : function(collection, filter) {
