@@ -23,6 +23,12 @@ define([
 
     render: function() {
         $(this.el).html(this.template(this.model.toJSON()));
+        if (this.model.get('count') == 4) {
+            $('#' + this.model.id + '-dimmer').dimmer('show');
+            $('#' + this.model.id + '-plusButton').prop('disabled', true);
+        } else {
+            $('#' + this.model.id + '-dimmer').dimmer('hide');
+        }
         $('#' + this.model.id + ' .menu .item').tab({context: $('#' + this.model.id)});
       //this.delegateEvents();
       return this;

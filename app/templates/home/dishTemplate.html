@@ -1,7 +1,7 @@
 <div class="ui card">
         <div class="image">
-                <div class="ui active dimmer">
-                        <div class="dimmer-content">  
+                <div id="<%=objectId %>-dimmer" class="ui dimmer">
+                        <div class="dimmer-content">
                         <h2 class="ui inverted header">
                                 Sold Out!
                         </h2>
@@ -30,7 +30,7 @@
                                                 <span class="dissph-counter ui center aligned label dish-count"><%=count %></span>
                                         </div>
                                         <div class="column plus-btn-wrapper">
-                                                <button class="plusone ui button icon center aligned"><i class="plus icon"></i>
+                                                <button id="<%=objectId %>-plusButton" class="plusone ui button icon center aligned"><i class="plus icon"></i>
                                                 </button>
                                         </div>
                                 </div>
