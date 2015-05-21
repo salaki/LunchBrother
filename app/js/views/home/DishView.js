@@ -30,6 +30,9 @@ define([
             $('#' + this.model.id + '-dimmer').dimmer('hide');
         }
         $('#' + this.model.id + ' .menu .item').tab({context: $('#' + this.model.id)});
+        $('.ui.rating')
+            .rating()
+            ;
       //this.delegateEvents();
       return this;
     },

@@ -17,7 +17,7 @@
   };    
   padding-top: 32px;
   .dish-desc {
-    font-size: 20px;
+    font-size: $lg;
     padding-left: 10px;
     color: $color_dgrey;
   }
@@ -45,6 +45,13 @@
     width: 100%;
     padding: 7px 11px;
     font-weight: normal;
+  }
+
+  .dish-left{
+    text-align:center;
+    font-size:$xsm;
+    color:$color_red;
+    padding-top:10px;
   }
   .ui.segment {
     padding: 0.4em;
@@ -89,7 +96,17 @@
       color:$color_dgrey;
     }
   }
-
+  .restaurantInfo{
+    font-size:$sm;                                                                                 
+    color:$color-grey;
+    .header{
+      color:$color_dgrey;
+      font-size:$md;
+    }
+  }
+  .ui.segment.attached{
+    border:none;
+  }
 }
 
 .ui.segment.attached{
