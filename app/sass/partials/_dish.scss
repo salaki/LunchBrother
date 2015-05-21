@@ -46,13 +46,19 @@
     padding: 7px 11px;
     font-weight: normal;
   }
-
-  .dish-left{
-    text-align:center;
-    font-size:$xsm;
-    color:$color_red;
-    padding-top:10px;
+  .img-overlay{
+    position: absolute;
+    height:40px;
+    width:100%;
+    bottom:0;
+    background:rgba(242,155,48,0.9);
+    color:$white;
+    text-align: center;
+    font-size:$md;
+    font-weight:bold;
+    padding-top:0.8rem;  
   }
+
   .ui.segment {
     padding: 0.4em;
   }
