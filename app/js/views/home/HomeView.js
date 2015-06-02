@@ -171,6 +171,12 @@ define(['views/home/DishView',
                 }
                     view.setCurrentQuantity(currentQuantity);
 
+                    if (dish.get('count') === currentQuantity) {
+                        $('#' + dish.id + '-dimmer').dimmer('show');
+                        $('#' + dish.id + '-plusButton').prop('disabled', true);
+                    } else {
+                        $('#' + dish.id + '-dimmer').dimmer('hide');
+                    }
                     $('#' + dish.id + '-currentQuantity').text(currentQuantity);
                 },
                 error: function(err) {
