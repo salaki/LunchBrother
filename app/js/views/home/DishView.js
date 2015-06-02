@@ -16,6 +16,8 @@ define([
       'click .minusone': 'minusOne'
     },
 
+    currentQuantity: 0,
+
     initialize: function() {
       _.bindAll(this, 'render', 'addOne', 'minusOne');
       this.model.bind('change:count', this.render);
@@ -23,18 +25,21 @@ define([
 
     render: function() {
         $(this.el).html(this.template(this.model.toJSON()));
-        if (this.model.get('count') == 4) {
+        if (this.model.get('count') === this.currentQuantity) {
             $('#' + this.model.id + '-dimmer').dimmer('show');
             $('#' + this.model.id + '-plusButton').prop('disabled', true);
         } else {
             $('#' + this.model.id + '-dimmer').dimmer('hide');
         }
         $('#' + this.model.id + ' .menu .item').tab({context: $('#' + this.model.id)});
-        $('.ui.rating')
-            .rating()
-            ;
+        $('#' + this.model.id + '-currentQuantity').text(this.currentQuantity);
+        $('.ui.rating').rating();
       //this.delegateEvents();
       return this;
+    },
+
+    setCurrentQuantity: function(quantity) {
+      this.currentQuantity = quantity;
     },
 
     addOne: function() {

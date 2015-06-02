@@ -4,11 +4,12 @@ define(['views/home/DishView',
     'models/dish/DishCollection',
     'models/Grid',
     'models/Restaurant',
+    'models/InventoryModel',
     'i18n!nls/string',
     'text!templates/home/homeTemplate.html',
     'text!templates/home/statsTemplate.html',
     'text!templates/order/orderTemplate.html'],
-    function(DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, string, homeTemplate, statsTemplate, orderTemplate) {
+    function(DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, InventoryModel, string, homeTemplate, statsTemplate, orderTemplate) {
 
 	var HomeView = Parse.View.extend({
 		// tagName: 'ul', // required, but defaults to 'div' if not set
@@ -154,8 +155,28 @@ define(['views/home/DishView',
 			var view = new DishView({
 				model : dish
 			});
+
 			this.$("#dishList").append(view.render().el);
             $('#' + dish.id + ' .menu .item').tab({context: $('#' + dish.id)});
+
+
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            inventoryQuery.equalTo('dishId', dish.id);
+            inventoryQuery.descending('createdAt');
+            inventoryQuery.find({
+                success: function(inventories) {
+                    var currentQuantity = 4;
+                if (inventories.length !== 0) {
+                    currentQuantity = inventories[0].get('currentQuantity');
+                }
+                    view.setCurrentQuantity(currentQuantity);
+
+                    $('#' + dish.id + '-currentQuantity').text(currentQuantity);
+                },
+                error: function(err) {
+                    console.log(err.message);
+                }
+            });
 		},
 
 		loadAll : function(collection, filter) {
@@ -172,30 +193,26 @@ define(['views/home/DishView',
 				model : this.stats
 			});
 
-//			if ((weekday == 6) || (weekday == 0 && hours < 14)) {
-//				$("#timeAlert").css("display", "block");
-//				$("#paymentBtn").addClass('disabled');
-//				if (locale == "zh-cn") {
-//					$("#timeAlert").text("不好意思，带饭大哥周末不订餐，周一订餐从周日晚八点开始");
-//				} else {
-//					$("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 2:00PM.");
-//				}
-//			} else if(weekday !== 0 && (hours>=11 && hours<=13)) {
-//				$("#timeAlert").css("display", "block");
-//				$("#paymentBtn").addClass('disabled');
-//				if (locale == "zh-cn") {
-//					$("#timeAlert").text("不好意思，带饭大哥订餐11点结束，明天请早儿吧");
-//				} else {
-//					$("#timeAlert").text("Sorry, we don't take order after 11:00AM. Our order time is 2:00PM-11:00AM.");
-//				}
-//			}else if ((weekday == 0 && hours >= 14) || (weekday == 5 && hours <= 10) && ($("#order").length == 0)) {
-//				$("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-//				$("#page").append(view.render().el);
-//			} else if ((weekday >= 1 && weekday <= 4) && (hours <= 10 || hours >= 14) && ($("#order").length == 0)) {
-//				$("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-//				$("#page").append(view.render().el);
-//			}
-            if ($("#order").length == 0) {
+			if ((weekday == 6) || (weekday == 0 && hours < 14)) {
+				$("#timeAlert").css("display", "block");
+				$("#paymentBtn").addClass('disabled');
+				if (locale == "zh-cn") {
+					$("#timeAlert").text("不好意思，带饭大哥周末不订餐，周一订餐从周日晚八点开始");
+				} else {
+					$("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 2:00PM.");
+				}
+			} else if(weekday !== 0 && (hours>=11 && hours<=13)) {
+				$("#timeAlert").css("display", "block");
+				$("#paymentBtn").addClass('disabled');
+				if (locale == "zh-cn") {
+					$("#timeAlert").text("不好意思，带饭大哥订餐11点结束，明天请早儿吧");
+				} else {
+					$("#timeAlert").text("Sorry, we don't take order after 11:00AM. Our order time is 2:00PM-11:00AM.");
+				}
+			}else if ((weekday == 0 && hours >= 14) || (weekday == 5 && hours <= 10) && ($("#order").length == 0)) {
+				$("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
+				$("#page").append(view.render().el);
+			} else if ((weekday >= 1 && weekday <= 4) && (hours <= 10 || hours >= 14) && ($("#order").length == 0)) {
 				$("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
 				$("#page").append(view.render().el);
 			}

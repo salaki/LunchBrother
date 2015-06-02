@@ -5,6 +5,7 @@ define([
   'models/user/CardModel',
   'models/PickUpLocation',
   'models/Grid',
+  'models/InventoryModel',
   'views/home/DishCollectionView',
   'views/confirm/ConfirmView',
   'views/confirm/TextView',
@@ -15,7 +16,7 @@ define([
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
 
-], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe, OrderViewLocal) {
+], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, Stripe, OrderViewLocal) {
 //    Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAdxGxWv5AkH');
     Stripe.setPublishableKey('pk_test_pb95pxk797ZxEFRk55wswMRk');
     var OrderView = Parse.View.extend({
@@ -329,6 +330,29 @@ define([
 
         saveOrders: function(paymentDetails) {
             _.each(this.model.orders, function (dish) {
+                //update inventory
+                var inventoryQuery = new Parse.Query(InventoryModel);
+                inventoryQuery.equalTo('dishId', dish.id);
+                inventoryQuery.first({
+                    success: function(inventory) {
+                        console.log("Get inventory, current quantity:" + inventory.get('currentQuantity'));
+                        var newQantity = inventory.get('currentQuantity') - dish.get('count');
+                        inventory.set('currentQuantity', newQantity);
+                        inventory.save(null, {
+                            success: function() {
+                                console.log("update current quantity successfully!");
+                            },
+                            error: function(err) {
+                                console.log("Failed to update dish current quantity. Reason: " + err.message);
+                            }
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err.message);
+                    }
+                });
+
+                //Save order
                 var orderDetails = new OrderModel();
                 orderDetails.set('dishId', dish);
                 orderDetails.set('quantity', dish.get('count'));
