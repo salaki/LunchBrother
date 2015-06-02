@@ -24,7 +24,7 @@ define([
           model: dish
         }));
       });
-      Parse.Events.on("collection:update", this.caculate, this);
+      Parse.Events.on("collection:update", this.calculate, this);
     },
     
     render: function() {
@@ -39,7 +39,7 @@ define([
       return this;
     },
     
-    caculate: function() {
+    calculate: function() {
       var totalPrice = [];
       _.forEach(this.collection,function(model){
          var count = model.get("Count");

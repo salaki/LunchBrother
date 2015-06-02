@@ -16,17 +16,31 @@ define([
       'click .minusone': 'minusOne'
     },
 
+    currentQuantity: 0,
+
     initialize: function() {
     	this.model.initialize();
       _.bindAll(this, 'render', 'addOne', 'minusOne');
       this.model.bind('change:count', this.render);
-      $('.pointing.menu .item').tab();
     },
 
     render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
+        $(this.el).html(this.template(this.model.toJSON()));
+        if (this.model.get('count') === this.currentQuantity) {
+            $('#' + this.model.id + '-dimmer').dimmer('show');
+            $('#' + this.model.id + '-plusButton').prop('disabled', true);
+        } else {
+            $('#' + this.model.id + '-dimmer').dimmer('hide');
+        }
+        $('#' + this.model.id + ' .menu .item').tab({context: $('#' + this.model.id)});
+        $('#' + this.model.id + '-currentQuantity').text(this.currentQuantity);
+        $('.ui.rating').rating();
       //this.delegateEvents();
       return this;
+    },
+
+    setCurrentQuantity: function(quantity) {
+      this.currentQuantity = quantity;
     },
 
     addOne: function() {
@@ -35,8 +49,7 @@ define([
 
     minusOne: function() {
       this.model.minusOne();
-    },
-
+    }
   });
   return DishView;
 });

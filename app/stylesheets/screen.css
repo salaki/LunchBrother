@@ -193,47 +193,60 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   width: 100%;
 }
 
-/* line 7, ../sass/partials/_dish.scss */
+/* line 6, ../sass/partials/_dish.scss */
 .ui .card {
   -moz-box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
   -webkit-box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
   box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
 }
 
-/* line 11, ../sass/partials/_dish.scss */
+/* line 10, ../sass/partials/_dish.scss */
 #page {
   padding-top: 32px;
 }
-/* line 13, ../sass/partials/_dish.scss */
+/* line 11, ../sass/partials/_dish.scss */
+#page .dimmer {
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.65);
+}
+/* line 14, ../sass/partials/_dish.scss */
+#page .dimmer .dimmer-content {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+/* line 19, ../sass/partials/_dish.scss */
 #page .dish-desc {
-  font-size: 20px;
+  font-size: 1.2rem;
   padding-left: 10px;
   color: #454545;
 }
-/* line 18, ../sass/partials/_dish.scss */
+/* line 24, ../sass/partials/_dish.scss */
 #page .minus-btn-wrapper {
   padding-left: 0;
   padding-right: 0;
 }
-/* line 21, ../sass/partials/_dish.scss */
+/* line 27, ../sass/partials/_dish.scss */
 #page .minus-btn-wrapper button {
   border: 1px solid #9b9b9b;
 }
-/* line 25, ../sass/partials/_dish.scss */
+/* line 31, ../sass/partials/_dish.scss */
 #page .plus-btn-wrapper {
   padding-left: 0;
   padding-right: 0;
 }
-/* line 28, ../sass/partials/_dish.scss */
+/* line 34, ../sass/partials/_dish.scss */
 #page .plus-btn-wrapper button {
   border: 1px solid #9b9b9b;
 }
-/* line 32, ../sass/partials/_dish.scss */
+/* line 38, ../sass/partials/_dish.scss */
 #page .order-count-wrapper {
   padding-left: 0.6em;
   padding-right: 0.6em;
 }
-/* line 36, ../sass/partials/_dish.scss */
+/* line 42, ../sass/partials/_dish.scss */
 #page .dish-count {
   background-color: white;
   border: 1px solid #9b9b9b;
@@ -241,15 +254,28 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   padding: 7px 11px;
   font-weight: normal;
 }
-/* line 43, ../sass/partials/_dish.scss */
+/* line 49, ../sass/partials/_dish.scss */
+#page .img-overlay {
+  position: absolute;
+  height: 40px;
+  width: 100%;
+  bottom: 0;
+  background: rgba(242, 155, 48, 0.9);
+  color: white;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-top: 0.8rem;
+}
+/* line 62, ../sass/partials/_dish.scss */
 #page .ui.segment {
   padding: 0.4em;
 }
-/* line 46, ../sass/partials/_dish.scss */
+/* line 65, ../sass/partials/_dish.scss */
 #page .card .content .ui.button {
   font-size: 0.7rem;
 }
-/* line 51, ../sass/partials/_dish.scss */
+/* line 70, ../sass/partials/_dish.scss */
 #page .ui.pointing.secondary.menu
 .item {
   color: #9b9b9b;
@@ -257,48 +283,57 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   text-align: center;
   border-radius: 0;
 }
-/* line 57, ../sass/partials/_dish.scss */
+/* line 76, ../sass/partials/_dish.scss */
 #page .ui.pointing.secondary.menu
 .item:hover {
   color: #9b9b9b;
 }
-/* line 61, ../sass/partials/_dish.scss */
+/* line 80, ../sass/partials/_dish.scss */
 #page .active.item {
   border-left: none;
   border-color: #e3151a;
 }
-/* line 66, ../sass/partials/_dish.scss */
+/* line 85, ../sass/partials/_dish.scss */
 #page .dishinfo .item {
   color: #454545;
   font-size: 0.8rem;
 }
-/* line 70, ../sass/partials/_dish.scss */
-#page .dishinfo .icon-spicy {
-  background: url("../../img/hot-icon.png");
-}
-/* line 74, ../sass/partials/_dish.scss */
+/* line 90, ../sass/partials/_dish.scss */
 #page .dish-detail {
   line-height: 1.2;
 }
-/* line 77, ../sass/partials/_dish.scss */
+/* line 93, ../sass/partials/_dish.scss */
 #page .dish-intro {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 81, ../sass/partials/_dish.scss */
+/* line 97, ../sass/partials/_dish.scss */
 #page .dish-ingredients {
   font-size: 0.6rem;
   color: #9b9b9b;
   margin-top: 15px;
 }
-/* line 85, ../sass/partials/_dish.scss */
+/* line 101, ../sass/partials/_dish.scss */
 #page .dish-ingredients .header {
   color: #454545;
 }
-
-/* line 92, ../sass/partials/_dish.scss */
-.ui.segment.attached {
+/* line 105, ../sass/partials/_dish.scss */
+#page .restaurantInfo {
+  font-size: 0.8rem;
+  color: #9b9b9b;
+}
+/* line 108, ../sass/partials/_dish.scss */
+#page .restaurantInfo .header {
+  color: #454545;
+  font-size: 1rem;
+}
+/* line 113, ../sass/partials/_dish.scss */
+#page .ui.segment.attached {
   border: none;
+}
+
+/* line 118, ../sass/partials/_dish.scss */
+.ui.segment.attached {
   width: 100%;
   margin: 0;
 }
@@ -402,7 +437,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   top: 2px;
 }
 
-/* line 16, ../sass/screen.scss */
+/* line 18, ../sass/screen.scss */
 html {
   overflow-x: hidden;
   overflow-y: auto;
@@ -410,44 +445,44 @@ html {
   font-family: 'Roboto', sans-serif;
 }
 
-/* line 22, ../sass/screen.scss */
+/* line 24, ../sass/screen.scss */
 header {
   min-width: 320px;
 }
 
-/* line 25, ../sass/screen.scss */
+/* line 27, ../sass/screen.scss */
 #mobileLanguage {
   font-size: 12px;
 }
 
-/* line 28, ../sass/screen.scss */
+/* line 30, ../sass/screen.scss */
 .space {
   width: 100%;
   clear: both;
   height: 100px;
 }
 
-/* line 33, ../sass/screen.scss */
+/* line 35, ../sass/screen.scss */
 #today {
   margin-top: 4px;
   font-weight: normal;
   width: 33.33%;
 }
 
-/* line 38, ../sass/screen.scss */
+/* line 40, ../sass/screen.scss */
 #barTitle {
   width: 31%;
   text-align: center;
   float: left;
 }
 
-/* line 43, ../sass/screen.scss */
+/* line 45, ../sass/screen.scss */
 #hamBtnWrapper {
   text-align: right;
   width: 33.33%;
   padding: 0;
 }
-/* line 47, ../sass/screen.scss */
+/* line 49, ../sass/screen.scss */
 #hamBtnWrapper > div {
   margin: 0;
   padding-top: 11px;
@@ -455,88 +490,88 @@ header {
   width: 40%;
 }
 
-/* line 56, ../sass/screen.scss */
+/* line 58, ../sass/screen.scss */
 #language {
   display: inline-block;
 }
 
-/* line 59, ../sass/screen.scss */
+/* line 61, ../sass/screen.scss */
 .language-text {
   float: left;
 }
 
-/* line 65, ../sass/screen.scss */
+/* line 67, ../sass/screen.scss */
 #loginBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 70, ../sass/screen.scss */
+/* line 72, ../sass/screen.scss */
 #loginBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
-/* line 78, ../sass/screen.scss */
+/* line 80, ../sass/screen.scss */
 #loginBtn.grey:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 83, ../sass/screen.scss */
+/* line 85, ../sass/screen.scss */
 #loginBtn.grey:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 90, ../sass/screen.scss */
+/* line 92, ../sass/screen.scss */
 #arriveBtn {
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
   width: 100%;
   position: relative;
 }
-/* line 98, ../sass/screen.scss */
+/* line 100, ../sass/screen.scss */
 #arriveBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 103, ../sass/screen.scss */
+/* line 105, ../sass/screen.scss */
 #arriveBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 110, ../sass/screen.scss */
+/* line 112, ../sass/screen.scss */
 #fbLoginBtn {
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
   width: 100%;
   position: relative;
 }
-/* line 116, ../sass/screen.scss */
+/* line 118, ../sass/screen.scss */
 #fbLoginBtn:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 121, ../sass/screen.scss */
+/* line 123, ../sass/screen.scss */
 #fbLoginBtn:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 128, ../sass/screen.scss */
+/* line 130, ../sass/screen.scss */
 #loginBtnContent.grey {
   color: #9b9b9b;
 }
-/* line 131, ../sass/screen.scss */
+/* line 133, ../sass/screen.scss */
 #loginBtnContent.red {
   color: white;
 }
 
-/* line 135, ../sass/screen.scss */
+/* line 137, ../sass/screen.scss */
 .notification {
   margin-top: 30px;
 }
 
-/* line 138, ../sass/screen.scss */
+/* line 140, ../sass/screen.scss */
 #orderMessage {
   box-shadow: none;
   background: none;
@@ -545,64 +580,64 @@ header {
   padding: 20px 0 20px 0 !important;
   margin: 0 !important;
 }
-/* line 146, ../sass/screen.scss */
+/* line 148, ../sass/screen.scss */
 #orderMessage a {
   color: #E3151E;
 }
 
-/* line 150, ../sass/screen.scss */
+/* line 152, ../sass/screen.scss */
 #statusTracker {
   font-size: 12px;
 }
 
-/* line 153, ../sass/screen.scss */
+/* line 155, ../sass/screen.scss */
 #payment {
   padding: 15px;
 }
 
-/* line 156, ../sass/screen.scss */
+/* line 158, ../sass/screen.scss */
 #addressOption {
   min-width: 150px;
   margin-left: 2%;
 }
-/* line 159, ../sass/screen.scss */
+/* line 161, ../sass/screen.scss */
 #addressOption .default {
   float: left;
   width: 75%;
   text-shadow: 0.5px -0.5px white;
 }
-/* line 165, ../sass/screen.scss */
+/* line 167, ../sass/screen.scss */
 #addressOption .dropdown.icon {
   margin-bottom: 10px;
 }
 
-/* line 169, ../sass/screen.scss */
+/* line 171, ../sass/screen.scss */
 #expyear {
   min-width: 150px;
 }
 
-/* line 172, ../sass/screen.scss */
+/* line 174, ../sass/screen.scss */
 .check {
   width: 85%;
   margin-left: 20px;
 }
 
-/* line 176, ../sass/screen.scss */
+/* line 178, ../sass/screen.scss */
 .thanks {
   color: #E3151A;
 }
 
-/* line 179, ../sass/screen.scss */
+/* line 181, ../sass/screen.scss */
 #customerinfo {
   padding: 10px;
 }
 
-/* line 182, ../sass/screen.scss */
+/* line 184, ../sass/screen.scss */
 .order-detail {
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-/* line 185, ../sass/screen.scss */
+/* line 187, ../sass/screen.scss */
 .send {
   opacity: 1;
   transition: opacity .25s ease-in-out;
@@ -610,39 +645,39 @@ header {
   background: #E3151A !important;
   height: 78px;
 }
-/* line 192, ../sass/screen.scss */
+/* line 194, ../sass/screen.scss */
 .send:hover {
   opacity: 0.8;
 }
-/* line 195, ../sass/screen.scss */
+/* line 197, ../sass/screen.scss */
 .send i {
   color: white;
   margin: 0 auto;
   width: 100%;
 }
 
-/* line 201, ../sass/screen.scss */
+/* line 203, ../sass/screen.scss */
 .red {
   color: #E3151A;
 }
 
-/* line 204, ../sass/screen.scss */
+/* line 206, ../sass/screen.scss */
 .gray {
   color: #9b9b9b;
 }
 
-/* line 208, ../sass/screen.scss */
+/* line 210, ../sass/screen.scss */
 #orderStats .column {
   padding-top: 0;
   padding-bottom: 0;
 }
-/* line 212, ../sass/screen.scss */
+/* line 214, ../sass/screen.scss */
 #orderStats .summary-list {
   margin-bottom: 0;
   margin-top: 0;
 }
 
-/* line 217, ../sass/screen.scss */
+/* line 219, ../sass/screen.scss */
 #inputCardInfo {
   display: block;
   margin: 0 0 .2857rem;
@@ -652,77 +687,77 @@ header {
   text-transform: none;
 }
 
-/* line 227, ../sass/screen.scss */
+/* line 229, ../sass/screen.scss */
 #newCardInfo {
   transform: none;
   margin: 2%;
 }
 
-/* line 232, ../sass/screen.scss */
+/* line 234, ../sass/screen.scss */
 #contactinfo {
   margin: 2%;
 }
 
-/* line 235, ../sass/screen.scss */
+/* line 237, ../sass/screen.scss */
 #agreements {
   margin: 2%;
 }
 
-/* line 238, ../sass/screen.scss */
+/* line 240, ../sass/screen.scss */
 #basicinfo {
   margin: 2%;
 }
 
-/* line 241, ../sass/screen.scss */
+/* line 243, ../sass/screen.scss */
 #cardselector {
   margin: 2%;
 }
 
-/* line 244, ../sass/screen.scss */
+/* line 246, ../sass/screen.scss */
 #cw2 {
   max-width: 160px !important;
 }
 
-/* line 247, ../sass/screen.scss */
+/* line 249, ../sass/screen.scss */
 #fullscreen {
   display: none;
 }
 
-/* line 250, ../sass/screen.scss */
+/* line 252, ../sass/screen.scss */
 #smallmap {
   width: 100%;
 }
 
-/* line 253, ../sass/screen.scss */
+/* line 255, ../sass/screen.scss */
 .arrived {
   color: #e3151a;
 }
 
-/* line 256, ../sass/screen.scss */
+/* line 258, ../sass/screen.scss */
 #loginorsignup {
   margin-top: 0;
 }
 
-/* line 259, ../sass/screen.scss */
+/* line 261, ../sass/screen.scss */
 #logo {
   text-align: center;
 }
 
 @media (max-width: 736px) {
-  /* line 263, ../sass/screen.scss */
+  /* line 265, ../sass/screen.scss */
   #img {
     width: 100%;
     height: 100%;
   }
 }
 @media (min-width: 736px) {
-  /* line 269, ../sass/screen.scss */
+  /* line 271, ../sass/screen.scss */
   #img {
     width: 50%;
     height: 50%;
   }
 }
-/* line 274, ../sass/screen.scss */
+/* line 276, ../sass/screen.scss */
 #signupReminder {
   font-size: 15px;
   color: #9b9b9b;
@@ -730,7 +765,7 @@ header {
   margin: 10px;
 }
 
-/* line 284, ../sass/screen.scss */
+/* line 286, ../sass/screen.scss */
 .profilePic {
   border-radius: 100%;
   overflow: hidden;
@@ -741,103 +776,103 @@ header {
   height: 90px;
 }
 
-/* line 295, ../sass/screen.scss */
+/* line 297, ../sass/screen.scss */
 #userFullName {
   margin: 15px 0;
   color: #e3151a;
   font-weight: bold;
 }
 
-/* line 300, ../sass/screen.scss */
+/* line 302, ../sass/screen.scss */
 #referlink {
   margin: 0 auto;
 }
 
-/* line 303, ../sass/screen.scss */
+/* line 305, ../sass/screen.scss */
 #forgotlink {
   font-size: 14px;
   float: right;
 }
 
-/* line 307, ../sass/screen.scss */
+/* line 309, ../sass/screen.scss */
 #sidebarWrapper {
   padding-left: 14px !important;
   padding-right: 14px !important;
 }
 
-/* line 311, ../sass/screen.scss */
+/* line 313, ../sass/screen.scss */
 .ui.inverted.menu {
   background-color: #E3151A;
   opacity: 0.9;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-/* line 317, ../sass/screen.scss */
+/* line 319, ../sass/screen.scss */
 .dishes .card {
   width: 100%;
 }
 
-/* line 322, ../sass/screen.scss */
+/* line 324, ../sass/screen.scss */
 #paymentBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 327, ../sass/screen.scss */
+/* line 329, ../sass/screen.scss */
 #paymentBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 335, ../sass/screen.scss */
+/* line 337, ../sass/screen.scss */
 #signUpBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 340, ../sass/screen.scss */
+/* line 342, ../sass/screen.scss */
 #signUpBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 348, ../sass/screen.scss */
+/* line 350, ../sass/screen.scss */
 #sendemailBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 353, ../sass/screen.scss */
+/* line 355, ../sass/screen.scss */
 #sendemailBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 361, ../sass/screen.scss */
+/* line 363, ../sass/screen.scss */
 #resetBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 366, ../sass/screen.scss */
+/* line 368, ../sass/screen.scss */
 #resetBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 373, ../sass/screen.scss */
+/* line 375, ../sass/screen.scss */
 .ui.form .field > .selection.dropdown {
   width: 25%;
 }
-/* line 376, ../sass/screen.scss */
+/* line 378, ../sass/screen.scss */
 .ui.form .fields .wide.field {
   width: 6.25%;
   padding-left: 0;
   padding-right: 0;
 }
 
-/* line 382, ../sass/screen.scss */
+/* line 384, ../sass/screen.scss */
 .ui.mini.input {
   width: 25%;
 }
 
-/* line 385, ../sass/screen.scss */
+/* line 387, ../sass/screen.scss */
 .clearfix:after {
   content: ".";
   visibility: hidden;
@@ -846,7 +881,7 @@ header {
   clear: both;
 }
 
-/* line 392, ../sass/screen.scss */
+/* line 394, ../sass/screen.scss */
 #termsandconditions > a {
   padding-left: 8%;
 }

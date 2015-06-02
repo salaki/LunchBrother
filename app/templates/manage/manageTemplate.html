@@ -2,14 +2,14 @@
     <div class="doubling four column row">
         <div class="left floated left aligned eight wide column">
             <p>
-                <strong>
-                    <label id="manageTitle">带饭大哥</label>，
-                    <label id="buildingLabel"></label>
-                    <label id="has">有</label>
-                    <label id="orderNumberLabel"></label>
-                    <label id="numberOrder">个订单</label>
-                    <label id="searchResultLabel"></label>
-                </strong>
+            <strong>
+                <label id="manageTitle">带饭大哥</label>，
+                <label id="buildingLabel"></label>
+                <label id="has">有</label>
+                <label id="orderNumberLabel"></label>
+                <label id="numberOrder">个订单</label>
+                <label id="searchResultLabel"></label>
+            </strong>
             </p>
         </div>
 
@@ -18,12 +18,12 @@
                 <option id="pickUpAddress" value="">选择取餐地址</option>
                 <% var count = 0; %>
                 <% _.each(pickUpLocations, function(pickUpLocation){ %>
-                    <% if(count === 0){ %>
-                        <option value="<%= pickUpLocation.id %>" selected><%= pickUpLocation.get('address') %></option>
-                    <% } else { %>
-                        <option value="<%= pickUpLocation.id %>"><%= pickUpLocation.get('address') %></option>
-                    <% } %>
-                    <% count++; %>
+                <% if(count === 0){ %>
+                <option value="<%= pickUpLocation.id %>" selected><%= pickUpLocation.get('address') %></option>
+                <% } else { %>
+                <option value="<%= pickUpLocation.id %>"><%= pickUpLocation.get('address') %></option>
+                <% } %>
+                <% count++; %>
                 <% }); %>
             </select>
         </div>
@@ -43,7 +43,7 @@
             <div class="ui divider"></div>
             <!--<div class="left aligned sixteen wide column" id="manageRemark">-->
                 <!--注：A餐为当日便当，B餐为凉皮+肉夹馍，C餐为当日经济便当-->
-            <!--</div>-->
+                <!--</div>-->
         </div>
     </div>
     <div class="sixteen wide column">
@@ -81,3 +81,4 @@
         </div>
     </div>
 </div>
+
