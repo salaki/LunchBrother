@@ -219,16 +219,8 @@ define([
             //Disable the button
             $('#orderBtn').removeClass('red').addClass('grey');
             $('#orderBtn').prop('disabled', true);
-            if(this.$('#userCardList').length == 0 || this.$('#userCardList').find('.disabled').length > 0){
-        		Stripe.card.createToken($form, this.stripeResponseHandler);
-            }
-            else{
-        		this.charge({
-        			customerId: this.$('input[type=radio]:checked', '#userCardList').val(), 
-        			totalCharge: this.model.totalCharge,
-        			coupon: this.model.coupon
-        		});
-            }
+
+            this.checkInventory();
         },
 
         displayPaymentFailDialog: function (errorMessage) {
@@ -265,7 +257,7 @@ define([
         },
         
         charge: function(params){
-        	var self = this;
+            var self = this;
         	Parse.Cloud.run('pay', params, {
                 success: function () {
                 	var paymentDetails = new PaymentModel();
@@ -275,7 +267,7 @@ define([
                     var email = user.get('email');
                     var phoneNumber = user.get('telnum');
                     var pickUpLocationId = $('#addressdetails option:selected').val();
-                    
+
 
                     paymentDetails.set('telnum', phoneNumber);
                     paymentDetails.set('fname', fname);
@@ -295,6 +287,11 @@ define([
                     paymentDetails.set('paymentCheck', true);
                     paymentDetails.save(null, {
                         success: function (paymentDetails) {
+                            self.saveOrders(paymentDetails);
+                            self.updateInventory();
+                            self.emailService(paymentDetails.id);
+                            self.chargeCreditBalance(params.coupon);
+
                             var view1 = new TextView({
                                 model: paymentDetails
                             });
@@ -304,11 +301,8 @@ define([
                             $("#paymentForm").remove();
                             $("#page").prepend(view1.render().el);
                             $("#page").append(view2.render().el);
-        	                $('#orderBtn').prop('disabled', false);
+                            $('#orderBtn').prop('disabled', false);
                             $('#orderBtn').removeClass('grey').addClass('red');
-                            self.saveOrders(paymentDetails);
-                            self.emailService(paymentDetails.id);
-                            self.chargeCreditBalance(params.coupon);
                         },
                         error: function (payment, error) {
                             alert('Failed to create new object, with error code: ' + error.message);
@@ -323,14 +317,53 @@ define([
             });
         },
 
-        saveOrders: function(paymentDetails) {
+        checkInventory: function() {
+            var dishCountMap = {};
             _.each(this.model.orders, function (dish) {
-                //update inventory
+                dishCountMap[dish.id] = dish.get('count');
+            });
+
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            var self = this;
+            var exceedInventory = false;
+            inventoryQuery.find({
+                success: function(inventories) {
+                    _.each(inventories, function(inventory) {
+                        if (inventory.get('dishId') in dishCountMap) {
+                            var newQantity = inventory.get('currentQuantity') - dishCountMap[inventory.get('dishId')];
+                            if (newQantity < 0) {
+                                exceedInventory = true;
+                            }
+                        }
+                    });
+
+                    if (exceedInventory) {
+                        $('#inventoryExceededAlert').modal({
+                            closable: false,
+                            onApprove: function () {
+                                window.location.href='#home';
+                            }
+                        }).modal('show');
+                    } else {
+                        self.charge({
+                            customerId: self.$('input[type=radio]:checked', '#userCardList').val(),
+                            totalCharge: self.model.totalCharge,
+                            coupon: self.model.coupon
+                        });
+                    }
+                },
+                error: function(err) {
+                    console.log(err.message);
+                }
+            });
+        },
+
+        updateInventory: function() {
+            _.each(this.model.orders, function (dish) {
                 var inventoryQuery = new Parse.Query(InventoryModel);
                 inventoryQuery.equalTo('dishId', dish.id);
                 inventoryQuery.first({
                     success: function(inventory) {
-                        console.log("Get inventory, current quantity:" + inventory.get('currentQuantity'));
                         var newQantity = inventory.get('currentQuantity') - dish.get('count');
                         inventory.set('currentQuantity', newQantity);
                         inventory.save(null, {
@@ -346,8 +379,11 @@ define([
                         console.log(err.message);
                     }
                 });
+            });
+        },
 
-                //Save order
+        saveOrders: function(paymentDetails) {
+            _.each(this.model.orders, function (dish) {
                 var orderDetails = new OrderModel();
                 orderDetails.set('dishId', dish);
                 orderDetails.set('quantity', dish.get('count'));
