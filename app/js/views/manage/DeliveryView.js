@@ -12,7 +12,7 @@ define([
     var DeliveryView = Parse.View.extend({
         el: $("#page"),
 
-        initialize: function () {
+        initialize: function() {
             _.bindAll(this, 'render');
             var currentUser = Parse.User.current();
             if(currentUser != null) {
