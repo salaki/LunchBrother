@@ -27,10 +27,14 @@ define([
     render: function() {
         $(this.el).html(this.template(this.model.toJSON()));
         if (this.model.get('count') === this.currentQuantity) {
-            $('#' + this.model.id + '-dimmer').dimmer('show');
             $('#' + this.model.id + '-plusButton').prop('disabled', true);
         } else {
             $('#' + this.model.id + '-dimmer').dimmer('hide');
+        }
+
+        if (this.currentQuantity <= 5) {
+            $('#' + this.model.id + '-currentQuantityWarning').text("Only " + this.currentQuantity + " left!");
+            $('#' + this.model.id + '-currentQuantityWarning').show();
         }
         $('#' + this.model.id + ' .menu .item').tab({context: $('#' + this.model.id)});
         $('#' + this.model.id + '-currentQuantity').text(this.currentQuantity);

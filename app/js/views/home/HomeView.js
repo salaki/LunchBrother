@@ -171,13 +171,18 @@ define(['views/home/DishView',
                 }
                     view.setCurrentQuantity(currentQuantity);
 
+                    if (currentQuantity <= 5) {
+                        $('#' + dish.id + '-currentQuantityWarning').text("Only " + currentQuantity + " left!");
+                        $('#' + dish.id + '-currentQuantityWarning').show();
+                    }
+
                     if (dish.get('count') === currentQuantity) {
                         $('#' + dish.id + '-dimmer').dimmer('show');
                         $('#' + dish.id + '-plusButton').prop('disabled', true);
+                        $('#' + dish.id + '-currentQuantityWarning').hide();
                     } else {
                         $('#' + dish.id + '-dimmer').dimmer('hide');
                     }
-                    $('#' + dish.id + '-currentQuantity').text(currentQuantity);
                 },
                 error: function(err) {
                     console.log(err.message);
