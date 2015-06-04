@@ -1,23 +1,12 @@
 <form action="" method="POST" id="paymentForm" class="ui form">
 	<div class="ui segment">
 		<div id="basicinfo">
-			<!-- <div id="nameinfo" class="two fields">
-				<div class="ui fluid field">
-					<input id="first_name" class="ui input fname" placeholder="取餐人名" type="text" name="first_name" value="">
-				</div>
-				<div class="ui fluid field">
-					<input id="last_name" class="ui input lname" placeholder="取餐人姓" type="text" name="last_name" value="">
-				</div>
-			</div>
-			<div class="ui fluid field">
-				<input id="email" class="ui input required email" placeholder="E-mail" type="text" name="email">
-			</div> -->
 			<div class="ui fluid field">
 				<div id="addressoption">
 					<select id="addressdetails" name="address">
 						<option id="pickUpAddress" value="">选择取餐地址</option>
                         <% _.each(pickUpLocations, function(pickUpLocation){ %>
-                            <option value="<%= pickUpLocation %>"><%= pickUpLocation %></option>                        
+                            <option value="<%= pickUpLocation.id %>"><%= pickUpLocation.get('address') %></option>
                         <% }); %>
 					</select>
 				</div>
@@ -41,16 +30,22 @@
 					
 				</div>
 				<div id="userCardList">
-					<% _.each(cards, function(card){ 
+                    <% var count = 0; %>
+					<% _.each(cards, function(card){
 						var customerId = card.get('customerId');
 						var digit = card.get('last4Digit');%>
 						<div class="field">
 							<div class="ui radio checkbox checked">
-								<input type="radio" name="card" value="<%= customerId %>">
+                                <% if(count === 0){ %>
+								<input type="radio" name="card" value="<%= customerId %>" checked >
+                                <% } else { %>
+                                <input type="radio" name="card" value="<%= customerId %>" >
+                                <% } %>
 								<label>xxxx-xxxx-xxxx-<span><%= digit %></span>
 								</label>
 							</div>
 						</div>
+                    <% count++; %>
 	        		<% }); %>
 				</div>
 				<div class="ui divider"></div>
@@ -59,9 +54,6 @@
 		<div id="newCardInfo" class="<%= cards.length > 0? 'transition hidden' : '' %>">
 			<div id="cardinfo" class="field">
 				<h5 id="inputCardInfo">请输入您的信用卡信息：</h5>
-				<!-- <div class="sixteen wide field">
-					<input class="ui fluid input" placeholder="持卡人姓名" type="text" name="name" />
-				</div> -->
 				<div class="sixteen wide field">
 					<input class="ui fluid input card-number stripe-sensitive required" id="cardNumber" name="number" placeholder="卡号" type="text" size="20" data-stripe="number" />
 				</div>
@@ -102,15 +94,13 @@
 				</div>
 			</div>
 			<div id="rememberme" class="inline field">
-
 					<input type="checkbox" name="rememberme">
 					<label for = "rememberme">记住这张卡的信息，方便下次支付</label>
-
 			</div>
 		</div>
 		<div id="agreements" class="two fields">
 			<div id="terms" class="required inline field">
-                <input type="checkbox" name="terms">
+                <input type="checkbox" name="terms" id="termsInput">
                 <label for="terms">我同意带饭大哥使用协议和条款</label>
 			</div>
 

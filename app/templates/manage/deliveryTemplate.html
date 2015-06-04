@@ -1,62 +1,74 @@
 <h3 class="ui center aligned header">今日送餐概况</h3>
 <div class="ui segment">
+    <% _.map(ordersByLocations, function(pair) { %>
     <div class="ui vertical segment">
         <a href="#" class="delivery-order">
             <div class="ui column grid summary-list">
-                <div class="four wide right aligned column"><span class="summary-location">AV Williams Bldg</span>:</span>
-                </div>
-                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity3 %>,&nbspB餐:&nbsp<%= comboQuantity3 %></span>
-                </div>
-                <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final3.toFixed(2) %></span>
-                </div>
-                <div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
+                <div class="four wide right aligned column"><span class="summary-location"><%= pair[0] %>:</span></div>
+                <div class="five wide column left aligned">
+                    <span class="summary-status">
+                        <% _.map(pair[1], function(orderDetailSet) { %>
+                        Dish:&nbsp <%= orderDetailSet[0] %>, &nbsp&nbsp
+                        Quantity:&nbsp <%= orderDetailSet[1] %>, &nbsp&nbsp
+                        Subtotal:&nbsp <%= orderDetailSet[2] %> <br>
+                        <% }) %>
+                    </span>
                 </div>
             </div>
         </a>
     </div>
+    <% })%>
 
+</div>
+<div class="ui divider"></div>
+<div class="gray left aligned sixteen wide column">
+    注：A餐为当日便当，B餐为凉皮+肉夹馍，C餐为当日经济便当
+</div>
+
+<div class="ui top attached segment">
     <div class="ui vertical segment">
-        <a href="#" class="delivery-order">
-            <div class="ui column grid summary-list">
-                <div class="four wide right aligned column"><span class="summary-location">McKeldin Library</span>:</span>
-                </div>
-                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity2 %>,&nbspB餐:&nbsp<%= comboQuantity2 %></span>
-                </div>
-                <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final2.toFixed(2) %></span>
-                </div>
-                <div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
-                </div>
-            </div>
-        </a>
-    </div>
-
-    <div class="ui vertical segment">
-        <a class="delivery-order" href="#">
-            <div class="ui column grid summary-list">
-                <div class="four wide right aligned column"><span class="summary-location">Regents Drive Parking Garage</span>:</span>
-                </div>
-                <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<%= dishQuantity1 %>,&nbspB餐:&nbsp<%= comboQuantity1 %></span>
-                </div>
-                <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp$<%= final1.toFixed(2) %></span>
-                </div>
-                <div class="two wide column right aligned"><span class="summary-status"><i class="angle red right icon"></i></span>
+        <h2 class="ui header small">Distribution Points</h2>
+        <div class="ui column right aligned grid">
+            <div class="left floated left aligned seven wide column">This is a DP location</div>
+            <div class="nine wide column">
+                <div class="ui basic mini buttons">
+                    <div class="ui button"><i class="youtube play icon"></i></div>
+                    <div class="ui button">Edit</div>
+                    <div class="ui button"><i class="remove circle outline icon"></i></div>
                 </div>
             </div>
-        </a>
-    </div>
-
-    <div class="summary-order ui vertical segment">
-        <div class="ui column grid summary-list">
-            <div class="four wide right aligned column"><span class="summary-location">总计:</span>
-            </div>
-            <div class="five wide column right aligned"><span class="summary-status">A餐:&nbsp<span class="red"><%= dishQuantity1 + dishQuantity2 + dishQuantity3 %></span>,&nbspB餐:&nbsp<span class="red"><%= comboQuantity1+comboQuantity2+comboQuantity3 %></span>
-            </div>
-            <div class="five wide column right aligned"><span class="summary-status">金额:&nbsp<span class="red">$<%= (final1 + final2 + final3).toFixed(2)%></span>
+        </div>
+        <div class="ui column right aligned grid">
+            <div class="left floated left aligned seven wide column">This is a DP location</div>
+            <div class="nine wide column">
+                <div class="ui basic mini buttons">
+                    <div class="ui button"><i class="youtube play icon"></i></div>
+                    <div class="ui button">Edit</div>
+                    <div class="ui button"><i class="remove circle outline icon"></i></div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div class="ui divider"></div>
-<div class="gray left aligned sixteen wide column">
-    注：A餐为当日便当，B餐为凉皮+肉夹馍
+<div class="ui bottom attached button">
+    <i class="add icon"></i>
+    Add a new location
 </div>
+
+<div class="ui segment">
+    <div class="ui vertical segment">
+        <h2 class="ui header small">Restaurant Info</h2>
+        <div class="res-intro">
+            This is some restaurant information
+        </div>    
+    </div>
+    <div class="ui vertical segment res-order">
+        <div class="ui column grid"> 
+        <div class="four wide column">11/23</div>
+        <div class="six wide column">Dish name</div>
+        <div class="two wide column">87</div>
+        <div class="four wide column right aligned">Confirmed</div>
+    </div>
+    </div>
+</div>
+

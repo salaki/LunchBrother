@@ -1,4 +1,15 @@
-define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel', 'models/dish/DishCollection', 'i18n!nls/string', 'text!templates/home/homeTemplate.html', 'text!templates/home/statsTemplate.html', 'text!templates/order/orderTemplate.html'], function(DishView, OrderView, DishModel, DishCollection, string, homeTemplate, statsTemplate, orderTemplate) {
+define(['views/home/DishView',
+    'views/order/OrderView',
+    'models/dish/DishModel',
+    'models/dish/DishCollection',
+    'models/Grid',
+    'models/Restaurant',
+    'models/InventoryModel',
+    'i18n!nls/string',
+    'text!templates/home/homeTemplate.html',
+    'text!templates/home/statsTemplate.html',
+    'text!templates/order/orderTemplate.html'],
+    function(DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, InventoryModel, string, homeTemplate, statsTemplate, orderTemplate) {
 
 	var HomeView = Parse.View.extend({
 		// tagName: 'ul', // required, but defaults to 'div' if not set
@@ -27,6 +38,21 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			if (currentUser != null) {
 				currentUser.fetch();
 				$("#userEmail").text(currentUser.get('email'));
+                var gridId = "nmbyDzTp7m";
+                if (currentUser.get('gridId') == undefined) {
+                    $("#userGrid").text("University of Maryland College Park");
+                }else {
+                    var gridQuery = new Parse.Query(GridModel);
+                    gridId = currentUser.get('gridId').id;
+                    gridQuery.get(currentUser.get('gridId').id, {
+                        success: function(grid) {
+                            $("#userGrid").text(grid.get('name'));
+                        },
+                        error: function(object, error) {
+                            console.log(error.message);
+                        }
+                    });
+                }
 				$("#userPhone").text(currentUser.get('telnum'));
 				$("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
 				$("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
@@ -34,22 +60,37 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			}
 			$('#account').show();
 
-			this.dishes = new DishCollection;
+            this.dishes = new DishCollection;
 
-			var bdQuery = new Parse.Query(DishModel);
-			bdQuery.equalTo("Dish_Id", this.getDishId());
-			var comboQuery = new Parse.Query(DishModel);
-			comboQuery.equalTo("Dish_Id", 11);
+            //TODO - Create an UI to set dishes to true for restaurants
+            var mainQuery = new Parse.Query(DishModel);
+            mainQuery.equalTo("active", true);
+//            alert(this.getDayOfWeekAndWeekOfYearCode());
+//            mainQuery.equalTo("Dish_Id", this.getDayOfWeek());
+            mainQuery.include("restaurant");
 
-			var mainQuery = Parse.Query.or(bdQuery, comboQuery);
-
-			this.dishes.query = mainQuery;
-
-			this.dishes.bind('reset', this.loadAll);
-			this.dishes.bind('all', this.render);
-
-			this.dishes.fetch();
-
+            //TODO - Find out restaurants in the user's grid
+            var self = this;
+            var restaurantQuery = new Parse.Query(RestaurantModel);
+            var userGrid = new GridModel();
+            userGrid.id = gridId;
+            restaurantQuery.equalTo("gridId", userGrid);
+            restaurantQuery.find({
+                success: function(restaurants) {
+                    var restaurantArray = [];
+                    for (var i=0; i<restaurants.length; i++) {
+                        restaurantArray.push(restaurants[i]);
+                    }
+                    mainQuery.containedIn("restaurant", restaurantArray);
+                    self.dishes.query = mainQuery;
+                    self.dishes.bind('reset', self.loadAll);
+                    self.dishes.bind('all', self.render);
+                    self.dishes.fetch();
+                },
+                error: function(error) {
+                    console.log(error.message);
+                }
+            });
 		},
 
 		render : function() {
@@ -77,16 +118,17 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			return this;
 		},
 
-		getDishId : function() {
+		getDayOfWeekAndWeekOfYearCode: function() {
 			var currentTime = new Date();
+
 			var day = new Date();
 			var onejan = new Date(day.getFullYear(), 0, 1);
                         var today = new Date(day.getFullYear(),day.getMonth(),day.getDate());
   			var dayOfYear = ((today - onejan + 86400000)/86400000);
-			var weekOfYear = Math.ceil(dayOfYear/7)+1; 
+			var weekOfYear = Math.ceil(dayOfYear/7)+1;
+            var weekOfYearCode = 11;
 			var dayOfWeek = today.getDay();
 			var hours = currentTime.getHours();
-
 			//Sunday and Saturday show Monday Pic
 			if (dayOfWeek == 6) {
 				dayOfWeek = 1;
@@ -102,17 +144,50 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 
 			if (weekOfYear % 2 == 0) {
 				dayOfWeek += 5;
+                weekOfYearCode = 12;
 			}
                         console.log(weekOfYear);
                         console.log(dayOfWeek);
-			return dayOfWeek;
+			return [dayOfWeek, weekOfYearCode];
 		},
 
 		addOne : function(dish) {
 			var view = new DishView({
 				model : dish
 			});
+
 			this.$("#dishList").append(view.render().el);
+            $('#' + dish.id + ' .menu .item').tab({context: $('#' + dish.id)});
+
+
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            inventoryQuery.equalTo('dishId', dish.id);
+            inventoryQuery.descending('createdAt');
+            inventoryQuery.find({
+                success: function(inventories) {
+                    var currentQuantity = 4;
+                if (inventories.length !== 0) {
+                    currentQuantity = inventories[0].get('currentQuantity');
+                }
+                    view.setCurrentQuantity(currentQuantity);
+
+                    if (currentQuantity <= 5) {
+                        $('#' + dish.id + '-currentQuantityWarning').text("Only " + currentQuantity + " left!");
+                        $('#' + dish.id + '-currentQuantityWarning').show();
+                    }
+
+                    if (dish.get('count') === currentQuantity) {
+                        $('#' + dish.id + '-dimmer').dimmer('show');
+                        $('#' + dish.id + '-plusButton').prop('disabled', true);
+                        $('#' + dish.id + '-currentQuantityWarning').hide();
+                    } else {
+                        $('#' + dish.id + '-dimmer').dimmer('hide');
+                    }
+                },
+                error: function(err) {
+                    console.log(err.message);
+                }
+            });
 		},
 
 		loadAll : function(collection, filter) {
@@ -124,6 +199,7 @@ define(['views/home/DishView', 'views/order/OrderView', 'models/dish/DishModel',
 			var currentTime = new Date();
 			var weekday = currentTime.getDay();
 			var hours = currentTime.getHours();
+            var mins = currentTime.getMinutes();
 			var view = new OrderView({
 				model : this.stats
 			});

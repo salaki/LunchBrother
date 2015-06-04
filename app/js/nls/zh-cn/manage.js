@@ -13,5 +13,6 @@ define({
     "manageCancel": "取消",
     "manageConfirm" : "确认",
     "comboA" : "A餐",
-    "comboB" : "B餐"
+    "comboB" : "B餐",
+    "comboC" : "C餐"
 });

@@ -10,11 +10,10 @@ define([
   var initialize = function() {
     console.log("main init");
     
-    var appId = 'shB8up4c14Idr6eFH4SBjzqZ1vdYT0Q79LSaPQwT';
-    var jsKey = 'PQrHeggtLnjUfFh4KI1IV5vLhZXztUzfdlUnk5X2';
+    var appId = 'Cgz1qCbMW85tSsBrYhMlWThKm1pYT5D4U0NmEGxX';
+    var jsKey = 'FAfMIEjgQENLxipP5ddW3YYqu14l9dG9uzGyRSLG';
 
     Parse.initialize(appId, jsKey);
-    
     
     router.initialize();
     
@@ -50,7 +49,72 @@ define([
         $('#account').hide();
     });
 
-    $('#account').click(function() {
+      $(".editlink").on("click", function(e){
+          e.preventDefault();
+          var dataset = $(this).prev(".datainfo");
+          var savebtn = $(this).next(".savebtn");
+          var theid   = dataset.attr("id");
+          var newid   = theid+"-form";
+          var currval = dataset.text();
+          dataset.empty();
+          $('<input type="text" name="'+newid+'" id="'+newid+'" value="'+currval+'" class="hlite">').appendTo(dataset);
+          $(this).css("display", "none");
+          savebtn.css("display", "block");
+      });
+      $(".savebtn").on("click", function(e){
+          e.preventDefault();
+          var elink   = $(this).prev(".editlink");
+          var dataset = elink.prev(".datainfo");
+          var newid   = dataset.attr("id");
+          var cinput  = "#"+newid+"-form";
+          var newval  = $(cinput).val();
+          $(this).css("display", "none");
+          dataset.html(newval);
+          elink.css("display", "block");
+          var currentUser = Parse.User.current();
+          if (newid.indexOf('Email') > -1) {
+              currentUser.set( "email", newval );
+          } else {
+              currentUser.set( "telnum", Number(newval) );
+          }
+          currentUser.save( null, {
+              success: function ( user )
+              {
+                  //Do nothing
+              },
+              error: function ( user, error )
+              {
+                  alert( "Error: " + error.code + " " + error.message );
+              }
+          } );
+      });
+      $("#smsCheckbox").on("change", function(e){
+          e.preventDefault();
+          var currentUser = Parse.User.current();
+          if ($(this).is(':checked')) {
+              currentUser.set( "smsEnabled", true );
+          } else {
+              currentUser.set( "smsEnabled", false );
+          }
+          currentUser.save( null, {
+              success: function ( user )
+              {
+                  //Do nothing
+              },
+              error: function ( user, error )
+              {
+                  alert( "Error: " + error.code + " " + error.message );
+              }
+          } );
+      });
+
+      $('#account').click(function() {
+          var currentUser = Parse.User.current();
+          if (currentUser.get('smsEnabled') == undefined || currentUser.get('smsEnabled') == true) {
+              $("#smsCheckbox").prop('checked', true);
+          } else {
+              $("#smsCheckbox").prop('checked', false);
+          }
          $('.ui.sidebar').sidebar('toggle');
     });
     

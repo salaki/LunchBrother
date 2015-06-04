@@ -10,4 +10,19 @@
 <span id="timeAlert" class="ui yellow message" style="display:none"></span>
 <p id="orderMessage" class="ui small message"></p>
 <button id="paymentBtn" class="center aligned ui red button"></button>
-
+<div id="inventoryExceededAlert" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff" id="inventoryAlertTitle">
+        Oops!
+    </div>
+    <div class="content">
+        Sorry, someone has already placed the order before you, now the dish quantity is not enough for your order, please try other amounts or dishes.
+    </div>
+    <div class="actions">
+        <div class="one fluid ui buttons">
+            <div class="ui ok basic button">
+                <i class="checkmark icon"></i>
+                <label id="inventoryConfirm">OK</label>
+            </div>
+        </div>
+    </div>
+</div>

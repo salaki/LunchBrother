@@ -1,9 +1,13 @@
 define([
     'models/order/PaymentModel',
     'models/order/OrderModel',
+    'models/dish/DishModel',
+    'models/Grid',
+    'models/Restaurant',
+    'models/PickUpLocation',
     'views/manage/LoginView',
     'text!templates/manage/deliveryTemplate.html'
-], function(PaymentModel, OrderModel, LoginView, deliveryTemplate) {
+], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, LoginView, deliveryTemplate) {
 
     var DeliveryView = Parse.View.extend({
         el: $("#page"),
@@ -14,6 +18,21 @@ define([
             if(currentUser != null) {
                 currentUser.fetch();
                 $("#userEmail").text(currentUser.get('email'));
+                var gridId = "nmbyDzTp7m";
+                if (currentUser.get('gridId') == undefined) {
+                    $("#userGrid").text("University of Maryland College Park");
+                }else {
+                    var gridQuery = new Parse.Query(GridModel);
+                    gridId = currentUser.get('gridId').id;
+                    gridQuery.get(currentUser.get('gridId').id, {
+                        success: function(grid) {
+                            $("#userGrid").text(grid.get('name'));
+                        },
+                        error: function(object, error) {
+                            console.log(error.message);
+                        }
+                    });
+                }
                 $("#userPhone").text(currentUser.get('telnum'));
                 $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
                 $("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
@@ -25,13 +44,114 @@ define([
         template: _.template(deliveryTemplate),
 
         render: function() {
-            var query = new Parse.Query(PaymentModel);
             var self = this;
-            this.applyQuery(query, self);
+//            var query = new Parse.Query(PaymentModel);
+//            this.applyQuery(query, self);
+            this.applyQuery2(self);
             return this;
         },
 
+        applyQuery2: function(self) {
+            var restaurantQuery = new Parse.Query(RestaurantModel);
+            restaurantQuery.equalTo("manager", Parse.User.current());
+            restaurantQuery.find({
+                success: function(restaurants) {
+                    var orderQuery = new Parse.Query(OrderModel);
+                    var chefGrid = Parse.User.current().get('gridId');
+                    //default chef's grid to University of Maryland College Park
+                    if (chefGrid == undefined){
+                        chefGrid = new GridModel();
+                        chefGrid.id = "nmbyDzTp7m";
+                    }
+                    var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+                    pickUpLocationQuery.equalTo("gridId", chefGrid);
+                    pickUpLocationQuery.find({
+                        success: function(locations) {
+                            var orderSummary = [];
+                            var locationNames = [];
+                            for (var i=0; i<locations.length; i++) {
+                                locationNames.push(locations[i].get('address'));
+                            }
+
+                            //Display the order between a duration
+                            var current = new Date();
+                            var currentHour = current.getHours();
+                            if (currentHour > 14) {
+                                //After 14:00, display the orders from today 2pm to tomorrow 12pm
+                                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                                upperDate.setHours(12, 0, 0, 0);
+                                var lowerDate = current;
+                                lowerDate.setHours(14, 0, 0, 0);
+                            }
+                            else {
+                                //Before 14:00, display the orders from yesterday 2pm to today 12pm
+                                upperDate = current;
+                                upperDate.setHours(12, 0, 0, 0);
+                                lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                                lowerDate.setHours(14, 0, 0, 0);
+                            }
+
+                            orderQuery.greaterThan("createdAt", lowerDate);
+                            orderQuery.lessThan("createdAt", upperDate);
+                            orderQuery.equalTo("restaurantId", restaurants[0]);
+
+                            orderQuery.include("dishId");
+                            orderQuery.find({
+                                success: function(orders) {
+                                    var ordersByLocations = [];
+                                    for (var i=0; i<locationNames.length; i++) {
+                                        var address = locationNames[i];
+                                        var orderDetailMap = {};
+                                        orderDetailMap["dishNames"] = [];
+                                        orderDetailMap["dishTypes"] = [];
+                                        orderDetailMap["quantity"] = [];
+                                        orderDetailMap["subTotalPrice"] = [];
+                                        for (var j=0; j<orders.length; j++) {
+                                            var pickUpLocation = orders[j].get("pickUpLocation");
+                                            var dish = orders[j].get('dishId');
+                                            console.log(dish);
+                                            if (orders[j].get("pickUpLocation").id == locations[i].id) {
+                                                var index = orderDetailMap["dishNames"].indexOf(dish.id);
+                                                if (index > 0) {
+                                                    orderDetailMap["quantity"][index] += orders[j].get('quantity');
+                                                    orderDetailMap["subTotalPrice"][index] += orders[j].get('subTotalPrice').toFixed(2);
+                                                } else {
+                                                    orderDetailMap["dishNames"].push(dish.id);
+                                                    orderDetailMap["dishTypes"].push(dish.get('typeEn'));
+                                                    orderDetailMap["quantity"].push(orders[j].get('quantity'));
+                                                    orderDetailMap["subTotalPrice"].push(orders[j].get('subTotalPrice').toFixed(2));
+                                                }
+                                            }
+                                        }
+                                        var orderDetailZip = _.zip(orderDetailMap["dishTypes"], orderDetailMap["quantity"], orderDetailMap["subTotalPrice"]);
+                                        ordersByLocations.push(orderDetailZip);
+                                    }
+
+                                    console.log(ordersByLocations);
+                                    console.log(locationNames);
+//                                    self.$el.html(self.template({ordersByLocations: orderSummary}));
+                                    var zipped = _.zip(locationNames, ordersByLocations);
+//                                    self.$el.html(self.template({locationNames: locationNames, ordersByLocations: ordersByLocations}));
+                                    self.$el.html(self.template({ordersByLocations: zipped}));
+                                },
+                                error: function(error) {
+                                    console.log(error.message);
+                                }
+                            });
+                        },
+                        error: function(error) {
+                            console.log(error.message);
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.log(error.message);
+                }
+            })
+        },
+
         applyQuery: function(query, self) {
+            var query = new Parse.Query(PaymentModel);
             query.equalTo("address", "Regents Drive Parking Garage");
             //Create a OrderModel
             self.orderDetails = new OrderModel();
@@ -48,14 +168,17 @@ define([
 
             //Create new attributes
             var totalCombo = 0;
+            var totalComboC = 0;
             var totalDish = 0;
             var totalPrice = 0;
 
             var totalVMCombo = 0;
+            var totalVMComboC = 0;
             var totalVMDish = 0;
             var totalVMPrice = 0;
 
             var totalAVCombo = 0;
+            var totalAVComboC = 0;
             var totalAVDish = 0;
             var totalAVPrice = 0;
 
@@ -85,34 +208,21 @@ define([
                     for (var i = 0; i < results.length; i++) {
                         var dishName1 = results[i].get('dishName1');
                         var dishName2 = results[i].get('dishName2');
+                        var dishName3 = results[i].get('dishName3');
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
-                        if (dishName2 != undefined) {
-                            if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
-                                //Do nothing
-                            }
-                            else {
-                                results[i].set('quantity1', quantity2);
-                                results[i].set('quantity2', quantity1);
-                            }
-                        }
-                        else {
-                            if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                results[i].set('quantity2', quantity1);
-                                results[i].set('quantity1', 0);
-                            }
-                            else {
-                                //Do nothing
-                                results[i].set('quantity2', 0);
-                            }
-                        }
-                        totalDish = results[i].get('quantity1') + totalDish;
-                        totalCombo = results[i].get('quantity2') + totalCombo;
-                        totalPrice = results[i].get('totalPrice') + totalPrice;
+                        var quantity3 = results[i].get('quantity3');
+                        var sortedResults = self.assignQuantityProperly(dishName1, dishName2, dishName3, quantity1, quantity2, quantity3, results[i]);
+
+                        totalDish = sortedResults.get('quantity1') + totalDish;
+                        totalCombo = sortedResults.get('quantity2') + totalCombo;
+                        totalComboC = sortedResults.get('quantity3') + totalComboC;
+                        totalPrice = sortedResults.get('totalPrice') + totalPrice;
                     }
 
-                    self.orderDetails.set('comboQuantity1', totalCombo);
                     self.orderDetails.set('dishQuantity1', totalDish);
+                    self.orderDetails.set('comboQuantity1', totalCombo);
+                    self.orderDetails.set('comboCQuantity1', totalComboC);
                     self.orderDetails.set('final1', totalPrice);
                     self.$el.html(self.template(
                         self.orderDetails.toJSON()
@@ -128,36 +238,21 @@ define([
                     for (var i = 0; i < results.length; i++) {
                         var dishName1 = results[i].get('dishName1');
                         var dishName2 = results[i].get('dishName2');
+                        var dishName3 = results[i].get('dishName3');
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
-                        if (dishName2 != undefined) {
-                            if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
-                                //Do nothing
-                            }
-                            else {
-                                results[i].set('quantity1', quantity2);
-                                results[i].set('quantity2', quantity1);
-                            }
-                        }
-                        else {
-                            if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                results[i].set('quantity2', quantity1);
-                                results[i].set('quantity1', 0);
-                            }
-                            else {
-                                //Do nothing
-                                results[i].set('quantity2', 0);
-                            }
-                        }
+                        var quantity3 = results[i].get('quantity3');
+                        var sortedResults = self.assignQuantityProperly(dishName1, dishName2, dishName3, quantity1, quantity2, quantity3, results[i]);
 
-                        totalVMDish = results[i].get('quantity1') + totalVMDish;
-                        totalVMCombo = results[i].get('quantity2') + totalVMCombo;
-                        totalVMPrice = results[i].get('totalPrice') + totalVMPrice;
+                        totalVMDish = sortedResults.get('quantity1') + totalVMDish;
+                        totalVMCombo = sortedResults.get('quantity2') + totalVMCombo;
+                        totalVMComboC = sortedResults.get('quantity3') + totalVMComboC;
+                        totalVMPrice = sortedResults.get('totalPrice') + totalVMPrice;
                     }
 
-
-                    self.orderDetails.set('comboQuantity2', totalVMCombo);
                     self.orderDetails.set('dishQuantity2', totalVMDish);
+                    self.orderDetails.set('comboQuantity2', totalVMCombo);
+                    self.orderDetails.set('comboCQuantity2', totalVMComboC);
                     self.orderDetails.set('final2', totalVMPrice);
                     self.$el.html(self.template(
                         self.orderDetails.toJSON()
@@ -173,36 +268,21 @@ define([
                     for (var i = 0; i < results.length; i++) {
                         var dishName1 = results[i].get('dishName1');
                         var dishName2 = results[i].get('dishName2');
+                        var dishName3 = results[i].get('dishName3');
                         var quantity1 = results[i].get('quantity1');
                         var quantity2 = results[i].get('quantity2');
-                        if (dishName2 != undefined) {
-                            if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
-                                //Do nothing
-                            }
-                            else {
-                                results[i].set('quantity1', quantity2);
-                                results[i].set('quantity2', quantity1);
-                            }
-                        }
-                        else {
-                            if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
-                                results[i].set('quantity2', quantity1);
-                                results[i].set('quantity1', 0);
-                            }
-                            else {
-                                //Do nothing
-                                results[i].set('quantity2', 0);
-                            }
-                        }
+                        var quantity3 = results[i].get('quantity3');
+                        var sortedResults = self.assignQuantityProperly(dishName1, dishName2, dishName3, quantity1, quantity2, quantity3, results[i]);
 
-                        totalAVDish = results[i].get('quantity1') + totalAVDish;
-                        totalAVCombo = results[i].get('quantity2') + totalAVCombo;
-                        totalAVPrice = results[i].get('totalPrice') + totalAVPrice;
+                        totalAVDish = sortedResults.get('quantity1') + totalAVDish;
+                        totalAVCombo = sortedResults.get('quantity2') + totalAVCombo;
+                        totalAVComboC = sortedResults.get('quantity3') + totalAVComboC;
+                        totalAVPrice = sortedResults.get('totalPrice') + totalAVPrice;
                     }
 
-
-                    self.orderDetails.set('comboQuantity3', totalAVCombo);
                     self.orderDetails.set('dishQuantity3', totalAVDish);
+                    self.orderDetails.set('comboQuantity3', totalAVCombo);
+                    self.orderDetails.set('comboCQuantity3', totalAVComboC);
                     self.orderDetails.set('final3', totalAVPrice);
                     self.$el.html(self.template(
                         self.orderDetails.toJSON()
@@ -215,6 +295,56 @@ define([
             //  var finalPrice = self.orderDetails.get('final1') + self.orderDetails.get('final2');
             //  self.orderDetails.set('final', finalPrice);
             //  self.$el.html(self.template(self.orderDetails.toJSON()));
+        },
+
+        assignQuantityProperly: function(dishName1, dishName2, dishName3, quantity1, quantity2, quantity3, result) {
+            if (dishName3 != undefined) {
+                if (dishName2 != undefined) {
+                    if (dishName2.indexOf("Combo B") > -1 || dishName2.indexOf("Combo -") > -1) {
+                        //Do nothing
+                    } else {
+                        result.set('quantity1', quantity2);
+                        result.set('quantity2', quantity1);
+                    }
+                } else {
+                    if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                        result.set('quantity2', quantity1);
+                        result.set('quantity1', 0);
+                    } else {
+                        //Do nothing
+                        result.set('quantity2', 0);
+                    }
+                }
+            } else {
+                if (dishName2 != undefined) {
+                    if (dishName2.indexOf("Combo C") > -1 || dishName2.indexOf("C椁�") > -1) {
+                        result.set('quantity3', quantity2);
+                        if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                            result.set('quantity2', quantity1);
+                            result.set('quantity1', 0);
+                        } else {
+                            result.set('quantity2', 0);
+                        }
+                    } else {
+                        result.set('quantity3', 0);
+                    }
+                } else {
+                    if (dishName1.indexOf("Combo C") > -1 || dishName1.indexOf("C椁�") > -1) {
+                        result.set('quantity3', quantity1);
+                        result.set('quantity2', 0);
+                        result.set('quantity1', 0);
+                    } else if (dishName1.indexOf("Combo B") > -1 || dishName1.indexOf("Combo -") > -1) {
+                        result.set('quantity3', 0);
+                        result.set('quantity2', quantity1);
+                        result.set('quantity1', 0);
+                    } else {
+                        result.set('quantity3', 0);
+                        result.set('quantity2', 0);
+                    }
+                }
+            }
+
+            return result;
         }
     });
     return DeliveryView;

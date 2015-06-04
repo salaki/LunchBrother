@@ -1,0 +1,122 @@
+.dishes .card {
+  width: 100%;
+}
+//overide semantic UI card style
+
+.ui .card{
+  @include box-shadow(0 0.1em 0.3em 0 #d4d4d5);
+}
+
+#page {
+  .dimmer {
+    z-index:0;
+    background:rgba(0,0,0,.65);    
+    .dimmer-content{
+      @include vertical-align;            
+    }    
+  };    
+  padding-top: 32px;
+  .dish-desc {
+    font-size: $lg;
+    padding-left: 10px;
+    color: $color_dgrey;
+  }
+  .minus-btn-wrapper {
+    padding-left: 0;
+    padding-right: 0;
+    button {
+      border: 1px solid $color_grey;
+    }
+  }
+  .plus-btn-wrapper {
+    padding-left: 0;
+    padding-right: 0;
+    button {
+      border: 1px solid $color_grey;
+    }
+  }
+  .order-count-wrapper {
+    padding-left: 0.6em;
+    padding-right: 0.6em;
+  }
+  .dish-count {
+    background-color: $white;
+    border: 1px solid $color_grey;
+    width: 100%;
+    padding: 7px 11px;
+    font-weight: normal;
+  }
+  .img-overlay{
+    position: absolute;
+    height:40px;
+    width:100%;
+    bottom:0;
+    background:rgba(242,155,48,0.9);
+    color:$white;
+    text-align: center;
+    font-size:$md;
+    font-weight:bold;
+    padding-top:0.8rem;  
+  }
+
+  .ui.segment {
+    padding: 0.4em;
+  }
+  .card .content .ui.button {
+    font-size: 0.7rem;
+  }
+
+  //overide default tab style
+  .ui.pointing.secondary.menu
+  .item{
+    color:$color_grey;
+    width:50%;
+    text-align:center;
+    border-radius:0;
+    &:hover{
+      color:$color_grey;
+    }
+  }
+  .active.item{
+    border-left:none;
+    border-color:$color_red;
+  }	
+  .dishinfo{
+    .item{
+      color:$color_dgrey;
+      font-size:$sm;
+    }
+  }
+  .dish-detail{
+    line-height:1.2;    
+  }
+  .dish-intro{
+    font-size:$sm;
+    color:$color-grey;
+  }
+  .dish-ingredients {
+    font-size:$xsm;
+    color:$color-grey;    
+    margin-top:15px;
+    .header{
+      color:$color_dgrey;
+    }
+  }
+  .restaurantInfo{
+    font-size:$sm;                                                                                 
+    color:$color-grey;
+    .header{
+      color:$color_dgrey;
+      font-size:$md;
+    }
+  }
+  .ui.segment.attached{
+    border:none;
+  }
+}
+
+.ui.segment.attached{
+  width:100%;
+  margin:0;
+}
+
