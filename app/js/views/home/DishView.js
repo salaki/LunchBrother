@@ -1,7 +1,8 @@
 define([
   'models/dish/DishModel',
+  'models/Restaurant',
   'text!templates/home/dishTemplate.html'
-], function(DishModel, dishTemplate) {
+], function(DishModel, RestaurantModel, dishTemplate) {
 
   var DishView = Parse.View.extend({
    
@@ -25,7 +26,7 @@ define([
     },
 
     render: function() {
-        $(this.el).html(this.template(this.model.toJSON()));
+        $(this.el).html(this.template(this.model._toFullJSON([])));
         if (this.model.get('count') === this.currentQuantity) {
             $('#' + this.model.id + '-plusButton').prop('disabled', true);
         } else {
@@ -38,7 +39,9 @@ define([
         }
         $('#' + this.model.id + ' .menu .item').tab({context: $('#' + this.model.id)});
         $('#' + this.model.id + '-currentQuantity').text(this.currentQuantity);
-        $('.ui.rating').rating();
+        $('.ui.rating').rating({
+            interactive: false
+        });
       //this.delegateEvents();
       return this;
     },
