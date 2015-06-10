@@ -6,6 +6,7 @@ define([
   'views/status/StatusView',
   'views/manage/LoginView',
   'views/manage/ManageView',
+  'views/manage/ManagerHomeView',
   'views/manage/DeliveryView',
   'views/account/LoginorsignupView',
   'views/account/SignupemailView',
@@ -18,7 +19,8 @@ define([
 		ConfirmView, 
 		StatusView, 
 		LoginView, 
-		ManageView, 
+		ManageView,
+        ManagerHomeView,
 		DeliveryView, 
 		LoginorsignupView, 
 		SignupemailView,
@@ -36,8 +38,9 @@ define([
             'status': 'showStatus',
             'login': 'showLogin',
             'manage': 'showManage',
-            'delivery': 'showDelivery',
+//            'delivery': 'showDelivery',
 	    //'loginorsignup' : 'showLoginorsignup',
+            'managerHome': 'showManagerHome',
             'profile': 'showProfile',
             'signupemail' : 'showSignupemail',
             'forgotpassword' : 'showForgotpassword',
@@ -175,6 +178,20 @@ define([
             }
             if (permission == 2) {
                  deliveryView.render();
+            } else {
+                window.location.hash = "#login";
+            }
+        });
+
+        appRouter.on('route:showManagerHome', function () {
+            // Call render on the module we loaded in via the dependency array
+            var managerHomeView = new ManagerHomeView();
+            var currentUser = Parse.User.current();
+            if(currentUser != null) {
+                permission = currentUser.get('permission');
+            }
+            if (permission == 2) {
+                managerHomeView.render();
             } else {
                 window.location.hash = "#login";
             }

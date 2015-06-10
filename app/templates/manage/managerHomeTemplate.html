@@ -1,0 +1,89 @@
+<div class="ui top attached segment">
+    <div class="ui vertical segment">
+        <h2 class="ui header small">Distribution Points</h2>
+        <% _.each(distributingPoints, function(distributingPoint) { %>
+        <div class="ui column right aligned grid">
+            <div class="left floated left aligned seven wide column"><%= distributingPoint.get('address') %></div>
+            <div class="nine wide column">
+                <div class="ui basic mini buttons">
+                    <div class="ui button"><a href="<%= distributingPoint.get('youtubeLink') %>" target="_blank"><i class="youtube play icon"></i></a></div>
+                    <div class="ui button" id="dpEditButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>" data-youtube="<%= distributingPoint.get('youtubeLink') %>" data-address="<%= distributingPoint.get('address') %>">Edit</div>
+                    <div class="ui button" id="dpDeleteButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>"><i class="remove circle outline icon"></i></div>
+                </div>
+            </div>
+        </div>
+        <% })%>
+    </div>
+</div>
+<div class="ui bottom attached button" id="DPAdd" data-youtubeLink="" data-address="">
+    <i class="add icon"></i>
+    Add a new location
+</div>
+
+<div class="ui segment">
+    <div class="ui vertical segment">
+        <h2 class="ui header small">Restaurant Info</h2>
+        <div class="res-intro">
+            This is some restaurant information
+        </div>
+    </div>
+    <div class="ui vertical segment res-order">
+        <div class="ui column grid">
+            <div class="four wide column">11/23</div>
+            <div class="six wide column">Dish name</div>
+            <div class="two wide column">87</div>
+            <div class="four wide column right aligned">Confirmed</div>
+        </div>
+    </div>
+</div>
+
+<div id="editDPDialog" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        <label id="editDPLabel">Distributing Point Editor</label>
+    </div>
+    <div action="" method="POST" id="dpForm" class="ui form">
+        <div id="basicinfo">
+            <div id="dpinfo" class="two fields">
+                <div class="ui fluid field">
+                    <input id="dp_location" class="ui input location" placeholder="Name of Location" type="text" name="dp_location" value="">
+                </div>
+                <div class="ui fluid field">
+                    <input id="dp_youtubeLink" class="ui input youtubeLink" placeholder="Youtube Link" type="text" name="dp_youtube_link" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="two fluid ui buttons">
+            <div class="ui basic cancel button">
+                <i class="remove icon"></i>
+                <label id="DPCancel">Cancel</label>
+            </div>
+            <div class="ui ok basic button">
+                <i class="checkmark icon"></i>
+                <label id="DPSave">Save</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteDPDialog" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        <label id="deleteDPLabel">Are you sure?</label>
+    </div>
+    <div class="content">
+        Do you really want to delete this Distribution Point?
+    </div>
+    <div class="actions">
+        <div class="two fluid ui buttons">
+            <div class="ui basic cancel button">
+                <i class="remove icon"></i>
+                <label id="deleteDPCancel">Cancel</label>
+            </div>
+            <div class="ui ok basic button">
+                <i class="checkmark icon"></i>
+                <label id="deleteDPConfirm">Confirm</label>
+            </div>
+        </div>
+    </div>
+</div>
