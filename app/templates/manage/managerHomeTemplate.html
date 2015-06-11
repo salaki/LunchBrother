@@ -22,24 +22,22 @@
 
 <div class="ui segment">
     <div class="ui vertical segment">
-        <h2 class="ui header small">Restaurant Info</h2>
-        <div class="res-intro">
-            This is some restaurant information
-        </div>
+        <h2 class="ui header small" id="fromRestaurant"></h2>
+        <div class="res-intro" id="restaurantTelnum"></div>
     </div>
     <div class="ui vertical segment res-order">
         <div class="ui column grid">
-            <div class="four wide column">11/23</div>
-            <div class="six wide column">Dish name</div>
-            <div class="two wide column">87</div>
-            <div class="four wide column right aligned">Confirmed</div>
+            <div class="four wide column" id="pickupDatetime"></div>
+            <div class="six wide column" id="todayDish"></div>
+            <div class="two wide column" id="pickupQuantity"></div>
+            <div class="four wide column right aligned" id="inventoryStatus"></div>
         </div>
     </div>
 </div>
 
 <div id="editDPDialog" class="ui small test modal">
     <div class="header" style="background-color: #ffffff">
-        <label id="editDPLabel">Distributing Point Editor</label>
+        <label id="editDPLabel">Distribution Point Editor</label>
     </div>
     <div action="" method="POST" id="dpForm" class="ui form">
         <div id="basicinfo">

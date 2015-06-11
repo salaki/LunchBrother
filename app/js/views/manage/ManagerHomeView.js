@@ -2,8 +2,9 @@ define([
     'models/Grid',
     'models/Restaurant',
     'models/PickUpLocation',
+    'models/InventoryModel',
     'text!templates/manage/managerHomeTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, managerHomeTemplate) {
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, managerHomeTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
@@ -11,6 +12,8 @@ define([
         events: {
             'click #DPAdd': 'onEditOrAddClick'
         },
+
+        days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
 
         initialize: function() {
             _.bindAll(this, 'render');
@@ -65,6 +68,38 @@ define([
                     console.log(error.message);
                 }
             })
+
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            var beginOfTheDay = new Date();
+            beginOfTheDay.setHours(0, 0, 0, 0);
+            var endOfTheDay = new Date(beginOfTheDay.getTime() + 24 * 60 * 60 * 1000);
+            var currentUser = Parse.User.current();
+//            inventoryQuery.equalTo("dishId", "wVfFMqL3x6");
+            inventoryQuery.equalTo("orderBy", currentUser);
+            inventoryQuery.notEqualTo("pickUpDate", undefined);
+            inventoryQuery.greaterThan("pickUpDate", beginOfTheDay);
+            inventoryQuery.lessThan("pickUpDate", endOfTheDay);
+            inventoryQuery.include("dish");
+            inventoryQuery.include("dish.restaurant");
+            inventoryQuery.find({
+                success: function(inventories) {
+                    var pickUpDate = inventories[0].get('pickUpDate');
+                    var month = pickUpDate.getMonth()+1;
+                    var date = pickUpDate.getDate();
+                    var day = self.days[pickUpDate.getDay()];
+                    var displayDate = month.toString() + "/" + date.toString() + " " + day;
+
+                    $("#pickupDatetime").text(displayDate);
+                    $("#fromRestaurant").text(inventories[0].get('dish').get('restaurant').get('name'));
+                    $("#restaurantTelnum").text(inventories[0].get('dish').get('restaurant').get('telnum'));
+                    $("#todayDish").text(inventories[0].get('dish').get('dishName'));
+                    $("#pickupQuantity").text(inventories[0].get('preorderQuantity'));
+                    $("#inventoryStatus").text(inventories[0].get('status'));
+                },
+                error: function(error) {
+                    console.log("Query inventory failed! Reason: " + error.message);
+                }
+            });
         },
 
         onEditOrAddClick: function(ev) {
