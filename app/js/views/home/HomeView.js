@@ -64,9 +64,9 @@ define(['views/home/DishView',
 
             //TODO - Create an UI to set dishes to true for restaurants
             var mainQuery = new Parse.Query(DishModel);
-            mainQuery.equalTo("active", true);
+//            mainQuery.equalTo("active", true);
 //            alert(this.getDayOfWeekAndWeekOfYearCode());
-//            mainQuery.equalTo("Dish_Id", this.getDayOfWeek());
+            mainQuery.equalTo("Dish_Id", new Date().getDay() + 1);
             mainQuery.include("restaurant");
 
             //TODO - Find out restaurants in the user's grid

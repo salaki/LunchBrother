@@ -10,7 +10,8 @@ define([
         el: $("#page"),
         template: _.template(managerHomeTemplate),
         events: {
-            'click #DPAdd': 'onEditOrAddClick'
+            'click #DPAdd': 'onEditOrAddClick',
+            'click #showOrderDetails': 'onShowOrderClick'
         },
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
@@ -152,6 +153,10 @@ define([
                     self.deleteDP(dpId);
                 }
             }).modal('show');
+        },
+
+        onShowOrderClick: function() {
+            window.location.hash = '#delivery';
         },
 
         saveDP: function(id, address, youtubeLink) {

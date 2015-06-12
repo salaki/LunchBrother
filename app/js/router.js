@@ -38,7 +38,7 @@ define([
             'status': 'showStatus',
             'login': 'showLogin',
             'manage': 'showManage',
-//            'delivery': 'showDelivery',
+            'delivery': 'showDelivery',
 	    //'loginorsignup' : 'showLoginorsignup',
             'managerHome': 'showManagerHome',
             'profile': 'showProfile',
@@ -162,7 +162,7 @@ define([
             if(currentUser != null) {
                 permission = currentUser.get('permission');
             }
-            if (permission == 3) {
+            if (permission >= 2) {
                  manageView.render();
             } else {
                 window.location.hash = "#login";
@@ -176,7 +176,7 @@ define([
             if(currentUser != null) {
                 permission = currentUser.get('permission');
             }
-            if (permission == 2) {
+            if (permission >= 2) {
                  deliveryView.render();
             } else {
                 window.location.hash = "#login";
@@ -190,7 +190,7 @@ define([
             if(currentUser != null) {
                 permission = currentUser.get('permission');
             }
-            if (permission == 2) {
+            if (permission >= 2) {
                 managerHomeView.render();
             } else {
                 window.location.hash = "#login";

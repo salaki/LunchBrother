@@ -52,10 +52,10 @@ define([
         },
 
         applyQuery2: function(self) {
-            var restaurantQuery = new Parse.Query(RestaurantModel);
-            restaurantQuery.equalTo("manager", Parse.User.current());
-            restaurantQuery.find({
-                success: function(restaurants) {
+//            var restaurantQuery = new Parse.Query(RestaurantModel);
+//            restaurantQuery.equalTo("manager", Parse.User.current());
+//            restaurantQuery.find({
+//                success: function(restaurants) {
                     var orderQuery = new Parse.Query(OrderModel);
                     var chefGrid = Parse.User.current().get('gridId');
                     //default chef's grid to University of Maryland College Park
@@ -68,9 +68,11 @@ define([
                     pickUpLocationQuery.find({
                         success: function(locations) {
                             var orderSummary = [];
+                            var locationArray = [];
                             var locationNames = [];
                             for (var i=0; i<locations.length; i++) {
                                 locationNames.push(locations[i].get('address'));
+                                locationArray.push(locations[i]);
                             }
 
                             //Display the order between a duration
@@ -93,8 +95,7 @@ define([
 
                             orderQuery.greaterThan("createdAt", lowerDate);
                             orderQuery.lessThan("createdAt", upperDate);
-                            orderQuery.equalTo("restaurantId", restaurants[0]);
-
+                            orderQuery.containedIn("pickUpLocation", locationArray);
                             orderQuery.include("dishId");
                             orderQuery.find({
                                 success: function(orders) {
@@ -114,12 +115,12 @@ define([
                                                 var index = orderDetailMap["dishNames"].indexOf(dish.id);
                                                 if (index > 0) {
                                                     orderDetailMap["quantity"][index] += orders[j].get('quantity');
-                                                    orderDetailMap["subTotalPrice"][index] += orders[j].get('subTotalPrice').toFixed(2);
+                                                    orderDetailMap["subTotalPrice"][index] += orders[j].get('subTotalPrice');
                                                 } else {
                                                     orderDetailMap["dishNames"].push(dish.id);
                                                     orderDetailMap["dishTypes"].push(dish.get('typeEn'));
                                                     orderDetailMap["quantity"].push(orders[j].get('quantity'));
-                                                    orderDetailMap["subTotalPrice"].push(orders[j].get('subTotalPrice').toFixed(2));
+                                                    orderDetailMap["subTotalPrice"].push(orders[j].get('subTotalPrice'));
                                                 }
                                             }
                                         }
@@ -143,11 +144,11 @@ define([
                             console.log(error.message);
                         }
                     });
-                },
-                error: function(error) {
-                    console.log(error.message);
-                }
-            })
+//                },
+//                error: function(error) {
+//                    console.log(error.message);
+//                }
+//            })
         },
 
         applyQuery: function(query, self) {
