@@ -158,6 +158,9 @@ define(['views/home/DishView',
 
 			this.$("#dishList").append(view.render().el);
             $('#' + dish.id + ' .menu .item').tab({context: $('#' + dish.id)});
+            $('.ui.rating').rating({
+                interactive: false
+            });
 
 
             var inventoryQuery = new Parse.Query(InventoryModel);
