@@ -47,7 +47,7 @@ define([
         	var query = new Parse.Query(CardModel);
 
             var grid = Parse.User.current().get('gridId');
-            if (grid == undefined) {
+            if (grid === undefined) {
                 var gridQuery = new Parse.Query(GridModel);
                 gridQuery.get("nmbyDzTp7m", {
                     success: function(defaultGrid) {
@@ -55,6 +55,10 @@ define([
                         pickUpLocationQuery.equalTo('gridId', defaultGrid);
                         pickUpLocationQuery.find({
                             success: function(pickUpLocations) {
+                                var pickUpLocationMap = {};
+                                for(var i = 0; i < pickUpLocations.length; i++) {
+                                    pickUpLocationMap[pickUpLocations[i].toJSON().objectId] = pickUpLocations[i].toJSON();
+                                }
                                 query.equalTo("createdBy", Parse.User.current());
                                 query.find({
                                     success: function(cards) {
@@ -79,6 +83,12 @@ define([
                                         }, {
                                             on: 'blur',
                                             inline: 'true'
+                                        });
+
+
+                                        that.$("#addressdetails").change(function() {
+                                            that.$("#youtubeDiv").show();
+                                            that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1");
                                         });
 
                                         //Localization
@@ -114,6 +124,10 @@ define([
                 pickUpLocationQuery.addAscending('address');
                 pickUpLocationQuery.find({
                     success: function(pickUpLocations) {
+                        var pickUpLocationMap = {};
+                        for(var i = 0; i < pickUpLocations.length; i++) {
+                            pickUpLocationMap[pickUpLocations[i].toJSON().objectId] = pickUpLocations[i].toJSON();
+                        }
                         query.equalTo("createdBy", Parse.User.current());
                         query.find({
                             success: function(cards) {
@@ -138,6 +152,11 @@ define([
                                 }, {
                                     on: 'blur',
                                     inline: 'true'
+                                });
+
+                                that.$("#addressdetails").change(function() {
+                                    that.$("#youtubeDiv").show();
+                                    that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1");
                                 });
 
                                 //Localization
