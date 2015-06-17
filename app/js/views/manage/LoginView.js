@@ -65,20 +65,20 @@ define([
                 success: function (user) {
                     var permission = user.get('permission');
 
-                    if (permission == 1) {
-                        var homeView = new HomeView();
+                    if (permission === GENERAL_USER) {
                         window.location.hash = '#home';
                     }
 
-                    if (permission == 3) {
-                        var distributorView = new DistributorView();
-                        window.location.hash = '#distributor';
+                    if (permission === LOCAL_MANAGER) {
+                        window.location.hash = '#managerHome';
                     }
 
-                    if (permission == 2) {
-//                        var driverView = new DriverView();
-                        var managerHomeView = new ManagerHomeView();
-                        window.location.hash = '#managerHome';
+                    if (permission === DRIVER) {
+                        window.location.hash = '#driver';
+                    }
+
+                    if (permission === DISTRIBUTOR) {
+                        window.location.hash = '#distributor';
                     }
                 },
                 error: function (user, error) {

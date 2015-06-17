@@ -162,7 +162,7 @@ define([
             if(currentUser != null) {
                 permission = currentUser.get('permission');
             }
-            if (permission >= 2) {
+            if (permission === DISTRIBUTOR || permission === LOCAL_MANAGER) {
                  distributorView.render();
             } else {
                 window.location.hash = "#login";
@@ -176,7 +176,7 @@ define([
             if(currentUser != null) {
                 permission = currentUser.get('permission');
             }
-            if (permission >= 2) {
+            if (permission === DRIVER || permission === LOCAL_MANAGER) {
                  driverView.render();
             } else {
                 window.location.hash = "#login";
@@ -190,7 +190,7 @@ define([
             if(currentUser != null) {
                 permission = currentUser.get('permission');
             }
-            if (permission >= 2) {
+            if (permission === LOCAL_MANAGER) {
                 managerHomeView.render();
             } else {
                 window.location.hash = "#login";
