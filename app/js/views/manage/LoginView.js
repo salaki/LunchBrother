@@ -1,14 +1,14 @@
 define([
     'models/order/PaymentModel',
     'models/order/OrderModel',
-    'views/manage/DeliveryView',
-    'views/manage/ManageView',
+    'views/manage/DriverView',
+    'views/manage/DistributorView',
     'views/manage/ManagerHomeView',
     'views/home/HomeView',
     'views/account/FbLoginView',
     'i18n!nls/login',
     'text!templates/manage/loginTemplate.html'
-], function (PaymentModel, OrderModel, DeliveryView, ManageView, ManagerHomeView, HomeView, FbLoginView, login, loginTemplate) {
+], function (PaymentModel, OrderModel, DriverView, DistributorView, ManagerHomeView, HomeView, FbLoginView, login, loginTemplate) {
 
     var LoginView = Parse.View.extend({
         el: $("#page"),
@@ -71,12 +71,12 @@ define([
                     }
 
                     if (permission == 3) {
-                        var manageView = new ManageView();
-                        window.location.hash = '#manage';
+                        var distributorView = new DistributorView();
+                        window.location.hash = '#distributor';
                     }
 
                     if (permission == 2) {
-//                        var deliveryView = new DeliveryView();
+//                        var driverView = new DriverView();
                         var managerHomeView = new ManagerHomeView();
                         window.location.hash = '#managerHome';
                     }

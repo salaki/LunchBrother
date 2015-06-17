@@ -156,7 +156,7 @@ define([
         },
 
         onShowOrderClick: function() {
-            window.location.hash = '#delivery';
+            window.location.hash = '#driver';
         },
 
         saveDP: function(id, address, youtubeLink) {

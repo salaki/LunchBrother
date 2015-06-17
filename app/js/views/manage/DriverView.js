@@ -6,10 +6,10 @@ define([
     'models/Restaurant',
     'models/PickUpLocation',
     'views/manage/LoginView',
-    'text!templates/manage/deliveryTemplate.html'
-], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, LoginView, deliveryTemplate) {
+    'text!templates/manage/driverTemplate.html'
+], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, LoginView, driverTemplate) {
 
-    var DeliveryView = Parse.View.extend({
+    var DriverView = Parse.View.extend({
         el: $("#page"),
 
         initialize: function() {
@@ -41,7 +41,7 @@ define([
             $('#account').show();
         },
 
-        template: _.template(deliveryTemplate),
+        template: _.template(driverTemplate),
 
         render: function() {
             var self = this;
@@ -348,5 +348,5 @@ define([
             return result;
         }
     });
-    return DeliveryView;
+    return DriverView;
 });
