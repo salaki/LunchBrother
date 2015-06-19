@@ -7,14 +7,14 @@ define([
     'models/PickUpLocation',
     'models/order/NotificationModel',
     'models/manage/DeliveryModel',
-    'text!templates/manage/manageTemplate.html',
+    'text!templates/manage/distributorTemplate.html',
     'text!templates/manage/orderListTemplate.html',
     'i18n!nls/manage',
     'libs/semantic/dropdown.min'
-], function (StatusView, PaymentModel, OrderModel, DishModel, GridModel, PickUpLocationModel, NotificationModel, DeliveryModel, manageTemplate, orderListTemplate, manageLocal) {
-    var ManageView = Parse.View.extend({
+], function (StatusView, PaymentModel, OrderModel, DishModel, GridModel, PickUpLocationModel, NotificationModel, DeliveryModel, distributorTemplate, orderListTemplate, manageLocal) {
+    var DistributorView = Parse.View.extend({
         el: $("#page"),
-        template: _.template(manageTemplate),
+        template: _.template(distributorTemplate),
         orderListTemplate: _.template(orderListTemplate),
         events: {
             //view listenTo model change
@@ -147,7 +147,7 @@ define([
             orderQuery.include("restaurantId");
             orderQuery.find({
                 success: function (orders) {
-                    self.populateManageView(payments, orders);
+                    self.populateDistributorView(payments, orders);
                 },
                 error: function (error) {
                     alert("Order Query Error: " + error.code + " " + error.message);
@@ -155,7 +155,7 @@ define([
             });
         },
 
-        populateManageView: function(payments, orders) {
+        populateDistributorView: function(payments, orders) {
             var self = this;
             var currentUser = Parse.User.current();
             var newResults = [];
@@ -327,6 +327,6 @@ define([
         }
     });
 
-    return ManageView;
+    return DistributorView;
 
 });

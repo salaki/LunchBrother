@@ -46,6 +46,9 @@ if (locale && locale == "zh-cn") {
     };
 }
 
+//Permission code
+var GENERAL_USER = 1, LOCAL_MANAGER = 2, DRIVER = 3, DISTRIBUTOR = 4;
+
 require.config(config);
 
 // Load the main app module to start the app

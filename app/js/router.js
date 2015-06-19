@@ -5,9 +5,9 @@ define([
   'views/confirm/ConfirmView',
   'views/status/StatusView',
   'views/manage/LoginView',
-  'views/manage/ManageView',
+  'views/manage/DistributorView',
   'views/manage/ManagerHomeView',
-  'views/manage/DeliveryView',
+  'views/manage/DriverView',
   'views/account/LoginorsignupView',
   'views/account/SignupemailView',
   'views/account/ProfileView',
@@ -19,9 +19,9 @@ define([
 		ConfirmView, 
 		StatusView, 
 		LoginView, 
-		ManageView,
+		DistributorView,
         ManagerHomeView,
-		DeliveryView, 
+		DriverView,
 		LoginorsignupView, 
 		SignupemailView,
 		ProfileView,
@@ -37,8 +37,8 @@ define([
             'confirm': 'showConfirm',
             'status': 'showStatus',
             'login': 'showLogin',
-            'manage': 'showManage',
-            'delivery': 'showDelivery',
+            'distributor': 'showDistributor',
+            'driver': 'showDriver',
 	    //'loginorsignup' : 'showLoginorsignup',
             'managerHome': 'showManagerHome',
             'profile': 'showProfile',
@@ -155,29 +155,29 @@ define([
             signupemailView.render();
         });
 
-        appRouter.on('route:showManage', function () {
+        appRouter.on('route:showDistributor', function () {
             // Call render on the module we loaded in via the dependency array
-            var manageView = new ManageView();
+            var distributorView = new DistributorView();
             var currentUser = Parse.User.current();
             if(currentUser != null) {
                 permission = currentUser.get('permission');
             }
-            if (permission >= 2) {
-                 manageView.render();
+            if (permission === DISTRIBUTOR || permission === LOCAL_MANAGER) {
+                 distributorView.render();
             } else {
                 window.location.hash = "#login";
             }
         });
 
-        appRouter.on('route:showDelivery', function () {
+        appRouter.on('route:showDriver', function () {
             // Call render on the module we loaded in via the dependency array
-            var deliveryView = new DeliveryView();
+            var driverView = new DriverView();
             var currentUser = Parse.User.current();
             if(currentUser != null) {
                 permission = currentUser.get('permission');
             }
-            if (permission >= 2) {
-                 deliveryView.render();
+            if (permission === DRIVER || permission === LOCAL_MANAGER) {
+                 driverView.render();
             } else {
                 window.location.hash = "#login";
             }
@@ -190,7 +190,7 @@ define([
             if(currentUser != null) {
                 permission = currentUser.get('permission');
             }
-            if (permission >= 2) {
+            if (permission === LOCAL_MANAGER) {
                 managerHomeView.render();
             } else {
                 window.location.hash = "#login";
