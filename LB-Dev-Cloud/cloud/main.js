@@ -14,14 +14,14 @@ app.post('/receiveSMS',
         	var accountSID;
         	var authToken;
         	Parse.Config.get().then(function(config) {
-        		accountSID = config.get("twilioAccountSid");
+        		accountSID = config.get("TwilioAccountSid");
         		}, function(error) {
-        			console.log("Failed to fetch the twilioAccountSid.");
+        			console.log("Failed to fetch the TwilioAccountSid.");
         		});
         	Parse.Config.get().then(function(config) {
-        		authToken = config.get("twilioAuthToken");
+        		authToken = config.get("TwilioAuthToken");
         		}, function(error) {
-        			console.log("Failed to fetch the twilioAuthToken.");
+        			console.log("Failed to fetch the TwilioAuthToken.");
         		});
             twilioSMSService(accountSID, authToken, req.body.From, "Thank you for your confirmation!"); 	
 
