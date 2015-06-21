@@ -11,7 +11,19 @@ app.post('/receiveSMS',
 
         if (req.body.Body.toUpperCase() === "yes".toUpperCase()) {
             //TODO - Use Parse Config to replace Twilio Credentials
-            twilioSMSService("AC3d79b841bba0ddbb931aaecb23e7925b", "c72eccd453ec3c45ef7f63d19dc51d12", req.body.From, "Thank you for your confirmation!");
+        	var accountSID;
+        	var authToken;
+        	Parse.Config.get().then(function(config) {
+        		accountSID = config.get("twilioAccountSid");
+        		}, function(error) {
+        			console.log("Failed to fetch the twilioAccountSid.");
+        		});
+        	Parse.Config.get().then(function(config) {
+        		authToken = config.get("twilioAuthToken");
+        		}, function(error) {
+        			console.log("Failed to fetch the twilioAuthToken.");
+        		});
+            twilioSMSService(accountSID, authToken, req.body.From, "Thank you for your confirmation!"); 	
 
             //TODO - Update Corresponding Inventory Status
             
