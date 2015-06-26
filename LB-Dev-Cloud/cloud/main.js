@@ -5,12 +5,22 @@ var app = express();
 app.use(express.bodyParser());  // Populate req.body
 app.post('/receiveSMS',
     function(req, res) {
-        console.log("Received a new text: " + req.body.From);
-        console.log("Received body: " + req.body.Body);
+        console.log("Received text: " + req.body.Body + " From: " + req.body.From);
         res.send('Success');
 
-        if (req.body.Body.toUpperCase() === "yes".toUpperCase()) {
-            updateInventoryStatus(req.body.From);
+        if (req.body.Body.toUpperCase() === "YES") {
+            Parse.Cloud.run('updateRecords', {
+                fromNumber: req.body.From
+
+            }, {
+                success: function () {
+                    console.log("Records updated!");
+                },
+
+                error: function (error) {
+                    console.log("Fail to update records. Reason: " + error.message);
+                }
+            });
             twilioSMSService(req.body.From, "Thank you for your confirmation!");
 
         }  else {
@@ -20,40 +30,49 @@ app.post('/receiveSMS',
 
 app.listen();
 
-function updateInventoryStatus(incomingNumber) {
-    var confirmModel = Parse.Object.extend("SMSConfirmRecord");
-    var confirmQuery = new Parse.Query(confirmModel);
-    confirmQuery.equalTo("sentToNumber", incomingNumber);
-    confirmQuery.equalTo("confirmStatus", "PENDING");
-    confirmQuery.descending("createdAt");
-    confirmQuery.find({
-        success: function(records) {
-            console.log(records.length);
-            for (var i=0; i<records.length; i++) {
-                records[i].set('confirmStatus', "CONFIRMED")
-                records[i].save();
-                var inventoryIds = records[i].get('inventoryIds');
-
-                for (var j=0; j<inventoryIds.length; j++) {
-                    var inventoryModel = Parse.Object.extend("Inventory");
-                    var inventoryQuery = new Parse.Query(inventoryModel);
-                    inventoryQuery.get(inventoryIds[j], {
-                        success:function(inventory) {
-                            inventory.set('status', 'Confirmed');
-                            inventory.save();
-                        },
-                        error: function(error) {
-                            console.log(error.message);
-                        }
-                    });
+Parse.Cloud.define("updateRecords",
+    function (request, response) {
+        var incomingNumber = request.params.fromNumber;
+        var confirmModel = Parse.Object.extend("SMSConfirmRecord");
+        var confirmQuery = new Parse.Query(confirmModel);
+        confirmQuery.equalTo("sentToNumber", incomingNumber.substring(2));
+        confirmQuery.equalTo("confirmStatus", "PENDING");
+        confirmQuery.descending("createdAt");
+        confirmQuery.find({
+            success: function(records) {
+                for (var i=0; i<records.length; i++) {
+                    if (i === 0) {
+                        updateSMSandInventoryStatus(records[i], "CONFIRMED", "Confirmed");
+                    } else {
+                        updateSMSandInventoryStatus(records[i], "UNCONFIRMED", "Unconfirmed");
+                    }
                 }
+            },
+            error: function(error) {
+                console.log("Fail to query inventory! Reason: " + error.message);
             }
-        },
-        error: function(error) {
-            console.log("Fail to query inventory! Reason: " + error.message);
-        }
-    })
+        })
+    }
+);
 
+function updateSMSandInventoryStatus(record, recordStatus, inventoryStatus) {
+    record.set('confirmStatus', recordStatus);
+    record.save();
+    var inventoryIds = record.get('inventoryIds');
+
+    for (var j=0; j<inventoryIds.length; j++) {
+        var inventoryModel = Parse.Object.extend("Inventory");
+        var inventoryQuery = new Parse.Query(inventoryModel);
+        inventoryQuery.get(inventoryIds[j], {
+            success:function(inventory) {
+                inventory.set('status', inventoryStatus);
+                inventory.save();
+            },
+            error: function(error) {
+                console.log(error.message);
+            }
+        });
+    }
 }
 
 Parse.Cloud.define("pay",
@@ -355,7 +374,7 @@ Parse.Cloud.job("dailyOrderConfirmationSMS", function(request, status) {
                     var year = pickUpDateTime.getFullYear();
                     var month = pickUpDateTime.getMonth() + 1;
                     var date = pickUpDateTime.getDate();
-                    var hour = pickUpDateTime.getHours();
+                    var hour = pickUpDateTime.getHours() - 4; //TODO - Need to somehow include time zone
                     var minute = pickUpDateTime.getMinutes();
 
                     if (confirmNumber === undefined) {
@@ -394,7 +413,6 @@ function twilioSMSService(targetNumber, messageBody) {
     // Require and initialize the Twilio module with your credentials
     var client = require('twilio')('AC3d79b841bba0ddbb931aaecb23e7925b', 'c72eccd453ec3c45ef7f63d19dc51d12');
 
-    console.log("I'm here!");
     // Send an SMS message
     client.sendSms({
             to: targetNumber,
