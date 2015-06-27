@@ -61,9 +61,23 @@ header {
 .language-text {
 	float: left;
 }
-#loginBtn {
-	&.red {
-		@extend %extend_1;
+
+.ui.button.red {
+	@extend %extend_1;
+		&:hover {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
+			top: 1px;
+		}
+		&:active {
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 0 $color_btn_active;
+			top: 2px;
+    }
+}
+
+.ui.button.grey{
+		@extend %extend_2;
 		&:hover {
 			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
 			box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
@@ -74,7 +88,10 @@ header {
 			box-shadow: 0 0 $color_btn_active;
 			top: 2px;
 		}
-	}
+
+}
+
+#loginBtn {
 	&.grey {
 		@extend %extend_2;
 		&:hover {
@@ -126,6 +143,8 @@ header {
 		top: 2px;
 	}
 }
+
+
 #loginBtnContent {
 	&.grey {
 		color: $color_grey;
