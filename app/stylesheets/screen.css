@@ -299,43 +299,37 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-size: 0.8rem;
 }
 /* line 90, ../sass/partials/_dish.scss */
+#page .tab-dish-detail {
+  border: none;
+}
+/* line 94, ../sass/partials/_dish.scss */
 #page .dish-detail {
   line-height: 1.2;
 }
-/* line 93, ../sass/partials/_dish.scss */
+/* line 97, ../sass/partials/_dish.scss */
 #page .dish-intro {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 97, ../sass/partials/_dish.scss */
+/* line 101, ../sass/partials/_dish.scss */
 #page .dish-ingredients {
   font-size: 0.6rem;
   color: #9b9b9b;
   margin-top: 15px;
 }
-/* line 101, ../sass/partials/_dish.scss */
+/* line 105, ../sass/partials/_dish.scss */
 #page .dish-ingredients .header {
   color: #454545;
 }
-/* line 105, ../sass/partials/_dish.scss */
+/* line 109, ../sass/partials/_dish.scss */
 #page .restaurantInfo {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 108, ../sass/partials/_dish.scss */
+/* line 112, ../sass/partials/_dish.scss */
 #page .restaurantInfo .header {
   color: #454545;
   font-size: 1rem;
-}
-/* line 113, ../sass/partials/_dish.scss */
-#page .ui.segment.attached {
-  border: none;
-}
-
-/* line 118, ../sass/partials/_dish.scss */
-.ui.segment.attached {
-  width: 100%;
-  margin: 0;
 }
 
 /* line 3, ../sass/partials/_home.scss */

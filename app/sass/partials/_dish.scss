@@ -87,6 +87,10 @@
       font-size:$sm;
     }
   }
+  .tab-dish-detail{
+    border:none;
+  }
+
   .dish-detail{
     line-height:1.2;    
   }
@@ -110,13 +114,6 @@
       font-size:$md;
     }
   }
-  .ui.segment.attached{
-    border:none;
-  }
 }
 
-.ui.segment.attached{
-  width:100%;
-  margin:0;
-}
 
