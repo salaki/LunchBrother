@@ -431,6 +431,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   top: 2px;
 }
 
+/* line 2, ../sass/partials/_manage.scss */
+.ui.fluid.vertical.buttons .button {
+  width: 100%;
+}
+
 /* line 18, ../sass/screen.scss */
 html {
   overflow-x: hidden;
