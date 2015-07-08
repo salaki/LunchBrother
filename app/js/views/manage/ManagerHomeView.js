@@ -84,18 +84,27 @@ define([
             inventoryQuery.include("dish.restaurant");
             inventoryQuery.find({
                 success: function(inventories) {
-                    var pickUpDate = inventories[0].get('pickUpDate');
-                    var month = pickUpDate.getMonth()+1;
-                    var date = pickUpDate.getDate();
-                    var day = self.days[pickUpDate.getDay()];
-                    var displayDate = month.toString() + "/" + date.toString() + " " + day;
+                    if (inventories.length > 0) {
+                        var pickUpDate = inventories[0].get('pickUpDate');
+                        var month = pickUpDate.getMonth()+1;
+                        var date = pickUpDate.getDate();
+                        var day = self.days[pickUpDate.getDay()];
+                        var displayDate = month.toString() + "/" + date.toString() + " " + day;
 
-                    $("#pickupDatetime").text(displayDate);
-                    $("#fromRestaurant").text(inventories[0].get('dish').get('restaurant').get('name'));
-                    $("#restaurantTelnum").text(inventories[0].get('dish').get('restaurant').get('telnum'));
-                    $("#todayDish").text(inventories[0].get('dish').get('dishName'));
-                    $("#pickupQuantity").text(inventories[0].get('preorderQuantity'));
-                    $("#inventoryStatus").text(inventories[0].get('status'));
+                        $("#pickupDatetime").text(displayDate);
+                        $("#fromRestaurant").text(inventories[0].get('dish').get('restaurant').get('name'));
+                        $("#restaurantTelnum").text(inventories[0].get('dish').get('restaurant').get('telnum'));
+                        $("#todayDish").text(inventories[0].get('dish').get('dishName'));
+                        $("#pickupQuantity").text(inventories[0].get('preorderQuantity'));
+                        $("#inventoryStatus").text(inventories[0].get('status'));
+                    } else {
+                        $("#pickupDatetime").text('N/A');
+                        $("#fromRestaurant").text('N/A');
+                        $("#restaurantTelnum").text('N/A');
+                        $("#todayDish").text('N/A');
+                        $("#pickupQuantity").text('N/A');
+                        $("#inventoryStatus").text('N/A');
+                    }
                 },
                 error: function(error) {
                     console.log("Query inventory failed! Reason: " + error.message);
