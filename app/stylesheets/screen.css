@@ -436,6 +436,26 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   width: 100%;
 }
 
+/* line 7, ../sass/partials/_manage.scss */
+.menu-list .content {
+  color: #888888;
+  font-size: 0.8em;
+}
+/* line 12, ../sass/partials/_manage.scss */
+.menu-list .right.floated.content {
+  margin-top: 10px;
+}
+
+/* line 18, ../sass/partials/_manage.scss */
+.weekly .image {
+  height: 120px;
+  overflow: hidden;
+}
+/* line 23, ../sass/partials/_manage.scss */
+.weekly .extra.content {
+  font-size: 0.8em;
+}
+
 /* line 18, ../sass/screen.scss */
 html {
   overflow-x: hidden;
@@ -450,38 +470,33 @@ header {
 }
 
 /* line 27, ../sass/screen.scss */
-#mobileLanguage {
-  font-size: 12px;
-}
-
-/* line 30, ../sass/screen.scss */
 .space {
   width: 100%;
   clear: both;
   height: 100px;
 }
 
-/* line 35, ../sass/screen.scss */
+/* line 32, ../sass/screen.scss */
 #today {
   margin-top: 4px;
   font-weight: normal;
   width: 33.33%;
 }
 
-/* line 40, ../sass/screen.scss */
+/* line 37, ../sass/screen.scss */
 #barTitle {
   width: 31%;
   text-align: center;
   float: left;
 }
 
-/* line 45, ../sass/screen.scss */
+/* line 42, ../sass/screen.scss */
 #hamBtnWrapper {
   text-align: right;
-  width: 33.33%;
-  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
-/* line 49, ../sass/screen.scss */
+/* line 46, ../sass/screen.scss */
 #hamBtnWrapper > div {
   margin: 0;
   padding-top: 11px;
@@ -489,100 +504,100 @@ header {
   width: 40%;
 }
 
-/* line 58, ../sass/screen.scss */
+/* line 55, ../sass/screen.scss */
 #language {
   display: inline-block;
 }
 
-/* line 61, ../sass/screen.scss */
+/* line 58, ../sass/screen.scss */
 .language-text {
   float: left;
 }
 
-/* line 67, ../sass/screen.scss */
+/* line 64, ../sass/screen.scss */
 .ui.button.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 72, ../sass/screen.scss */
+/* line 69, ../sass/screen.scss */
 .ui.button.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 81, ../sass/screen.scss */
+/* line 78, ../sass/screen.scss */
 .ui.button.grey:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 86, ../sass/screen.scss */
+/* line 83, ../sass/screen.scss */
 .ui.button.grey:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 97, ../sass/screen.scss */
+/* line 94, ../sass/screen.scss */
 #loginBtn.grey:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 102, ../sass/screen.scss */
+/* line 99, ../sass/screen.scss */
 #loginBtn.grey:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 109, ../sass/screen.scss */
+/* line 106, ../sass/screen.scss */
 #arriveBtn {
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
   width: 100%;
   position: relative;
 }
-/* line 117, ../sass/screen.scss */
+/* line 114, ../sass/screen.scss */
 #arriveBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 122, ../sass/screen.scss */
+/* line 119, ../sass/screen.scss */
 #arriveBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 129, ../sass/screen.scss */
+/* line 126, ../sass/screen.scss */
 #fbLoginBtn {
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
   width: 100%;
   position: relative;
 }
-/* line 135, ../sass/screen.scss */
+/* line 132, ../sass/screen.scss */
 #fbLoginBtn:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 140, ../sass/screen.scss */
+/* line 137, ../sass/screen.scss */
 #fbLoginBtn:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 149, ../sass/screen.scss */
+/* line 146, ../sass/screen.scss */
 #loginBtnContent.grey {
   color: #9b9b9b;
 }
-/* line 152, ../sass/screen.scss */
+/* line 149, ../sass/screen.scss */
 #loginBtnContent.red {
   color: white;
 }
 
-/* line 156, ../sass/screen.scss */
+/* line 153, ../sass/screen.scss */
 .notification {
   margin-top: 30px;
 }
 
-/* line 159, ../sass/screen.scss */
+/* line 156, ../sass/screen.scss */
 #orderMessage {
   box-shadow: none;
   background: none;
@@ -591,64 +606,64 @@ header {
   padding: 20px 0 20px 0 !important;
   margin: 0 !important;
 }
-/* line 167, ../sass/screen.scss */
+/* line 164, ../sass/screen.scss */
 #orderMessage a {
   color: #E3151E;
 }
 
-/* line 171, ../sass/screen.scss */
+/* line 168, ../sass/screen.scss */
 #statusTracker {
   font-size: 12px;
 }
 
-/* line 174, ../sass/screen.scss */
+/* line 171, ../sass/screen.scss */
 #payment {
   padding: 15px;
 }
 
-/* line 177, ../sass/screen.scss */
+/* line 174, ../sass/screen.scss */
 #addressOption {
   min-width: 150px;
   margin-left: 2%;
 }
-/* line 180, ../sass/screen.scss */
+/* line 177, ../sass/screen.scss */
 #addressOption .default {
   float: left;
   width: 75%;
   text-shadow: 0.5px -0.5px white;
 }
-/* line 186, ../sass/screen.scss */
+/* line 183, ../sass/screen.scss */
 #addressOption .dropdown.icon {
   margin-bottom: 10px;
 }
 
-/* line 190, ../sass/screen.scss */
+/* line 187, ../sass/screen.scss */
 #expyear {
   min-width: 150px;
 }
 
-/* line 193, ../sass/screen.scss */
+/* line 190, ../sass/screen.scss */
 .check {
   width: 85%;
   margin-left: 20px;
 }
 
-/* line 197, ../sass/screen.scss */
+/* line 194, ../sass/screen.scss */
 .thanks {
   color: #E3151A;
 }
 
-/* line 200, ../sass/screen.scss */
+/* line 197, ../sass/screen.scss */
 #customerinfo {
   padding: 10px;
 }
 
-/* line 203, ../sass/screen.scss */
+/* line 200, ../sass/screen.scss */
 .order-detail {
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-/* line 206, ../sass/screen.scss */
+/* line 203, ../sass/screen.scss */
 .send {
   opacity: 1;
   transition: opacity .25s ease-in-out;
@@ -656,39 +671,39 @@ header {
   background: #E3151A !important;
   height: 78px;
 }
-/* line 213, ../sass/screen.scss */
+/* line 210, ../sass/screen.scss */
 .send:hover {
   opacity: 0.8;
 }
-/* line 216, ../sass/screen.scss */
+/* line 213, ../sass/screen.scss */
 .send i {
   color: white;
   margin: 0 auto;
   width: 100%;
 }
 
-/* line 222, ../sass/screen.scss */
+/* line 219, ../sass/screen.scss */
 .red {
   color: #E3151A;
 }
 
-/* line 225, ../sass/screen.scss */
+/* line 222, ../sass/screen.scss */
 .gray {
   color: #9b9b9b;
 }
 
-/* line 229, ../sass/screen.scss */
+/* line 226, ../sass/screen.scss */
 #orderStats .column {
   padding-top: 0;
   padding-bottom: 0;
 }
-/* line 233, ../sass/screen.scss */
+/* line 230, ../sass/screen.scss */
 #orderStats .summary-list {
   margin-bottom: 0;
   margin-top: 0;
 }
 
-/* line 238, ../sass/screen.scss */
+/* line 235, ../sass/screen.scss */
 #inputCardInfo {
   display: block;
   margin: 0 0 .2857rem;
@@ -698,77 +713,77 @@ header {
   text-transform: none;
 }
 
-/* line 248, ../sass/screen.scss */
+/* line 245, ../sass/screen.scss */
 #newCardInfo {
   transform: none;
   margin: 2%;
 }
 
-/* line 253, ../sass/screen.scss */
+/* line 250, ../sass/screen.scss */
 #contactinfo {
   margin: 2%;
 }
 
-/* line 256, ../sass/screen.scss */
+/* line 253, ../sass/screen.scss */
 #agreements {
   margin: 2%;
 }
 
-/* line 259, ../sass/screen.scss */
+/* line 256, ../sass/screen.scss */
 #basicinfo {
   margin: 2%;
 }
 
-/* line 262, ../sass/screen.scss */
+/* line 259, ../sass/screen.scss */
 #cardselector {
   margin: 2%;
 }
 
-/* line 265, ../sass/screen.scss */
+/* line 262, ../sass/screen.scss */
 #cw2 {
   max-width: 160px !important;
 }
 
-/* line 268, ../sass/screen.scss */
+/* line 265, ../sass/screen.scss */
 #fullscreen {
   display: none;
 }
 
-/* line 271, ../sass/screen.scss */
+/* line 268, ../sass/screen.scss */
 #smallmap {
   width: 100%;
 }
 
-/* line 274, ../sass/screen.scss */
+/* line 271, ../sass/screen.scss */
 .arrived {
   color: #e3151a;
 }
 
-/* line 277, ../sass/screen.scss */
+/* line 274, ../sass/screen.scss */
 #loginorsignup {
   margin-top: 0;
 }
 
-/* line 280, ../sass/screen.scss */
+/* line 277, ../sass/screen.scss */
 #logo {
   text-align: center;
 }
 
 @media (max-width: 736px) {
-  /* line 284, ../sass/screen.scss */
+  /* line 281, ../sass/screen.scss */
   #img {
     width: 100%;
     height: 100%;
   }
 }
 @media (min-width: 736px) {
-  /* line 290, ../sass/screen.scss */
+  /* line 287, ../sass/screen.scss */
   #img {
     width: 50%;
     height: 50%;
   }
 }
-/* line 295, ../sass/screen.scss */
+/* line 292, ../sass/screen.scss */
 #signupReminder {
   font-size: 15px;
   color: #9b9b9b;
@@ -776,7 +791,7 @@ header {
   margin: 10px;
 }
 
-/* line 305, ../sass/screen.scss */
+/* line 302, ../sass/screen.scss */
 .profilePic {
   border-radius: 100%;
   overflow: hidden;
@@ -787,103 +802,103 @@ header {
   height: 90px;
 }
 
-/* line 316, ../sass/screen.scss */
+/* line 313, ../sass/screen.scss */
 #userFullName {
   margin: 15px 0;
   color: #e3151a;
   font-weight: bold;
 }
 
-/* line 321, ../sass/screen.scss */
+/* line 318, ../sass/screen.scss */
 #referlink {
   margin: 0 auto;
 }
 
-/* line 324, ../sass/screen.scss */
+/* line 321, ../sass/screen.scss */
 #forgotlink {
   font-size: 14px;
   float: right;
 }
 
-/* line 328, ../sass/screen.scss */
+/* line 325, ../sass/screen.scss */
 #sidebarWrapper {
   padding-left: 14px !important;
   padding-right: 14px !important;
 }
 
-/* line 332, ../sass/screen.scss */
+/* line 329, ../sass/screen.scss */
 .ui.inverted.menu {
   background-color: #E3151A;
   opacity: 0.9;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-/* line 338, ../sass/screen.scss */
+/* line 335, ../sass/screen.scss */
 .dishes .card {
   width: 100%;
 }
 
-/* line 343, ../sass/screen.scss */
+/* line 340, ../sass/screen.scss */
 #paymentBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 348, ../sass/screen.scss */
+/* line 345, ../sass/screen.scss */
 #paymentBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 356, ../sass/screen.scss */
+/* line 353, ../sass/screen.scss */
 #signUpBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 361, ../sass/screen.scss */
+/* line 358, ../sass/screen.scss */
 #signUpBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 369, ../sass/screen.scss */
+/* line 366, ../sass/screen.scss */
 #sendemailBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 374, ../sass/screen.scss */
+/* line 371, ../sass/screen.scss */
 #sendemailBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 382, ../sass/screen.scss */
+/* line 379, ../sass/screen.scss */
 #resetBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 387, ../sass/screen.scss */
+/* line 384, ../sass/screen.scss */
 #resetBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 394, ../sass/screen.scss */
+/* line 391, ../sass/screen.scss */
 .ui.form .field > .selection.dropdown {
   width: 25%;
 }
-/* line 397, ../sass/screen.scss */
+/* line 394, ../sass/screen.scss */
 .ui.form .fields .wide.field {
   width: 6.25%;
   padding-left: 0;
   padding-right: 0;
 }
 
-/* line 403, ../sass/screen.scss */
+/* line 400, ../sass/screen.scss */
 .ui.mini.input {
   width: 25%;
 }
 
-/* line 406, ../sass/screen.scss */
+/* line 403, ../sass/screen.scss */
 .clearfix:after {
   content: ".";
   visibility: hidden;
@@ -892,7 +907,7 @@ header {
   clear: both;
 }
 
-/* line 413, ../sass/screen.scss */
+/* line 410, ../sass/screen.scss */
 #termsandconditions > a {
   padding-left: 8%;
 }

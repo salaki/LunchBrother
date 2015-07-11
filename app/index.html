@@ -13,45 +13,42 @@
 					<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0, user-scalable=0">
 					<title></title>
 					<!-- 2. Include CSS -->
-					<link rel="stylesheet" href="stylesheets/semantic/semantic.min.css" type="text/css" />
-					<link rel="stylesheet" href="stylesheets/semantic/dropdown.min.css" type="text/css" />
+					<link rel="stylesheet" href="js/libs/semantic_2.0/semantic.min.css" type="text/css" />
+					<link rel="stylesheet" href="js/libs/semantic_2.0/components/dropdown.min.css" type="text/css" />
 					<link rel="stylesheet" href="js/libs/semantic_2.0/components/icon.min.css" type="text/css" />
-					<link rel="stylesheet" href="stylesheets/semantic/label.min.css" type="text/css" />
-					<link rel="stylesheet" href="stylesheets/semantic/form.min.css" type="text/css" />
-					<link rel="stylesheet" href="stylesheets/semantic/input.min.css" type="text/css" />
-					<link rel="stylesheet" href="stylesheets/semantic/sidebar.min.css" type="text/css" />
+					<link rel="stylesheet" href="js/libs/semantic_2.0/components/label.min.css" type="text/css" />
+					<link rel="stylesheet" href="js/libs/semantic_2.0/components/form.min.css" type="text/css" />
+					<link rel="stylesheet" href="js/libs/semantic_2.0/components/input.min.css" type="text/css" />
+					<link rel="stylesheet" href="js/libs/semantic_2.0/components/sidebar.min.css" type="text/css" />
 					<link rel="stylesheet" href="stylesheets/screen.css">
 				</head>
 				<body>
 					<header class="ui grid">
 					<div class="computer tablet only row">
-						<div class="ui fixed menu inverted navbar page grid">
+						<div class="ui fixed menu inverted navbar grid">
 							<a href="#home" class="brand item"></a>
 							<div class="right menu">
 								<a id="orderDish" href="#home" class="item"></a>
 								<a id="statusCheck" href="#status" class="item"></a>
 								<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
 							</div>
-							<div class="right menu">
-								<div class="ui icon dropdown">
-									<a href="" class="item">
+							<div class="ui dropdown item">
 										<div id="language" class="text"></div>
 										<i class="dropdown icon"></i>
-									</a>
 									<div id="computermenu" class="menu">
 										<a class="item" href="index.html">EN</a>
 										<a class="item" href="index.html?locale=zh-cn">中文</a>
 									</div>
-								</div>
 							</div>
 						</div>
 					</div>
 					<div class="mobile only row">
 						<div class="ui fixed inverted navbar menu">
 							<a href="#" id="barTitle" class="item block ui label"></a>
-							<div class="ui icon dropdown right item">
-								<i class="content icon"></i>
-								<div class="menu">
+							<div class="right menu">
+							<div class="ui dropdown item">
+                  <i class="content icon"></i>Menu
+                  <div class="menu">
 									<a id="mobileOrder" href="#home" class="item"></a>
 									<a id="mobileStatus" href="#status" class="item"></a>
 									<!--
@@ -59,10 +56,9 @@
 									<a href="" class="item">联系我们</a>
 									//-->
 									<!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
-								</div>
-							</div>
-							<div id="hamBtnWrapper" class="right item">
-								<div class="ui icon dropdown">
+              </div>
+          </div>
+							<div id="hamBtnWrapper" class="ui dropdown item">
 									<div id="mobileLanguage" class="language-text">
 									</div>
 									<i class="dropdown icon">
@@ -71,7 +67,6 @@
 										<a class="item" href="index.html">EN</a>
 										<a class="item" href="index.html?locale=zh-cn">中文</a>
 									</div>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -152,7 +147,7 @@
 						</div>	
 					</div>
 					<div class="space"></div>
-					<div id="account" class="ui fixed bottom inverted menu navbar page grid" style="display: none">
+					<div id="account" class="ui bottom fixed inverted menu navbar page grid" style="display: none">
 						<a href="" class="item">
 							<div class="right menu">
 								<a class="item">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i>

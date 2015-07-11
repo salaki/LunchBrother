@@ -24,9 +24,6 @@ html {
 header {
 	min-width: 320px;
 }
-#mobileLanguage {
-	font-size: 12px;
-}
 .space {
 	width: 100%;
 	clear: both;
@@ -44,8 +41,8 @@ header {
 }
 #hamBtnWrapper {
 	text-align: right;
-	width: 33.33%;
-	padding: 0;
+	padding-top:0;
+  padding-bottom:0;
 	> div {
 		margin: 0;
 		padding-top: 11px;

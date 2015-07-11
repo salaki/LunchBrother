@@ -1,177 +1,192 @@
-<div class="ui top attached segment">
-  <div class="ui vertical segment">
-    <h2 class="ui header small">Manage distribution points</h2>
-    <% _.each(distributingPoints, function(distributingPoint) { %>
-    <div class="ui column right aligned grid">
-      <div class="left floated left aligned seven wide column"><%= distributingPoint.get('address') %></div>
-      <div class="nine wide column">
-        <div class="ui basic mini buttons">
-          <div class="ui button"><a href="<%= distributingPoint.get('youtubeLink') %>" target="_blank"><i class="youtube play icon"></i></a></div>
-          <div class="ui button" id="dpEditButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>" data-youtube="<%= distributingPoint.get('youtubeLink') %>" data-address="<%= distributingPoint.get('address') %>">Edit</div>
-          <div class="ui button" id="dpDeleteButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>"><i class="remove circle outline icon"></i></div>
+<h4 class="ui top attached red header">
+    <i class="marker icon small"></i>Manage distribution points
+</h4>    
+<div class="ui attached segment">
+    <div class="ui vertical segment">
+        <% _.each(distributingPoints, function(distributingPoint) { %>
+        <div class="ui column right aligned grid">
+            <div class="left floated left aligned seven wide column"><%= distributingPoint.get('address') %></div>
+            <div class="nine wide column">
+                <div class="ui basic mini buttons">
+                    <div class="ui button"><a href="<%= distributingPoint.get('youtubeLink') %>" target="_blank"><i class="youtube play icon"></i></a></div>
+                    <div class="ui button" id="dpEditButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>" data-youtube="<%= distributingPoint.get('youtubeLink') %>" data-address="<%= distributingPoint.get('address') %>">Edit</div>
+                    <div class="ui button" id="dpDeleteButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>"><i class="remove circle outline icon"></i></div>
+                </div>
+            </div>
         </div>
-      </div>
+        <% })%>
     </div>
-    <% })%>
-  </div>
 </div>
 <div class="ui bottom attached button" id="DPAdd" data-youtubeLink="" data-address="">
-  <i class="add icon"></i>
-  Add a new location
+    <i class="add icon"></i>
+    Add a new location
 </div>
-
+<div class="ui divider"></div>
+<!-- NOT FOR THIS PAGE
 <div class="ui segment">
-  <div class="ui vertical segment">
-    <h2 class="ui header small" id="fromRestaurant"></h2>
-    <div class="res-intro" id="restaurantTelnum"></div>
-  </div>
-  <div class="ui vertical segment res-order">
-    <div class="ui column grid">
-      <div class="four wide column" id="pickupDatetime"></div>
-      <div class="six wide column" id="todayDish"></div>
-      <div class="two wide column" id="pickupQuantity"></div>
-      <div class="four wide column right aligned" id="inventoryStatus"></div>
+    <div class="ui vertical segment">
+        <h2 class="ui header small" id="fromRestaurant"></h2>
+        <div class="res-intro" id="restaurantTelnum"></div>
     </div>
-  </div>
+    <div class="ui vertical segment res-order">
+        <div class="ui column grid">
+            <div class="four wide column" id="pickupDatetime"></div>
+            <div class="six wide column" id="todayDish"></div>
+            <div class="two wide column" id="pickupQuantity"></div>
+            <div class="four wide column right aligned" id="inventoryStatus"></div>
+        </div>
+    </div>
 </div>
+-->
 <div id="editDPDialog" class="ui small test modal">
-  <div class="header" style="background-color: #ffffff">
-    <label id="editDPLabel">Distribution Point Editor</label>
-  </div>
-  <div action="" method="POST" id="dpForm" class="ui form">
-    <div id="basicinfo">
-      <div id="dpinfo" class="two fields">
-        <div class="ui fluid field">
-          <input id="dp_location" class="ui input location" placeholder="Name of Location" type="text" name="dp_location" value="">
-        </div>
-        <div class="ui fluid field">
-          <input id="dp_youtubeLink" class="ui input youtubeLink" placeholder="Youtube Link" type="text" name="dp_youtube_link" value="">
-        </div>
-      </div>
+    <div class="header" style="background-color: #ffffff">
+        <label id="editDPLabel">Distribution Point Editor</label>
     </div>
-  </div>
-  <div class="actions">
-    <div class="two fluid ui buttons">
-      <div class="ui basic cancel button">
-        <i class="remove icon"></i>
-        <label id="DPCancel">Cancel</label>
-      </div>
-      <div class="ui ok basic button">
-        <i class="checkmark icon"></i>
-        <label id="DPSave">Save</label>
-      </div>
+    <div action="" method="POST" id="dpForm" class="ui form">
+        <div id="basicinfo">
+            <div id="dpinfo" class="two fields">
+                <div class="ui fluid field">
+                    <input id="dp_location" class="ui input location" placeholder="Name of Location" type="text" name="dp_location" value="">
+                </div>
+                <div class="ui fluid field">
+                    <input id="dp_youtubeLink" class="ui input youtubeLink" placeholder="Youtube Link" type="text" name="dp_youtube_link" value="">
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+    <div class="actions">
+        <div class="two fluid ui buttons">
+            <div class="ui basic cancel button">
+                <i class="remove icon"></i>
+                <label id="DPCancel">Cancel</label>
+            </div>
+            <div class="ui ok basic button">
+                <i class="checkmark icon"></i>
+                <label id="DPSave">Save</label>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="deleteDPDialog" class="ui small test modal">
-  <div class="header" style="background-color: #ffffff">
-    <label id="deleteDPLabel">Are you sure?</label>
-  </div>
-  <div class="content">
-    Do you really want to delete this Distribution Point?
-  </div>
-  <div class="actions">
-    <div class="two fluid ui buttons">
-      <div class="ui basic cancel button">
-        <i class="remove icon"></i>
-        <label id="deleteDPCancel">Cancel</label>
-      </div>
-      <div class="ui ok basic button">
-        <i class="checkmark icon"></i>
-        <label id="deleteDPConfirm">Confirm</label>
-      </div>
+    <div class="header" style="background-color: #ffffff">
+        <label id="deleteDPLabel">Are you sure?</label>
     </div>
-  </div>
+    <div class="content">
+        Do you really want to delete this Distribution Point?
+    </div>
+    <div class="actions">
+        <div class="two fluid ui buttons">
+            <div class="ui basic cancel button">
+                <i class="remove icon"></i>
+                <label id="deleteDPCancel">Cancel</label>
+            </div>
+            <div class="ui ok basic button">
+                <i class="checkmark icon"></i>
+                <label id="deleteDPConfirm">Confirm</label>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!--new managerHomeView starts here-->
 <div class="row">
-  <div class="ui menu">
-    <div class="ui dropdown fluid item">
-      <i class="small calendar icon"></i> Weekly Menu 06/13-06/20 <i class="dropdown icon"></i>
-      <div class="menu">
-        <a class="item"> Weekly Menu 06/13-06/20</a>
-        <a class="item"> Weekly Menu 06/13-06/20</a>
-        <a class="item"> Weekly Menu 06/13-06/20</a>
-      </div>
+    <div class="ui top attached segment">
+        <h4 class="ui red header">
+            <i class="small file text outline icon"></i>Manage weekly menu
+        </h4>
+        <div class="ui selection dropdown fluid">
+            Weekly Menu 06/13-06/20 <i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item"> Weekly Menu 06/13-06/20</a>
+                <a class="item"> Weekly Menu 06/13-06/20</a>
+                <a class="item"> Weekly Menu 06/13-06/20</a>
+            </div>
+        </div>
+
+        <div class="menu-list ui middle aligned divided list">
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui mini button">Edit</div>
+                </div>
+                <div class="header">Monday</div>
+                <div class="ui grid middle aligned content">
+
+                    <div class="five wide column">Dish 1</div>
+                    <div class="five wide column">ABC Restaurant</div>
+                    <div class="three wide column">36</div>
+                    <div class="three wide column right aligned">$10.00</div>
+
+                </div>
+            </div>
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui mini button">Edit</div>
+                </div>
+                <div class="header">Tuesday</div>
+                <div class="ui grid middle aligned content">
+
+                    <div class="five wide column">Dish 1</div>
+                    <div class="five wide column">ABC Restaurant</div>
+                    <div class="three wide column">36</div>
+                    <div class="three wide column right aligned">$10.00</div>
+
+                </div>
+            </div>
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui mini button">Edit</div>
+                </div>
+                <div class="header">Wednesday</div>
+                <div class="ui grid middle aligned content">
+
+                    <div class="five wide column">Dish 1</div>
+                    <div class="five wide column">ABC Restaurant</div>
+                    <div class="three wide column">36</div>
+                    <div class="three wide column right aligned">$10.00</div>
+
+                </div>
+            </div>
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui mini button">Edit</div>
+                </div>
+                <div class="header">Thursday</div>
+                <div class="ui grid middle aligned content">
+
+                    <div class="five wide column">Dish 1</div>
+                    <div class="five wide column">ABC Restaurant</div>
+                    <div class="three wide column">36</div>
+                    <div class="three wide column right aligned">$10.00</div>
+
+                </div>
+            </div>
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui mini button">Edit</div>
+                </div>
+                <div class="header">Friday</div>
+                <div class="ui grid middle aligned content">
+
+                    <div class="five wide column">Dish 1</div>
+                    <div class="five wide column">ABC Restaurant</div>
+                    <div class="three wide column">36</div>
+                    <div class="three wide column right aligned">$10.00</div>
+
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="ui divider"></div>
-  <div class="ui grid">
-    <div class="left floated left aligned seven wide column">
-      <h5 class="ui header">MONDAY</h5>
-    </div>
-    <div class="nine wide column right aligned">
-      <div class="ui basic mini buttons">
-        <div class="ui button">Edit</div>
-      </div>
-    </div>
-    <div class="five wide column">Dish 1</div>
-    <div class="five wide column">ABC Restaurant</div>
-    <div class="three wide column">36</div>
-    <div class="three wide column right aligned">$10.00</div>
-    <div class="ui divider"></div>
-    <div class="left floated left aligned seven wide column">
-      <h5 class="ui header">TUESDAY</h5>
-    </div>
-    <div class="nine wide column right aligned">
-      <div class="ui basic mini buttons">
-        <div class="ui button">Edit</div>
-      </div>
-    </div>
-    <div class="five wide column">Dish 1</div>
-    <div class="five wide column">ABC Restaurant</div>
-    <div class="three wide column">36</div>
-    <div class="three wide column right aligned">$10.00</div>
-    <div class="ui divider"></div>   
-    <div class="left floated left aligned seven wide column">
-      <h5 class="ui header">WEDNESDAY</h5>
-    </div>
-    <div class="nine wide column right aligned">
-      <div class="ui basic mini buttons">
-        <div class="ui button">Edit</div>
-      </div>
-    </div>
-    <div class="five wide column">Dish 1</div>
-    <div class="five wide column">ABC Restaurant</div>
-    <div class="three wide column">36</div>
-    <div class="three wide column right aligned">$10.00</div>
-    <div class="ui divider"></div>   
-    <div class="left floated left aligned seven wide column">
-      <h5 class="ui header">THURSDAY</h5>
-    </div>
-    <div class="nine wide column right aligned">
-      <div class="ui basic mini buttons">
-        <div class="ui button">Edit</div>
-      </div>
-    </div>
-    <div class="five wide column">Dish 1</div>
-    <div class="five wide column">ABC Restaurant</div>
-    <div class="three wide column">36</div>
-    <div class="three wide column right aligned">$10.00</div>
-    <div class="ui divider"></div>   
-    <div class="left floated left aligned seven wide column">
-      <h5 class="ui header">FRIDAY</h5>
-    </div>
-    <div class="nine wide column right aligned">
-      <div class="ui basic mini buttons">
-        <div class="ui button">Edit</div>
-      </div>
-    </div>
-    <div class="five wide column">Dish 1</div>
-    <div class="five wide column">ABC Restaurant</div>
-    <div class="three wide column">36</div>
-    <div class="three wide column right aligned">$10.00</div>
-  </div>
-  <div class="ui divider"></div>   
-  <button class="center aligned ui red button">Publish</button> 
-  <div class="ui divider"></div>  
-  <div class="ui fluid vertical basic buttons">
+</div>
+
+<div class="ui divider hidden"></div>   
+<button class="center aligned ui red button">Publish</button> 
+<div class="ui divider"></div>  
+<div class="ui fluid vertical basic buttons">
     <button id="showOrderDetails" class="ui button">Check distributor status <i class="right arrow icon"></i></button>
 
     <button id="showOrderDetails" class="ui button">Check driver status <i class="right arrow icon"></i></button>
-  </div>
+</div>
 
 </div>
 
@@ -179,180 +194,180 @@
 
 <!-- menuEditView starts here-->
 <div class="row">
-  <div class="ui top attached secondary segment">
-    <i class="small calendar icon"></i> 2015/01/23-2015/01/30
-  </div>
-  <div class="ui bottom attached menu">
+    <div class="ui segment">
+        <h4 class="ui red header">
+            <i class="small calendar icon"></i>2015/01/23-2015/01/30
+        </h4>
 
-    <div class="ui dropdown fluid item">
-      Select a restaurant <i class="dropdown icon"></i>
-      <div class="menu">
-        <a class="item"> A restaurant </a>
-      </div>
-    </div>
-  </div>
-  <div class="ui divider hidden"></div>
-  <div class="ui grid">
-    <div class="doubling two column row dishes">
-      <div class="column">
-        <div class="ui card">
-          <div class="image dimmable">
-            <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-            <div class="ui dimmer">
-              <div class="dimmer-content">
-                <h2 class="ui inverted icon header">
-                  <i class="check icon"></i>
-                  Dish added!
-                </h2>
-              </div>
+        <div class="ui selection dropdown fluid">
+            Select a restaurant <i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item"> A restaurant </a>
             </div>
-          </div>
-          <div class="content">
-            <div class="ui grid">
-              <div class="eight wide column dish-desc">
-                dish name
-              </div>
-              <div class="four wide column">
-                <div class="ui input">
-                  <input type="text" placeholder="Price">
-                </div>
-              </div>
-              <div class="four wide column">
-                <div class="ui input">
-                  <input type="text" placeholder="Qty">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ui add-btn bottom attached button">
-            <i class="add icon"></i>
-            Add to Menu
-          </div>
         </div>
-      </div>
-      <div class="column">
-        <div class="ui card">
-          <div class="image">
-            <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-            <div class="ui dimmer">
-              <div class="dimmer-content">
-                <h2 class="ui inverted icon header">
-                  <i class="check icon"></i>
-                  Dish added!
-                </h2>
-              </div>
+    </div>    
+    <div class="ui divider hidden"></div>
+    <div class="ui grid">
+        <div class="doubling two column row dishes">
+            <div class="column">
+                <div class="ui card">
+                    <div class="image dimmable">
+                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
+                        <div class="ui dimmer">
+                            <div class="dimmer-content">
+                                <h2 class="ui inverted icon header">
+                                    <i class="check icon"></i>
+                                    Dish added!
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="ui grid">
+                            <div class="eight wide column dish-desc">
+                                dish name
+                            </div>
+                            <div class="four wide column">
+                                <div class="ui fluid input">
+                                    <input type="text" placeholder="Price">
+                                </div>
+                            </div>
+                            <div class="four wide column">
+                                <div class="ui fluid input">
+                                    <input type="text" placeholder="Qty">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui add-btn bottom attached button">
+                        <i class="add icon"></i>
+                        Add to Menu
+                    </div>
+                </div>
             </div>
+            <div class="column">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
+                        <div class="ui dimmer">
+                            <div class="dimmer-content">
+                                <h2 class="ui inverted icon header">
+                                    <i class="check icon"></i>
+                                    Dish added!
+                                </h2>
+                            </div>
+                        </div>
 
-          </div>
-          <div class="content">
-            <div class="ui grid">
-              <div class="eight wide column dish-desc">
-                dish name
-              </div>
-              <div class="four wide column">
-                <div class="ui input">
-                  <input type="text" placeholder="Price">
+                    </div>
+                    <div class="content">
+                        <div class="ui grid">
+                            <div class="eight wide column dish-desc">
+                                dish name
+                            </div>
+                            <div class="four wide column">
+                                <div class="ui fluid input">
+                                    <input type="text" placeholder="Price">
+                                </div>
+                            </div>
+                            <div class="four wide column">
+                                <div class="ui fluid input">
+                                    <input type="text" placeholder="Qty">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui add-btn bottom attached button">
+                        <i class="add icon"></i>
+                        Add to Menu
+                    </div>
                 </div>
-              </div>
-              <div class="four wide column">
-                <div class="ui input">
-                  <input type="text" placeholder="Qty">
-                </div>
-              </div>
             </div>
-          </div>
-          <div class="ui add-btn bottom attached button">
-            <i class="add icon"></i>
-            Add to Menu
-          </div>
         </div>
-      </div>
+        <div class="ui divider hidden"></div>
+        <div class="ui divider hidden"></div>
     </div>
+    <button class="center aligned ui red button">Save</button>
     <div class="ui divider hidden"></div>
-    <div class="ui divider hidden"></div>
-  </div>
-  <button class="center aligned ui red button">Save</button>
-  <div class="ui divider hidden"></div>
-  <button class="center aligned ui grey button">Cancel</button>
+    <button class="center aligned ui grey button">Cancel</button>
 </div>
 <!-- menuEditView ends-->
 
 <!-- Weekly Menu starts -->
 
 <div class="row">
-  <div class="ui menu"> 
-    <div class="ui dropdown fluid item">
-      Today 7/7 <i class="dropdown icon"></i>
-      <div class="menu">
-        <a class="item"> Tomorrow 7/8 </a>
-      </div>
+    <div class="ui pointing secondary menu">
+        <a class="active item" data-tab="first">7/7</a>
+        <a class="item" data-tab="second">7/8</a>
+        <a class="item" data-tab="third">7/9</a>
     </div>
-  </div>
-  <div class="doubling two column row dishes">
-    <div class="column">
-      <div class="ui card">
-        <div class="image">
-          <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-        </div>
-        <div class="content">
-          <div class="ui grid">
-            <div class="ten wide column dish-desc">
-              <h5 class="ui sub header"> dish name 
-                <div class="sub header">$10.99</div>
-              </h5>
+    <div class="ui grid active tab" data-tab="first">
+
+        <div class="doubling two column row dishes">
+            <div class="column">
+                <div class="ui weekly card">
+                    <div class="image">
+                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
+                    </div>
+                    <div class="content">
+                        <div class="ui grid">
+                            <div class="ten wide column dish-desc">
+                                <h5 class="ui sub header"> dish name 
+                                    <div class="sub header">$10.99</div>
+                                </h5>
+                            </div>
+
+                            <div class="rs-name six wide right aligned column">
+                                Restaurant ABC
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui extra content horizontal segments">
+                        <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="wait icon"></i>
+                                    300 Cal
+                                </div>
+                            </span>
+                        </div>
+                        <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="leaf icon green"></i>
+                                    Vegetarian
+                                </div>
+                            </span>
+                        </div>
+                        <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="ban icon"></i>
+                                    No Gluten
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="rs-name six wide right aligned column">
-              Restaurant ABC
-            </div>
-          </div>
         </div>
-        <div class="segment">
-        <div class="ui horizontal segments">
-          <div class="ui segment">
-          <span class="left floated">
-
-            <div class="content">
-              <i class="wait icon"></i>
-              300 Cal
-            </div>
-          </span>
-        </div>
-        <div class="ui segment">
-          <span class="left floated">
-            <div class="content">
-              <i class="leaf icon green"></i>
-              Vegetarian
-            </div>
-          </span>
-        </div>
-        <div class="ui segment">
-          <span class="left floated">
-            <div class="content">
-              <i class="ban icon"></i>
-              No Gluten
-            </div>
-          </span>
-        </div>
-        </div>
-      </div>
-      </div>
     </div>
-  </div>
+    <div class="ui divider hidden"></div>   
+    <button class="center aligned ui red button">Sign up and try!</button> 
 </div>
 <!-- Weekly Menu ends -->
 
 <script>
-$('.ui.dropdown')
-.dropdown()
-  ;
+    $('.ui.dropdown')
+    .dropdown()
+    ;
 </script>
 
 <script>
-$('.add-btn').click(function(){
-    $('.image')
-    .dimmer('toggle')
-    ;
+    $('.add-btn').click(function(){
+        $('.image')
+        .dimmer('toggle')
+        ;
     });
 
 </script>
