@@ -7,6 +7,7 @@ define([
   'views/manage/LoginView',
   'views/manage/DistributorView',
   'views/manage/ManagerHomeView',
+  'views/manage/MenuEditView',
   'views/manage/DriverView',
   'views/account/LoginorsignupView',
   'views/account/SignupemailView',
@@ -21,6 +22,7 @@ define([
 		LoginView, 
 		DistributorView,
         ManagerHomeView,
+        MenuEditView,
 		DriverView,
 		LoginorsignupView, 
 		SignupemailView,
@@ -41,6 +43,7 @@ define([
             'driver': 'showDriver',
 	    //'loginorsignup' : 'showLoginorsignup',
             'managerHome': 'showManagerHome',
+            'menuEdit': 'showMenuEdit',
             'profile': 'showProfile',
             'signupemail' : 'showSignupemail',
             'forgotpassword' : 'showForgotpassword',
@@ -192,6 +195,20 @@ define([
             }
             if (permission === LOCAL_MANAGER) {
                 managerHomeView.render();
+            } else {
+                window.location.hash = "#login";
+            }
+        });
+
+        appRouter.on('route:showMenuEdit', function () {
+            // Call render on the module we loaded in via the dependency array
+            var menuEditView = new MenuEditView();
+            var currentUser = Parse.User.current();
+            if(currentUser != null) {
+                permission = currentUser.get('permission');
+            }
+            if (permission === LOCAL_MANAGER) {
+                menuEditView.render();
             } else {
                 window.location.hash = "#login";
             }

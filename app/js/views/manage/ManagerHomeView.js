@@ -3,18 +3,49 @@ define([
     'models/Restaurant',
     'models/PickUpLocation',
     'models/InventoryModel',
-    'text!templates/manage/managerHomeTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, managerHomeTemplate) {
+    'text!templates/manage/managerHomeTemplate.html',
+    'text!templates/manage/menuListTemplate.html'
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, managerHomeTemplate, menuListTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
         template: _.template(managerHomeTemplate),
+        menuListTemplate: _.template(menuListTemplate),
         events: {
             'click #DPAdd': 'onEditOrAddClick',
-            'click #showOrderDetails': 'onShowOrderClick'
+            'click #showDistributorStatus': 'onShowDistributorStatusClick',
+            'click #showDriverStatus': 'onShowDriverStatusClick',
+            'click #publishMenu': 'onPublishMenuClick'
         },
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
+        weeklyMenu: {
+            menus:[
+                {
+                    day:"MONDAY",
+                    dishes:[]
+                },
+
+                {
+                    day:"TUESDAY",
+                    dishes:[]
+                },
+
+                {
+                    day:"WEDNESDAY",
+                    dishes:[]
+                },
+
+                {
+                    day:"THURSDAY",
+                    dishes:[]
+                },
+
+                {
+                    day:"FRIDAY",
+                    dishes:[]
+                }
+            ]},
 
         initialize: function() {
             _.bindAll(this, 'render');
@@ -54,6 +85,7 @@ define([
                 chefGrid = new GridModel();
                 chefGrid.id = "nmbyDzTp7m";
             }
+
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
             pickUpLocationQuery.equalTo("gridId", chefGrid);
             pickUpLocationQuery.find({
@@ -63,53 +95,95 @@ define([
                         newEvent["click #dpDeleteButton-" + location.id] = 'onDeleteClick';
                     });
                     self.delegateEvents(_.extend(self.events, newEvent));
-                    self.$el.html(self.template({distributingPoints: locations}));
+
+                    var d = new Date();
+                    var day = d.getDay(),
+                        diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+                    var monday = new Date(d.setDate(diff));
+                    var firstWeek = (monday.getMonth() + 1) + "/" + monday.getDate() + "-";
+
+                    var diff2 = monday.getDate() + 4;
+                    var friday = new Date(monday.setDate(diff2));
+                    firstWeek += (friday.getMonth() + 1) + "/" + friday.getDate();
+
+                    var diff3 = friday.getDate() + 3;
+                    var monday2 = new Date(friday.setDate(diff3));
+                    var secondWeek = (monday2.getMonth() + 1) + "/" + monday2.getDate() + "-";
+
+                    var diff4 = monday2.getDate() + 4;
+                    var friday2 = new Date(monday2.setDate(diff4));
+                    secondWeek += (friday2.getMonth() + 1) + "/" + friday2.getDate();
+
+                    var diff5 = friday2.getDate() + 3;
+                    var monday3 = new Date(friday2.setDate(diff5));
+                    var thirdWeek = (monday3.getMonth() + 1) + "/" + monday3.getDate() + "-";
+
+                    var diff6 = monday3.getDate() + 4;
+                    var friday3 = new Date(monday3.setDate(diff6));
+                    thirdWeek += (friday3.getMonth() + 1) + "/" + friday3.getDate();
+
+
+                    self.$el.html(self.template({distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
+                    self.$(".week-selection").dropdown({
+                        onChange: function (week) {
+                            self.refreshWeekMenu(week);
+                        }
+                    });
+                    self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
+                    self.$("#publishMenu").addClass('disabled');
                 },
                 error: function(error) {
                     console.log(error.message);
                 }
-            })
+            });
+        },
 
-            var inventoryQuery = new Parse.Query(InventoryModel);
-            var beginOfTheDay = new Date();
-            beginOfTheDay.setHours(0, 0, 0, 0);
-            var endOfTheDay = new Date(beginOfTheDay.getTime() + 24 * 60 * 60 * 1000);
+        refreshWeekMenu: function(week) {
+            for (var pickUpDay = 1; pickUpDay < 6; pickUpDay++) {
+                this.weeklyMenu.menus[pickUpDay - 1].dishes = [];
+            }
+
+            var days = week.split("-");
+            var mondayMonth = parseInt(days[0].split("/")[0]) - 1, mondayDate = parseInt(days[0].split("/")[1]);
+            var monday = new Date();
+            monday.setFullYear(monday.getFullYear(), mondayMonth, mondayDate);
+            monday.setHours(0, 0, 0, 0);
+
+            var fridayMonth = parseInt(days[1].split("/")[0]) - 1, fridayDate = parseInt(days[1].split("/")[1]);
+            var friday = new Date();
+            friday.setFullYear(friday.getFullYear(), fridayMonth, fridayDate);
+            friday.setHours(23, 59, 59, 0);
+
+            var self = this;
             var currentUser = Parse.User.current();
-//            inventoryQuery.equalTo("dishId", "wVfFMqL3x6");
+            var inventoryQuery = new Parse.Query(InventoryModel);
             inventoryQuery.equalTo("orderBy", currentUser);
-            inventoryQuery.notEqualTo("pickUpDate", undefined);
-            inventoryQuery.greaterThan("pickUpDate", beginOfTheDay);
-            inventoryQuery.lessThan("pickUpDate", endOfTheDay);
+            inventoryQuery.greaterThan("pickUpDate", monday);
+            inventoryQuery.lessThan("pickUpDate", friday);
             inventoryQuery.include("dish");
             inventoryQuery.include("dish.restaurant");
             inventoryQuery.find({
-                success: function(inventories) {
-                    if (inventories.length > 0) {
-                        var pickUpDate = inventories[0].get('pickUpDate');
-                        var month = pickUpDate.getMonth()+1;
-                        var date = pickUpDate.getDate();
-                        var day = self.days[pickUpDate.getDay()];
-                        var displayDate = month.toString() + "/" + date.toString() + " " + day;
+                success: function (inventories) {
+                    for (var i=0; i<inventories.length; i++) {
+                        var pickUpDay = inventories[i].get('pickUpDate').getDay();
+                        var dishInfo = {
+                            dishName: inventories[i].get('dish').get('dishName'),
+                            restaurantName: inventories[i].get('dish').get('restaurant').get('name'),
+                            quantity: inventories[i].get('preorderQuantity'),
+                            price: inventories[i].get('dish').get('Unit_Price')
+                        };
 
-                        $("#pickupDatetime").text(displayDate);
-                        $("#fromRestaurant").text(inventories[0].get('dish').get('restaurant').get('name'));
-                        $("#restaurantTelnum").text(inventories[0].get('dish').get('restaurant').get('telnum'));
-                        $("#todayDish").text(inventories[0].get('dish').get('dishName'));
-                        $("#pickupQuantity").text(inventories[0].get('preorderQuantity'));
-                        $("#inventoryStatus").text(inventories[0].get('status'));
-                    } else {
-                        $("#pickupDatetime").text('N/A');
-                        $("#fromRestaurant").text('N/A');
-                        $("#restaurantTelnum").text('N/A');
-                        $("#todayDish").text('N/A');
-                        $("#pickupQuantity").text('N/A');
-                        $("#inventoryStatus").text('N/A');
+                        self.weeklyMenu.menus[pickUpDay - 1].dishes.push(dishInfo);
                     }
+
+                    self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
+                    self.$("#publishMenu").removeClass('disabled');
                 },
-                error: function(error) {
-                    console.log("Query inventory failed! Reason: " + error.message);
+                error: function (error) {
+                    console.log("Inventory Query Error: " + error.code + " " + error.message);
                 }
             });
+
         },
 
         onEditOrAddClick: function(ev) {
@@ -164,7 +238,11 @@ define([
             }).modal('show');
         },
 
-        onShowOrderClick: function() {
+        onShowDistributorStatusClick: function() {
+            window.location.hash = '#distributor';
+        },
+
+        onShowDriverStatusClick: function() {
             window.location.hash = '#driver';
         },
 
@@ -212,6 +290,11 @@ define([
                     alert("Delete fail: Reason: " + error.message);
                 }
             });
+        },
+
+        onPublishMenuClick: function() {
+            $("#publishMenu").addClass('disabled');
+            $("#publishMenu").text('Published!');
         }
     });
     return ManagerHomeView;
