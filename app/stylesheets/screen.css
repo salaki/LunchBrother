@@ -301,32 +301,33 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /* line 90, ../sass/partials/_dish.scss */
 #page .tab-dish-detail {
   border: none;
+  margin-bottom: 0 !important;
 }
-/* line 94, ../sass/partials/_dish.scss */
+/* line 95, ../sass/partials/_dish.scss */
 #page .dish-detail {
   line-height: 1.2;
 }
-/* line 97, ../sass/partials/_dish.scss */
+/* line 98, ../sass/partials/_dish.scss */
 #page .dish-intro {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 101, ../sass/partials/_dish.scss */
+/* line 102, ../sass/partials/_dish.scss */
 #page .dish-ingredients {
   font-size: 0.6rem;
   color: #9b9b9b;
   margin-top: 15px;
 }
-/* line 105, ../sass/partials/_dish.scss */
+/* line 106, ../sass/partials/_dish.scss */
 #page .dish-ingredients .header {
   color: #454545;
 }
-/* line 109, ../sass/partials/_dish.scss */
+/* line 110, ../sass/partials/_dish.scss */
 #page .restaurantInfo {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 112, ../sass/partials/_dish.scss */
+/* line 113, ../sass/partials/_dish.scss */
 #page .restaurantInfo .header {
   color: #454545;
   font-size: 1rem;
