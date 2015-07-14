@@ -1,0 +1,22 @@
+<div class="menu-list ui middle aligned divided list">
+    <% _.each(menus, function(menu) { %>
+    <div class="item">
+        <div class="right floated content">
+            <div class="ui mini button" id="menuEditBtn"><a href="#menuEdit">Edit</a></div>
+        </div>
+        <div class="header"><%= menu.day %></div>
+        <div class="ui grid middle aligned content">
+        <% _.each(menu.dishes, function(dish) { %>
+            <div class="five wide column"><%= dish.dishName %></div>
+            <div class="five wide column"><%= dish.restaurantName %></div>
+            <div class="three wide column"><%= dish.quantity %></div>
+            <div class="three wide column right aligned">$<%= dish.price %></div>
+        <% })%>
+        </div>
+    </div>
+    <% })%>
+</div>
+
+<div class="ui divider"></div>
+<button class="center aligned ui red button" id="publishMenu">Publish</button>
+<div class="ui divider"></div>

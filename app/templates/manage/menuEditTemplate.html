@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="ui segment">
+        <h4 class="ui red header">
+            <i class="small calendar icon"></i>2015/01/23-2015/01/30
+        </h4>
+
+        <div class="ui selection dropdown fluid">
+            Select a restaurant <i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item"> A restaurant </a>
+            </div>
+        </div>
+    </div>
+    <div class="ui divider hidden"></div>
+    <div class="ui grid">
+        <div class="doubling two column row dishes">
+            <div class="column">
+                <div class="ui card">
+                    <div class="image dimmable">
+                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
+                        <div class="ui dimmer">
+                            <div class="dimmer-content">
+                                <h2 class="ui inverted icon header">
+                                    <i class="check icon"></i>
+                                    Dish added!
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="ui grid">
+                            <div class="eight wide column dish-desc">
+                                dish name
+                            </div>
+                            <div class="four wide column">
+                                <div class="ui fluid input">
+                                    <input type="text" placeholder="Price">
+                                </div>
+                            </div>
+                            <div class="four wide column">
+                                <div class="ui fluid input">
+                                    <input type="text" placeholder="Qty">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui add-btn bottom attached button">
+                        <i class="add icon"></i>
+                        Add to Menu
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
+                        <div class="ui dimmer">
+                            <div class="dimmer-content">
+                                <h2 class="ui inverted icon header">
+                                    <i class="check icon"></i>
+                                    Dish added!
+                                </h2>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="content">
+                        <div class="ui grid">
+                            <div class="eight wide column dish-desc">
+                                dish name
+                            </div>
+                            <div class="four wide column">
+                                <div class="ui fluid input">
+                                    <input type="text" placeholder="Price">
+                                </div>
+                            </div>
+                            <div class="four wide column">
+                                <div class="ui fluid input">
+                                    <input type="text" placeholder="Qty">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui add-btn bottom attached button">
+                        <i class="add icon"></i>
+                        Add to Menu
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui divider hidden"></div>
+        <div class="ui divider hidden"></div>
+    </div>
+    <button class="center aligned ui red button">Save</button>
+    <div class="ui divider hidden"></div>
+    <button class="center aligned ui grey button">Cancel</button>
+</div>
+
+<script>
+    $('.ui.dropdown').dropdown();
+    $('.add-btn').click(function(){
+        $('.image')
+                .dimmer('toggle')
+        ;
+    });
+</script>

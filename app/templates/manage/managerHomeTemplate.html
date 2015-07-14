@@ -22,22 +22,6 @@
     Add a new location
 </div>
 <div class="ui divider"></div>
-<!-- NOT FOR THIS PAGE
-<div class="ui segment">
-    <div class="ui vertical segment">
-        <h2 class="ui header small" id="fromRestaurant"></h2>
-        <div class="res-intro" id="restaurantTelnum"></div>
-    </div>
-    <div class="ui vertical segment res-order">
-        <div class="ui column grid">
-            <div class="four wide column" id="pickupDatetime"></div>
-            <div class="six wide column" id="todayDish"></div>
-            <div class="two wide column" id="pickupQuantity"></div>
-            <div class="four wide column right aligned" id="inventoryStatus"></div>
-        </div>
-    </div>
-</div>
--->
 <div id="editDPDialog" class="ui small test modal">
     <div class="header" style="background-color: #ffffff">
         <label id="editDPLabel">Distribution Point Editor</label>
@@ -89,285 +73,25 @@
     </div>
 </div>
 
-<!--new managerHomeView starts here-->
 <div class="row">
     <div class="ui top attached segment">
         <h4 class="ui red header">
             <i class="small file text outline icon"></i>Manage weekly menu
         </h4>
-        <div class="ui selection dropdown fluid">
-            Weekly Menu 06/13-06/20 <i class="dropdown icon"></i>
-            <div class="menu">
-                <a class="item"> Weekly Menu 06/13-06/20</a>
-                <a class="item"> Weekly Menu 06/13-06/20</a>
-                <a class="item"> Weekly Menu 06/13-06/20</a>
+        <div class="ui menu">
+            <div class="ui dropdown fluid item week-selection">
+                <i class="small calendar icon"></i><div class="default text" id="weekMenu">Select Week</div><i class="dropdown icon"></i>
+                <div class="menu">
+                    <% _.each(weeks, function(week) { %>
+                    <a class="item" data-value="<%= week %>">Weekly Menu <%= week %></a>
+                    <% })%>
+                </div>
             </div>
         </div>
-
-        <div class="menu-list ui middle aligned divided list">
-            <div class="item">
-                <div class="right floated content">
-                    <div class="ui mini button">Edit</div>
-                </div>
-                <div class="header">Monday</div>
-                <div class="ui grid middle aligned content">
-
-                    <div class="five wide column">Dish 1</div>
-                    <div class="five wide column">ABC Restaurant</div>
-                    <div class="three wide column">36</div>
-                    <div class="three wide column right aligned">$10.00</div>
-
-                </div>
-            </div>
-            <div class="item">
-                <div class="right floated content">
-                    <div class="ui mini button">Edit</div>
-                </div>
-                <div class="header">Tuesday</div>
-                <div class="ui grid middle aligned content">
-
-                    <div class="five wide column">Dish 1</div>
-                    <div class="five wide column">ABC Restaurant</div>
-                    <div class="three wide column">36</div>
-                    <div class="three wide column right aligned">$10.00</div>
-
-                </div>
-            </div>
-            <div class="item">
-                <div class="right floated content">
-                    <div class="ui mini button">Edit</div>
-                </div>
-                <div class="header">Wednesday</div>
-                <div class="ui grid middle aligned content">
-
-                    <div class="five wide column">Dish 1</div>
-                    <div class="five wide column">ABC Restaurant</div>
-                    <div class="three wide column">36</div>
-                    <div class="three wide column right aligned">$10.00</div>
-
-                </div>
-            </div>
-            <div class="item">
-                <div class="right floated content">
-                    <div class="ui mini button">Edit</div>
-                </div>
-                <div class="header">Thursday</div>
-                <div class="ui grid middle aligned content">
-
-                    <div class="five wide column">Dish 1</div>
-                    <div class="five wide column">ABC Restaurant</div>
-                    <div class="three wide column">36</div>
-                    <div class="three wide column right aligned">$10.00</div>
-
-                </div>
-            </div>
-            <div class="item">
-                <div class="right floated content">
-                    <div class="ui mini button">Edit</div>
-                </div>
-                <div class="header">Friday</div>
-                <div class="ui grid middle aligned content">
-
-                    <div class="five wide column">Dish 1</div>
-                    <div class="five wide column">ABC Restaurant</div>
-                    <div class="three wide column">36</div>
-                    <div class="three wide column right aligned">$10.00</div>
-
-                </div>
-            </div>
+        <div id="menuList">Loading....</div>
+        <div class="ui fluid vertical basic buttons">
+            <button id="showDistributorStatus" class="ui button">Check distributor status <i class="right arrow icon"></i></button>
+            <button id="showDriverStatus" class="ui button">Check driver status <i class="right arrow icon"></i></button>
         </div>
     </div>
 </div>
-
-<div class="ui divider hidden"></div>   
-<button class="center aligned ui red button">Publish</button> 
-<div class="ui divider"></div>  
-<div class="ui fluid vertical basic buttons">
-    <button id="showOrderDetails" class="ui button">Check distributor status <i class="right arrow icon"></i></button>
-
-    <button id="showOrderDetails" class="ui button">Check driver status <i class="right arrow icon"></i></button>
-</div>
-
-</div>
-
-<!-- new managerHomeView ends-->
-
-<!-- menuEditView starts here-->
-<div class="row">
-    <div class="ui segment">
-        <h4 class="ui red header">
-            <i class="small calendar icon"></i>2015/01/23-2015/01/30
-        </h4>
-
-        <div class="ui selection dropdown fluid">
-            Select a restaurant <i class="dropdown icon"></i>
-            <div class="menu">
-                <a class="item"> A restaurant </a>
-            </div>
-        </div>
-    </div>    
-    <div class="ui divider hidden"></div>
-    <div class="ui grid">
-        <div class="doubling two column row dishes">
-            <div class="column">
-                <div class="ui card">
-                    <div class="image dimmable">
-                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-                        <div class="ui dimmer">
-                            <div class="dimmer-content">
-                                <h2 class="ui inverted icon header">
-                                    <i class="check icon"></i>
-                                    Dish added!
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="ui grid">
-                            <div class="eight wide column dish-desc">
-                                dish name
-                            </div>
-                            <div class="four wide column">
-                                <div class="ui fluid input">
-                                    <input type="text" placeholder="Price">
-                                </div>
-                            </div>
-                            <div class="four wide column">
-                                <div class="ui fluid input">
-                                    <input type="text" placeholder="Qty">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui add-btn bottom attached button">
-                        <i class="add icon"></i>
-                        Add to Menu
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="ui card">
-                    <div class="image">
-                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-                        <div class="ui dimmer">
-                            <div class="dimmer-content">
-                                <h2 class="ui inverted icon header">
-                                    <i class="check icon"></i>
-                                    Dish added!
-                                </h2>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="content">
-                        <div class="ui grid">
-                            <div class="eight wide column dish-desc">
-                                dish name
-                            </div>
-                            <div class="four wide column">
-                                <div class="ui fluid input">
-                                    <input type="text" placeholder="Price">
-                                </div>
-                            </div>
-                            <div class="four wide column">
-                                <div class="ui fluid input">
-                                    <input type="text" placeholder="Qty">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui add-btn bottom attached button">
-                        <i class="add icon"></i>
-                        Add to Menu
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui divider hidden"></div>
-        <div class="ui divider hidden"></div>
-    </div>
-    <button class="center aligned ui red button">Save</button>
-    <div class="ui divider hidden"></div>
-    <button class="center aligned ui grey button">Cancel</button>
-</div>
-<!-- menuEditView ends-->
-
-<!-- Weekly Menu starts -->
-
-<div class="row">
-    <div class="ui pointing secondary menu">
-        <a class="active item" data-tab="first">7/7</a>
-        <a class="item" data-tab="second">7/8</a>
-        <a class="item" data-tab="third">7/9</a>
-    </div>
-    <div class="ui grid active tab" data-tab="first">
-
-        <div class="doubling two column row dishes">
-            <div class="column">
-                <div class="ui weekly card">
-                    <div class="image">
-                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-                    </div>
-                    <div class="content">
-                        <div class="ui grid">
-                            <div class="ten wide column dish-desc">
-                                <h5 class="ui sub header"> dish name 
-                                    <div class="sub header">$10.99</div>
-                                </h5>
-                            </div>
-
-                            <div class="rs-name six wide right aligned column">
-                                Restaurant ABC
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui extra content horizontal segments">
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    300 Cal
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="leaf icon green"></i>
-                                    Vegetarian
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="ban icon"></i>
-                                    No Gluten
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="ui divider hidden"></div>   
-    <button class="center aligned ui red button">Sign up and try!</button> 
-</div>
-<!-- Weekly Menu ends -->
-
-<script>
-    $('.ui.dropdown')
-    .dropdown()
-    ;
-</script>
-
-<script>
-    $('.add-btn').click(function(){
-        $('.image')
-        .dimmer('toggle')
-        ;
-    });
-
-</script>
