@@ -1,4 +1,5 @@
 define([
+    'views/home/LandingView',
   'views/home/HomeView',
   'views/order/OrderView',
   'views/order/PolicyView',
@@ -14,7 +15,8 @@ define([
   'views/account/ProfileView',
 	'views/account/ForgotpasswordView',
     'views/account/ResetPasswordView'
-], function (HomeView, 
+], function (LandingView,
+        HomeView,
 		OrderView, 
 		PolicyView, 
 		ConfirmView, 
@@ -34,6 +36,7 @@ define([
         routes: {
             // Define some URL routes
             'order': 'showOrder',
+            'landing': 'showLanding',
             'home': 'showHome',
             'policy': 'showPolicy',
             'confirm': 'showConfirm',
@@ -140,6 +143,11 @@ define([
                   homeView.render();
               }
           });
+
+        appRouter.on('route:showLanding', function () {
+            var landingView = new LandingView();
+            landingView.render();
+        });
 
         appRouter.on('route:showLogin', function () {
             // Call render on the module we loaded in via the dependency array
