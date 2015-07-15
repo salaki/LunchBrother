@@ -295,6 +295,8 @@ define([
         onPublishMenuClick: function() {
             $("#publishMenu").addClass('disabled');
             $("#publishMenu").text('Published!');
+            $("div#menuEditBtn").addClass('disabled');
+            $("div#menuEditBtn").text('Edited');
         }
     });
     return ManagerHomeView;
