@@ -213,7 +213,7 @@ define([
             var params = new ParseQueryString(queryString);
             var menuEditView = new MenuEditView({
                 inventoryIds: params.inventoryIds,
-                week: params.week
+                date: params.date
             });
 
             var currentUser = Parse.User.current();

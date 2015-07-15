@@ -20,34 +20,38 @@ define([
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
         weeklyMenu: {
-            week: "",
             menus:[
                 {
                     day:"MONDAY",
+                    date: "",
                     dishes:[],
                     inventoryIds:[]
                 },
 
                 {
                     day:"TUESDAY",
+                    date: "",
                     dishes:[],
                     inventoryIds:[]
                 },
 
                 {
                     day:"WEDNESDAY",
+                    date: "",
                     dishes:[],
                     inventoryIds:[]
                 },
 
                 {
                     day:"THURSDAY",
+                    date: "",
                     dishes:[],
                     inventoryIds:[]
                 },
 
                 {
                     day:"FRIDAY",
+                    date: "",
                     dishes:[],
                     inventoryIds:[]
                 }
@@ -135,7 +139,6 @@ define([
                             self.refreshWeekMenu(week);
                         }
                     });
-                    self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
                     self.$("#publishMenu").addClass('disabled');
                 },
                 error: function(error) {
@@ -145,12 +148,6 @@ define([
         },
 
         refreshWeekMenu: function(week) {
-            this.weeklyMenu.week = week;
-            for (var pickUpDay = 1; pickUpDay < 6; pickUpDay++) {
-                this.weeklyMenu.menus[pickUpDay - 1].dishes = [];
-                this.weeklyMenu.menus[pickUpDay - 1].inventoryIds = [];
-            }
-
             var days = week.split("-");
             var mondayMonth = parseInt(days[0].split("/")[0]) - 1, mondayDate = parseInt(days[0].split("/")[1]);
             var monday = new Date();
@@ -161,6 +158,12 @@ define([
             var friday = new Date();
             friday.setFullYear(friday.getFullYear(), fridayMonth, fridayDate);
             friday.setHours(23, 59, 59, 0);
+
+            for (var pickUpDay = 0; pickUpDay < 5; pickUpDay++) {
+                this.weeklyMenu.menus[pickUpDay].date = this.getDateForEachDay(monday, pickUpDay, this.weeklyMenu.menus[pickUpDay].day);
+                this.weeklyMenu.menus[pickUpDay].dishes = [];
+                this.weeklyMenu.menus[pickUpDay].inventoryIds = [];
+            }
 
             var self = this;
             var currentUser = Parse.User.current();
@@ -202,10 +205,16 @@ define([
 
         },
 
+        getDateForEachDay: function(monday, offset, day) {
+            var date = new Date(monday.getTime() + 24 * 60 * 60 * 1000 * offset);
+            var dateString = date.getMonth() + 1 + "/" + date.getDate() + " " + day;
+            return dateString
+        },
+
         onEditMenuClick: function(ev) {
             var inventoryIds = $(ev.currentTarget).data('inventoryIds');
-            var week = $(ev.currentTarget).data('week');
-            window.location.hash = "#menuEdit?inventoryIds=" + inventoryIds + "&week=" + week;
+            var date = $(ev.currentTarget).data('date');
+            window.location.hash = "#menuEdit?inventoryIds=" + inventoryIds + "&date=" + date;
 
         },
 
@@ -320,6 +329,8 @@ define([
             $("#publishMenu").text('Published!');
             $("div#menuEditBtn").addClass('disabled');
             $("div#menuEditBtn").text('Edited');
+
+            //TODO@Jack - Save published = true for each inventory
         }
     });
     return ManagerHomeView;

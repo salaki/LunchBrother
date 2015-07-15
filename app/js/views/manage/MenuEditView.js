@@ -14,6 +14,11 @@ define([
         template: _.template(menuEditTemplate),
         menuEditDishListTemplate: _.template(menuEditDishListTemplate),
 
+        events: {
+            'click #menuEditCancelBtn': 'onCancelClick',
+            'click #menuEditSaveBtn': 'onSaveClick'
+        },
+
         initialize: function() {
             _.bindAll(this, 'render');
             var currentUser = Parse.User.current();
@@ -45,7 +50,7 @@ define([
 
         render: function() {
             var inventoryIds = this.options.inventoryIds;
-            var week = this.options.week;
+            var date = this.options.date;
             var inventoryArray = inventoryIds.split(",");
 
             var self = this;
@@ -54,7 +59,7 @@ define([
             restaurantQuery.equalTo("gridId", currentUser.get('gridId'));
             restaurantQuery.find({
                 success:function(restaurants) {
-                    self.$el.html(self.template({restaurants: restaurants, week: week}));
+                    self.$el.html(self.template({restaurants: restaurants, date: date}));
                     self.$(".restaurant-selection").dropdown({
                         onChange: function (restaurantId) {
                             self.refreshRestaurantMenu(restaurantId);
@@ -77,6 +82,15 @@ define([
             //Step 2 - Pass the query results to the template menuEditDishListTemplate like above example
             //(You need to use self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes: dishes}));
             // when you retrieve the query results successfully)
+        },
+
+        onSaveClick: function() {
+            //TODO@Jack - Save added dishes to inventory
+            alert("Under construction!");
+        },
+
+        onCancelClick: function() {
+            window.location.hash = "#managerHome";
         }
     });
     return MenuEditView;
