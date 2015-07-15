@@ -1,0 +1,56 @@
+<div class="ui grid">
+    <div class="doubling two column row dishes">
+
+        <!--@Jenny This is the dish template, iterate this through the dishes you passed in, see managerHomeTemplate for example-->
+        <div class="column">
+            <div class="ui card">
+                <div class="image dimmable">
+                    <!--Replace the src here with the passed in dish image url-->
+                    <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
+                    <div class="ui dimmer">
+                        <div class="dimmer-content">
+                            <h2 class="ui inverted icon header">
+                                <i class="check icon"></i>
+                                Dish added!
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="ui grid">
+                        <div class="eight wide column dish-desc">
+                            <!--Replace this with the passed in dish name-->
+                            Dish Name
+                        </div>
+                        <div class="four wide column">
+                            <div class="ui fluid input">
+                                <input type="text" placeholder="Price">
+                            </div>
+                        </div>
+                        <div class="four wide column">
+                            <div class="ui fluid input">
+                                <input type="text" placeholder="Qty">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui add-btn bottom attached button">
+                    <i class="add icon"></i>
+                    Add to Menu
+                </div>
+            </div>
+        </div>
+        <!---->
+
+    </div>
+    <div class="ui divider hidden"></div>
+    <div class="ui divider hidden"></div>
+</div>
+
+<script>
+    $('.add-btn').click(function(){
+        $('.image')
+                .dimmer('toggle')
+        ;
+    });
+</script>

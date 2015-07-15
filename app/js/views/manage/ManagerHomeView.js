@@ -20,30 +20,36 @@ define([
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
         weeklyMenu: {
+            week: "",
             menus:[
                 {
                     day:"MONDAY",
-                    dishes:[]
+                    dishes:[],
+                    inventoryIds:[]
                 },
 
                 {
                     day:"TUESDAY",
-                    dishes:[]
+                    dishes:[],
+                    inventoryIds:[]
                 },
 
                 {
                     day:"WEDNESDAY",
-                    dishes:[]
+                    dishes:[],
+                    inventoryIds:[]
                 },
 
                 {
                     day:"THURSDAY",
-                    dishes:[]
+                    dishes:[],
+                    inventoryIds:[]
                 },
 
                 {
                     day:"FRIDAY",
-                    dishes:[]
+                    dishes:[],
+                    inventoryIds:[]
                 }
             ]},
 
@@ -139,8 +145,10 @@ define([
         },
 
         refreshWeekMenu: function(week) {
+            this.weeklyMenu.week = week;
             for (var pickUpDay = 1; pickUpDay < 6; pickUpDay++) {
                 this.weeklyMenu.menus[pickUpDay - 1].dishes = [];
+                this.weeklyMenu.menus[pickUpDay - 1].inventoryIds = [];
             }
 
             var days = week.split("-");
@@ -173,16 +181,31 @@ define([
                             price: inventories[i].get('dish').get('Unit_Price')
                         };
 
+                        self.weeklyMenu.menus[pickUpDay - 1].inventoryIds.push(inventories[i].id);
                         self.weeklyMenu.menus[pickUpDay - 1].dishes.push(dishInfo);
                     }
 
                     self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
                     self.$("#publishMenu").removeClass('disabled');
+
+                    var newEvent = {};
+                    for (var i=0; i<5; i++) {
+                        newEvent["click #menuEditBtn-" + self.weeklyMenu.menus[i].day] = 'onEditMenuClick';
+                    }
+
+                    self.delegateEvents(_.extend(self.events, newEvent));
                 },
                 error: function (error) {
                     console.log("Inventory Query Error: " + error.code + " " + error.message);
                 }
             });
+
+        },
+
+        onEditMenuClick: function(ev) {
+            var inventoryIds = $(ev.currentTarget).data('inventoryIds');
+            var week = $(ev.currentTarget).data('week');
+            window.location.hash = "#menuEdit?inventoryIds=" + inventoryIds + "&week=" + week;
 
         },
 

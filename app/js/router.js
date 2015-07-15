@@ -46,7 +46,7 @@ define([
             'driver': 'showDriver',
 	    //'loginorsignup' : 'showLoginorsignup',
             'managerHome': 'showManagerHome',
-            'menuEdit': 'showMenuEdit',
+            'menuEdit?*queryString': 'showMenuEdit',
             'profile': 'showProfile',
             'signupemail' : 'showSignupemail',
             'forgotpassword' : 'showForgotpassword',
@@ -208,9 +208,14 @@ define([
             }
         });
 
-        appRouter.on('route:showMenuEdit', function () {
+        appRouter.on('route:showMenuEdit', function (queryString) {
             // Call render on the module we loaded in via the dependency array
-            var menuEditView = new MenuEditView();
+            var params = new ParseQueryString(queryString);
+            var menuEditView = new MenuEditView({
+                inventoryIds: params.inventoryIds,
+                week: params.week
+            });
+
             var currentUser = Parse.User.current();
             if(currentUser != null) {
                 permission = currentUser.get('permission');
