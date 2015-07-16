@@ -15,6 +15,8 @@ define([
         },
 
         render: function() {
+            var x = document.cookie;
+            console.log(x);
             this.$el.html(this.template());
         }
     });

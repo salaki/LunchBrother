@@ -20,6 +20,7 @@ define([
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
         weeklyMenu: {
+            published: false,
             menus:[
                 {
                     day:"MONDAY",
@@ -55,7 +56,10 @@ define([
                     dishes:[],
                     inventoryIds:[]
                 }
-            ]},
+            ]
+        },
+
+        inventoryIds: [],
 
         initialize: function() {
             _.bindAll(this, 'render');
@@ -149,6 +153,11 @@ define([
 
         refreshWeekMenu: function(week) {
             var days = week.split("-");
+
+            /**
+             *
+             * Set start date and end date for querying inventory
+             */
             var mondayMonth = parseInt(days[0].split("/")[0]) - 1, mondayDate = parseInt(days[0].split("/")[1]);
             var monday = new Date();
             monday.setFullYear(monday.getFullYear(), mondayMonth, mondayDate);
@@ -159,12 +168,20 @@ define([
             friday.setFullYear(friday.getFullYear(), fridayMonth, fridayDate);
             friday.setHours(23, 59, 59, 0);
 
+            /**
+             * Reset the global variables
+             */
+            this.inventoryIds = [];
             for (var pickUpDay = 0; pickUpDay < 5; pickUpDay++) {
                 this.weeklyMenu.menus[pickUpDay].date = this.getDateForEachDay(monday, pickUpDay, this.weeklyMenu.menus[pickUpDay].day);
                 this.weeklyMenu.menus[pickUpDay].dishes = [];
                 this.weeklyMenu.menus[pickUpDay].inventoryIds = [];
             }
 
+            /**
+             *
+             * Main query part
+             */
             var self = this;
             var currentUser = Parse.User.current();
             var inventoryQuery = new Parse.Query(InventoryModel);
@@ -175,6 +192,7 @@ define([
             inventoryQuery.include("dish.restaurant");
             inventoryQuery.find({
                 success: function (inventories) {
+                    var published = false;
                     for (var i=0; i<inventories.length; i++) {
                         var pickUpDay = inventories[i].get('pickUpDate').getDay();
                         var dishInfo = {
@@ -186,10 +204,15 @@ define([
 
                         self.weeklyMenu.menus[pickUpDay - 1].inventoryIds.push(inventories[i].id);
                         self.weeklyMenu.menus[pickUpDay - 1].dishes.push(dishInfo);
+                        self.inventoryIds.push(inventories[i].id);
+                        published = inventories[i].get('published');
                     }
 
+                    self.weeklyMenu.published = published;
                     self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
-                    self.$("#publishMenu").removeClass('disabled');
+                    if (published || inventories.length === 0) {
+                        self.$("#publishMenu").removeClass('disabled');
+                    }
 
                     var newEvent = {};
                     for (var i=0; i<5; i++) {
@@ -331,6 +354,19 @@ define([
             $("div#menuEditBtn").text('Edited');
 
             //TODO@Jack - Save published = true for each inventory
+            _.each(this.inventoryIds, function(inventoryId){
+                var inventory = new InventoryModel();
+                inventory.id = inventoryId;
+                inventory.set("published", true);
+                inventory.save(null, {
+                    success: function(inventory) {
+                        // Do nothing for now
+                    },
+                    error: function(error) {
+                        alert('Save failed! Reason: ' + error.message);
+                    }
+                });
+            });
         }
     });
     return ManagerHomeView;
