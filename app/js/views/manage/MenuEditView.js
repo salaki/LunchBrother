@@ -4,10 +4,11 @@
 define([
     'models/Grid',
     'models/Restaurant',
+    'models/InventoryModel',
     'models/dish/DishModel',
     'text!templates/manage/menuEditTemplate.html',
     'text!templates/manage/menuEditDishListTemplate.html'
-], function(GridModel, RestaurantModel, DishModel, menuEditTemplate, menuEditDishListTemplate) {
+], function(GridModel, RestaurantModel, InventoryModel, DishModel, menuEditTemplate, menuEditDishListTemplate) {
 
     var MenuEditView = Parse.View.extend({
         el: $("#page"),
@@ -62,11 +63,10 @@ define([
                     self.$el.html(self.template({restaurants: restaurants, date: date}));
                     self.$(".restaurant-selection").dropdown({
                         onChange: function (restaurantId) {
-                            self.refreshRestaurantMenu(restaurantId);
+                            self.refreshInventoryMenu(restaurantId, inventoryArray);
                         }
                     });
-
-                    //self.$("#menuEditDishList").html(self.menuEditDishListTemplate());
+                    self.refreshInventoryMenu("", inventoryArray);
                 },
                 error: function(err) {
                     console.log(err.message);
@@ -74,31 +74,50 @@ define([
             });
         },
 
-        refreshRestaurantMenu: function(restaurantId) {
-            var dishQuery = new Parse.Query(DishModel);
-            dishQuery.equalTo("restaurant", {
-            	__type:"Pointer",
-            	className: "Restaurant",
-            	objectId: restaurantId
-            });
+        refreshInventoryMenu: function(restaurantId, inventoryArray) {
             var self = this;
-            console.log(restaurantId);
-            dishQuery.find({
-            	success: function(dishes){
-            		console.log(dishes.length);
-            		console.log(dishes[2].get('dishName'));
-            		console.log(dishes[2].get('Image_File')._url);
-            		self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : dishes}));            		
-            	},
-            	error: function(err){
-            		console.log(err.message);
-            	}
-            });
-            //TODO@Jenny - Refresh dish list on menu edit
-            //Step 1 - Query dish based on selected restaurant
-            //Step 2 - Pass the query results to the template menuEditDishListTemplate like above example
-            //(You need to use self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes: dishes}));
-            // when you retrieve the query results successfully)
+
+            if (inventoryArray[0] !== "") {
+                var inventoryQuery = new Parse.Query(InventoryModel);
+                inventoryQuery.containedIn("objectId", inventoryArray);
+                inventoryQuery.include("dish");
+                inventoryQuery.find({
+                    success:function(inventories) {
+                        var dishes = [];
+                        _.each(inventories, function(inventory) {
+                                var dish = inventory.get('dish');
+                                dish.quantity = inventory.get('preorderQuantity');
+                                dishes.push(dish);
+                            }
+                        );
+
+                        self.$(".restaurant-selection").dropdown(
+                            'set selected', dishes[0].get('restaurant').id
+                        );
+
+                        self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : dishes}));
+                    },
+                    error: function(err) {
+                        console.log(err.message);
+                    }
+                });
+            } else {
+                var dishQuery = new Parse.Query(DishModel);
+                dishQuery.equalTo("restaurant", {
+                    __type:"Pointer",
+                    className: "Restaurant",
+                    objectId: restaurantId
+                });
+
+                dishQuery.find({
+                    success: function(dishes){
+                        self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : dishes}));
+                    },
+                    error: function(err){
+                        console.log(err.message);
+                    }
+                });
+            }
         },
 
         onSaveClick: function() {
