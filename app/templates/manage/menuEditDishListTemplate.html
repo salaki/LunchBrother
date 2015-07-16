@@ -1,12 +1,9 @@
 <div class="ui grid">
     <div class="doubling two column row dishes">
        <% _.each(dishes, function(dish) { %>
-        <!--@Jenny This is the dish template, iterate this through the dishes you passed in, see managerHomeTemplate for example-->
         <div class="column">
             <div class="ui card">
-
                 <div class="image dimmable">
-                    <!--Replace the src here with the passed in dish image url-->
                     <img src="<%= dish.get('Image_File')._url %>">
                     <div class="ui dimmer">
                         <div class="dimmer-content">
@@ -41,7 +38,6 @@
                 </div>  
             </div>
         </div>
-        <!---->
     <% }) %> 
     </div>
     <div class="ui divider hidden"></div>

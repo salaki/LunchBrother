@@ -81,6 +81,7 @@ define([
             	className: "Restaurant",
             	objectId: restaurantId
             });
+            var self = this;
             console.log(restaurantId);
             dishQuery.find({
             	success: function(dishes){

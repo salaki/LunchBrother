@@ -328,7 +328,6 @@ define([
             $("#publishMenu").addClass('disabled');
             $("#publishMenu").text('Published!');
             $("div[id*='menuEditBtn']").addClass('disabled');
-            $("div[id*='menuEditBtn']").text('Edited');
 
             //TODO@Jack - Save published = true for each inventory
         }
