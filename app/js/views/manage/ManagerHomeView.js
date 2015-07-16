@@ -210,8 +210,11 @@ define([
 
                     self.weeklyMenu.published = published;
                     self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
-                    if (published || inventories.length === 0) {
-                        self.$("#publishMenu").removeClass('disabled');
+                    if (published) {
+                        self.$("#publishMenu").addClass('disabled');
+                        self.$("div[id*='menuEditBtn']").addClass('disabled');
+                    } else if (inventories.length === 0) {
+                        self.$("#publishMenu").addClass('disabled');
                     }
 
                     var newEvent = {};
@@ -352,7 +355,6 @@ define([
             $("#publishMenu").text('Published!');
             $("div[id*='menuEditBtn']").addClass('disabled');
 
-            //TODO@Jack - Save published = true for each inventory
             _.each(this.inventoryIds, function(inventoryId){
                 var inventory = new InventoryModel();
                 inventory.id = inventoryId;
