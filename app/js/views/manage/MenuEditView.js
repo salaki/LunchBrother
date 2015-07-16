@@ -18,7 +18,7 @@ define([
             'click #menuEditCancelBtn': 'onCancelClick',
             'click #menuEditSaveBtn': 'onSaveClick'
         },
-
+        
         initialize: function() {
             _.bindAll(this, 'render');
             var currentUser = Parse.User.current();
@@ -66,7 +66,7 @@ define([
                         }
                     });
 
-                    self.$("#menuEditDishList").html(self.menuEditDishListTemplate());
+                    //self.$("#menuEditDishList").html(self.menuEditDishListTemplate());
                 },
                 error: function(err) {
                     console.log(err.message);
@@ -75,8 +75,24 @@ define([
         },
 
         refreshRestaurantMenu: function(restaurantId) {
+            var dishQuery = new Parse.Query(DishModel);
+            dishQuery.equalTo("restaurant", {
+            	__type:"Pointer",
+            	className: "Restaurant",
+            	objectId: restaurantId
+            });
             console.log(restaurantId);
-
+            dishQuery.find({
+            	success: function(dishes){
+            		console.log(dishes.length);
+            		console.log(dishes[2].get('dishName'));
+            		console.log(dishes[2].get('Image_File')._url);
+            		self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : dishes}));            		
+            	},
+            	error: function(err){
+            		console.log(err.message);
+            	}
+            });
             //TODO@Jenny - Refresh dish list on menu edit
             //Step 1 - Query dish based on selected restaurant
             //Step 2 - Pass the query results to the template menuEditDishListTemplate like above example

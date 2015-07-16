@@ -1,12 +1,13 @@
 <div class="ui grid">
     <div class="doubling two column row dishes">
-
+       <% _.each(dishes, function(dish) { %>
         <!--@Jenny This is the dish template, iterate this through the dishes you passed in, see managerHomeTemplate for example-->
         <div class="column">
             <div class="ui card">
+
                 <div class="image dimmable">
                     <!--Replace the src here with the passed in dish image url-->
-                    <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
+                    <img src="<%= dish.get('Image_File')._url %>">
                     <div class="ui dimmer">
                         <div class="dimmer-content">
                             <h2 class="ui inverted icon header">
@@ -19,8 +20,7 @@
                 <div class="content">
                     <div class="ui grid">
                         <div class="eight wide column dish-desc">
-                            <!--Replace this with the passed in dish name-->
-                            Dish Name
+                            <%= dish.get('dishName') %>
                         </div>
                         <div class="four wide column">
                             <div class="ui fluid input">
@@ -33,15 +33,16 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="ui add-btn bottom attached button">
                     <i class="add icon"></i>
                     Add to Menu
-                </div>
+                </div>  
             </div>
         </div>
         <!---->
-
+    <% }) %> 
     </div>
     <div class="ui divider hidden"></div>
     <div class="ui divider hidden"></div>
