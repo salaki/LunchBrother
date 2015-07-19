@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #Wed Jul 15 22:53:03 EDT 2015
+=======
+#Sat Jun 20 16:36:00 EDT 2015
+>>>>>>> origin/master
 eclipse.preferences.version=1
 encoding//LB-Dev-Cloud/cloud/main.js=UTF-8
 encoding//app/index.html=UTF-8
@@ -7,8 +11,11 @@ encoding//app/js/nls/zh-cn/string.js=UTF-8
 encoding//app/js/views/home/HomeView.js=UTF-8
 encoding//app/templates/account/loginorsignupTemplate.html=UTF-8
 encoding//app/templates/home/homeTemplate.html=UTF-8
+<<<<<<< HEAD
 encoding//app/templates/manage/deliveryTemplate.html=UTF-8
 encoding//app/templates/manage/distributorTemplate.html=UTF-8
 encoding//app/templates/manage/driverTemplate.html=UTF-8
+=======
+>>>>>>> origin/master
 encoding//app/templates/manage/loginTemplate.html=UTF-8
 encoding//app/templates/order/orderTemplate.html=UTF-8

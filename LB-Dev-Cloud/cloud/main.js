@@ -1,7 +1,84 @@
+var express = require('express');
+var app = express();
+
+// Global app configuration section
+app.use(express.bodyParser());  // Populate req.body
+app.post('/receiveSMS',
+    function(req, res) {
+        console.log("Received text: " + req.body.Body + " From: " + req.body.From);
+        res.send('Success');
+
+        if (req.body.Body.toUpperCase() === "YES") {
+            Parse.Cloud.run('updateRecords', {
+                fromNumber: req.body.From
+
+            }, {
+                success: function () {
+                    console.log("Records updated!");
+                },
+
+                error: function (error) {
+                    console.log("Fail to update records. Reason: " + error.message);
+                }
+            });
+            twilioSMSService(req.body.From, "Thank you for your confirmation!");
+
+        }  else {
+            console.log("No key words matched!");
+        }
+    });
+
+app.listen();
+
+Parse.Cloud.define("updateRecords",
+    function (request, response) {
+        var incomingNumber = request.params.fromNumber;
+        var confirmModel = Parse.Object.extend("SMSConfirmRecord");
+        var confirmQuery = new Parse.Query(confirmModel);
+        confirmQuery.equalTo("sentToNumber", incomingNumber.substring(2));
+        confirmQuery.equalTo("confirmStatus", "PENDING");
+        confirmQuery.descending("createdAt");
+        confirmQuery.find({
+            success: function(records) {
+                for (var i=0; i<records.length; i++) {
+                    if (i === 0) {
+                        updateSMSandInventoryStatus(records[i], "CONFIRMED", "Confirmed");
+                    } else {
+                        updateSMSandInventoryStatus(records[i], "UNCONFIRMED", "Unconfirmed");
+                    }
+                }
+            },
+            error: function(error) {
+                console.log("Fail to query inventory! Reason: " + error.message);
+            }
+        })
+    }
+);
+
+function updateSMSandInventoryStatus(record, recordStatus, inventoryStatus) {
+    record.set('confirmStatus', recordStatus);
+    record.save();
+    var inventoryIds = record.get('inventoryIds');
+
+    for (var j=0; j<inventoryIds.length; j++) {
+        var inventoryModel = Parse.Object.extend("Inventory");
+        var inventoryQuery = new Parse.Query(inventoryModel);
+        inventoryQuery.get(inventoryIds[j], {
+            success:function(inventory) {
+                inventory.set('status', inventoryStatus);
+                inventory.save();
+            },
+            error: function(error) {
+                console.log(error.message);
+            }
+        });
+    }
+}
+
 Parse.Cloud.define("pay",
     function (request, response) {
         var Stripe = require("stripe");
-        Stripe.initialize('sk_live_NmS6fDdb0AKJ6ajHw3rXmxun');
+        Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
         var tempAmount = request.params.totalCharge * 100;
         var params = {
             amount: tempAmount.toFixed(0),
@@ -27,7 +104,7 @@ Parse.Cloud.define("pay",
 );
 Parse.Cloud.define("saveCard", function (request, response) {
     var Stripe = require("stripe");
-    Stripe.initialize('sk_live_NmS6fDdb0AKJ6ajHw3rXmxun');
+    Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
     var last4Digit = request.params.last4Digit;
     Stripe.Customers.create({
         card: request.params.card,
@@ -246,29 +323,112 @@ function sendEmail(options) {
 Parse.Cloud.define("sms",
     function (request, response) {
         var targetNumber = request.params.targetNumber;
-        var accountSID = request.params.accountSID;
-        var authToken = request.params.authToken;
         var messageBody = request.params.messageBody;
 
-        // Require and initialize the Twilio module with your credentials
-        var client = require('twilio')(accountSID, authToken);
-
-        // Send an SMS message
-        client.sendSms({
-                to: '+1' + targetNumber,
-                from: '+18082022277',
-                body: messageBody
-            }, {
-                success: function (httpResponse) {
-                    response.success("SMS sent!");
-                },
-                error: function (httpResponse) {
-                    response.error("Uh oh, something went wrong");
-                }
-            }
-        );
+        twilioSMSService('+1' + targetNumber, messageBody);
     }
 );
+
+Parse.Cloud.job("weeklySMS", function(request, status) {
+    //Assemble SMS Message
+    var message = "Monday again, start a new fresh week w/ www.lunchbrother.com! Order by 10:25 and enjoy lunch at noon-12:30! *Could disable this reminder in ur profile page.";
+
+    // Query for all users
+    var userQuery = new Parse.Query(Parse.User);
+    userQuery.each(function(user) {
+        //TODO - check if telnum is undefined
+        if(user.get('username') === 'jackypig0906@gmail.com') {
+            status.message("Send SMS to " + user.get("telnum") + " phone.");
+            return twilioSMSService(user.get('telnum'), message);
+        }
+    }).then(function() {
+        // Set the job's success status
+        status.success("SMS message sent.");
+    }, function(error) {
+        // Set the job's error status
+        status.error("Uh oh, something went wrong.");
+    });
+});
+
+Parse.Cloud.job("dailyOrderConfirmationSMS", function(request, status) {
+    var current = new Date();
+    current.setHours(14, 0, 0, 0);
+    current.setDate(current.getDate() + 7);  //Target date
+    console.log("Target Day: " + current);
+    var inventoryModel = Parse.Object.extend("Inventory");
+    var inventoryQuery = new Parse.Query(inventoryModel);
+    inventoryQuery.greaterThan("pickUpDate", current);
+    inventoryQuery.include("dish");
+    inventoryQuery.include("dish.restaurant");
+    inventoryQuery.find({
+        success: function(inventories) {
+            if (inventories.length > 0) {
+                var message = "LunchBrother Pick Up Time: ";
+                var messagePickUpTime;
+                var messageQuantity = "";
+                var confirmNumber;
+                var inventoryIds = [];
+                for (var i=0; i<inventories.length; i++) {
+                    inventoryIds.push(inventories[i].id);
+                    var pickUpDateTime = new Date(inventories[i].get('pickUpDate'));
+                    var year = pickUpDateTime.getFullYear();
+                    var month = pickUpDateTime.getMonth() + 1;
+                    var date = pickUpDateTime.getDate();
+                    var hour = pickUpDateTime.getHours() - 4; //TODO - Need to somehow include time zone
+                    var minute = pickUpDateTime.getMinutes();
+
+                    if (confirmNumber === undefined) {
+                        confirmNumber = inventories[i].get('dish').get('restaurant').get('confirmNumber');
+                    }
+
+                    if (messagePickUpTime === undefined) {
+                        messagePickUpTime = hour + ":" + minute + "AM " + month + "/" + date + "/" + year + " - Quantity:";
+                    }
+
+                    messageQuantity += " " + inventories[i].get('dish').get('dishName') + " " + inventories[i].get('preorderQuantity');
+                }
+
+                message += messagePickUpTime + messageQuantity + " - Please reply 'yes' to confirm.";
+
+                twilioSMSService(confirmNumber, message);
+
+                var ConfirmRecord = Parse.Object.extend("SMSConfirmRecord");
+                var confirmRecord = new ConfirmRecord();
+
+                confirmRecord.set("inventoryIds", inventoryIds);
+                confirmRecord.set("sentToNumber", confirmNumber);
+                confirmRecord.set("confirmStatus", "PENDING");
+                confirmRecord.save();
+            } else {
+                console.log("Nothing to send!");
+            }
+        },
+        error: function(error) {
+            console.log("Fail to query inventory! Reason: " + error.message);
+        }
+    })
+});
+
+function twilioSMSService(targetNumber, messageBody) {
+    // Require and initialize the Twilio module with your credentials
+    var client = require('twilio')('AC3d79b841bba0ddbb931aaecb23e7925b', 'c72eccd453ec3c45ef7f63d19dc51d12');
+
+    // Send an SMS message
+    client.sendSms({
+            to: targetNumber,
+            from: '+18082022277',
+            body: messageBody
+        }, {
+            success: function (httpResponse) {
+                console.log("SMS sent!");
+            },
+            error: function (httpResponse) {
+                console.log("Uh oh, something went wrong");
+            }
+        }
+    );
+}
+
 Parse.Cloud.define("saveResetKeyForUser", function (request, response) {
     var email = request.params.emailAddress;
     var resetKey = request.params.resetKey;
