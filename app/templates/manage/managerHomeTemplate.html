@@ -1,6 +1,8 @@
-<div class="ui top attached segment">
+<h4 class="ui top attached red header">
+    <i class="marker icon small"></i>Manage distribution points
+</h4>    
+<div class="ui attached segment">
     <div class="ui vertical segment">
-        <h2 class="ui header small">Distribution Points</h2>
         <% _.each(distributingPoints, function(distributingPoint) { %>
         <div class="ui column right aligned grid">
             <div class="left floated left aligned seven wide column"><%= distributingPoint.get('address') %></div>
@@ -19,24 +21,7 @@
     <i class="add icon"></i>
     Add a new location
 </div>
-
-<div class="ui segment">
-    <div class="ui vertical segment">
-        <h2 class="ui header small" id="fromRestaurant"></h2>
-        <div class="res-intro" id="restaurantTelnum"></div>
-    </div>
-    <div class="ui vertical segment res-order">
-        <div class="ui column grid">
-            <div class="four wide column" id="pickupDatetime"></div>
-            <div class="six wide column" id="todayDish"></div>
-            <div class="two wide column" id="pickupQuantity"></div>
-            <div class="four wide column right aligned" id="inventoryStatus"></div>
-        </div>
-    </div>
-</div>
-
-<button id="showOrderDetails" class="center aligned ui fluid red button">Order Detail</button>
-
+<div class="ui divider"></div>
 <div id="editDPDialog" class="ui small test modal">
     <div class="header" style="background-color: #ffffff">
         <label id="editDPLabel">Distribution Point Editor</label>
@@ -84,6 +69,29 @@
                 <i class="checkmark icon"></i>
                 <label id="deleteDPConfirm">Confirm</label>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="ui top attached segment">
+        <h4 class="ui red header">
+            <i class="small file text outline icon"></i>Manage weekly menu
+        </h4>
+        <div class="ui menu">
+            <div class="ui dropdown fluid item week-selection">
+                <i class="small calendar icon"></i><div class="default text" id="weekMenu">Select Week</div><i class="dropdown icon"></i>
+                <div class="menu">
+                    <% _.each(weeks, function(week) { %>
+                    <a class="item" data-value="<%= week %>">Weekly Menu <%= week %></a>
+                    <% })%>
+                </div>
+            </div>
+        </div>
+        <div id="menuList"></div>
+        <div class="ui fluid vertical basic buttons">
+            <button id="showDistributorStatus" class="ui button">Check distributor status <i class="right arrow icon"></i></button>
+            <button id="showDriverStatus" class="ui button">Check driver status <i class="right arrow icon"></i></button>
         </div>
     </div>
 </div>

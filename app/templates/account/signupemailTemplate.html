@@ -1,5 +1,5 @@
 <div action="" method="POST" id="signupForm" class="ui form">
-	<div class="ui segment">
+    <div class="ui segment">
 		<div id="basicinfo">
 			<div id="nameinfo" class="two fields">
 				<div class="ui fluid field">
@@ -20,7 +20,7 @@
 			</div>
             <div class="ui fluid field">
                 <div id="gridOptionDiv">
-                    <select id="gridOptions" name="gridOptions">
+                    <select id="gridOptions" class="ui dropdown" name="gridOptions">
                         <option id="gridOptionLabel" value="">选择您所在位置</option>
                         <% _.each(grids, function(grid){ %>
                         <option value="<%= grid.id %>"><%= grid.get('name') %></option>
