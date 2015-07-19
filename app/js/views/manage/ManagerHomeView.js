@@ -15,7 +15,8 @@ define([
             'click #DPAdd': 'onEditOrAddClick',
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
             'click #showDriverStatus': 'onShowDriverStatusClick',
-            'click #publishMenu': 'onPublishMenuClick'
+            'click #publishMenu': 'onPublishMenuClick',
+            'click #concealMenu': 'onConcealMenuClick'
         },
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
@@ -355,18 +356,44 @@ define([
             $("#publishMenu").text('Published!');
             $("div[id*='menuEditBtn']").addClass('disabled');
 
+            var inventories = [];
             _.each(this.inventoryIds, function(inventoryId){
                 var inventory = new InventoryModel();
                 inventory.id = inventoryId;
                 inventory.set("published", true);
-                inventory.save(null, {
-                    success: function(inventory) {
-                        // Do nothing for now
-                    },
-                    error: function(error) {
-                        alert('Save failed! Reason: ' + error.message);
-                    }
-                });
+                inventories.push(inventory);
+            });
+
+            Parse.Object.saveAll(inventories, {
+                success: function(inventories) {
+                    console.log("Week menu published!");
+                },
+                error: function(error) {
+                    alert('Save failed! Reason: ' + error.message);
+                }
+            });
+        },
+
+        onConcealMenuClick: function() {
+            $("#publishMenu").removeClass('disabled');
+            $("#publishMenu").text('Publish');
+            $("div[id*='menuEditBtn']").removeClass('disabled');
+
+            var inventories = [];
+            _.each(this.inventoryIds, function(inventoryId){
+                var inventory = new InventoryModel();
+                inventory.id = inventoryId;
+                inventory.set("published", false);
+                inventories.push(inventory);
+            });
+
+            Parse.Object.saveAll(inventories, {
+                success: function(inventories) {
+                    console.log("Week menu published!");
+                },
+                error: function(error) {
+                    alert('Save failed! Reason: ' + error.message);
+                }
             });
         }
     });
