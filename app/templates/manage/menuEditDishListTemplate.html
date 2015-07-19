@@ -1,0 +1,46 @@
+<div class="ui grid">
+    <div class="doubling two column row dishes">
+       <% _.each(dishes, function(dish) { %>
+        <div class="column">
+            <div class="ui card">
+                <div class="image dimmable">
+                    <img src="<%= dish.get('Image_File')._url %>">
+                    <div class="ui dimmer" id="dimmer-<%= dish.id %>">
+                        <div class="dimmer-content">
+                            <h2 class="ui inverted icon header">
+                                <i class="check icon"></i>
+                                Dish added!
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="ui grid">
+                        <div class="eight wide column dish-desc">
+                            <input id="inventoryId-<%= dish.id %>" type="hidden" value="<%= dish.inventoryId %>">
+                            <input id="dishIdInput-<%= dish.id %>" type="hidden" value="<%= dish.id %>">
+                            <%= dish.get('dishName') %>
+                        </div>
+                        <div class="four wide column">
+                            <div class="ui fluid input">
+                                <input id="dishPriceInput-<%= dish.id %>" type="text" placeholder="Price" value="<%= dish.get('Unit_Price') %>">
+                            </div>
+                        </div>
+                        <div class="four wide column">
+                            <div class="ui fluid input">
+                                <input id="dishQuantityInput-<%= dish.id %>" type="text" placeholder="Qty" value="<%= dish.quantity %>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui add-btn bottom attached button" id="addToMenuBtn-<%= dish.id %>">
+                    <i class="add icon"></i>
+                    Add to Menu
+                </div>  
+            </div>
+        </div>
+    <% }) %> 
+    </div>
+    <div class="ui divider hidden"></div>
+    <div class="ui divider hidden"></div>
+</div>

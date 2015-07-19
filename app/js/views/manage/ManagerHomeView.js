@@ -15,37 +15,52 @@ define([
             'click #DPAdd': 'onEditOrAddClick',
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
             'click #showDriverStatus': 'onShowDriverStatusClick',
-            'click #publishMenu': 'onPublishMenuClick'
+            'click #publishMenu': 'onPublishMenuClick',
+            'click #concealMenu': 'onConcealMenuClick'
         },
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
         weeklyMenu: {
+            published: false,
             menus:[
                 {
                     day:"MONDAY",
-                    dishes:[]
+                    date: "",
+                    dishes:[],
+                    inventoryIds:[]
                 },
 
                 {
                     day:"TUESDAY",
-                    dishes:[]
+                    date: "",
+                    dishes:[],
+                    inventoryIds:[]
                 },
 
                 {
                     day:"WEDNESDAY",
-                    dishes:[]
+                    date: "",
+                    dishes:[],
+                    inventoryIds:[]
                 },
 
                 {
                     day:"THURSDAY",
-                    dishes:[]
+                    date: "",
+                    dishes:[],
+                    inventoryIds:[]
                 },
 
                 {
                     day:"FRIDAY",
-                    dishes:[]
+                    date: "",
+                    dishes:[],
+                    inventoryIds:[]
                 }
-            ]},
+            ]
+        },
+
+        inventoryIds: [],
 
         initialize: function() {
             _.bindAll(this, 'render');
@@ -129,7 +144,6 @@ define([
                             self.refreshWeekMenu(week);
                         }
                     });
-                    self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
                     self.$("#publishMenu").addClass('disabled');
                 },
                 error: function(error) {
@@ -139,11 +153,12 @@ define([
         },
 
         refreshWeekMenu: function(week) {
-            for (var pickUpDay = 1; pickUpDay < 6; pickUpDay++) {
-                this.weeklyMenu.menus[pickUpDay - 1].dishes = [];
-            }
-
             var days = week.split("-");
+
+            /**
+             *
+             * Set start date and end date for querying inventory
+             */
             var mondayMonth = parseInt(days[0].split("/")[0]) - 1, mondayDate = parseInt(days[0].split("/")[1]);
             var monday = new Date();
             monday.setFullYear(monday.getFullYear(), mondayMonth, mondayDate);
@@ -154,6 +169,20 @@ define([
             friday.setFullYear(friday.getFullYear(), fridayMonth, fridayDate);
             friday.setHours(23, 59, 59, 0);
 
+            /**
+             * Reset the global variables
+             */
+            this.inventoryIds = [];
+            for (var pickUpDay = 0; pickUpDay < 5; pickUpDay++) {
+                this.weeklyMenu.menus[pickUpDay].date = this.getDateForEachDay(monday, pickUpDay, this.weeklyMenu.menus[pickUpDay].day);
+                this.weeklyMenu.menus[pickUpDay].dishes = [];
+                this.weeklyMenu.menus[pickUpDay].inventoryIds = [];
+            }
+
+            /**
+             *
+             * Main query part
+             */
             var self = this;
             var currentUser = Parse.User.current();
             var inventoryQuery = new Parse.Query(InventoryModel);
@@ -164,6 +193,7 @@ define([
             inventoryQuery.include("dish.restaurant");
             inventoryQuery.find({
                 success: function (inventories) {
+                    var published = false;
                     for (var i=0; i<inventories.length; i++) {
                         var pickUpDay = inventories[i].get('pickUpDate').getDay();
                         var dishInfo = {
@@ -173,16 +203,45 @@ define([
                             price: inventories[i].get('dish').get('Unit_Price')
                         };
 
+                        self.weeklyMenu.menus[pickUpDay - 1].inventoryIds.push(inventories[i].id);
                         self.weeklyMenu.menus[pickUpDay - 1].dishes.push(dishInfo);
+                        self.inventoryIds.push(inventories[i].id);
+                        published = inventories[i].get('published');
                     }
 
+                    self.weeklyMenu.published = published;
                     self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
-                    self.$("#publishMenu").removeClass('disabled');
+                    if (published) {
+                        self.$("#publishMenu").addClass('disabled');
+                        self.$("div[id*='menuEditBtn']").addClass('disabled');
+                    } else if (inventories.length === 0) {
+                        self.$("#publishMenu").addClass('disabled');
+                    }
+
+                    var newEvent = {};
+                    for (var i=0; i<5; i++) {
+                        newEvent["click #menuEditBtn-" + self.weeklyMenu.menus[i].day] = 'onEditMenuClick';
+                    }
+
+                    self.delegateEvents(_.extend(self.events, newEvent));
                 },
                 error: function (error) {
                     console.log("Inventory Query Error: " + error.code + " " + error.message);
                 }
             });
+
+        },
+
+        getDateForEachDay: function(monday, offset, day) {
+            var date = new Date(monday.getTime() + 24 * 60 * 60 * 1000 * offset);
+            var dateString = date.getMonth() + 1 + "/" + date.getDate() + " " + day;
+            return dateString
+        },
+
+        onEditMenuClick: function(ev) {
+            var inventoryIds = $(ev.currentTarget).data('inventoryIds');
+            var date = $(ev.currentTarget).data('date');
+            window.location.hash = "#menuEdit?inventoryIds=" + inventoryIds + "&date=" + date;
 
         },
 
@@ -295,6 +354,47 @@ define([
         onPublishMenuClick: function() {
             $("#publishMenu").addClass('disabled');
             $("#publishMenu").text('Published!');
+            $("div[id*='menuEditBtn']").addClass('disabled');
+
+            var inventories = [];
+            _.each(this.inventoryIds, function(inventoryId){
+                var inventory = new InventoryModel();
+                inventory.id = inventoryId;
+                inventory.set("published", true);
+                inventories.push(inventory);
+            });
+
+            Parse.Object.saveAll(inventories, {
+                success: function(inventories) {
+                    console.log("Week menu published!");
+                },
+                error: function(error) {
+                    alert('Save failed! Reason: ' + error.message);
+                }
+            });
+        },
+
+        onConcealMenuClick: function() {
+            $("#publishMenu").removeClass('disabled');
+            $("#publishMenu").text('Publish');
+            $("div[id*='menuEditBtn']").removeClass('disabled');
+
+            var inventories = [];
+            _.each(this.inventoryIds, function(inventoryId){
+                var inventory = new InventoryModel();
+                inventory.id = inventoryId;
+                inventory.set("published", false);
+                inventories.push(inventory);
+            });
+
+            Parse.Object.saveAll(inventories, {
+                success: function(inventories) {
+                    console.log("Week menu published!");
+                },
+                error: function(error) {
+                    alert('Save failed! Reason: ' + error.message);
+                }
+            });
         }
     });
     return ManagerHomeView;
