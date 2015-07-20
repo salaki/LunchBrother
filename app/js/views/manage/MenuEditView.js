@@ -166,6 +166,21 @@ define([
                     $('#dimmer-' + dish.id).addClass("active");
                 }
 
+                /**
+                 * Set input value onChange events
+                 */
+                $("#dishQuantityInput-" + dish.id).keyup(function(){
+                    $('#dimmer-' + dish.id).removeClass("active");
+                    self.addedInventories = _.reject(self.addedInventories, function (el) {
+                        return el.dishId === $('#dishIdInput-' + dish.id).val();
+                    });
+                });
+                $("#dishPriceInput-" + dish.id).keyup(function(){
+                    $('#dimmer-' + dish.id).removeClass("active");
+                    self.addedInventories = _.reject(self.addedInventories, function (el) {
+                        return el.dishId === $('#dishIdInput-' + dish.id).val();
+                    });
+                });
 
                 $('#addToMenuBtn-' + dish.id).click(function(){
                     if ($('#dimmer-' + dish.id).dimmer("is active")) {
@@ -174,17 +189,35 @@ define([
                             return el.dishId === $('#dishIdInput-' + dish.id).val();
                         });
                     } else {
+                        var quantity = $('#dishQuantityInput-' + dish.id).val();
+                        var price = $('#dishPriceInput-' + dish.id).val();
+
+                        //Validate quantity and price inputs
+                        if (!self.isInteger(quantity)) {
+                            alert("Quantity has to be an integer number!");
+                            return;
+                        }
+
+                        if (!Number(price)) {
+                            alert("Price has to be a number!");
+                            return;
+                        }
+
                         $('#dimmer-' + dish.id).addClass("active");
                         var inventory = {
                             id: $('#inventoryId-' + dish.id).val(),
                             dishId: $('#dishIdInput-' + dish.id).val(),
-                            quantity: $('#dishQuantityInput-' + dish.id).val(),
-                            price: $('#dishPriceInput-' + dish.id).val()
+                            quantity: quantity,
+                            price: price
                         };
                         self.addedInventories.push(inventory);
                     };
                 });
             });
+        },
+
+        isInteger: function(n) {
+            return Number(n) && Number(n) % 1 === 0;
         },
 
         onSaveClick: function() {
@@ -210,7 +243,7 @@ define([
                     //Do nothing
                 },
                 error: function(error) {
-                    alert('Destroy failed! Reason: ' + error.message);
+                    alert('Destroy failed! Reason: ' + error.message + "To destroy inventories: " + toDestroyInventories);
                 }
             });
 
@@ -258,6 +291,8 @@ define([
         },
 
         onCancelClick: function() {
+            this.initialInventories = [];
+            this.addedInventories = [];
             window.location.hash = "#managerHome";
         }
     });
