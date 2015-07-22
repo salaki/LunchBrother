@@ -1,19 +1,20 @@
-<div class="row">
-    <div class="ui fluid search selection dropdown">
-          <input type="hidden" name="country">
+<div id="example">
+    <div class="ui sticky">
+        <div class="ui fluid search selection dropdown">
+            <input type="hidden" name="country">
             <i class="dropdown icon"></i>
-              <div class="default text">Select a location</div>
-                <div class="menu">
-                      <div class="item" data-value="umd"><i class="university icon"></i>University of Maryland</div>
-                  <div class="item" data-value="gwu"><i class="university icon"></i>George Washington University</div>
-                  </div>
-              </div>
-    <div class="ui pointing secondary menu">
+            <div class="default text">Select a location</div>
+            <div class="menu">
+                <div class="item" data-value="umd"><i class="university icon"></i>University of Maryland</div>
+                <div class="item" data-value="gwu"><i class="university icon"></i>George Washington University</div>
+            </div>
+        </div>
+    </div>    
+    <div id="main" class="ui pointing secondary menu">
         <a class="active item" data-tab="first">7/7-7/12</a>
         <a class="item" data-tab="second">7/15-7/20</a>
         <a class="item" data-tab="third">7/23-7/28</a>
     </div>
-   
 
 
     <div class="ui grid active tab" data-tab="first">
@@ -263,3 +264,11 @@
     <div class="ui divider hidden"></div>
     <button class="center aligned ui red button">Sign up and try!</button>
 </div>
+
+<script>
+    $('.ui.sticky')
+    .sticky({
+        context: '#example'
+    })
+    ;
+</script>    
