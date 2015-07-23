@@ -22,6 +22,30 @@
     Add a new location
 </div>
 <div class="ui divider"></div>
+<div class="row">
+    <div class="ui top attached segment">
+        <h4 class="ui red header">
+            <i class="small file text outline icon"></i>Manage weekly menu
+        </h4>
+        <div class="ui menu">
+            <div class="ui dropdown fluid item week-selection">
+                <i class="small calendar icon"></i><div class="default text" id="weekMenu">Select Week</div><i class="dropdown icon"></i>
+                <div class="menu">
+                    <% _.each(weeks, function(week) { %>
+                    <a class="item" data-value="<%= week %>">Weekly Menu <%= week %></a>
+                    <% })%>
+                </div>
+            </div>
+        </div>
+        <div id="menuList"></div>
+        <div class="ui fluid vertical basic buttons">
+            <button id="showDistributorStatus" class="ui button">Check distributor status <i class="right arrow icon"></i></button>
+            <button id="showDriverStatus" class="ui button">Check driver status <i class="right arrow icon"></i></button>
+        </div>
+    </div>
+</div>
+
+<!--Widget Dialogs-->
 <div id="editDPDialog" class="ui small test modal">
     <div class="header" style="background-color: #ffffff">
         <label id="editDPLabel">Distribution Point Editor</label>
@@ -73,25 +97,24 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="ui top attached segment">
-        <h4 class="ui red header">
-            <i class="small file text outline icon"></i>Manage weekly menu
-        </h4>
-        <div class="ui menu">
-            <div class="ui dropdown fluid item week-selection">
-                <i class="small calendar icon"></i><div class="default text" id="weekMenu">Select Week</div><i class="dropdown icon"></i>
-                <div class="menu">
-                    <% _.each(weeks, function(week) { %>
-                    <a class="item" data-value="<%= week %>">Weekly Menu <%= week %></a>
-                    <% })%>
-                </div>
+<div id="publishMenuDialog" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        <label id="publishMenuLabel">Publish</label>
+    </div>
+    <div class="content">
+        Your menu is going to be published. Are you sure? </br>
+        <span id="publishMenuWarningLine" class="red"></span>
+    </div>
+    <div class="actions">
+        <div class="two fluid ui buttons">
+            <div class="ui basic cancel button">
+                <i class="remove icon"></i>
+                <label id="publishMenuCancel">Cancel</label>
             </div>
-        </div>
-        <div id="menuList"></div>
-        <div class="ui fluid vertical basic buttons">
-            <button id="showDistributorStatus" class="ui button">Check distributor status <i class="right arrow icon"></i></button>
-            <button id="showDriverStatus" class="ui button">Check driver status <i class="right arrow icon"></i></button>
+            <div class="ui ok basic button">
+                <i class="checkmark icon"></i>
+                <label id="publishMenuConfirm">Confirm</label>
+            </div>
         </div>
     </div>
 </div>

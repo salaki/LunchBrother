@@ -139,11 +139,18 @@ define([
 
 
                     self.$el.html(self.template({distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
+
+                    if (self.options.week !== "") {
+                        self.refreshWeekMenu(self.options.week);
+                        self.$(".week-selection").dropdown('set selected', self.options.week);
+                    }
+
                     self.$(".week-selection").dropdown({
                         onChange: function (week) {
                             self.refreshWeekMenu(week);
                         }
                     });
+
                     self.$("#publishMenu").addClass('disabled');
                 },
                 error: function(error) {
@@ -352,26 +359,47 @@ define([
         },
 
         onPublishMenuClick: function() {
-            $("#publishMenu").addClass('disabled');
-            $("#publishMenu").text('Published!');
-            $("div[id*='menuEditBtn']").addClass('disabled');
-
-            var inventories = [];
-            _.each(this.inventoryIds, function(inventoryId){
-                var inventory = new InventoryModel();
-                inventory.id = inventoryId;
-                inventory.set("published", true);
-                inventories.push(inventory);
+            var hasDishEveryDay = true;
+            _.each(this.weeklyMenu.menus, function(menu){
+                hasDishEveryDay = hasDishEveryDay && menu.inventoryIds.length > 0;
             });
 
-            Parse.Object.saveAll(inventories, {
-                success: function(inventories) {
-                    console.log("Week menu published!");
+            //Pop out an alert window to make sure they want to publish menu which does not have dishes everyday
+            if (!hasDishEveryDay) {
+                $('#publishMenuWarningLine').text("Warning: You have empty dishes on some day(s) this week!").css({ 'font-size': 12 });
+            } else {
+                $('#publishMenuWarningLine').text("");
+            }
+
+            var self = this;
+            $('#publishMenuDialog').modal({
+                closable: false,
+                onDeny: function () {
+                    //Do nothing
                 },
-                error: function(error) {
-                    alert('Save failed! Reason: ' + error.message);
+                onApprove: function () {
+                    $("#publishMenu").addClass('disabled');
+                    $("#publishMenu").text('Published!');
+                    $("div[id*='menuEditBtn']").addClass('disabled');
+
+                    var inventories = [];
+                    _.each(self.inventoryIds, function(inventoryId){
+                        var inventory = new InventoryModel();
+                        inventory.id = inventoryId;
+                        inventory.set("published", true);
+                        inventories.push(inventory);
+                    });
+
+                    Parse.Object.saveAll(inventories, {
+                        success: function(inventories) {
+                            console.log("Week menu published!");
+                        },
+                        error: function(error) {
+                            console.log('Save failed! Reason: ' + error.message + 'Inventories: ' + inventories);
+                        }
+                    });
                 }
-            });
+            }).modal('show');
         },
 
         onConcealMenuClick: function() {
