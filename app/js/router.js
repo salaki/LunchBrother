@@ -45,7 +45,7 @@ define([
             'distributor': 'showDistributor',
             'driver': 'showDriver',
 	    //'loginorsignup' : 'showLoginorsignup',
-            'managerHome': 'showManagerHome',
+            'managerHome?*queryString': 'showManagerHome',
             'menuEdit?*queryString': 'showMenuEdit',
             'profile': 'showProfile',
             'signupemail' : 'showSignupemail',
@@ -194,9 +194,13 @@ define([
             }
         });
 
-        appRouter.on('route:showManagerHome', function () {
+        appRouter.on('route:showManagerHome', function (queryString) {
             // Call render on the module we loaded in via the dependency array
-            var managerHomeView = new ManagerHomeView();
+            var params = new ParseQueryString(queryString);
+            var managerHomeView = new ManagerHomeView({
+                week: params.week
+            });
+
             var currentUser = Parse.User.current();
             if(currentUser != null) {
                 permission = currentUser.get('permission');

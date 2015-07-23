@@ -70,7 +70,7 @@ define([
                     }
 
                     if (permission === LOCAL_MANAGER) {
-                        window.location.hash = '#managerHome';
+                        window.location.hash = '#managerHome?week=';
                     }
 
                     if (permission === DRIVER) {

@@ -53,6 +53,8 @@ define([
         },
 
         render: function() {
+            this.initialInventories = [];
+            this.addedInventories = [];
             var inventoryIds = this.options.inventoryIds;
             var date = this.options.date;
             var inventoryArray = inventoryIds.split(",");
@@ -64,13 +66,14 @@ define([
             restaurantQuery.find({
                 success:function(restaurants) {
                     self.$el.html(self.template({restaurants: restaurants, date: date}));
+                    self.refreshInventoryMenu("", inventoryArray);
+
+                    //For days with empty dishes
                     $(".restaurant-selection").dropdown({
                         onChange: function (restaurantId) {
                             self.refreshInventoryMenu(restaurantId, inventoryArray);
                         }
                     });
-
-                    self.refreshInventoryMenu("", inventoryArray);
                 },
                 error: function(err) {
                     console.log(err.message);
@@ -81,7 +84,7 @@ define([
         refreshInventoryMenu: function(restaurantId, inventoryArray) {
             var self = this;
             this.addedInventories = [];
-            this.initialInventories = [];
+//            this.initialInventories = [];
 
             /**
              * Get Inventory
@@ -115,9 +118,10 @@ define([
                     var finalRestaurantId = restaurantId;
                     if (inventoryArray[0] !== "") {
                         finalRestaurantId = dishes[0].get('restaurant').id;
-                        self.$(".restaurant-selection").dropdown(
+                        $(".restaurant-selection").dropdown(
                             'set selected', finalRestaurantId
-                        );
+                        ).addClass('disabled');
+                        $(".restaurant-selector-warning").css('visibility', 'visible');
                     }
 
                     /**
@@ -145,7 +149,7 @@ define([
                             });
 
                             self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : dishes}));
-                            self.setButtonsAndAddInventories(dishes);
+                            self.setButtonsAndAddInventories(dishes, inventoryArray);
                         },
                         error: function(err){
                             console.log(err.message);
@@ -164,6 +168,9 @@ define([
                 //Mark inventory dishes as added
                 if (dish.inventoryId) {
                     $('#dimmer-' + dish.id).addClass("active");
+                    $("#addMenuIcon-" + dish.id).removeClass("add");
+                    $("#addMenuIcon-" + dish.id).addClass("minus");
+                    $("#addMenuLabel-" + dish.id).text("Remove from Menu");
                 }
 
                 /**
@@ -171,24 +178,74 @@ define([
                  */
                 $("#dishQuantityInput-" + dish.id).keyup(function(){
                     $('#dimmer-' + dish.id).removeClass("active");
+                    $("#addMenuIcon-" + dish.id).removeClass("minus");
+                    $("#addMenuIcon-" + dish.id).addClass("add");
+                    $("#addMenuLabel-" + dish.id).text("Add to Menu");
                     self.addedInventories = _.reject(self.addedInventories, function (el) {
                         return el.dishId === $('#dishIdInput-' + dish.id).val();
                     });
+
+                    if (self.addedInventories.length === 0) {
+                        $(".restaurant-selection").dropdown().removeClass('disabled');
+                        $(".restaurant-selection").dropdown({
+                            onChange: function (restaurantId) {
+                                self.refreshInventoryMenu(restaurantId, ['']);
+                            }
+                        });
+                        $(".restaurant-selector-warning").css('visibility', 'hidden');
+                    }
                 });
                 $("#dishPriceInput-" + dish.id).keyup(function(){
                     $('#dimmer-' + dish.id).removeClass("active");
+                    $("#addMenuIcon-" + dish.id).removeClass("minus");
+                    $("#addMenuIcon-" + dish.id).addClass("add");
+                    $("#addMenuLabel-" + dish.id).text("Add to Menu");
                     self.addedInventories = _.reject(self.addedInventories, function (el) {
                         return el.dishId === $('#dishIdInput-' + dish.id).val();
                     });
+
+                    if (self.addedInventories.length === 0) {
+                        $(".restaurant-selection").dropdown().removeClass('disabled');
+                        $(".restaurant-selection").dropdown({
+                            onChange: function (restaurantId) {
+                                self.refreshInventoryMenu(restaurantId, ['']);
+                            }
+                        });
+                        $(".restaurant-selector-warning").css('visibility', 'hidden');
+                    }
                 });
 
                 $('#addToMenuBtn-' + dish.id).click(function(){
                     if ($('#dimmer-' + dish.id).dimmer("is active")) {
                         $('#dimmer-' + dish.id).removeClass("active");
+                        $("#addMenuIcon-" + dish.id).removeClass("minus");
+                        $("#addMenuIcon-" + dish.id).addClass("add");
+                        $("#addMenuLabel-" + dish.id).text("Add to Menu");
+
                         self.addedInventories = _.reject(self.addedInventories, function(el) {
                             return el.dishId === $('#dishIdInput-' + dish.id).val();
                         });
+
+                        if (self.addedInventories.length === 0) {
+                            $(".restaurant-selection").dropdown().removeClass('disabled');
+                            $(".restaurant-selection").dropdown({
+                                onChange: function (restaurantId) {
+                                    self.refreshInventoryMenu(restaurantId, ['']);
+                                }
+                            });
+                            $(".restaurant-selector-warning").css('visibility', 'hidden');
+                        }
+
                     } else {
+                        $(".restaurant-selection").dropdown(
+                            'set selected', dish.get('restaurant').id
+                        ).addClass('disabled');
+                        $(".restaurant-selector-warning").css('visibility', 'visible');
+
+                        $("#addMenuIcon-" + dish.id).removeClass("add");
+                        $("#addMenuIcon-" + dish.id).addClass("minus");
+                        $("#addMenuLabel-" + dish.id).text("Remove from Menu");
+
                         var quantity = $('#dishQuantityInput-' + dish.id).val();
                         var price = $('#dishPriceInput-' + dish.id).val();
 
@@ -221,6 +278,8 @@ define([
         },
 
         onSaveClick: function() {
+            console.log(this.addedInventories);
+            console.log(this.initialInventories);
             /**
              * Destroy removed inventories
              */
@@ -243,7 +302,7 @@ define([
                     //Do nothing
                 },
                 error: function(error) {
-                    alert('Destroy failed! Reason: ' + error.message + "To destroy inventories: " + toDestroyInventories);
+                    console.log('Destroy failed! Reason: ' + error.message + "To destroy inventories: " + toDestroyInventories);
                 }
             });
 
@@ -283,7 +342,7 @@ define([
                     // Do nothing for now
                 },
                 error: function(error) {
-                    alert('Save failed! Reason: ' + error.message);
+                    console.log('Save failed! Reason: ' + error.message);
                 }
             });
 
@@ -293,7 +352,22 @@ define([
         onCancelClick: function() {
             this.initialInventories = [];
             this.addedInventories = [];
-            window.location.hash = "#managerHome";
+
+            var month = this.options.date.split("/")[0] - 1;
+            var date = this.options.date.split("/")[1].split(" ")[0];
+            var d = new Date();
+            d.setMonth(month);
+            d.setDate(date);
+            var day = d.getDay(),
+                diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+            var monday = new Date(d.setDate(diff));
+            var week = (monday.getMonth() + 1) + "/" + monday.getDate() + "-";
+
+            var diff2 = monday.getDate() + 4;
+            var friday = new Date(monday.setDate(diff2));
+            week += (friday.getMonth() + 1) + "/" + friday.getDate();
+
+            window.location.hash = "#managerHome?week=" + week;
         }
     });
     return MenuEditView;
