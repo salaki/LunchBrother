@@ -3,7 +3,7 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 @import url(http://fonts.googleapis.com/css?family=Roboto);
-/* line 23, ../sass/global/_variable.scss */
+/* line 24, ../sass/global/_variable.scss */
 #orderBtn.red, .ui.button.red, #arriveBtn.red, #paymentBtn.red, #signUpBtn.red, #sendemailBtn.red, #resetBtn.red {
   background-color: #e3151a;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
@@ -12,7 +12,7 @@
   position: relative;
 }
 
-/* line 34, ../sass/global/_variable.scss */
+/* line 35, ../sass/global/_variable.scss */
 #orderBtn.grey, .ui.button.grey, #loginBtn.grey {
   background-color: #dddddd;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
@@ -22,7 +22,7 @@
   position: relative;
 }
 
-/* line 46, ../sass/global/_variable.scss */
+/* line 47, ../sass/global/_variable.scss */
 #signupReminder, #copyright {
   font-size: 12px;
   text-align: center;
@@ -911,4 +911,13 @@ header {
 /* line 410, ../sass/screen.scss */
 #termsandconditions > a {
   padding-left: 8%;
+}
+
+/* line 414, ../sass/screen.scss */
+.college-selector {
+  color: rgba(0, 0, 0, 0.95) !important;
+}
+/* line 416, ../sass/screen.scss */
+.college-selector .default.text {
+  color: rgba(0, 0, 0, 0.95) !important;
 }
