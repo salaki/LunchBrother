@@ -9,9 +9,8 @@ define([
     'models/manage/DeliveryModel',
     'text!templates/manage/distributorTemplate.html',
     'text!templates/manage/orderListTemplate.html',
-    'i18n!nls/manage',
     'libs/semantic/dropdown.min'
-], function (StatusView, PaymentModel, OrderModel, DishModel, GridModel, PickUpLocationModel, NotificationModel, DeliveryModel, distributorTemplate, orderListTemplate, manageLocal) {
+], function (StatusView, PaymentModel, OrderModel, DishModel, GridModel, PickUpLocationModel, NotificationModel, DeliveryModel, distributorTemplate, orderListTemplate) {
     var DistributorView = Parse.View.extend({
         el: $("#page"),
         template: _.template(distributorTemplate),
@@ -66,12 +65,8 @@ define([
                     var paymentQuery = new Parse.Query(PaymentModel);
                     self.$("#addressOption").dropdown();
                     self.applyQuery(paymentQuery, self);
-                    self.$("#arriveBtn").text(manageLocal.arrived);
+                    self.$("#arriveBtn").text("Arrived!");
                     self.$("#arriveBtn").addClass("red");
-                    $("#manageTitle").text(manageLocal.manageTitle);
-                    $("#has").text(manageLocal.hasPhrase);
-                    $("#numberOrder").text(manageLocal.numberOrder);
-//                    $("#manageRemark").text(manageLocal.manageRemark);
                 },
                 error: function(error) {
                     alert("Pick Up Location Query Error: " + error.code + " " + error.message);
@@ -86,7 +81,6 @@ define([
             var searchText = this.$("#searchInput").val().toLowerCase();
             if (searchText != "") {
                 paymentQuery.contains("lowercaseLastName", searchText);
-                this.$("#searchResultLabel").text(manageLocal.searchResultLabel);
             }
             else {
                 this.$("#searchResultLabel").text("");
@@ -194,8 +188,6 @@ define([
             self.$("#orderList").html(self.orderListTemplate({
                 payments: newResults
             }));
-            $(".orderListOrderNumber").text(manageLocal.manageOrderNumber);
-            $(".orderListTotal").text(manageLocal.manageTotal);
         },
 
         onPickupClick: function (ev) {
@@ -206,12 +198,6 @@ define([
             $("#confirmDialogPay").text(totalPrice);
             $("#confirmDialogOrderId").text(orderId);
             $("#confirmDialogName").text(name);
-            $("#manageCustomer").text(manageLocal.manageCustomer);
-            $("#manageOrderNumber").text(manageLocal.manageOrderNumber);
-            $("#manageTotal").text(manageLocal.manageTotal);
-            $("#manageConfirmTitle").text(manageLocal.manageConfirmTitle);
-            $("#manageCancel").text(manageLocal.manageCancel);
-            $("#manageConfirm").text(manageLocal.manageConfirm);
             $('#confirmDeliveryPayment').modal({
                 closable: false,
                 onDeny: function () {
@@ -243,7 +229,7 @@ define([
         updateStatus: function () {
             var self = this;
             self.deliveryDetails = new DeliveryModel();
-            self.deliveryDetails.set("status", manageLocal.onTheWay);
+            self.deliveryDetails.set("status", "On my way!");
             self.deliveryDetails.set("address", this.$("#addressOption").val());
             self.deliveryDetails.save();
             self.checkIfNotificationSent(this.$("#addressOption").val());

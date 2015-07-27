@@ -3,19 +3,19 @@
         <div class="left floated left aligned eight wide column">
             <p>
             <strong>
-                <label id="manageTitle">带饭大哥</label>，
+                <label id="manageTitle">Lunchbrother</label>，
                 <label id="buildingLabel"></label>
-                <label id="has">有</label>
+                <label id="has">has</label>
                 <label id="orderNumberLabel"></label>
-                <label id="numberOrder">个订单</label>
-                <label id="searchResultLabel"></label>
+                <label id="numberOrder">orders</label>
+                <label id="searchResultLabel">match search result</label>
             </strong>
             </p>
         </div>
 
         <div class="right floated right aligned eight wide column">
             <select id="addressOption" class="right floated right aligned eight wide column ui dropdown">
-                <option id="pickUpAddress" value="">选择取餐地址</option>
+                <option id="pickUpAddress" value="">Select Your Area</option>
                 <% var count = 0; %>
                 <% _.each(pickUpLocations, function(pickUpLocation){ %>
                 <% if(count === 0){ %>
@@ -47,23 +47,23 @@
         </div>
     </div>
     <div class="sixteen wide column">
-        <button id="arriveBtn" class="center aligned ui button"><i class="volume down icon"></i>正在路上</button>
+        <button id="arriveBtn" class="center aligned ui button"><i class="volume down icon"></i>On My Way!</button>
     </div>
 </div>
 
 <div id="confirmDeliveryPayment" class="ui small test modal">
     <div class="header" style="background-color: #ffffff" id="manageConfirmTitle">
-        请确认这个单子已经付过款
+    Please make sure this order has been paid
     </div>
     <div class="content">
         <table width="100%">
             <tr>
                 <td style="font-size: 12pt">
-                    <label id="manageCustomer">点餐人</label>: <label id="confirmDialogName"></label><br><br>
-                    <label id="manageOrderNumber">订单号</label>: #<label id="confirmDialogOrderId"></label>
+                    <label id="manageCustomer">Customer</label>: <label id="confirmDialogName"></label><br><br>
+                    <label id="manageOrderNumber">Order Number</label>: #<label id="confirmDialogOrderId"></label>
                 </td>
                 <td style="font-size: 16pt; color: red">
-                    <label id="manageTotal">金額</label>: $<label id="confirmDialogPay"></label>
+                    <label id="manageTotal">Total</label>: $<label id="confirmDialogPay"></label>
                 </td>
             </tr>
         </table>
@@ -72,11 +72,11 @@
         <div class="two fluid ui buttons">
             <div class="ui basic cancel button">
                 <i class="remove icon"></i>
-                <label id="manageCancel">取消</label>
+                <label id="manageCancel">Cancel</label>
             </div>
             <div class="ui ok basic button">
                 <i class="checkmark icon"></i>
-                <label id="manageConfirm">确认</label>
+                <label id="manageConfirm">Confirm</label>
             </div>
         </div>
     </div>

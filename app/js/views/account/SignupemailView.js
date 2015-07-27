@@ -1,8 +1,7 @@
 define([
   'text!templates/account/signupemailTemplate.html',
   'models/Grid',
-  'i18n!nls/login'
-], function (signupemailTemplate, GridModel, login) {
+], function (signupemailTemplate, GridModel) {
     var SignupemailView = Parse.View.extend({
         el: $("#page"),
         events: {
@@ -75,8 +74,6 @@ define([
                          on: 'blur',
                          inline: 'true'
                      });
-                     $("#gridOptionLabel").text(login.gridName);
-                     $("#signUpBtn").html(login.SignUpButton);
                  },
                  error: function(){
                      console.log("Error finding grid data.");

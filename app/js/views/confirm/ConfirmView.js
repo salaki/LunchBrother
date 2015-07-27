@@ -1,10 +1,8 @@
 define([
       'models/order/PaymentModel',
       'views/order/OrderView',
-      'i18n!nls/confirm',
-      'text!templates/confirm/confirmTemplate.html'
-			
-    ], function(PaymentModel, OrderView, confirm, confirmTemplate) {
+      'text!templates/confirm/confirmTemplate.html'			
+    ], function(PaymentModel, OrderView, confirmTemplate) {
 
       var ConfirmView = Parse.View.extend({
 
@@ -52,13 +50,6 @@ define([
               self.$el.html(self.template(self.model.toJSON()));
           }
 
-	    this.$("#nameOnOrder").html(confirm.nameOnOrder);//translation test	
-						this.$("#confirmEmail").html(confirm.confirmEmail);
-						this.$("#pickUpAddress").html(confirm.pickUpAddress);
-						//console.log(confirm.pickUpAddress);
-						this.$("#orderMessage").html(confirm.orderMessage);
-					 console.log(confirm.statusTracker); this.$('#statusTracker').text(confirm.statusTracker);
-						
             return this;
           },
 

@@ -1,12 +1,10 @@
 define([
   'router',
   'jquery',
-  "i18n!nls/string",
   'semantic',
-  'libs/semantic_2.0/components/dropdown.min',
-  
+  'libs/semantic_2.0/components/dropdown.min', 
   'libs/semantic_2.0/components/dropdown.min'
-], function(router,$,string) {
+], function(router,$) {
    'use strict';
    
   var initialize = function() {
@@ -17,18 +15,7 @@ define([
 
     Parse.initialize(appId, jsKey);
     
-    router.initialize();
-    
-    $("title").html(string.title);
-    $("#orderDish").html(string.orderDish);
-    $("#statusCheck").html(string.statusCheck);
-    $(".brand").html(string.brand);
-    $("#barTitle").html(string.barTitle);
-    $("#mobileOrder").html(string.mobileOrder);
-    $("#mobileStatus").html(string.mobileStatus);
-    $("#language,#mobileLanguage").html(string.language,string.mobileLanguage);
-    $("#mobileStatus").html(string.mobileStatus);
-    
+    router.initialize(); 
     
 
     $('.ui.dropdown').dropdown();

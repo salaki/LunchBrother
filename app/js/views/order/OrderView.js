@@ -11,11 +11,9 @@ define([
   'views/confirm/TextView',
   'text!templates/home/statsTemplate.html',
   'text!templates/order/orderTemplate.html',
-  'i18n!nls/order',
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
-
-], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate, OrderViewLocal) {
+], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate) {
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -88,19 +86,8 @@ define([
 
                                         //Localization
                                         that.$("#termsInput").prop('checked', true);
-                                        that.$("#pickUpAddress").text(OrderViewLocal.pickUpAddress);
                                         that.$("#addressdetails").dropdown();
-                                        that.$("#inputCardInfo").text(OrderViewLocal.inputCardInfo);
-                                        that.$("#cardNumber").attr("placeholder", OrderViewLocal.cardNumber);
-                                        that.$("#expDate").text(OrderViewLocal.expirationDate);
-                                        that.$("#cvv2VerificationCode").text(OrderViewLocal.cvv2VerificationCode);
-                                        that.$("label[for=terms]").text(OrderViewLocal.termOfUse);
-                                        that.$("label[for=rememberme]").text(OrderViewLocal.rememberMe);
-                                        that.$("#readTermOfUse").text(OrderViewLocal.readTermOfUse);
-                                        that.$("#orderBtn").text(OrderViewLocal.orderBtn);
-                                        that.$("#paymentFail").text(OrderViewLocal.orderBtn);
-                                        that.$("#failedReason").text(OrderViewLocal.failedReason);
-                                        that.$("#pleaseDoubleCheckOrder").text(OrderViewLocal.pleaseDoubleCheckOrder);
+                                        that.$("#cardNumber").attr("placeholder", "Your Card Number");
                                     }
                                 });
                             },
@@ -154,20 +141,8 @@ define([
                                     that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1");
                                 });
 
-                                //Localization
-                                that.$("#pickUpAddress").text(OrderViewLocal.pickUpAddress);
                                 that.$("#addressdetails").dropdown();
-                                that.$("#inputCardInfo").text(OrderViewLocal.inputCardInfo);
-                                that.$("#cardNumber").attr("placeholder", OrderViewLocal.cardNumber);
-                                that.$("#expDate").text(OrderViewLocal.expirationDate);
-                                that.$("#cvv2VerificationCode").text(OrderViewLocal.cvv2VerificationCode);
-                                that.$("label[for=terms]").text(OrderViewLocal.termOfUse);
-                                that.$("label[for=rememberme]").text(OrderViewLocal.rememberMe);
-                                that.$("#readTermOfUse").text(OrderViewLocal.readTermOfUse);
-                                that.$("#orderBtn").text(OrderViewLocal.orderBtn);
-                                that.$("#paymentFail").text(OrderViewLocal.orderBtn);
-                                that.$("#failedReason").text(OrderViewLocal.failedReason);
-                                that.$("#pleaseDoubleCheckOrder").text(OrderViewLocal.pleaseDoubleCheckOrder);
+                                that.$("#cardNumber").attr("placeholder", "Your Card Number");
                             }
                         });
                     },

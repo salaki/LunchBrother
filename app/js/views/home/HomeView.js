@@ -5,11 +5,10 @@ define(['views/home/DishView',
     'models/Grid',
     'models/Restaurant',
     'models/InventoryModel',
-    'i18n!nls/string',
     'text!templates/home/homeTemplate.html',
     'text!templates/home/statsTemplate.html',
     'text!templates/order/orderTemplate.html'],
-    function(DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, InventoryModel, string, homeTemplate, statsTemplate, orderTemplate) {
+    function(DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, InventoryModel, homeTemplate, statsTemplate, orderTemplate) {
 
 	var HomeView = Parse.View.extend({
 		// tagName: 'ul', // required, but defaults to 'div' if not set
@@ -105,15 +104,6 @@ define(['views/home/DishView',
 			}
 			this.stats.totalCharge = parseFloat((this.dishes.charge() + this.stats.tax - this.stats.coupon).toFixed(2));
 			this.$('#orderStats').html(this.statsTemplate(this.stats));
-			//Localization
-			$("#dishTitle").html(string.dishTitle);
-			$("#orderDetails").html(string.orderDetails);
-			$("#orderMessage").html(string.orderMessage);
-			$("#paymentBtn").html(string.paymentBtn);
-			$(".summary-coupon-label").html(string.summaryCouponLabel);
-			$(".summary-tax-label").html(string.summaryTaxLabel);
-			$(".summary-total-label").html(string.summaryTotalLabel);
-
 			this.delegateEvents();
 			return this;
 		},
@@ -210,19 +200,11 @@ define(['views/home/DishView',
 			if ((weekday == 6) || (weekday == 0 && hours < 14)) {
 				$("#timeAlert").css("display", "block");
 				$("#paymentBtn").addClass('disabled');
-				if (locale == "zh-cn") {
-					$("#timeAlert").text("不好意思，带饭大哥周末不订餐，周一订餐从周日晚八点开始");
-				} else {
-					$("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 2:00PM.");
-				}
+					$("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 8:00PM.");
 			} else if(weekday !== 0 && (hours>=11 && hours<=13)) {
 				$("#timeAlert").css("display", "block");
 				$("#paymentBtn").addClass('disabled');
-				if (locale == "zh-cn") {
-					$("#timeAlert").text("不好意思，带饭大哥订餐11点结束，明天请早儿吧");
-				} else {
-					$("#timeAlert").text("Sorry, we don't take order after 11:00AM. Our order time is 2:00PM-11:00AM.");
-				}
+				$("#timeAlert").text("Sorry, we don't take order after 11:00AM. Our order time is 2:00PM-11:00AM.");
 			}else if ((weekday == 0 && hours >= 14) || (weekday == 5 && hours <= 10) && ($("#order").length == 0)) {
 				$("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
 				$("#page").append(view.render().el);

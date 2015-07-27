@@ -1,14 +1,9 @@
 <div class="ui vertical segment">
-	<h2 id="orderDetails" style="padding:1px 0 0;" class="ui header small"></h2>
+	<h2 id="orderDetails" style="padding:1px 0 0;" class="ui header small">Your Order Summary:</h2>
 	<% _.each(orders, function(order) { %>
 	<div class="ui column grid summary-list">
 		<div class="eight wide column">
-			<span class="summary-name"> <%if(locale == "zh-cn"){%>
-				<%= order.get('type') %>
-				<%}%>
-				<%if(locale !== "zh-cn"){%>
-				<%= order.get('typeEn') %>
-				<%}%> </span>
+			<span class="summary-name"> <%= order.get('typeEn') %> </span>
 		</div>
 		<div class="four wide column right aligned">
 			<span class="summary-count"> <%= order.get('count') %> </span>
@@ -21,12 +16,15 @@
 	<% }); %>
 </div>
 <div class="ui vertical segment right aligned">
-<strong class="summary-coupon-label"></strong><span class="summary-coupon">-$<%= coupon %></span>
+<strong class="summary-coupon-label">Credit:</strong>
+<span class="summary-coupon">-$<%= coupon %></span>
 </div>
 <div class="ui vertical segment right aligned">
-	<strong class="summary-tax-label"></strong><span class="summary-tax">$<%= tax %></span>
+	<strong class="summary-tax-label">Tax & Delivery Fee:</strong>
+	<span class="summary-tax">$<%= tax %></span>
 </div>
 
 <div class="ui vertical segment right aligned">
-	<strong class="summary-total-label"></strong><span class="summary-total">$<%= totalCharge %></span>
+	<strong class="summary-total-label">Total:</strong>
+	<span class="summary-total">$<%= totalCharge %></span>
 </div>
