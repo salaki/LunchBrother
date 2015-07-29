@@ -1,8 +1,6 @@
 define([
-        'text!templates/account/loginorsignupTemplate.html',
-        'i18n!nls/login'
-  
-], function (loginorsignupTemplate, login) {
+        'text!templates/account/loginorsignupTemplate.html',  
+], function (loginorsignupTemplate) {
 
     var LoginorsignupView = Parse.View.extend({
         el: $("#page"),
@@ -16,8 +14,6 @@ define([
         render: function () {
            
             this.$el.html(this.template());
-            $("#signUpBtn").html(login.SignUpButton);
-            $("#loginBtnContent").html(login.LoginButton);
             return this;
         }
     });

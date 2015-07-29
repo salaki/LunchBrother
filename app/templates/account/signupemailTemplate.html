@@ -21,7 +21,7 @@
             <div class="ui fluid field">
                 <div id="gridOptionDiv">
                     <select id="gridOptions" class="ui dropdown" name="gridOptions">
-                        <option id="gridOptionLabel" value="">选择您所在位置</option>
+                        <option id="gridOptionLabel" value="">Select Your Area</option>
                         <% _.each(grids, function(grid){ %>
                         <option value="<%= grid.id %>"><%= grid.get('name') %></option>
                         <% }); %>
@@ -30,7 +30,7 @@
             </div>
 		</div>
 	</div>
-	<button id="signUpBtn" class="center aligned ui fluid red button"></button>
+	<button id="signUpBtn" class="center aligned ui fluid red button">Create an Account</button>
 	<div class="ui divider hidden"></div>
 	<div id= "fbLoginBtn" class="ui facebook fluid button">
 		<i class="facebook icon"></i> Facebook

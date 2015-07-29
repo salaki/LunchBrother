@@ -2,8 +2,7 @@
   'models/manage/DeliveryModel',
   'text!templates/status/statusTemplate.html',
   'text!templates/home/homeTemplate.html',
-  'i18n!nls/status'
-], function (DeliveryModel, statusTemplate, homeTemplate, status) {
+], function (DeliveryModel, statusTemplate, homeTemplate) {
 
     var StatusView = Parse.View.extend({
         el: $("#page"),
@@ -31,13 +30,13 @@
             $('.menu li a[href="#"]').parent().addClass('active');
 
             this.$el.html(this.template());
-            $("h1.ui.small.center.aligned.header").html(status.statusHeader);
-            $("#contact1").html(status.contact1);
-            $("#contact2").html(status.contact2);
-            $("#contact3").html(status.contact3);
-            $("#status1").html(status.status1);
-            $("#status2").html(status.status2);
-            $("#status3").html(status.status3);
+            $("h1.ui.small.center.aligned.header").html("Where is your delivery man?");
+            $("#contact1").html("Contact:Fish (724-510-8760)");
+            $("#contact2").html("Contact:Jabber (202-812-4286)");
+            $("#contact3").html("Contact:Rachel (301-312-4798)");
+            $("#status1").html("On your way...");
+            $("#status2").html("On your way...");
+            $("#status3").html("On your way...");
 
             var current = new Date();
             var currentHour = current.getHours();
@@ -61,34 +60,16 @@
                 success: function (results) {
                     _.each(results, function (result) {
                         if (result.get("address") == "Regents Drive Parking Garage") {
-                            if(locale == "zh-cn"){
-                            $("#status1").text("我已到达!");
-                            $("#status1").addClass("red");
-                           }
-                           if(locale !== "zh-cn"){
                             $("#status1").text("Arrived!");
                             $("#status1").addClass("red");
-                           }
                         }
                         if (result.get("address") == "McKeldin Library") {
-                            if(locale == "zh-cn"){
-                            $("#status2").text("我已到达!");
-                            $("#status2").addClass("red");
-                           }
-                           if(locale !== "zh-cn"){
                             $("#status2").text("Arrived!");
                             $("#status2").addClass("red");
-                           }
                         }
                         if (result.get("address") == "AV Williams Bldg") {
-                            if(locale == "zh-cn"){
-                                $("#status3").text("我已到达!");
-                                $("#status3").addClass("red");
-                            }
-                            if(locale !== "zh-cn"){
                                 $("#status3").text("Arrived!");
-                                $("#status3").addClass("red");
-                            }
+                                $("#status3").addClass("red");                            
                         }
                         });
                 },

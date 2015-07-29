@@ -4,7 +4,6 @@ var config = {
     "baseUrl": "js",
     "paths": {
         jquery: 'libs/jquery/jquery-1.11.2.min',
-        i18n: 'libs/require/i18n',
         underscore: 'libs/underscore/underscore-min',
         //backbone: 'libs/backbone/backbone-min',
         parse: 'libs/parse/parse-1.3.2.min',
@@ -24,7 +23,7 @@ var config = {
             deps: ['jquery', 'underscore'],
             exports: 'Parse'
         },
-        'main': ['parse', 'i18n'],
+        'main': ['parse'],
         // 'parse':['jquery', 'underscore'],
         "semantic": ['jquery'],
         "libs/semantic_2.0/gdropdown.min": ["jquery", "semantic"],
@@ -37,14 +36,7 @@ var config = {
     }
 };
 
-var locale = getParameterByName('locale');
-if (locale && locale == "zh-cn") {
-    config.config = {
-        i18n: {
-            "locale": "zh-cn"
-        }
-    };
-}
+
 
 //Permission code
 var GENERAL_USER = 1, LOCAL_MANAGER = 2, DRIVER = 3, DISTRIBUTOR = 4;
