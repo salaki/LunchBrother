@@ -60,32 +60,6 @@ define([
             var inventoryArray = inventoryIds.split(",");
 
             var self = this;
-            var currentUser = Parse.User.current();
-            var restaurantQuery = new Parse.Query(RestaurantModel);
-            restaurantQuery.equalTo("gridId", currentUser.get('gridId'));
-            restaurantQuery.find({
-                success:function(restaurants) {
-                    self.$el.html(self.template({restaurants: restaurants, date: date}));
-                    self.refreshInventoryMenu("", inventoryArray);
-
-                    //For days with empty dishes
-                    $(".restaurant-selection").dropdown({
-                        onChange: function (restaurantId) {
-                            self.refreshInventoryMenu(restaurantId, inventoryArray);
-                        }
-                    });
-                },
-                error: function(err) {
-                    console.log(err.message);
-                }
-            });
-        },
-
-        refreshInventoryMenu: function(restaurantId, inventoryArray) {
-            var self = this;
-            this.addedInventories = [];
-//            this.initialInventories = [];
-
             /**
              * Get Inventory
              */
@@ -99,13 +73,14 @@ define([
                             var dish = inventory.get('dish');
                             dish.quantity = inventory.get('preorderQuantity');
                             dish.inventoryId = inventory.id;
+                            dish.price = inventory.get('price');
                             dishes.push(dish);
 
                             var inventory = {
                                 id: inventory.id,
                                 dishId: dish.id,
                                 quantity: dish.quantity,
-                                price: dish.get('Unit_Price')
+                                price: dish.price
                             };
                             self.addedInventories.push(inventory);
                             self.initialInventories.push(inventory);
@@ -113,50 +88,109 @@ define([
                     );
 
                     /**
-                     * Set Restaurant Selector Value
+                     * Set Restaurant Value
                      */
-                    var finalRestaurantId = restaurantId;
+                    var restaurantId = null;
                     if (inventoryArray[0] !== "") {
-                        finalRestaurantId = dishes[0].get('restaurant').id;
-                        $(".restaurant-selection").dropdown(
-                            'set selected', finalRestaurantId
-                        ).addClass('disabled');
-                        $(".restaurant-selector-warning").css('visibility', 'visible');
+                        restaurantId = dishes[0].get('restaurant').id;
                     }
 
-                    /**
-                     * Get restaurant dishes and compare with inventory dishes then fill up the rest dishes
-                     */
-                    var dishQuery = new Parse.Query(DishModel);
-                    dishQuery.equalTo("restaurant", {
-                        __type:"Pointer",
-                        className: "Restaurant",
-                        objectId: finalRestaurantId
-                    });
+                    if (restaurantId) {
+                        /**
+                         * Get restaurant dishes and compare with inventory dishes then fill up the rest dishes
+                         */
+                        var dishQuery = new Parse.Query(DishModel);
+                        dishQuery.equalTo("restaurant", {
+                            __type:"Pointer",
+                            className: "Restaurant",
+                            objectId: restaurantId
+                        });
 
-                    dishQuery.find({
-                        success: function(restaurantDishes){
-                            //Remove inventory dishes from restaurant dishes
-                            _.each(dishes, function(inventoryDish){
-                                restaurantDishes = _.reject(restaurantDishes, function(el) {
-                                    return el.id === inventoryDish.id;
+                        dishQuery.find({
+                            success: function(restaurantDishes){
+                                //Remove inventory dishes from restaurant dishes
+                                _.each(dishes, function(inventoryDish){
+                                    restaurantDishes = _.reject(restaurantDishes, function(el) {
+                                        return el.id === inventoryDish.id;
+                                    });
                                 });
-                            });
 
-                            //Add remainder restaurant dishes
-                            _.each(restaurantDishes, function(restaurantDish){
-                                dishes.push(restaurantDish);
-                            });
+                                //Add remainder restaurant dishes
+                                _.each(restaurantDishes, function(restaurantDish){
+                                    dishes.push(restaurantDish);
+                                });
 
-                            self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : dishes}));
-                            self.setButtonsAndAddInventories(dishes, inventoryArray);
-                        },
-                        error: function(err){
-                            console.log(err.message);
-                        }
-                    });
+                                var currentUser = Parse.User.current();
+                                var restaurantQuery = new Parse.Query(RestaurantModel);
+                                restaurantQuery.equalTo("gridId", currentUser.get('gridId'));
+                                restaurantQuery.find({
+                                    success:function(restaurants) {
+                                        self.$el.html(self.template({restaurants: restaurants, date: date}));
+                                        self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : dishes}));
+                                        self.setButtonsAndAddInventories(dishes);
+                                        $(".restaurant-selection").dropdown(
+                                            'set selected', restaurantId
+                                        );
+                                        $(".restaurant-selection").dropdown({
+                                            onChange: function (restaurantId) {
+                                                self.refreshInventoryMenu(restaurantId);
+                                            }
+                                        }).addClass('disabled');
+                                        $(".restaurant-selector-warning").css('visibility', 'visible');
+                                    },
+                                    error: function(err) {
+                                        console.log(err.message);
+                                    }
+                                });
+                            },
+                            error: function(err){
+                                console.log(err.message);
+                            }
+                        });
+                    } else {
+                        var currentUser = Parse.User.current();
+                        var restaurantQuery = new Parse.Query(RestaurantModel);
+                        restaurantQuery.equalTo("gridId", currentUser.get('gridId'));
+                        restaurantQuery.find({
+                            success:function(restaurants) {
+                                self.$el.html(self.template({restaurants: restaurants, date: date}));
+                                //For days with empty dishes
+                                $(".restaurant-selection").dropdown({
+                                    onChange: function (restaurantId) {
+                                        self.refreshInventoryMenu(restaurantId);
+                                    }
+                                });
+                            },
+                            error: function(err) {
+                                console.log(err.message);
+                            }
+                        });
+                    }
                 },
                 error: function(err) {
+                    console.log(err.message);
+                }
+            });
+        },
+
+        refreshInventoryMenu: function(restaurantId) {
+            var self = this;
+            this.addedInventories = [];
+//            this.initialInventories = [];
+
+            var dishQuery = new Parse.Query(DishModel);
+            dishQuery.equalTo("restaurant", {
+                __type:"Pointer",
+                className: "Restaurant",
+                objectId: restaurantId
+            });
+
+            dishQuery.find({
+                success: function(restaurantDishes){
+                    self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : restaurantDishes}));
+                    self.setButtonsAndAddInventories(restaurantDishes);
+                },
+                error: function(err){
                     console.log(err.message);
                 }
             });
@@ -167,85 +201,36 @@ define([
             _.each(dishes, function(dish) {
                 //Mark inventory dishes as added
                 if (dish.inventoryId) {
-                    $('#dimmer-' + dish.id).addClass("active");
-                    $("#addMenuIcon-" + dish.id).removeClass("add");
-                    $("#addMenuIcon-" + dish.id).addClass("minus");
-                    $("#addMenuLabel-" + dish.id).text("Remove from Menu");
+                    self.markAsAdded(dish.id);
                 }
 
                 /**
                  * Set input value onChange events
                  */
                 $("#dishQuantityInput-" + dish.id).keyup(function(){
-                    $('#dimmer-' + dish.id).removeClass("active");
-                    $("#addMenuIcon-" + dish.id).removeClass("minus");
-                    $("#addMenuIcon-" + dish.id).addClass("add");
-                    $("#addMenuLabel-" + dish.id).text("Add to Menu");
+                    self.markAsNotAdded(dish.id);
                     self.addedInventories = _.reject(self.addedInventories, function (el) {
                         return el.dishId === $('#dishIdInput-' + dish.id).val();
                     });
-
-                    if (self.addedInventories.length === 0) {
-                        $(".restaurant-selection").dropdown().removeClass('disabled');
-                        $(".restaurant-selection").dropdown({
-                            onChange: function (restaurantId) {
-                                self.refreshInventoryMenu(restaurantId, ['']);
-                            }
-                        });
-                        $(".restaurant-selector-warning").css('visibility', 'hidden');
-                    }
+                    self.checkAddedDishes();
                 });
                 $("#dishPriceInput-" + dish.id).keyup(function(){
-                    $('#dimmer-' + dish.id).removeClass("active");
-                    $("#addMenuIcon-" + dish.id).removeClass("minus");
-                    $("#addMenuIcon-" + dish.id).addClass("add");
-                    $("#addMenuLabel-" + dish.id).text("Add to Menu");
+                    self.markAsNotAdded(dish.id);
                     self.addedInventories = _.reject(self.addedInventories, function (el) {
                         return el.dishId === $('#dishIdInput-' + dish.id).val();
                     });
-
-                    if (self.addedInventories.length === 0) {
-                        $(".restaurant-selection").dropdown().removeClass('disabled');
-                        $(".restaurant-selection").dropdown({
-                            onChange: function (restaurantId) {
-                                self.refreshInventoryMenu(restaurantId, ['']);
-                            }
-                        });
-                        $(".restaurant-selector-warning").css('visibility', 'hidden');
-                    }
+                    self.checkAddedDishes();
                 });
 
                 $('#addToMenuBtn-' + dish.id).click(function(){
                     if ($('#dimmer-' + dish.id).dimmer("is active")) {
-                        $('#dimmer-' + dish.id).removeClass("active");
-                        $("#addMenuIcon-" + dish.id).removeClass("minus");
-                        $("#addMenuIcon-" + dish.id).addClass("add");
-                        $("#addMenuLabel-" + dish.id).text("Add to Menu");
-
+                        self.markAsNotAdded(dish.id);
                         self.addedInventories = _.reject(self.addedInventories, function(el) {
                             return el.dishId === $('#dishIdInput-' + dish.id).val();
                         });
-
-                        if (self.addedInventories.length === 0) {
-                            $(".restaurant-selection").dropdown().removeClass('disabled');
-                            $(".restaurant-selection").dropdown({
-                                onChange: function (restaurantId) {
-                                    self.refreshInventoryMenu(restaurantId, ['']);
-                                }
-                            });
-                            $(".restaurant-selector-warning").css('visibility', 'hidden');
-                        }
+                        self.checkAddedDishes();
 
                     } else {
-                        $(".restaurant-selection").dropdown(
-                            'set selected', dish.get('restaurant').id
-                        ).addClass('disabled');
-                        $(".restaurant-selector-warning").css('visibility', 'visible');
-
-                        $("#addMenuIcon-" + dish.id).removeClass("add");
-                        $("#addMenuIcon-" + dish.id).addClass("minus");
-                        $("#addMenuLabel-" + dish.id).text("Remove from Menu");
-
                         var quantity = $('#dishQuantityInput-' + dish.id).val();
                         var price = $('#dishPriceInput-' + dish.id).val();
 
@@ -260,7 +245,13 @@ define([
                             return;
                         }
 
-                        $('#dimmer-' + dish.id).addClass("active");
+                        $(".restaurant-selection").dropdown(
+                            'set selected', dish.get('restaurant').id
+                        ).addClass('disabled');
+                        $(".restaurant-selector-warning").css('visibility', 'visible');
+
+                        self.markAsAdded(dish.id);
+
                         var inventory = {
                             id: $('#inventoryId-' + dish.id).val(),
                             dishId: $('#dishIdInput-' + dish.id).val(),
@@ -273,13 +264,32 @@ define([
             });
         },
 
+        checkAddedDishes: function() {
+            if (this.addedInventories.length === 0) {
+                $(".restaurant-selection").dropdown().removeClass('disabled');
+                $(".restaurant-selector-warning").css('visibility', 'hidden');
+            }
+        },
+
         isInteger: function(n) {
             return Number(n) && Number(n) % 1 === 0;
         },
 
+        markAsAdded: function(dishId) {
+            $('#dimmer-' + dishId).addClass("active");
+            $("#addMenuIcon-" + dishId).removeClass("add");
+            $("#addMenuIcon-" + dishId).addClass("minus");
+            $("#addMenuLabel-" + dishId).text("Remove from Menu");
+        },
+
+        markAsNotAdded: function(dishId) {
+            $('#dimmer-' + dishId).removeClass("active");
+            $("#addMenuIcon-" + dishId).removeClass("minus");
+            $("#addMenuIcon-" + dishId).addClass("add");
+            $("#addMenuLabel-" + dishId).text("Add to Menu");
+        },
+
         onSaveClick: function() {
-            console.log(this.addedInventories);
-            console.log(this.initialInventories);
             /**
              * Destroy removed inventories
              */
@@ -331,6 +341,7 @@ define([
                 toSaveInventory.set("preorderQuantity", parseInt(inventory.quantity));
                 toSaveInventory.set("currentQuantity", parseInt(inventory.quantity));
                 toSaveInventory.set("orderBy", currentUser);
+                toSaveInventory.set("price", Number(inventory.price));
                 toSaveInventory.set("status", "Unconfirmed");
                 toSaveInventory.set("pickUpDate", pickUpdate);
                 toSaveInventories.push(toSaveInventory);
