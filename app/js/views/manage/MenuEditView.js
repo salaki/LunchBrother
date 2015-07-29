@@ -245,10 +245,12 @@ define([
                             return;
                         }
 
-                        $(".restaurant-selection").dropdown(
-                            'set selected', dish.get('restaurant').id
-                        ).addClass('disabled');
-                        $(".restaurant-selector-warning").css('visibility', 'visible');
+                        if (self.addedInventories === 0) {
+                            $(".restaurant-selection").dropdown(
+                                'set selected', dish.get('restaurant').id
+                            ).addClass('disabled');
+                            $(".restaurant-selector-warning").css('visibility', 'visible');
+                        }
 
                         self.markAsAdded(dish.id);
 
