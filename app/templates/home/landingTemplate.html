@@ -1,0 +1,61 @@
+<div id="example">
+    <div class="ui sticky">
+        <div class="ui fluid search selection dropdown college-selector">
+            <input type="hidden" name="university">
+            <div class="default text">Select a location</div><i class="dropdown icon"></i>
+            <div class="menu">
+                <% _.each(universities, function(university) { %>
+                <div class="item" data-value="<%= university.get('biz_name') %>"><i class="university icon"></i><%= university.get('biz_name') %></div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+    <div id="weeklyMenu"></div>
+    <div class="ui divider hidden"></div>
+    <a class="center aligned ui red button" href="#">Sign up and try!</a>
+</div>
+
+<!-- feedback begin -->
+<div id="voteDialog" class="ui small test modal">
+    <div class="content">
+        <div class="ui icon message">
+            <i class="info circle icon"></i>
+            <div class="content">
+                <div class="header">
+                    Oops... We don't have service at this location yet!
+                </div>
+                <p>Vote for it, and we will be there soon!</p>
+            </div>
+        </div>
+        <div class="ui left floated red medium statistic">
+            <div class="value">
+                323
+            </div>
+            <div class="label">
+                Voted!
+            </div>
+        </div>
+        <h5 class="ui header" id="targetCollege">University of Maryland College Park</h5>
+        <div class="ui form fluid">
+            <div class="field">
+                <input type="email" placeholder="Your Email..." id="voterEmail">
+            </div>
+        </div>
+        <div class="ui divider hidden"></div>
+    </div>
+    <div class="actions">
+        <div class="one ui fluid buttons">
+            <div class="ui ok basic button">
+                <span class="center aligned ui red button">Vote!</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- feedback end -->
+
+<!--<script>-->
+<!--$('.ui.sticky').sticky({-->
+    <!--offset: 60,-->
+    <!--context: '#example'-->
+<!--});-->
+<!--</script>-->
