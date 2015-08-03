@@ -164,8 +164,15 @@ define([
                         },
                         onApprove: function () {
                             var voterEmail = $('#voterEmail').val();
+                            var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+                            var collegeRegex = /\.edu/;
+
                             if (voterEmail.trim() === "") {
                                 alert("Please enter your email address.");
+                            } else if (!emailRegEx.test(voterEmail)) {
+                                alert("Please enter valid email address.");
+                            } else if (!collegeRegex.test(voterEmail)) {
+                                alert("Sorry, we currently only accept school email address.");
                             } else {
                                 var requestQuery = new Parse.Query(UserRequestModel);
                                 requestQuery.equalTo("requestByEmail", voterEmail);
@@ -181,7 +188,7 @@ define([
                                             newRequest.set("requestTargetId", collegeName);
                                             newRequest.save({
                                                 success: function(request) {
-                                                    alert("Request ID: " + request.id + ". Thank you for your response, we will work hard on your request!");
+                                                    alert("Request saved, thank you for your response!");
                                                 },
                                                 error: function(error) {
                                                     alert("Error: " + error.code + " " + error.message);
