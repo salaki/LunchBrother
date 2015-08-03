@@ -1,0 +1,164 @@
+<div class="ui pointing secondary menu">
+    <a class="active item" data-tab="first"><%= weeks[0] %></a>
+    <a class="item" data-tab="second"><%= weeks[1] %></a>
+    <a class="item" data-tab="third"><%= weeks[2] %></a>
+</div>
+<div class="ui grid active tab" data-tab="first">
+    <div class="doubling two column row dishes">
+        <% _.each(menu[0], function(inventory) { %>
+        <div class="column">
+            <div class="ui weekly card">
+                <div class="image">
+                    <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                </div>
+                <div class="content">
+                    <div class="ui grid">
+                        <div class="ten wide column dish-desc">
+                            <h5 class="ui sub header"> <%= inventory.get('dish').get('dishName') %>
+                                <div class="sub header">$<%= inventory.get('price') %></div>
+                            </h5>
+                        </div>
+
+                        <div class="rs-name six wide right aligned column">
+                            <%= inventory.get('dish').get('restaurant').get('name') %>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui extra content horizontal segments">
+                    <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="wait icon"></i>
+                                    <%= inventory.get('dish').get('calorie') %> Cal
+                                </div>
+                            </span>
+                    </div>
+                    <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="leaf icon green"></i>
+                                    <%= inventory.get('dish').get('vegetarian') %>
+                                </div>
+                            </span>
+                    </div>
+                    <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="ban icon"></i>
+                                    <%= inventory.get('dish').get('gluten') %>
+                                </div>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% })%>
+    </div>
+</div>
+<div class="ui grid tab" data-tab="second">
+    <div class="doubling two column row dishes">
+        <% _.each(menu[1], function(inventory) { %>
+        <div class="column">
+            <div class="ui weekly card">
+                <div class="image">
+                    <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                </div>
+                <div class="content">
+                    <div class="ui grid">
+                        <div class="ten wide column dish-desc">
+                            <h5 class="ui sub header"> <%= inventory.get('dish').get('dishName') %>
+                                <div class="sub header">$<%= inventory.get('price') %></div>
+                            </h5>
+                        </div>
+
+                        <div class="rs-name six wide right aligned column">
+                            <%= inventory.get('dish').get('restaurant').get('name') %>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui extra content horizontal segments">
+                    <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="wait icon"></i>
+                                    <%= inventory.get('dish').get('calorie') %> Cal
+                                </div>
+                            </span>
+                    </div>
+                    <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="leaf icon green"></i>
+                                    <%= inventory.get('dish').get('vegetarian') %>
+                                </div>
+                            </span>
+                    </div>
+                    <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="ban icon"></i>
+                                    <%= inventory.get('dish').get('gluten') %>
+                                </div>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% })%>
+    </div>
+</div>
+<div class="ui grid tab" data-tab="third">
+    <div class="doubling two column row dishes">
+        <% _.each(menu[2], function(inventory) { %>
+        <div class="column">
+            <div class="ui weekly card">
+                <div class="image">
+                    <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                </div>
+                <div class="content">
+                    <div class="ui grid">
+                        <div class="ten wide column dish-desc">
+                            <h5 class="ui sub header"> <%= inventory.get('dish').get('dishName') %>
+                                <div class="sub header">$<%= inventory.get('price') %></div>
+                            </h5>
+                        </div>
+
+                        <div class="rs-name six wide right aligned column">
+                            <%= inventory.get('dish').get('restaurant').get('name') %>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui extra content horizontal segments">
+                    <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="wait icon"></i>
+                                    <%= inventory.get('dish').get('calorie') %> Cal
+                                </div>
+                            </span>
+                    </div>
+                    <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="leaf icon green"></i>
+                                    <%= inventory.get('dish').get('vegetarian') %>
+                                </div>
+                            </span>
+                    </div>
+                    <div class="ui segment">
+                            <span class="left floated">
+                                <div class="content">
+                                    <i class="ban icon"></i>
+                                    <%= inventory.get('dish').get('gluten') %>
+                                </div>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% })%>
+    </div>
+</div>
+<script>
+    $('.menu .item').tab();
+</script>

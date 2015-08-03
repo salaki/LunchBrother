@@ -111,6 +111,7 @@ define([
                     });
                     self.delegateEvents(_.extend(self.events, newEvent));
 
+                    //Get three weeks
                     var d = new Date();
                     var day = d.getDay(),
                         diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
@@ -197,7 +198,7 @@ define([
 
                 /**
                  *
-                 * Main query part
+                 * Main inventory query part
                  */
                 var self = this;
                 var currentUser = Parse.User.current();
