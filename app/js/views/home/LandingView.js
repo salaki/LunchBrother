@@ -111,6 +111,10 @@ define([
 
             firstMonday.setFullYear(firstMonday.getFullYear(), firstMonday.getMonth(), firstMonday.getDate());
             firstMonday.setHours(0, 0, 0, 0);
+            secondMonday.setFullYear(secondMonday.getFullYear(), secondMonday.getMonth(), secondMonday.getDate());
+            secondMonday.setHours(0, 0, 0, 0);
+            thirdMonday.setFullYear(thirdMonday.getFullYear(), thirdMonday.getMonth(), thirdMonday.getDate());
+            thirdMonday.setHours(0, 0, 0, 0);
             friday3.setFullYear(friday.getFullYear(), friday3.getMonth(), friday3.getDate());
             friday3.setHours(23, 59, 59, 0);
 
@@ -146,28 +150,57 @@ define([
 
         showVoteDialog: function(collegeName) {
             $('#targetCollege').text(collegeName);
+            $('#voterEmail').val("");
             var requestQuery = new Parse.Query(UserRequestModel);
-            //TODO - Count request by college name, and use jquery to update value
-
-            $('#voteDialog').modal({
-                closable: true,
-                onDeny: function () {
-                    // This is not an option
+            requestQuery.equalTo("requestType", "SERVICE");
+            requestQuery.equalTo("requestTargetId", collegeName);
+            requestQuery.count({
+                success: function(count) {
+                    $('#numberOfVote').text(count);
+                    $('#voteDialog').modal({
+                        closable: true,
+                        onDeny: function () {
+                            // This is not an option
+                        },
+                        onApprove: function () {
+                            var voterEmail = $('#voterEmail').val();
+                            if (voterEmail.trim() === "") {
+                                alert("Please enter your email address.");
+                            } else {
+                                var requestQuery = new Parse.Query(UserRequestModel);
+                                requestQuery.equalTo("requestByEmail", voterEmail);
+                                requestQuery.equalTo("requestTargetId", collegeName);
+                                requestQuery.find({
+                                    success: function(users) {
+                                        if (users.length > 0){
+                                            alert("We already have your request record, thank you very much!");
+                                        } else {
+                                            var newRequest = new UserRequestModel();
+                                            newRequest.set("requestType", "SERVICE");
+                                            newRequest.set("requestByEmail", voterEmail);
+                                            newRequest.set("requestTargetId", collegeName);
+                                            newRequest.save({
+                                                success: function(request) {
+                                                    alert("Request ID: " + request.id + ". Thank you for your response, we will work hard on your request!");
+                                                },
+                                                error: function(error) {
+                                                    alert("Error: " + error.code + " " + error.message);
+                                                }
+                                            });
+                                        }
+                                    },
+                                    error: function(error) {
+                                        alert("Error: " + error.code + " " + error.message);
+                                    }
+                                });
+                            }
+                        }
+                    }).modal('show');
                 },
-                onApprove: function () {
-                    //TODO - check if it is requested by the same email, if yes, pop out a funny dialog,
-                    // otherwise save the request data
-                    var voterEmail = $('#voterEmail').val();
-                    console.log(voterEmail);
-
-
-                    alert("Thank you for your response, we will work hard on your request!");
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
                 }
-            }).modal('show');
-        },
-
-        checkIfRequestedAlready: function() {
-
+            });
         }
     });
     return LandingView;
