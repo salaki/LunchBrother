@@ -5,305 +5,57 @@
             <div class="default text">Select a location</div><i class="dropdown icon"></i>
             <div class="menu">
                 <% _.each(universities, function(university) { %>
-                <div class="item" data-value="<%= university.id %>"><i class="university icon"></i><%= university.get('biz_name') %></div>
+                <div class="item" data-value="<%= university.get('biz_name') %>"><i class="university icon"></i><%= university.get('biz_name') %></div>
                 <% }) %>
             </div>
         </div>
     </div>
-    <div id="main" class="ui pointing secondary menu">
-        <a class="active item" data-tab="first">7/7-7/12</a>
-        <a class="item" data-tab="second">7/15-7/20</a>
-        <a class="item" data-tab="third">7/23-7/28</a>
-    </div>
-
-
-    <div class="ui grid active tab" data-tab="first">
-        <div class="doubling two column row dishes">
-            <div class="column">
-                <div class="ui weekly card">
-                    <div class="image">
-                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-                    </div>
-                    <div class="content">
-                        <div class="ui grid">
-                            <div class="ten wide column dish-desc">
-                                <h5 class="ui sub header"> dish name
-                                    <div class="sub header">$10.99</div>
-                                </h5>
-                            </div>
-
-                            <div class="rs-name six wide right aligned column">
-                                Restaurant ABC
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui extra content horizontal segments">
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    300 Cal
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="leaf icon green"></i>
-                                    Vegetarian
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="ban icon"></i>
-                                    No Gluten
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="ui weekly card">
-                    <div class="image">
-                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-                    </div>
-                    <div class="content">
-                        <div class="ui grid">
-                            <div class="ten wide column dish-desc">
-                                <h5 class="ui sub header"> dish name
-                                    <div class="sub header">$10.99</div>
-                                </h5>
-                            </div>
-
-                            <div class="rs-name six wide right aligned column">
-                                Restaurant ABC
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui extra content horizontal segments">
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    300 Cal
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="leaf icon green"></i>
-                                    Vegetarian
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="ban icon"></i>
-                                    No Gluten
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="ui grid active tab" data-tab="second">
-        <div class="doubling two column row dishes">
-            <div class="column">
-                <div class="ui weekly card">
-                    <div class="image">
-                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-                    </div>
-                    <div class="content">
-                        <div class="ui grid">
-                            <div class="ten wide column dish-desc">
-                                <h5 class="ui sub header"> dish name
-                                    <div class="sub header">$10.99</div>
-                                </h5>
-                            </div>
-
-                            <div class="rs-name six wide right aligned column">
-                                Restaurant ABC
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui extra content horizontal segments">
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    300 Cal
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="leaf icon green"></i>
-                                    Vegetarian
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="ban icon"></i>
-                                    No Gluten
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="ui weekly card">
-                    <div class="image">
-                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-                    </div>
-                    <div class="content">
-                        <div class="ui grid">
-                            <div class="ten wide column dish-desc">
-                                <h5 class="ui sub header"> dish name
-                                    <div class="sub header">$10.99</div>
-                                </h5>
-                            </div>
-
-                            <div class="rs-name six wide right aligned column">
-                                Restaurant ABC
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui extra content horizontal segments">
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    300 Cal
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="leaf icon green"></i>
-                                    Vegetarian
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="ban icon"></i>
-                                    No Gluten
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="ui grid active tab" data-tab="third">
-        <div class="doubling two column row dishes">
-            <div class="column">
-                <div class="ui weekly card">
-                    <div class="image">
-                        <img src="http://www.seattleorganicrestaurants.com/vegan-whole-foods/images/Food-Guidelines.jpg">
-                    </div>
-                    <div class="content">
-                        <div class="ui grid">
-                            <div class="ten wide column dish-desc">
-                                <h5 class="ui sub header"> dish name
-                                    <div class="sub header">$10.99</div>
-                                </h5>
-                            </div>
-
-                            <div class="rs-name six wide right aligned column">
-                                Restaurant ABC
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui extra content horizontal segments">
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    300 Cal
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="leaf icon green"></i>
-                                    Vegetarian
-                                </div>
-                            </span>
-                        </div>
-                        <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="ban icon"></i>
-                                    No Gluten
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="weeklyMenu"></div>
     <div class="ui divider hidden"></div>
-    <button class="center aligned ui red button">Sign up and try!</button>
+    <a class="center aligned ui red button" href="#">Sign up and try!</a>
 </div>
 
 <!-- feedback begin -->
-<div class="ui icon message">
-    <i class="info circle icon"></i>
+<div id="voteDialog" class="ui small test modal">
     <div class="content">
-        <div class="header">
-            Oops... We don't have service at this location yet!
+        <div class="ui icon message">
+            <i class="info circle icon"></i>
+            <div class="content">
+                <div class="header">
+                    Oops... We don't have service at this location yet!
+                </div>
+                <p>Vote for it, and we will be there soon!</p>
+            </div>
         </div>
-        <p>Vote for it, and we will be there soon!</p>
+        <div class="ui left floated red medium statistic">
+            <div class="value" id="numberOfVote">
+                323
+            </div>
+            <div class="label">
+                Voted!
+            </div>
+        </div>
+        <h5 class="ui header" id="targetCollege">University of Maryland College Park</h5>
+        <div class="ui form fluid">
+            <div class="field">
+                <input type="email" placeholder="Your Email..." id="voterEmail">
+            </div>
+        </div>
+        <div class="ui divider hidden"></div>
+    </div>
+    <div class="actions">
+        <div class="one ui fluid buttons">
+            <div class="ui ok basic button">
+                <span class="center aligned ui red button">Vote!</span>
+            </div>
+        </div>
     </div>
 </div>
-
-
-
-<div class="ui left floated red medium statistic">
-    <div class="value">
-        323
-    </div>
-    <div class="label">
-        Voted!
-    </div>
-</div>
-<h5 class="ui  header">University of Maryland College Park</h5>
-<div class="ui form fluid">
-      <div class="field">
-              
-                  <input type="email" placeholder="Your Email...">
-                    </div>
-                    
-</div>
-<div class="ui divider hidden"></div>
-<button class="ui right floated red btn button">Vote!</button>
-
 <!-- feedback end -->
 
-<script>
-$('.ui.sticky')
-.sticky({
-    offset: 60,
-    context: '#example'
-})
-;
-</script>
+<!--<script>-->
+<!--$('.ui.sticky').sticky({-->
+    <!--offset: 60,-->
+    <!--context: '#example'-->
+<!--});-->
+<!--</script>-->
