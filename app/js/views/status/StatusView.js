@@ -95,21 +95,41 @@
             lat = 39.0629783;
             lon = -77.1315743;
             latlon = new google.maps.LatLng(lat, lon);
-
-            latlon2 = new google.maps.LatLng(lat + 0.005, lon + 0.005);
+            var deliverQuery = new Parse.Query(DeliveryModel);
+            //deliverQuery.equalTo("deliverBy", {__type: "Pointer", className: "User(Lunchbrother)", objectId: lunchbrother});
+            deliverQuery.equalTo("deliverBy", {__type: "Pointer", className: "_User", objectId: "j2Uz1eNwyW"});
+            deliverQuery.first({
+              success: function(location){
+                latlon1 = new google.maps.LatLng(location.get('latitude'), location.get('longitude'));
+                var marker = new google.maps.Marker({position:latlon1,map:map,title:"You are here!"});
+              },
+              error: function(error){
+                alert("Error: " + error.code + " " + error.message);
+              }
+            });
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else { 
+                alert("Geolocation is not supported by this browser.");
+            }
+            function showPosition(position){
+            	latlon2 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            	var marker2 = new google.maps.Marker({position:latlon2,map:map,title:"Your lunch is here!"});
+            };
+            
             mapholder = document.getElementById('mapHolder');
             mapholder.style.height = '300px';
 
             var myOptions = {
-                center:latlon,zoom:14,
+                center:latlon,
+                zoom:14,
                 mapTypeId:google.maps.MapTypeId.ROADMAP,
                 mapTypeControl:false,
                 navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
             }
-
             var map = new google.maps.Map(document.getElementById("mapHolder"), myOptions);
-            var marker = new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
-            var marker2 = new google.maps.Marker({position:latlon2,map:map,title:"Your lunch is here!"});
+            //var marker = new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
+            //var marker2 = new google.maps.Marker({position:latlon2,map:map,title:"Your lunch is here!"});
         }
     });
 
