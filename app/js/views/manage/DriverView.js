@@ -5,12 +5,20 @@ define([
     'models/Grid',
     'models/Restaurant',
     'models/PickUpLocation',
+    'models/manage/DeliveryModel',
     'views/manage/LoginView',
     'text!templates/manage/driverTemplate.html'
-], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, LoginView, driverTemplate) {
+], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, DeliveryModel, LoginView, driverTemplate) {
 
     var DriverView = Parse.View.extend({
         el: $("#page"),
+        events: {
+            'click #readyToGo': 'startSendingLocation',
+            'click #arrive': 'stopSendingLocation'
+        },
+
+        driverLocation: null,
+        deliveryId: null,
 
         initialize: function() {
             _.bindAll(this, 'render');
@@ -179,6 +187,58 @@ define([
                     console.log(error.message);
                 }
             });
+        },
+
+        savePosition: function(position) {
+            var deliveryModel = new DeliveryModel();
+            var currentUser = Parse.User.current();
+            if(this.deliveryId != null) {
+                deliveryModel.id = this.deliveryId;
+            }
+            var self = this;
+            deliveryModel.set('deliverBy', currentUser);
+            deliveryModel.set('longitude', position.coords.longitude);
+            deliveryModel.set('latitude', position.coords.latitude);
+            deliveryModel.save({
+                success: function(delivery) {
+                    self.deliveryId = delivery.id;
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
+        errorHandler: function(err) {
+            if(err.code == 1) {
+                alert("Error: Access is denied!");
+            }
+
+            else if( err.code == 2) {
+                alert("Error: Position is unavailable!");
+            }
+        },
+
+        startSendingLocation: function(){
+            $("#readyToGo").addClass('disabled');
+            this.driverLocation = setInterval(this.recordLocation(), 10000);
+        },
+
+        recordLocation: function() {
+            console.log("Sending location...");
+            if(navigator.geolocation){
+                var options = {timeout:5000};
+                navigator.geolocation.getCurrentPosition(this.savePosition, this.errorHandler, options);
+            }
+            else {
+                alert("Sorry, browser does not support geolocation!");
+            }
+        },
+
+        stopSendingLocation: function() {
+            $("#readyToGo").removeClass('disabled');
+            clearInterval(this.driverLocation);
+            this.deliveryId = null;
         }
     });
     return DriverView;

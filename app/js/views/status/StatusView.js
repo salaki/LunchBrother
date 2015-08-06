@@ -30,6 +30,7 @@
             $('.menu li a[href="#"]').parent().addClass('active');
 
             this.$el.html(this.template());
+            this.displayDriverLocation();
             $("h1.ui.small.center.aligned.header").html("Where is your delivery man?");
             $("#contact1").html("Contact:Fish (724-510-8760)");
             $("#contact2").html("Contact:Jabber (202-812-4286)");
@@ -80,6 +81,35 @@
             }
 
             return this;
+        },
+
+        displayDriverLocation: function() {
+            //TODO@Jenny - 1. Query Delivery class to get driver's location
+            //TODO@Jenny -   (You can start with looking for the most recent one, we'll discuss the actual query later.)
+            //TODO@Jenny - 2. Get current user's location (Refer to the functions in DriverView.js)
+            //TODO@Jenny - 3. Display both of them on the map
+            //TODO@Jenny - (Note: When trying to get your location, your browser has to enable the location tracking.)
+
+            //Here are some example codes for you reference, you can test it by going to "Track Your Order" page
+            //at the upper right corner.
+            lat = 39.0629783;
+            lon = -77.1315743;
+            latlon = new google.maps.LatLng(lat, lon);
+
+            latlon2 = new google.maps.LatLng(lat + 0.005, lon + 0.005);
+            mapholder = document.getElementById('mapHolder');
+            mapholder.style.height = '300px';
+
+            var myOptions = {
+                center:latlon,zoom:14,
+                mapTypeId:google.maps.MapTypeId.ROADMAP,
+                mapTypeControl:false,
+                navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
+            }
+
+            var map = new google.maps.Map(document.getElementById("mapHolder"), myOptions);
+            var marker = new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
+            var marker2 = new google.maps.Marker({position:latlon2,map:map,title:"Your lunch is here!"});
         }
     });
 
