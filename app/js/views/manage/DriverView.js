@@ -221,6 +221,10 @@ define([
 
         startSendingLocation: function(){
             $("#readyToGo").addClass('disabled');
+
+            //TODO@Jenny - Figure out how to use setInterval in backbone (The following code does not work)
+            //TODO@Jenny - Expected Result: Once you hit the "Ready to deliver" button, look at the Delivery Class
+            //TODO@Jenny - in our Parse, it should have new records or the "updateAt" field should change
             this.driverLocation = setInterval(this.recordLocation(), 10000);
         },
 
