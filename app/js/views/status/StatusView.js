@@ -1,8 +1,8 @@
 ﻿define([
-  'models/manage/DeliveryModel',
-  'text!templates/status/statusTemplate.html',
-  'text!templates/home/homeTemplate.html',
-], function (DeliveryModel, statusTemplate, homeTemplate) {
+    'models/manage/DeliveryModel',
+    'models/pickUpLocation',
+    'text!templates/status/statusTemplate.html'
+], function (DeliveryModel, PickUpLocationModel, statusTemplate) {
 
     var StatusView = Parse.View.extend({
         el: $("#page"),
@@ -84,57 +84,41 @@
         },
 
         displayDriverLocation: function() {
-            //TODO - Figure out how to query the delivery class
-            var deliverQuery = new Parse.Query(DeliveryModel);
-            deliverQuery.equalTo("deliverBy", {__type: "Pointer", className: "_User", objectId: "j2Uz1eNwyW"});
-            deliverQuery.first({
-              success: function(location){
-                  if (navigator.geolocation) {
-                      navigator.geolocation.getCurrentPosition(showPosition, showError);
-                  } else {
-                      alert("Geolocation is not supported by this browser.");
-                  }
+            //TODO@Jack - Add logic to show status if necessary
+            //TODO@Jack - Query payment for the user (include pickUpLocation), if none, show "Your have no order today"
+            //TODO@Jack - Figure out how to query the delivery class
 
-                  function showError(error) {
-                      switch(error.code) {
-                          case error.PERMISSION_DENIED:
-                              alert("User denied the request for Geolocation.");
-                              break;
-                          case error.POSITION_UNAVAILABLE:
-                              alert("Location information is unavailable.");
-                              break;
-                          case error.TIMEOUT:
-                              alert("The request to get user location timed out.");
-                              break;
-                          case error.UNKNOWN_ERR:
-                              alert("An unknown error occurred.");
-                              break;
-                      }
-                  };
+            var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+            pickUpLocationQuery.get('l12VYt13PT', {
+                success: function (destination) {
+                    var deliverQuery = new Parse.Query(DeliveryModel);
+                    deliverQuery.equalTo("deliverBy", {__type: "Pointer", className: "_User", objectId: "j2Uz1eNwyW"});
+                    deliverQuery.first({
+                        success: function (delivery) {
+                            var pickUpLocation = new google.maps.LatLng(destination.get('coordinate').latitude, destination.get('coordinate').longitude);
+                            var myOptions = {
+                                center: pickUpLocation,
+                                zoom: 14,
+                                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                mapTypeControl: false,
+                                navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}
+                            };
+                            var icon = 'img/car.png';
+                            var map = new google.maps.Map(document.getElementById("mapHolder"), myOptions);
+                            var driverLocation = new google.maps.LatLng(delivery.get('latitude'), delivery.get('longitude'));
+                            var driverMarker = new google.maps.Marker({position: driverLocation, map: map, icon: icon, title: "Your lunch is here!"});
+                            var pickUpLocationMarker = new google.maps.Marker({position: pickUpLocation, map: map, title: "Your are here!"});
+                        },
+                        error: function (error) {
+                            alert("Error: " + error.code + " " + error.message);
+                        }
+                    });
 
-                  function showPosition(position){
-                      var currentUserLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                      var myOptions = {
-                          center:currentUserLocation,
-                          zoom:14,
-                          mapTypeId:google.maps.MapTypeId.ROADMAP,
-                          mapTypeControl:false,
-                          navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
-                      };
-                      var icon = 'img/car.png';
-                      var map = new google.maps.Map(document.getElementById("mapHolder"), myOptions);
-                      var driverLocation = new google.maps.LatLng(location.get('latitude'), location.get('longitude'));
-                      var driverMarker = new google.maps.Marker({position:driverLocation,map:map,icon: icon, title:"Your lunch is here!"});
-                      var currentUserMarker = new google.maps.Marker({position:currentUserLocation,map:map,title:"Your are here!"});
-                  };
-              },
-              error: function(error){
-                alert("Error: " + error.code + " " + error.message);
-              }
+                },
+                error: function (error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
             });
-
-            //var marker = new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
-            //var marker2 = new google.maps.Marker({position:latlon2,map:map,title:"Your lunch is here!"});
         }
     });
 
