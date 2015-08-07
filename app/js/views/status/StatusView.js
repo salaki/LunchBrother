@@ -121,9 +121,10 @@
                           mapTypeControl:false,
                           navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
                       };
+                      var icon = 'img/car.png';
                       var map = new google.maps.Map(document.getElementById("mapHolder"), myOptions);
                       var driverLocation = new google.maps.LatLng(location.get('latitude'), location.get('longitude'));
-                      var driverMarker = new google.maps.Marker({position:driverLocation,map:map,title:"Your lunch is here!"});
+                      var driverMarker = new google.maps.Marker({position:driverLocation,map:map,icon: icon, title:"Your lunch is here!"});
                       var currentUserMarker = new google.maps.Marker({position:currentUserLocation,map:map,title:"Your are here!"});
                   };
               },
