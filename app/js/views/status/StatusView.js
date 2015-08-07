@@ -84,50 +84,54 @@
         },
 
         displayDriverLocation: function() {
-            //TODO@Jenny - 1. Query Delivery class to get driver's location
-            //TODO@Jenny -   (You can start with looking for the most recent one, we'll discuss the actual query later.)
-            //TODO@Jenny - 2. Get current user's location (Refer to the functions in DriverView.js)
-            //TODO@Jenny - 3. Display both of them on the map
-            //TODO@Jenny - (Note: When trying to get your location, your browser has to enable the location tracking.)
-
-            //Here are some example codes for you reference, you can test it by going to "Track Your Order" page
-            //at the upper right corner.
-            lat = 39.0629783;
-            lon = -77.1315743;
-            latlon = new google.maps.LatLng(lat, lon);
+            //TODO - Figure out how to query the delivery class
             var deliverQuery = new Parse.Query(DeliveryModel);
-            //deliverQuery.equalTo("deliverBy", {__type: "Pointer", className: "User(Lunchbrother)", objectId: lunchbrother});
             deliverQuery.equalTo("deliverBy", {__type: "Pointer", className: "_User", objectId: "j2Uz1eNwyW"});
             deliverQuery.first({
               success: function(location){
-                latlon1 = new google.maps.LatLng(location.get('latitude'), location.get('longitude'));
-                var marker = new google.maps.Marker({position:latlon1,map:map,title:"You are here!"});
+                  if (navigator.geolocation) {
+                      navigator.geolocation.getCurrentPosition(showPosition, showError);
+                  } else {
+                      alert("Geolocation is not supported by this browser.");
+                  }
+
+                  function showError(error) {
+                      switch(error.code) {
+                          case error.PERMISSION_DENIED:
+                              alert("User denied the request for Geolocation.");
+                              break;
+                          case error.POSITION_UNAVAILABLE:
+                              alert("Location information is unavailable.");
+                              break;
+                          case error.TIMEOUT:
+                              alert("The request to get user location timed out.");
+                              break;
+                          case error.UNKNOWN_ERR:
+                              alert("An unknown error occurred.");
+                              break;
+                      }
+                  };
+
+                  function showPosition(position){
+                      var currentUserLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                      var myOptions = {
+                          center:currentUserLocation,
+                          zoom:14,
+                          mapTypeId:google.maps.MapTypeId.ROADMAP,
+                          mapTypeControl:false,
+                          navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
+                      };
+                      var map = new google.maps.Map(document.getElementById("mapHolder"), myOptions);
+                      var driverLocation = new google.maps.LatLng(location.get('latitude'), location.get('longitude'));
+                      var driverMarker = new google.maps.Marker({position:driverLocation,map:map,title:"Your lunch is here!"});
+                      var currentUserMarker = new google.maps.Marker({position:currentUserLocation,map:map,title:"Your are here!"});
+                  };
               },
               error: function(error){
                 alert("Error: " + error.code + " " + error.message);
               }
             });
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else { 
-                alert("Geolocation is not supported by this browser.");
-            }
-            function showPosition(position){
-            	latlon2 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            	var marker2 = new google.maps.Marker({position:latlon2,map:map,title:"Your lunch is here!"});
-            };
-            
-            mapholder = document.getElementById('mapHolder');
-            mapholder.style.height = '300px';
 
-            var myOptions = {
-                center:latlon,
-                zoom:14,
-                mapTypeId:google.maps.MapTypeId.ROADMAP,
-                mapTypeControl:false,
-                navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
-            }
-            var map = new google.maps.Map(document.getElementById("mapHolder"), myOptions);
             //var marker = new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
             //var marker2 = new google.maps.Marker({position:latlon2,map:map,title:"Your lunch is here!"});
         }
