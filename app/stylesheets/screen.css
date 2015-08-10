@@ -438,21 +438,30 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 /* line 7, ../sass/partials/_manage.scss */
+.menu-list.ui.list:first-child {
+  padding: 0 1.4rem;
+}
+/* line 11, ../sass/partials/_manage.scss */
 .menu-list .content {
   color: #888888;
   font-size: 0.8em;
 }
-/* line 12, ../sass/partials/_manage.scss */
-.menu-list .right.floated.content {
-  margin-top: 10px;
+/* line 16, ../sass/partials/_manage.scss */
+.menu-list .item .header {
+  padding-top: 5px;
+  padding-bottom: 25px;
+}
+/* line 21, ../sass/partials/_manage.scss */
+.menu-list .item .middle.aligned.content {
+  margin-right: 0.8rem !important;
 }
 
-/* line 18, ../sass/partials/_manage.scss */
+/* line 27, ../sass/partials/_manage.scss */
 .weekly .image {
   height: 120px;
   overflow: hidden;
 }
-/* line 23, ../sass/partials/_manage.scss */
+/* line 32, ../sass/partials/_manage.scss */
 .weekly .extra.content {
   font-size: 0.8em;
 }

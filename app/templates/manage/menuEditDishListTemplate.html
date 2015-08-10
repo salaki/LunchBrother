@@ -16,24 +16,24 @@
                 </div>
                 <div class="content">
                     <div class="ui grid">
-                        <div class="eight wide column dish-desc">
+                        <div class="six wide column dish-desc">
                             <input id="inventoryId-<%= dish.id %>" type="hidden" value="<%= dish.inventoryId %>">
                             <input id="dishIdInput-<%= dish.id %>" type="hidden" value="<%= dish.id %>">
                             <%= dish.get('dishName') %>
                         </div>
-                        <div class="four wide column">
+                        <div class="five wide column">
                             <div class="ui fluid input">
                                 <input id="dishPriceInput-<%= dish.id %>" type="text" placeholder="Price" value="<%= dish.price %>">
                             </div>
                         </div>
-                        <div class="four wide column">
+                        <div class="five wide column">
                             <div class="ui fluid input">
                                 <input id="dishQuantityInput-<%= dish.id %>" type="text" placeholder="Qty" value="<%= dish.quantity %>">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="ui add-btn bottom attached button" id="addToMenuBtn-<%= dish.id %>">
+                <div class="ui add-btn bottom attached orange button" id="addToMenuBtn-<%= dish.id %>">
                     <i class="add icon" id="addMenuIcon-<%= dish.id %>"></i>
                     <label id="addMenuLabel-<%= dish.id %>">Add to Menu</label>
                 </div>  
