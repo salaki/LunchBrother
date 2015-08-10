@@ -150,7 +150,6 @@ define([
                                     }
                                 }
 
-
                                 var dishQuantityString = "";
                                 _.each(dishQuantityMap, function(object) {
                                     var tempString = object['dishName'] + " - " + object['dishQuantity'] + ", ";
@@ -166,17 +165,22 @@ define([
                                 ordersByLocations.push(orderDetailZip);
                             }
 
-//                            console.log(ordersByLocations);
-//                            console.log(locationNames);
-//                                    self.$el.html(self.template({ordersByLocations: orderSummary}));
                             var zipped = _.zip(locationNames, ordersByLocations);
-//                                    self.$el.html(self.template({locationNames: locationNames, ordersByLocations: ordersByLocations}));
                             self.$el.html(self.template({ordersByLocations: zipped}));
 
                             self.$("#resName").html(pickUpSummary['restaurantName']);
                             self.$("#resNumber").html(pickUpSummary['restaurantNumber']);
                             self.$("#resAddress").html(pickUpSummary['restaurantAddress']);
                             self.$("#dishQuan").html(pickUpSummary['dishQuantity']);
+
+                            var current = new Date();
+                            var currentHour = current.getHours();
+
+                            //Delivery man starts working from 11:00-14:00, otherwise disable both buttons
+                            if(currentHour <= 11 || currentHour >= 14) {
+                                $("#readyToGo").addClass('disabled');
+                                $("#arrive").addClass('disabled');
+                            }
                         },
                         error: function(error) {
                             console.log(error.message);
@@ -190,6 +194,7 @@ define([
         },
 
         savePosition: function(position) {
+            console.log("Sending location...");
             var deliveryModel = new DeliveryModel();
             var currentUser = Parse.User.current();
             if(this.deliveryId != null) {
@@ -197,6 +202,7 @@ define([
             }
             var self = this;
             deliveryModel.set('deliverBy', currentUser);
+            deliveryModel.set('status', "On the way");
             deliveryModel.set('longitude', position.coords.longitude);
             deliveryModel.set('latitude', position.coords.latitude);
             deliveryModel.save({
@@ -221,28 +227,46 @@ define([
 
         startSendingLocation: function(){
             $("#readyToGo").addClass('disabled');
-
-            //TODO@Jenny - Figure out how to use setInterval in backbone (The following code does not work)
-            //TODO@Jenny - Expected Result: Once you hit the "Ready to deliver" button, look at the Delivery Class
-            //TODO@Jenny - in our Parse, it should have new records or the "updateAt" field should change
-            this.driverLocation = setInterval(this.recordLocation(), 10000);
+            if(navigator.geolocation){
+                var options = {timeout:60000};
+                geoLoc = navigator.geolocation;
+                watchID = geoLoc.watchPosition(this.savePosition, this.errorHandler, options);
+            } else {
+                alert("Sorry, your browser does not support geolocation!");
+            }
         },
 
-        recordLocation: function() {
-            console.log("Sending location...");
+        stopSendingLocation: function() {
+            console.log("Stop recording location!");
+            $("#readyToGo").removeClass('disabled');
+            geoLoc.clearWatch(watchID);
             if(navigator.geolocation){
-                var options = {timeout:5000};
-                navigator.geolocation.getCurrentPosition(this.savePosition, this.errorHandler, options);
+                var options = {timeout:60000};
+                navigator.geolocation.getCurrentPosition(this.saveLastPosition, this.errorHandler, options);
             }
             else {
                 alert("Sorry, browser does not support geolocation!");
             }
         },
 
-        stopSendingLocation: function() {
-            $("#readyToGo").removeClass('disabled');
-            clearInterval(this.driverLocation);
-            this.deliveryId = null;
+        saveLastPosition: function(position) {
+            var self = this;
+            var currentUser = Parse.User.current();
+            var deliveryModel = new DeliveryModel();
+            deliveryModel.id = this.deliveryId;
+            deliveryModel.set('deliverBy', currentUser);
+            deliveryModel.set('status', "Arrived");
+            deliveryModel.set('longitude', position.coords.longitude);
+            deliveryModel.set('latitude', position.coords.latitude);
+            deliveryModel.save({
+                success: function(delivery) {
+                    self.deliveryId = null;
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+
         }
     });
     return DriverView;

@@ -52,7 +52,6 @@ define([
         },
 
         render: function () {
-//            var pickUpLocations = config.pickUpLocations.UMCP;
             var self = this;
             var currentUser = Parse.User.current();
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
@@ -177,7 +176,6 @@ define([
                             }
                         });
                         paymentDetailMap.orderSummary = paymentDetailMap.orderSummary.substring(0, paymentDetailMap.orderSummary.length - 2);
-//                        alert(paymentDetailMap.orderSummary);
                         newResults.push(paymentDetailMap);
                         newEvent["click #checkButton-" + paymentDetailMap.orderNumber] = 'onPickupClick';
                         self.delegateEvents(_.extend(self.events, newEvent));
