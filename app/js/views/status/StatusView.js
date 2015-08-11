@@ -1,6 +1,6 @@
 ﻿define([
     'models/manage/DeliveryModel',
-    'models/pickUpLocation',
+    'models/PickUpLocation',
     'models/order/PaymentModel',
     'text!templates/status/statusTemplate.html'
 ], function (DeliveryModel, PickUpLocationModel, PaymentModel, statusTemplate) {
