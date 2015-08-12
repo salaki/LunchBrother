@@ -432,40 +432,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   top: 2px;
 }
 
-/* line 2, ../sass/partials/_manage.scss */
-.ui.fluid.vertical.buttons .button {
-  width: 100%;
-}
-
-/* line 7, ../sass/partials/_manage.scss */
-.menu-list.ui.list:first-child {
-  padding: 0 1.4rem;
-}
-/* line 11, ../sass/partials/_manage.scss */
-.menu-list .content {
-  color: #888888;
-  font-size: 0.8em;
-}
-/* line 16, ../sass/partials/_manage.scss */
-.menu-list .item .header {
-  padding-top: 5px;
-  padding-bottom: 25px;
-}
-/* line 21, ../sass/partials/_manage.scss */
-.menu-list .item .middle.aligned.content {
-  margin-right: 0.8rem !important;
-}
-
-/* line 27, ../sass/partials/_manage.scss */
-.weekly .image {
-  height: 120px;
-  overflow: hidden;
-}
-/* line 32, ../sass/partials/_manage.scss */
-.weekly .extra.content {
-  font-size: 0.8em;
-}
-
 /* line 18, ../sass/screen.scss */
 html {
   overflow-x: hidden;
