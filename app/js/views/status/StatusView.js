@@ -2,8 +2,9 @@
     'models/manage/DeliveryModel',
     'models/PickUpLocation',
     'models/order/PaymentModel',
+    'models/Grid',
     'text!templates/status/statusTemplate.html'
-], function (DeliveryModel, PickUpLocationModel, PaymentModel, statusTemplate) {
+], function (DeliveryModel, PickUpLocationModel, PaymentModel, GridModel, statusTemplate) {
 
     var StatusView = Parse.View.extend({
         el: $("#page"),
@@ -32,7 +33,7 @@
             var currentHour = current.getHours();
 
             //Delivery man starts working from 11:00-14:00, otherwise is at rest.
-            if(currentHour <= 11 || currentHour >= 14) {
+            if(currentHour < 11 || currentHour > 14) {
                 this.$el.html(this.template({rest: true, locationName: "", contactName: "", contactNumber: "", status: ""}));
                 $("#mapHolder").hide();
             } else {
@@ -62,17 +63,31 @@
                 paymentQuery.lessThan("createdAt", upperDate);
                 paymentQuery.include("pickUpLocation");
                 paymentQuery.include("pickUpLocation.gridId");
+                paymentQuery.include("pickUpLocation.distributor");
                 paymentQuery.find({
                     success: function(payments) {
                         if (payments.length !== 0) {
                             self.displayDriverLocation(payments[0].get("pickUpLocation").get("coordinate").latitude,
-                                payments[0].get("pickUpLocation").get("coordinate").latitude,
+                                payments[0].get("pickUpLocation").get("coordinate").longitude,
                                 payments[0].get("pickUpLocation").get("address"),
-                                payments[0].get("pickUpLocation").get("distributor"),
+                                payments[0].get("pickUpLocation").get("distributor").get('firstName'),
+                                payments[0].get("pickUpLocation").get("distributor").get('telnum'),
                                 payments[0].get("pickUpLocation").get("gridId").get("driver"));
                         } else {
-                            self.$el.html(self.template({rest: false, locationName: "", contactName: "", contactNumber: "", status: ""}));
-                            $("#mapHolder").hide();
+                            var gridId = "nmbyDzTp7m";
+                            if (currentUser.get('gridId') !== undefined) {
+                                gridId = currentUser.get('gridId').id;
+                            }
+                            var gridQuery = new Parse.Query(GridModel);
+                            gridQuery.get(gridId, {
+                                success: function(grid) {
+                                    self.displayDriverLocation(grid.get("coordinate").latitude, grid.get("coordinate").longitude,
+                                        grid.get("name"), "", "", grid.get("driver"));
+                                },
+                                error: function(object, error) {
+                                    alert("Error: " + error.code + " " + error.message);
+                                }
+                            });
                         }
                     },
                     error: function(error) {
@@ -84,7 +99,7 @@
             return this;
         },
 
-        displayDriverLocation: function(pickUpLocationLatitude, pickUpLocationLongitude, locationName, distributor, driver) {
+        displayDriverLocation: function(pickUpLocationLatitude, pickUpLocationLongitude, locationName, distributorName, distributorNumber, driver) {
             var current = new Date();
             var self = this;
             var deliverQuery = new Parse.Query(DeliveryModel);
@@ -93,13 +108,13 @@
             deliverQuery.descending("updatedAt");
             deliverQuery.first({
                 success: function (delivery) {
-                    self.$el.html(self.template({rest: false, locationName: locationName, contactName: distributor.get('firstName'), contactNumber: distributor.get('telnum'), status: delivery.get('status')}));
+                    self.$el.html(self.template({rest: false, locationName: locationName, contactName: distributorName, contactNumber: distributorNumber, status: delivery.get('status')}));
                     $("h1.ui.small.center.aligned.header").html("Where is your delivery man?");
 
                     var pickUpLocation = new google.maps.LatLng(pickUpLocationLatitude, pickUpLocationLongitude);
                     var myOptions = {
                         center: pickUpLocation,
-                        zoom: 14,
+                        zoom: 10,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                         mapTypeControl: false,
                         streetViewControl:false,
