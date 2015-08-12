@@ -16,18 +16,18 @@
                 </div>
                 <div class="content">
                     <div class="ui grid">
-                        <div class="six wide column dish-desc">
+                        <div class="eight wide column dish-desc">
                             <input id="inventoryId-<%= dish.id %>" type="hidden" value="<%= dish.inventoryId %>">
                             <input id="dishIdInput-<%= dish.id %>" type="hidden" value="<%= dish.id %>">
                             <%= dish.get('dishName') %>
                         </div>
-                        <div class="five wide column">
-                            <div class="ui fluid input">
+                        <div class="four wide column">
+                            <div class="ui fluid mini input">
                                 <input id="dishPriceInput-<%= dish.id %>" type="text" placeholder="Price" value="<%= dish.price %>">
                             </div>
                         </div>
-                        <div class="five wide column">
-                            <div class="ui fluid input">
+                        <div class="four wide column">
+                            <div class="ui fluid mini input">
                                 <input id="dishQuantityInput-<%= dish.id %>" type="text" placeholder="Qty" value="<%= dish.quantity %>">
                             </div>
                         </div>
