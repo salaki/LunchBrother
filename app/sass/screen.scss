@@ -10,7 +10,7 @@
 @import "partials/sidebar";
 @import "partials/dish";
 @import "partials/home";
-@import "partials/manage";
+//@import "partials/manage";
 //@extend-elements
 //original selectors
 //#orderBtn.red, #paymentBtn.red, #loginBtn.red, #arriveBtn.red, #signUpBtn.red, #sendemailBtn.red, #resetBtn.red
@@ -397,9 +397,9 @@ header {
 		padding-right: 0;
 	}
 }
-.ui.mini.input {
-	width: 25%;
-}
+//.ui.mini.input {
+//	width: 25%;
+//}
 .clearfix:after {
 	content: ".";
 	visibility: hidden;
