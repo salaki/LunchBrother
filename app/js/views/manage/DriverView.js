@@ -177,7 +177,7 @@ define([
                             var currentHour = current.getHours();
 
                             //Delivery man starts working from 11:00-14:00, otherwise disable both buttons
-                            if(currentHour <= 11 || currentHour >= 14) {
+                            if(currentHour < 11 || currentHour > 14) {
                                 $("#readyToGo").addClass('disabled');
                                 $("#arrive").addClass('disabled');
                             }
