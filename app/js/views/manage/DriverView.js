@@ -14,7 +14,7 @@ define([
         el: $("#page"),
         events: {
             'click #readyToGo': 'startSendingLocation',
-            'click #arrive': 'stopSendingLocation'
+            'click #done': 'stopSendingLocation'
         },
 
         driverLocation: null,
