@@ -103,6 +103,7 @@ define([
 
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
             pickUpLocationQuery.equalTo("gridId", chefGrid);
+            pickUpLocationQuery.include("distributor");
             pickUpLocationQuery.find({
                 success:function(locations) {
                     _.each(locations, function(location) {
@@ -139,28 +140,39 @@ define([
                     thirdWeek += (friday3.getMonth() + 1) + "/" + friday3.getDate();
 
 
-                    self.$el.html(self.template({distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
+                    //Query distributors
+                    var userQuery = new Parse.Query(Parse.User);
+                    userQuery.equalTo("permission", 4);
+                    userQuery.equalTo("gridId", Parse.User.current().get('gridId'));
+                    userQuery.find({
+                        success: function(distributors) {
+                            self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
 
-                    if (self.options.week !== "") {
-                        self.refreshWeekMenu(self.options.week);
+                            if (self.options.week !== "") {
+                                self.refreshWeekMenu(self.options.week);
 
-                        //We need to do this crazy stuff to both set the value and have it to be selectable
-                        $(".week-selection").dropdown('set selected', self.options.week);
-                        $(".week-selection").dropdown({
-                            onChange: function (week) {
-                                self.refreshWeekMenu(week);
+                                //We need to do this crazy stuff to both set the value and have it to be selectable
+                                $(".week-selection").dropdown('set selected', self.options.week);
+                                $(".week-selection").dropdown({
+                                    onChange: function (week) {
+                                        self.refreshWeekMenu(week);
+                                    }
+                                });
+
+                            } else {
+                                $(".week-selection").dropdown({
+                                    onChange: function (week) {
+                                        self.refreshWeekMenu(week);
+                                    }
+                                });
                             }
-                        });
 
-                    } else {
-                        $(".week-selection").dropdown({
-                            onChange: function (week) {
-                                self.refreshWeekMenu(week);
-                            }
-                        });
-                    }
-
-                    self.$("#publishMenu").addClass('disabled');
+                            self.$("#publishMenu").addClass('disabled');
+                        },
+                        error: function(error) {
+                            console.log(error.message);
+                        }
+                    });
                 },
                 error: function(error) {
                     console.log(error.message);
@@ -287,6 +299,10 @@ define([
             var dpId = $(ev.currentTarget).data('id');
             var address = $(ev.currentTarget).data('address');
             var youtubeLink = $(ev.currentTarget).data('youtube');
+            var distributorId = $(ev.currentTarget).data('distributor');
+
+
+            $("#distributorSelector").val(distributorId);
             $("#dp_location").val(address);
             $("#dp_youtubeLink").val(youtubeLink);
             $('#editDPDialog').modal({
@@ -295,7 +311,7 @@ define([
 
                 },
                 onApprove: function () {
-                    self.saveDP(dpId, $("#dp_location").val(), $("#dp_youtubeLink").val());
+                    self.saveDP(dpId, $("#dp_location").val(), $("#dp_youtubeLink").val(), $("#distributorSelector").val());
                 }
             }).modal('show');
         },
@@ -322,7 +338,7 @@ define([
             window.location.hash = '#driver';
         },
 
-        saveDP: function(id, address, youtubeLink) {
+        saveDP: function(id, address, youtubeLink, distributorId) {
             var chefGrid = Parse.User.current().get('gridId');
             //default chef's grid to University of Maryland College Park
             if (chefGrid === undefined){
@@ -335,6 +351,13 @@ define([
                 dp.id = id;
                 dp.set("gridId", chefGrid);
                 dp.set("address", address);
+                if (distributorId !== "") {
+                    var distributor = new Parse.User();
+                    distributor.id = distributorId;
+                    dp.set("distributor", distributor);
+                } else {
+                    dp.unset("distributor");
+                }
                 dp.set("youtubeLink", youtubeLink);
                 dp.save(null, {
                     success: function(dp) {
