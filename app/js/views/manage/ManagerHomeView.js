@@ -141,6 +141,12 @@ define([
 
                     self.$el.html(self.template({distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
 
+                    self.$( "#datepicker" ).datepicker({
+                        onSelect: function(dateText){
+                            console.log(dateText);
+                        }
+                    });
+
                     if (self.options.week !== "") {
                         self.refreshWeekMenu(self.options.week);
 

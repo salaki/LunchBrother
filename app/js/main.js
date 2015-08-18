@@ -2,7 +2,8 @@ define([
   'router',
   'jquery',
   'semantic',
-  'libs/semantic_2.0/components/dropdown.min', 
+  'jquery_ui',
+  'libs/semantic_2.0/components/dropdown.min',
   'libs/semantic_2.0/components/dropdown.min'
 ], function(router,$) {
    'use strict';

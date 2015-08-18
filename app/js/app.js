@@ -4,6 +4,7 @@ var config = {
     "baseUrl": "js",
     "paths": {
         jquery: 'libs/jquery/jquery-1.11.2.min',
+        jquery_ui: 'libs/jquery-ui-1.11.4.custom/jquery-ui.min',
         underscore: 'libs/underscore/underscore-min',
         //backbone: 'libs/backbone/backbone-min',
         parse: 'libs/parse/parse-1.3.2.min',
