@@ -216,42 +216,11 @@
 
 
 <!-- Statistic Visualization -->
-<table class="ui small celled unstackable table">
-    <thead>
-        <tr><th colspan="4">
-                <h4 class="ui red header">
-                    <i class="line chart icon small"></i>Sales Summary
-                </h4>
-                Date: <input type="text" id="datepicker">
-            </th>
-        </tr>
-        <tr>
-            <th class="seven wide">
-                Dish
-            </th>
-            <th class="three wide">Requested</th>
-            <th class="three wide">Sold</th>
-            <th class="right aligned three wide">I want more</th>
-        </tr>
-
-    </thead>
-    <tbody>
-        <tr>
-            <td>test dish</td>
-            <td>90</td>
-            <td>90</td>
-            <td class="right aligned">30</td>
-        </tr>
-        <tr>
-            <td>test dish</td>
-            <td>90</td>
-            <td>90</td>
-            <td class="right aligned">30</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <th colspan=4>Daily Income: $2000.00</th>
-        </tr>
-    </tfoot>
-</table>
+<div class="ui segment">
+    <h4 class="ui red header" style="padding-left: 10px; padding-top: 10px">
+        <i class="line chart icon small"></i>Sales Summary
+    </h4>
+    <span style="padding-left: 10px">Date: <input type="text" id="datepicker"></span>
+    <table class="ui small celled unstackable table" id="salesTableBody">
+    </table>
+</div>

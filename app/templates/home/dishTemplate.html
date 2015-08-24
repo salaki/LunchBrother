@@ -1,21 +1,21 @@
 <div class="ui card">
     <div class="image">
-        <div id="<%=objectId %>-dimmer" class="ui dimmer">
+        <div id="<%=dish.objectId %>-dimmer" class="ui dimmer">
             <div class="dimmer-content">
                 <h2 class="ui inverted header">
                     Sold Out!
                 </h2>
-                <div class="ui inverted basic button">I want more</div>
+                <div class="ui inverted basic button" id="<%=dish.objectId %>-dimmerButton" data-id="<%=dish.objectId %>" data-inventory-id="<%=inventoryId %>">I want more</div>
             </div>
         </div>
-        <img src="<%= Image_File.url%>" />
-        <div id="<%=objectId %>-currentQuantityWarning" class="img-overlay" style="display: none"></div>
+        <img src="<%= dish.Image_File.url%>" />
+        <div id="<%=dish.objectId %>-currentQuantityWarning" class="img-overlay" style="display: none"></div>
     </div>
 
     <div class="content">
         <div class="ui grid">
             <div class="nine wide column dish-desc">
-                <%=dishName %>
+                <%=dish.dishName %>
             </div>
             <div class="seven wide column">
                 <div class="ui three column grid">
@@ -24,17 +24,17 @@
                         </button>
                     </div>
                     <div class="column order-count-wrapper">
-                        <span class="dissph-counter ui center aligned label dish-count"><%=count %></span>
+                        <span class="dissph-counter ui center aligned label dish-count"><%=dish.count %></span>
                     </div>
                     <div class="column plus-btn-wrapper">
-                        <button id="<%=objectId %>-plusButton" class="plusone ui button icon center aligned"><i class="plus icon"></i>
+                        <button id="<%=dish.objectId %>-plusButton" class="plusone ui button icon center aligned"><i class="plus icon"></i>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div id="<%=objectId %>">
+    <div id="<%=dish.objectId %>">
         <div class="ui pointing secondary menu">
             <a class="active item" data-tab="first">Dish Detail</a>
             <a class="item" data-tab="second">Restaurant</a>
@@ -46,25 +46,25 @@
                         <div class="item">
                             <i class="wait icon"></i>
                             <div class="content">
-                                <%=calorie %> Cal
+                                <%=dish.calorie %> Cal
                             </div>
                         </div>
                         <div class="item">
                             <i class="leaf icon green"></i>
                             <div class="content">
-                                <%=vegetarian %>
+                                <%=dish.vegetarian %>
                             </div>
                         </div>
                         <div class="item">
                             <i class="ban icon"></i>
                             <div class="content">
-                                <%=gluten %>
+                                <%=dish.gluten %>
                             </div>
                         </div>
                         <div class="item">
                             <i class="fire icon red"></i>
                             <div class="content">
-                                <%=spiciness %>
+                                <%=dish.spiciness %>
                             </div>
                         </div>
                     </div>
@@ -72,11 +72,11 @@
                 <div class="dish-detail ten wide column">
                     <div class="content">
                         <div class="dish-intro description">
-                            <%=descriptionEn %>
+                            <%=dish.descriptionEn %>
                         </div>
                         <div class="dish-ingredients description">
                             <div class="header">Ingredients:</div>
-                            <%=ingredients %>
+                            <%=dish.ingredients %>
                         </div>
                     </div>
                 </div>
@@ -86,29 +86,29 @@
             <div class="row">
                 <div class="restaurantInfo sixteen wide column">
                     <div class="ui list">
-                        <div class="header"><%=restaurant.name %></div>
+                        <div class="header"><%=dish.restaurant.name %></div>
                         <div class="item">
                             <i class="yelp icon"></i>
                             <div class="content">
-                                <div class="ui small star rating" data-max-rating="5" data-rating="<%=restaurant.rating %>"></div>
+                                <div class="ui small star rating" data-max-rating="5" data-rating="<%=dish.restaurant.rating %>"></div>
                             </div>
                         </div>
                         <div class="item">
                             <i class="call icon"></i>
                             <div class="content">
-                                <%=restaurant.telnum %>
+                                <%=dish.restaurant.telnum %>
                             </div>
                         </div>
                         <div class="item">
                             <i class="home icon"></i>
                             <div class="content">
-                                <a href="http://<%=restaurant.url %>" target="_blank"><%=restaurant.url %></a>
+                                <a href="http://<%=dish.restaurant.url %>" target="_blank"><%=dish.restaurant.url %></a>
                             </div>
                         </div>
                         <div class="item">
                             <i class="marker icon"></i>
                             <div class="content">
-                                <%=restaurant.address %>
+                                <%=dish.restaurant.address %>
                             </div>
                         </div>
                     </div>

@@ -18,6 +18,7 @@ define([
     },
 
     currentQuantity: 0,
+    inventoryId: null,
 
     initialize: function() {
     	this.model.initialize();
@@ -26,7 +27,8 @@ define([
     },
 
     render: function() {
-        $(this.el).html(this.template(this.model._toFullJSON([])));
+        var dish = this.model._toFullJSON([]);
+        $(this.el).html(this.template({dish: dish, inventoryId: this.inventoryId}));
         if (this.model.get('count') === this.currentQuantity) {
             $('#' + this.model.id + '-plusButton').prop('disabled', true);
         } else {
@@ -48,6 +50,10 @@ define([
 
     setCurrentQuantity: function(quantity) {
       this.currentQuantity = quantity;
+    },
+
+    setInventoryId: function(inventoryId) {
+        this.inventoryId = inventoryId;
     },
 
     addOne: function() {

@@ -1,0 +1,36 @@
+<thead>
+    <tr>
+        <th class="seven wide">Dish</th>
+        <th class="three wide">Requested</th>
+        <th class="three wide">Sold</th>
+        <th class="right aligned three wide">I want more</th>
+    </tr>
+</thead>
+<tbody>
+<% if (inventories && inventories.length != 0) { %>
+    <% _.each(inventories, function(inventory) { %>
+        <tr>
+            <td><%= inventory.get('dish').get('dishName') %></td>
+            <td><%= inventory.get('preorderQuantity') %></td>
+            <td><%= inventory.get("preorderQuantity") - inventory.get("currentQuantity") %></td>
+            <% if (inventory.get('numberOfRequest')) { %>
+                <td class="right aligned">
+                    <%= inventory.get('numberOfRequest') %>
+                </td>
+            <% } else { %>
+                <td class="right aligned">0</td>
+            <% } %>
+        </tr>
+    <% })%>
+<% } else { %>
+    <tr>
+        <td colspan="4" class="center aligned">No records.</td>
+    </tr>
+<% } %>
+</tbody>
+<tfoot>
+    <tr>
+        <th colspan=4>Daily Income: $<%= income.toFixed(2) %></th>
+    </tr>
+</tfoot>
+

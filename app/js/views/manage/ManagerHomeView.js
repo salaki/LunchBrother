@@ -4,13 +4,15 @@ define([
     'models/PickUpLocation',
     'models/InventoryModel',
     'text!templates/manage/managerHomeTemplate.html',
-    'text!templates/manage/menuListTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, managerHomeTemplate, menuListTemplate) {
+    'text!templates/manage/menuListTemplate.html',
+    'text!templates/manage/salesTableBodyTemplate.html'
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
         template: _.template(managerHomeTemplate),
         menuListTemplate: _.template(menuListTemplate),
+        salesTableBodyTemplate: _.template(salesTableBodyTemplate),
         events: {
             'click #DPAdd': 'onEditOrAddClick',
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
@@ -140,10 +142,42 @@ define([
 
 
                     self.$el.html(self.template({distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
+                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00}));
 
                     self.$( "#datepicker" ).datepicker({
                         onSelect: function(dateText){
-                            console.log(dateText);
+                            var month = parseInt(dateText.split("/")[0]) - 1;
+                            var date = parseInt(dateText.split("/")[1]);
+                            var year = parseInt(dateText.split("/")[2]);
+
+                            var dayStart = new Date();
+                            dayStart.setFullYear(year, month, date);
+                            dayStart.setHours(0, 0, 0, 0);
+
+                            var dayEnd = new Date();
+                            dayEnd.setFullYear(year, month, date);
+                            dayEnd.setHours(23, 59, 59, 0);
+
+                            var inventoryQuery = new Parse.Query(InventoryModel);
+                            inventoryQuery.equalTo("orderBy", Parse.User.current());
+                            inventoryQuery.include("dish");
+                            inventoryQuery.lessThan("pickUpDate", dayEnd);
+                            inventoryQuery.greaterThan("pickUpDate", dayStart);
+                            inventoryQuery.find({
+                                success: function(inventories) {
+                                    var income = 0;
+                                    if (inventories.length !== 0) {
+                                        _.each(inventories, function(inventory) {
+                                            income += (inventory.get("preorderQuantity") - inventory.get("currentQuantity")) * inventory.get("price");
+                                        });
+                                    }
+
+                                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income}));
+                                },
+                                error: function(error) {
+                                    alert("Error: " + error.code + " " + error.message);
+                                }
+                            });
                         }
                     });
 

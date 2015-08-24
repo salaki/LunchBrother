@@ -1,4 +1,5 @@
 define([
+  'models/dish/DishModel',
   'models/dish/DishCollection',
   'models/order/OrderModel',
   'models/order/PaymentModel',
@@ -13,7 +14,7 @@ define([
   'text!templates/order/orderTemplate.html',
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
-], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate) {
+], function (DishModel, DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate) {
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -152,8 +153,6 @@ define([
                 });
             }
 
-
-       	
             return this;
         },
 
@@ -308,21 +307,22 @@ define([
 
         checkInventory: function() {
             var dishCountMap = {};
+            var inventoryIds = [];
             _.each(this.model.orders, function (dish) {
-                dishCountMap[dish.id] = dish.get('count');
+                inventoryIds.push(dish.inventoryId);
+                dishCountMap[dish.inventoryId] = dish.count;
             });
 
             var inventoryQuery = new Parse.Query(InventoryModel);
+            inventoryQuery.containedIn("objectId", inventoryIds);
             var self = this;
             var exceedInventory = false;
             inventoryQuery.find({
                 success: function(inventories) {
                     _.each(inventories, function(inventory) {
-                        if (inventory.get('dishId') in dishCountMap) {
-                            var newQantity = inventory.get('currentQuantity') - dishCountMap[inventory.get('dishId')];
-                            if (newQantity < 0) {
-                                exceedInventory = true;
-                            }
+                        var newQantity = inventory.get('currentQuantity') - dishCountMap[inventory.id];
+                        if (newQantity < 0) {
+                            exceedInventory = true;
                         }
                     });
 
@@ -350,10 +350,9 @@ define([
         updateInventory: function() {
             _.each(this.model.orders, function (dish) {
                 var inventoryQuery = new Parse.Query(InventoryModel);
-                inventoryQuery.equalTo('dishId', dish.id);
-                inventoryQuery.first({
+                inventoryQuery.get(dish.inventoryId, {
                     success: function(inventory) {
-                        var newQantity = inventory.get('currentQuantity') - dish.get('count');
+                        var newQantity = inventory.get('currentQuantity') - dish.count;
                         inventory.set('currentQuantity', newQantity);
                         inventory.save(null, {
                             success: function() {
@@ -372,15 +371,17 @@ define([
         },
 
         saveOrders: function(paymentDetails) {
-            _.each(this.model.orders, function (dish) {
+            _.each(this.model.orders, function (order) {
+                var dish = new DishModel();
+                dish.id = order.dishId;
                 var orderDetails = new OrderModel();
                 orderDetails.set('dishId', dish);
-                orderDetails.set('quantity', dish.get('count'));
+                orderDetails.set('quantity', order.count);
                 orderDetails.set('paymentId', paymentDetails);
                 orderDetails.set('orderBy', Parse.User.current());
-                orderDetails.set('unitPrice', dish.get('Unit_Price'));
-                orderDetails.set('subTotalPrice', dish.get('Unit_Price') * dish.get('count'));
-                orderDetails.set('restaurantId', dish.get('restaurant'));
+                orderDetails.set('unitPrice', order.price);
+                orderDetails.set('subTotalPrice', order.price * order.count);
+                orderDetails.set('restaurantId', order.restaurant);
                 orderDetails.set('pickUpLocation', paymentDetails.get('pickUpLocation'));
                 orderDetails.save(null, {
                         success: function() {

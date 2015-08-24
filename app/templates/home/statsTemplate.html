@@ -3,14 +3,14 @@
 	<% _.each(orders, function(order) { %>
 	<div class="ui column grid summary-list">
 		<div class="eight wide column">
-			<span class="summary-name"> <%= order.get('typeEn') %> </span>
+			<span class="summary-name"> <%= order.name %> </span>
 		</div>
 		<div class="four wide column right aligned">
-			<span class="summary-count"> <%= order.get('count') %> </span>
+			<span class="summary-count"> <%= order.count %> </span>
 		</div>
 		<div class="four wide column right aligned">
 			<span class="summary-price">$
-				<%= (order.get('Unit_Price')*order.get('count')).toFixed(2) %> </span>
+				<%= (order.price * order.count).toFixed(2) %> </span>
 		</div>
 	</div>
 	<% }); %>
