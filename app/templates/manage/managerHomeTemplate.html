@@ -9,29 +9,11 @@
             <div class="nine wide column">
                 <div class="ui basic mini buttons">
                     <div class="ui button"><a href="<%= distributingPoint.get('youtubeLink') %>" target="_blank"><i class="youtube play icon"></i></a></div>
-                    <div class="ui button" id="dpEditButton-<%= distributingPoint.id %>"
-                         data-id="<%= distributingPoint.id %>"
-                         data-youtube="<%= distributingPoint.get('youtubeLink') %>"
-                         data-address="<%= distributingPoint.get('address') %>"
-                         <% if (distributingPoint.get('distributor')) { %>
-                            data-distributor="<%= distributingPoint.get('distributor').id %>"
-                         <% } else { %>
-                            data-distributor=""
-                         <% } %>
-                         >Edit</div>
+                    <div class="ui button" id="dpEditButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>" data-youtube="<%= distributingPoint.get('youtubeLink') %>" data-address="<%= distributingPoint.get('address') %>">Edit</div>
                     <div class="ui button" id="dpDeleteButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>"><i class="remove circle outline icon"></i></div>
                 </div>
             </div>
         </div>
-            <% if(distributingPoint.get('distributor')) { %>
-                <div class="dish-intro description" style="padding-bottom: 30px">
-                    Contact: <%= distributingPoint.get('distributor').get('firstName') %> (<%= distributingPoint.get('distributor').get('telnum') %>)
-                </div>
-            <% } else { %>
-                <div class="dish-intro description" style="padding-bottom: 30px">
-                    No distributor assigned
-                </div>
-            <% } %>
         <% })%>
     </div>
 </div>
@@ -118,18 +100,6 @@
                 <div class="ui fluid field">
                     <input id="dp_youtubeLink" class="ui input youtubeLink" placeholder="Youtube Link" type="text" name="dp_youtube_link" value="">
                 </div>
-            </div>
-        </div>
-        <div id="dtinfo" class="two fields">
-            <div class="ui fluid field" style="padding-left: 20px; padding-bottom: 20px">
-                <select id="distributorSelector">
-                    <option value="">Select your distributor</option>
-                    <% _.each(distributors, function(distributor) { %>
-                        <option value="<%= distributor.id %>">
-                            <%= distributor.get('firstName') %> <%= distributor.get('lastName') %>
-                        </option>
-                    <% }) %>
-                </select>
             </div>
         </div>
     </div>

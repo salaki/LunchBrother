@@ -82,7 +82,7 @@ define([
 
                                         that.$("#addressdetails").change(function() {
                                             that.$("#youtubeDiv").show();
-                                            that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
+                                            that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1");
                                         });
 
                                         //Localization

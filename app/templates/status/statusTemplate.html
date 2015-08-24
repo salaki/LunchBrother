@@ -1,27 +1,45 @@
-<h1 class="ui small center aligned header">Where is the delivery man?</h1>
+<h1 class="ui small center aligned header">Where is your delivery man?</h1>
 
 <div class="ui segment">
     <div class="ui vertical segment">
         <div class="ui column grid summary-list">
-            <% if(rest){ %>
-                <div class="sixteen wide column center aligned">Our delivery man is at rest now.</div>
-            <% } else if (locationName !== "") { %>
-                <div class="six wide column">
-                    <span class="summary-location"><%= locationName %></span>
-                </div>
-                <div class="six wide column">
-                    <span id="contact" class="summary-contact">Contact: <%= contactName %> (<%= contactNumber %>)</span>
-                </div>
-                <div class="four wide column right aligned">
-                    <span class="summary-status"><%= status %></span>
-                </div>
-            <% } else { %>
-                <div class="sixteen wide column center aligned" style="font-style: italic">Your have no order for today.</div>
-            <% } %>
+            <div class="six wide column"><span class="summary-location">AV Williams Bldg</span>
+            </div>
+            <div class="six wide column"><span id="contact3" class="summary-contact"></span>
+            </div>
+            <div class="four wide column right aligned"><span id="status3" class="summary-status"></span>
+            </div>
+
         </div>
     </div>
-</div>
+	<div class="ui vertical segment">
+		<div class="ui column grid summary-list">
+			<div class="six wide column"><span class="summary-location">Regents Drive Parking Garage</span>
+			</div>
+			<div class="six wide column"><span id="contact1" class="summary-contact"></span>
+			</div>
+			<div class="four wide column right aligned"><span id="status1" class="summary-status"></span>
+			</div>
+		</div>
+	</div>
+	<div class="ui vertical segment">
+		<div class="ui column grid summary-list">
+			<div class="six wide column"><span class="summary-location">McKeldin Library</span>
+			</div>
+			<div class="six wide column"><span id="contact2" class="summary-contact"></span>
+			</div>
+			<div class="four wide column right aligned"><span id="status2" class="summary-status"></span>
+			</div>
 
-<div id="mapHolder" class="ui segment" style="height: 300px">
-
+		</div>
+	</div>
+	<!--  <div class="ui vertical segment">-->
+	<!--    <div class="ui column grid summary-list">-->
+	<!--      <div class="eight wide column"><span class="summary-location">GWU</span>-->
+	<!--      </div>-->
+	<!--      <div class="eight wide column right aligned"><span class="summary-status">宸茬粡鍒拌揪锛�</span>-->
+	<!--      </div>-->
+	<!--    </div>-->
+	<!--  </div>-->
+	<!--</div>    -->
 </div>
