@@ -57,7 +57,7 @@ define(['views/home/DishView',
                 }
 				$("#userPhone").text(currentUser.get('telnum'));
 				$("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
-				$("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
+				$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
 				$("#accountBarFirstName").text(currentUser.get('firstName'));
 			}
 			$('#account').show();

@@ -26,7 +26,7 @@
     <body>
         <header class="ui grid">
             <div class="computer tablet only row">
-                <div class="ui fixed menu inverted navbar grid">
+                <div class="ui fixed menu inverted navbar">
                     <a href="#home" class="brand item">Lunchbrother</a>
                     <!--
                         <div class="ui dropdown item">
@@ -39,27 +39,15 @@
                         </div>
                     -->
                     <div class="right menu">
-                        <a class="item">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i></a>
+                        <a id="account" class="item">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i></a>
                     </div>
                 </div>
             </div>
             <div class="mobile only row">
-                <div class="ui fixed inverted navbar menu">
-                    <a href="#" id="barTitle" class="item block ui label">Lunchbrother</a>
+                <div  class="ui fixed inverted navbar menu">
+                    <a href="#home" class="brand item">Lunchbrother</a>
                     <div class="right menu">
-                        <!--
-                            <div class="ui dropdown item">
-                            <i class="content icon"></i>Menu
-                            <div class="menu">
-                            <a id="mobileOrder" href="#home" class="item">Order</a>
-                            <a id="mobileStatus" href="#status" class="item">Track Your Order</a>
-
-                            <a href="" class="item">常见问题</a>
-                            <a href="" class="item">联系我们</a>
-                            </div>
-                            </div>
-                        -->
-                        <a class="item">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i>
+                        <a id="account" class="item">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i>
                         </a>
                     </div>
                     <!--<div id="hamBtnWrapper" class="ui dropdown item">
@@ -106,10 +94,10 @@
                             </div>
                         </div>
 
-                        <div class="ui horizontal very small statistics">
+                        <div class="ui horizontal mini statistics">
                             <div id="accountBalance" class="statistic">
                                 <div class="value">
-                                    <i class="dollar icon"></i><span id="userCreditBalance"></span>
+                                <span id="userCreditBalance"><i class="dollar icon"></i> </span>
                                 </div>
                                 <div class="label">
                                     $3 off on every single order!
@@ -150,7 +138,7 @@
             </div>	
         </div>
         <div class="space"></div>
-        <div id="account" class="ui bottom fixed inverted menu navbar page grid" style="display: none">
+        <div class="ui bottom fixed inverted menu navbar page grid">
 
             <div class="menu">
                 <a id="orderDish" href="#home" class="item">
