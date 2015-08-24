@@ -256,24 +256,28 @@ define(['views/home/DishView',
 		continuePay : function() {
 			var currentTime = new Date();
 			var weekday = currentTime.getDay();
-			var hours = currentTime.getHours();
-            var mins = currentTime.getMinutes();
-			var view = new OrderView({
-				model : this.stats
-			});
 
-			if ((weekday == 6) || (weekday == 0 && hours < 14)) {
+            var stopOrderTimeStart = new Date();
+            stopOrderTimeStart.setHours(11, 45, 0, 0);
+            var stopOrderTimeEnd = new Date();
+            stopOrderTimeEnd.setHours(14, 0, 0, 0);
+
+            var view = new OrderView({
+                model : this.stats
+            });
+
+			if ((weekday == 6) || (weekday == 0 && currentTime < stopOrderTimeEnd)) {
 				$("#timeAlert").css("display", "block");
 				$("#paymentBtn").addClass('disabled');
-					$("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 8:00PM.");
-			} else if(weekday !== 0 && (hours>=11 && hours<=13)) {
-				$("#timeAlert").css("display", "block");
-				$("#paymentBtn").addClass('disabled');
-				$("#timeAlert").text("Sorry, we don't take order after 11:00AM. Our order time is 2:00PM-11:00AM.");
-			}else if ((weekday == 0 && hours >= 14) || (weekday == 5 && hours <= 10) && ($("#order").length == 0)) {
+                $("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 2:00PM.");
+			} else if(weekday !== 0 && (currentTime > stopOrderTimeStart && currentTime < stopOrderTimeEnd)) {
+                $("#timeAlert").css("display", "block");
+                $("#paymentBtn").addClass('disabled');
+                $("#timeAlert").text("Sorry, we don't take order after 11:45AM. Our order time is 2:00PM-11:45AM.");
+            } else if ((weekday == 0 && currentTime > stopOrderTimeEnd) || (weekday == 5 && currentTime < stopOrderTimeStart) && ($("#order").length == 0)) {
 				$("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
 				$("#page").append(view.render().el);
-			} else if ((weekday >= 1 && weekday <= 4) && (hours <= 10 || hours >= 14) && ($("#order").length == 0)) {
+			} else if ((weekday >= 1 && weekday <= 4) && (currentTime < stopOrderTimeStart || currentTime > stopOrderTimeEnd) && ($("#order").length == 0)) {
 				$("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
 				$("#page").append(view.render().el);
 			}

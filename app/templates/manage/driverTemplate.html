@@ -1,4 +1,4 @@
-<h3 class="ui center aligned header">今日取餐內容</h3>
+<h3 class="ui center aligned header">Orders for Today</h3>
 <div class="ui segment">
     <div class="ui vertical segment">
         <div class="four wide left aligned column">Restaurant: <span id="resName"></span></div>
@@ -9,9 +9,11 @@
 </div>
 
 <button id="readyToGo" class="center aligned ui fluid red button">Orders picked up, ready to deliver!</button>
+<div class="ui divider"></div>
+<button id="done" class="center aligned ui fluid red button">I've finished delivering!</button>
 
 <div class="ui divider"></div>
-<h3 class="ui center aligned header">今日送餐內容</h3>
+<h3 class="ui center aligned header">Today's Delivery Detail</h3>
 <div class="ui segment">
     <% _.map(ordersByLocations, function(pair) { %>
     <div class="ui vertical segment">

@@ -52,7 +52,6 @@ define([
         },
 
         render: function () {
-//            var pickUpLocations = config.pickUpLocations.UMCP;
             var self = this;
             var currentUser = Parse.User.current();
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
@@ -65,8 +64,12 @@ define([
                     var paymentQuery = new Parse.Query(PaymentModel);
                     self.$("#addressOption").dropdown();
                     self.applyQuery(paymentQuery, self);
-                    self.$("#arriveBtn").text("Arrived!");
                     self.$("#arriveBtn").addClass("red");
+
+                    var current = new Date();
+                    if (current.getHours() < 11 || current.getHours() > 14) {
+                        self.$("#arriveBtn").addClass("disabled");
+                    }
                 },
                 error: function(error) {
                     alert("Pick Up Location Query Error: " + error.code + " " + error.message);
@@ -177,7 +180,6 @@ define([
                             }
                         });
                         paymentDetailMap.orderSummary = paymentDetailMap.orderSummary.substring(0, paymentDetailMap.orderSummary.length - 2);
-//                        alert(paymentDetailMap.orderSummary);
                         newResults.push(paymentDetailMap);
                         newEvent["click #checkButton-" + paymentDetailMap.orderNumber] = 'onPickupClick';
                         self.delegateEvents(_.extend(self.events, newEvent));
@@ -227,12 +229,12 @@ define([
         },
 
         updateStatus: function () {
-            var self = this;
-            self.deliveryDetails = new DeliveryModel();
-            self.deliveryDetails.set("status", "On my way!");
-            self.deliveryDetails.set("address", this.$("#addressOption").val());
-            self.deliveryDetails.save();
-            self.checkIfNotificationSent(this.$("#addressOption").val());
+            this.$("#arriveBtn").addClass("disabled");
+            var deliveryDetails = new DeliveryModel();
+            deliveryDetails.set("status", "Arrived!");
+            deliveryDetails.set("address", this.$("#addressOption").val());
+            deliveryDetails.save();
+            this.checkIfNotificationSent(this.$("#addressOption").val());
         },
 
         sendNotification: function() {
@@ -288,6 +290,7 @@ define([
         },
 
         checkIfNotificationSent: function() {
+            var self = this;
             var notificationQuery = new Parse.Query(NotificationModel);
             notificationQuery.equalTo("key", this.getNotificationKey());
             notificationQuery.find({
@@ -295,7 +298,7 @@ define([
                     if(results.length > 0){
                         console.log("Notification email has already been sent before!");
                     }else{
-                        this.sendNotification();
+                        self.sendNotification();
                     }
                 },
                 error: function (error) {
