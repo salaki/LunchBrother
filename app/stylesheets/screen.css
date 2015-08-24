@@ -832,68 +832,84 @@ header {
   opacity: 0.9;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+/* line 334, ../sass/screen.scss */
+.ui.inverted.menu.bottom {
+  font-size: 0.6em;
+}
+/* line 336, ../sass/screen.scss */
+.ui.inverted.menu.bottom .item {
+  display: block;
+}
+/* line 339, ../sass/screen.scss */
+.ui.inverted.menu.bottom .icon {
+  display: block;
+  text-align: center;
+  height: 1em;
+  margin: 0 auto 0.5em;
+  font-size: 1.8em;
+}
 
-/* line 335, ../sass/screen.scss */
+/* line 348, ../sass/screen.scss */
 .dishes .card {
   width: 100%;
 }
 
-/* line 340, ../sass/screen.scss */
+/* line 353, ../sass/screen.scss */
 #paymentBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 345, ../sass/screen.scss */
+/* line 358, ../sass/screen.scss */
 #paymentBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 353, ../sass/screen.scss */
+/* line 366, ../sass/screen.scss */
 #signUpBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 358, ../sass/screen.scss */
+/* line 371, ../sass/screen.scss */
 #signUpBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 366, ../sass/screen.scss */
+/* line 379, ../sass/screen.scss */
 #sendemailBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 371, ../sass/screen.scss */
+/* line 384, ../sass/screen.scss */
 #sendemailBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 379, ../sass/screen.scss */
+/* line 392, ../sass/screen.scss */
 #resetBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 384, ../sass/screen.scss */
+/* line 397, ../sass/screen.scss */
 #resetBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 391, ../sass/screen.scss */
+/* line 404, ../sass/screen.scss */
 .ui.form .field > .selection.dropdown {
   width: 25%;
 }
-/* line 394, ../sass/screen.scss */
+/* line 407, ../sass/screen.scss */
 .ui.form .fields .wide.field {
   width: 6.25%;
   padding-left: 0;
   padding-right: 0;
 }
 
-/* line 403, ../sass/screen.scss */
+/* line 416, ../sass/screen.scss */
 .clearfix:after {
   content: ".";
   visibility: hidden;
@@ -902,16 +918,16 @@ header {
   clear: both;
 }
 
-/* line 410, ../sass/screen.scss */
+/* line 423, ../sass/screen.scss */
 #termsandconditions > a {
   padding-left: 8%;
 }
 
-/* line 414, ../sass/screen.scss */
+/* line 427, ../sass/screen.scss */
 .college-selector {
   color: rgba(0, 0, 0, 0.95) !important;
 }
-/* line 416, ../sass/screen.scss */
+/* line 429, ../sass/screen.scss */
 .college-selector .default.text {
   color: rgba(0, 0, 0, 0.95) !important;
 }
