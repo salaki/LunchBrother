@@ -282,6 +282,7 @@ define([
             $("#addMenuIcon-" + dishId).removeClass("add");
             $("#addMenuIcon-" + dishId).addClass("minus");
             $("#addMenuLabel-" + dishId).text("Remove from Menu");
+            $("#addToMenuBtn-" + dishId).removeClass("orange");
         },
 
         markAsNotAdded: function(dishId) {
@@ -289,6 +290,7 @@ define([
             $("#addMenuIcon-" + dishId).removeClass("minus");
             $("#addMenuIcon-" + dishId).addClass("add");
             $("#addMenuLabel-" + dishId).text("Add to Menu");
+            $("#addToMenuBtn-" + dishId).addClass("orange");
         },
 
         onSaveClick: function() {

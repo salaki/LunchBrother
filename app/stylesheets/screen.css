@@ -2,7 +2,7 @@
  * In this file you should write your main styles. (or centralize your imports)
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url(http://fonts.googleapis.com/css?family=Roboto);
 /* line 24, ../sass/global/_variable.scss */
 #orderBtn.red, .ui.button.red, #arriveBtn.red, #paymentBtn.red, #signUpBtn.red, #sendemailBtn.red, #resetBtn.red {
   background-color: #e3151a;
@@ -30,7 +30,7 @@
   color: #9b9b9b;
 }
 
-/* line 17, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 5, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -51,61 +51,47 @@ time, mark, audio, video {
   font-size: 100%;
   vertical-align: baseline;
 }
-#youtubeDiv {
-	position:relative;
-	padding-bottom:56.25%;
-	padding-top:30px;
-	height:0;
-	overflow:hidden;
-}
 
-#youtubeDiv iframe {
-	position:absolute;
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
-}
-/* line 22, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+/* line 116, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
 
@@ -174,12 +160,13 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /* line 39, ../sass/partials/_sidebar.scss */
 #accountBalance .label {
   display: inline-block;
-  color: #696969;
+  color: #9b9b9b;
   font-size: 12px;
+  font-weight: 100;
   width: 100px;
 }
 
-/* line 41, ../sass/partials/_sidebar.scss */
+/* line 46, ../sass/partials/_sidebar.scss */
 .hlite {
   background: #efefef;
   border: 1px solid #bdc7d8;
@@ -189,14 +176,14 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-size: 12px;
 }
 
-/* line 50, ../sass/partials/_sidebar.scss */
+/* line 55, ../sass/partials/_sidebar.scss */
 .sidebar-item {
   font-size: 12px;
   float: left;
   width: 100%;
 }
 
-/* line 57, ../sass/partials/_sidebar.scss */
+/* line 62, ../sass/partials/_sidebar.scss */
 .item-text {
   float: left;
   margin-left: 8px;
@@ -209,8 +196,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 /* line 6, ../sass/partials/_dish.scss */
 .ui .card {
-  -webkit-box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
   -moz-box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
+  -webkit-box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
   box-shadow: 0 0.1em 0.3em 0 #d4d4d5;
 }
 
@@ -289,7 +276,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 #page .card .content .ui.button {
   font-size: 0.7rem;
 }
-/* line 71, ../sass/partials/_dish.scss */
+/* line 70, ../sass/partials/_dish.scss */
 #page .ui.pointing.secondary.menu
 .item {
   color: #9b9b9b;
@@ -446,29 +433,28 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   top: 2px;
 }
 
-/* line 2, ../sass/partials/_manage.scss */
-.ui.fluid.vertical.buttons .button {
-  width: 100%;
+/* line 1, ../sass/partials/_manage.scss */
+#menuList {
+  padding: 0 1.2em;
 }
-
-/* line 7, ../sass/partials/_manage.scss */
-.menu-list .content {
-  color: #888888;
-  font-size: 0.8em;
-}
-/* line 12, ../sass/partials/_manage.scss */
-.menu-list .right.floated.content {
+/* line 3, ../sass/partials/_manage.scss */
+#menuList .item {
   margin-top: 10px;
 }
-
-/* line 18, ../sass/partials/_manage.scss */
-.weekly .image {
-  height: 120px;
-  overflow: hidden;
+/* line 6, ../sass/partials/_manage.scss */
+#menuList .item .ui.grid.content {
+  color: #9b9b9b;
+  font-size: 0.8rem;
+  padding: 0 10px;
 }
-/* line 23, ../sass/partials/_manage.scss */
-.weekly .extra.content {
-  font-size: 0.8em;
+/* line 10, ../sass/partials/_manage.scss */
+#menuList .item .ui.grid.content .column {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+/* line 16, ../sass/partials/_manage.scss */
+#menuList .header {
+  margin-bottom: 30px;
 }
 
 /* line 18, ../sass/screen.scss */
@@ -847,73 +833,84 @@ header {
   opacity: 0.9;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+/* line 334, ../sass/screen.scss */
+.ui.inverted.menu.bottom {
+  font-size: 0.6em;
+}
+/* line 336, ../sass/screen.scss */
+.ui.inverted.menu.bottom .item {
+  display: block;
+}
+/* line 339, ../sass/screen.scss */
+.ui.inverted.menu.bottom .icon {
+  display: block;
+  text-align: center;
+  height: 1em;
+  margin: 0 auto 0.5em;
+  font-size: 1.8em;
+}
 
-/* line 335, ../sass/screen.scss */
+/* line 348, ../sass/screen.scss */
 .dishes .card {
   width: 100%;
 }
 
-/* line 340, ../sass/screen.scss */
+/* line 353, ../sass/screen.scss */
 #paymentBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 345, ../sass/screen.scss */
+/* line 358, ../sass/screen.scss */
 #paymentBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 353, ../sass/screen.scss */
+/* line 366, ../sass/screen.scss */
 #signUpBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 358, ../sass/screen.scss */
+/* line 371, ../sass/screen.scss */
 #signUpBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 366, ../sass/screen.scss */
+/* line 379, ../sass/screen.scss */
 #sendemailBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 371, ../sass/screen.scss */
+/* line 384, ../sass/screen.scss */
 #sendemailBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 379, ../sass/screen.scss */
+/* line 392, ../sass/screen.scss */
 #resetBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 384, ../sass/screen.scss */
+/* line 397, ../sass/screen.scss */
 #resetBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 391, ../sass/screen.scss */
+/* line 404, ../sass/screen.scss */
 .ui.form .field > .selection.dropdown {
   width: 25%;
 }
-/* line 394, ../sass/screen.scss */
+/* line 407, ../sass/screen.scss */
 .ui.form .fields .wide.field {
   width: 6.25%;
   padding-left: 0;
   padding-right: 0;
 }
 
-/* line 400, ../sass/screen.scss */
-.ui.mini.input {
-  width: 25%;
-}
-
-/* line 403, ../sass/screen.scss */
+/* line 416, ../sass/screen.scss */
 .clearfix:after {
   content: ".";
   visibility: hidden;
@@ -922,16 +919,16 @@ header {
   clear: both;
 }
 
-/* line 410, ../sass/screen.scss */
+/* line 423, ../sass/screen.scss */
 #termsandconditions > a {
   padding-left: 8%;
 }
 
-/* line 414, ../sass/screen.scss */
+/* line 427, ../sass/screen.scss */
 .college-selector {
   color: rgba(0, 0, 0, 0.95) !important;
 }
-/* line 416, ../sass/screen.scss */
+/* line 429, ../sass/screen.scss */
 .college-selector .default.text {
   color: rgba(0, 0, 0, 0.95) !important;
 }

@@ -1,0 +1,23 @@
+#menuList{
+  padding:0 1.2em;
+  & .item{
+    margin-top:10px;
+  }
+  & .item .ui.grid.content{
+    color:$color_grey;
+    font-size:$sm;
+    padding:0 10px;
+    & .column{
+      padding-top:10px;
+      padding-bottom:10px;
+    }
+  }
+
+  & .header {
+    margin-bottom:30px;
+  }
+
+
+}
+
+

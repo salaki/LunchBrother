@@ -4,13 +4,15 @@ define([
     'models/PickUpLocation',
     'models/InventoryModel',
     'text!templates/manage/managerHomeTemplate.html',
-    'text!templates/manage/menuListTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, managerHomeTemplate, menuListTemplate) {
+    'text!templates/manage/menuListTemplate.html',
+    'text!templates/manage/salesTableBodyTemplate.html'
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
         template: _.template(managerHomeTemplate),
         menuListTemplate: _.template(menuListTemplate),
+        salesTableBodyTemplate: _.template(salesTableBodyTemplate),
         events: {
             'click #DPAdd': 'onEditOrAddClick',
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
@@ -103,7 +105,6 @@ define([
 
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
             pickUpLocationQuery.equalTo("gridId", chefGrid);
-            pickUpLocationQuery.include("distributor");
             pickUpLocationQuery.find({
                 success:function(locations) {
                     _.each(locations, function(location) {
@@ -140,39 +141,66 @@ define([
                     thirdWeek += (friday3.getMonth() + 1) + "/" + friday3.getDate();
 
 
-                    //Query distributors
-                    var userQuery = new Parse.Query(Parse.User);
-                    userQuery.equalTo("permission", 4);
-                    userQuery.equalTo("gridId", Parse.User.current().get('gridId'));
-                    userQuery.find({
-                        success: function(distributors) {
-                            self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
+                    self.$el.html(self.template({distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
+                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00}));
 
-                            if (self.options.week !== "") {
-                                self.refreshWeekMenu(self.options.week);
+                    self.$( "#datepicker" ).datepicker({
+                        onSelect: function(dateText){
+                            var month = parseInt(dateText.split("/")[0]) - 1;
+                            var date = parseInt(dateText.split("/")[1]);
+                            var year = parseInt(dateText.split("/")[2]);
 
-                                //We need to do this crazy stuff to both set the value and have it to be selectable
-                                $(".week-selection").dropdown('set selected', self.options.week);
-                                $(".week-selection").dropdown({
-                                    onChange: function (week) {
-                                        self.refreshWeekMenu(week);
+                            var dayStart = new Date();
+                            dayStart.setFullYear(year, month, date);
+                            dayStart.setHours(0, 0, 0, 0);
+
+                            var dayEnd = new Date();
+                            dayEnd.setFullYear(year, month, date);
+                            dayEnd.setHours(23, 59, 59, 0);
+
+                            var inventoryQuery = new Parse.Query(InventoryModel);
+                            inventoryQuery.equalTo("orderBy", Parse.User.current());
+                            inventoryQuery.include("dish");
+                            inventoryQuery.lessThan("pickUpDate", dayEnd);
+                            inventoryQuery.greaterThan("pickUpDate", dayStart);
+                            inventoryQuery.find({
+                                success: function(inventories) {
+                                    var income = 0;
+                                    if (inventories.length !== 0) {
+                                        _.each(inventories, function(inventory) {
+                                            income += (inventory.get("preorderQuantity") - inventory.get("currentQuantity")) * inventory.get("price");
+                                        });
                                     }
-                                });
 
-                            } else {
-                                $(".week-selection").dropdown({
-                                    onChange: function (week) {
-                                        self.refreshWeekMenu(week);
-                                    }
-                                });
-                            }
-
-                            self.$("#publishMenu").addClass('disabled');
-                        },
-                        error: function(error) {
-                            console.log(error.message);
+                                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income}));
+                                },
+                                error: function(error) {
+                                    alert("Error: " + error.code + " " + error.message);
+                                }
+                            });
                         }
                     });
+
+                    if (self.options.week !== "") {
+                        self.refreshWeekMenu(self.options.week);
+
+                        //We need to do this crazy stuff to both set the value and have it to be selectable
+                        $(".week-selection").dropdown('set selected', self.options.week);
+                        $(".week-selection").dropdown({
+                            onChange: function (week) {
+                                self.refreshWeekMenu(week);
+                            }
+                        });
+
+                    } else {
+                        $(".week-selection").dropdown({
+                            onChange: function (week) {
+                                self.refreshWeekMenu(week);
+                            }
+                        });
+                    }
+
+                    self.$("#publishMenu").addClass('disabled');
                 },
                 error: function(error) {
                     console.log(error.message);
@@ -299,10 +327,6 @@ define([
             var dpId = $(ev.currentTarget).data('id');
             var address = $(ev.currentTarget).data('address');
             var youtubeLink = $(ev.currentTarget).data('youtube');
-            var distributorId = $(ev.currentTarget).data('distributor');
-
-
-            $("#distributorSelector").val(distributorId);
             $("#dp_location").val(address);
             $("#dp_youtubeLink").val(youtubeLink);
             $('#editDPDialog').modal({
@@ -311,7 +335,7 @@ define([
 
                 },
                 onApprove: function () {
-                    self.saveDP(dpId, $("#dp_location").val(), $("#dp_youtubeLink").val(), $("#distributorSelector").val());
+                    self.saveDP(dpId, $("#dp_location").val(), $("#dp_youtubeLink").val());
                 }
             }).modal('show');
         },
@@ -338,7 +362,7 @@ define([
             window.location.hash = '#driver';
         },
 
-        saveDP: function(id, address, youtubeLink, distributorId) {
+        saveDP: function(id, address, youtubeLink) {
             var chefGrid = Parse.User.current().get('gridId');
             //default chef's grid to University of Maryland College Park
             if (chefGrid === undefined){
@@ -351,13 +375,6 @@ define([
                 dp.id = id;
                 dp.set("gridId", chefGrid);
                 dp.set("address", address);
-                if (distributorId !== "") {
-                    var distributor = new Parse.User();
-                    distributor.id = distributorId;
-                    dp.set("distributor", distributor);
-                } else {
-                    dp.unset("distributor");
-                }
                 dp.set("youtubeLink", youtubeLink);
                 dp.save(null, {
                     success: function(dp) {

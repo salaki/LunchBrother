@@ -22,18 +22,18 @@
                             <%= dish.get('dishName') %>
                         </div>
                         <div class="four wide column">
-                            <div class="ui fluid input">
+                            <div class="ui fluid mini input">
                                 <input id="dishPriceInput-<%= dish.id %>" type="text" placeholder="Price" value="<%= dish.price %>">
                             </div>
                         </div>
                         <div class="four wide column">
-                            <div class="ui fluid input">
+                            <div class="ui fluid mini input">
                                 <input id="dishQuantityInput-<%= dish.id %>" type="text" placeholder="Qty" value="<%= dish.quantity %>">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="ui add-btn bottom attached button" id="addToMenuBtn-<%= dish.id %>">
+                <div class="ui add-btn bottom attached orange button" id="addToMenuBtn-<%= dish.id %>">
                     <i class="add icon" id="addMenuIcon-<%= dish.id %>"></i>
                     <label id="addMenuLabel-<%= dish.id %>">Add to Menu</label>
                 </div>  

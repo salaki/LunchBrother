@@ -36,7 +36,12 @@
   color: #333; 
 } 
 
-#accountBalance .label { display: inline-block; color: #696969; font-size: 12px; width: 100px; }
+#accountBalance .label { 
+  display: inline-block; 
+  color:$color_grey; 
+  font-size: 12px; 
+  font-weight:100;
+  width: 100px; }
 
 .hlite { 
   background: #efefef; 

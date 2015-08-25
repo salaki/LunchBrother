@@ -4,7 +4,7 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 @import "global/variable";
 @import "global/mixin";
-@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url(http://fonts.googleapis.com/css?family=Roboto);
 @import "compass/css3";
 @import "compass/reset";
 @import "partials/sidebar";
@@ -331,6 +331,19 @@ header {
 	opacity: 0.9;
 	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
 	box-shadow: 0 0 5px $black_50;
+  &.bottom{
+    font-size:0.6em;
+    & .item{
+      display:block;
+    }
+    & .icon{
+      display:block;
+      text-align:center;
+      height:1em;
+      margin:0 auto 0.5em;
+      font-size:1.8em;
+    }
+  }
 }
 .dishes .card {
 	width: 100%;
@@ -397,9 +410,9 @@ header {
 		padding-right: 0;
 	}
 }
-.ui.mini.input {
-	width: 25%;
-}
+//.ui.mini.input {
+//	width: 25%;
+//}
 .clearfix:after {
 	content: ".";
 	visibility: hidden;

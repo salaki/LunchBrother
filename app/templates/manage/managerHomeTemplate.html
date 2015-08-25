@@ -9,29 +9,11 @@
             <div class="nine wide column">
                 <div class="ui basic mini buttons">
                     <div class="ui button"><a href="<%= distributingPoint.get('youtubeLink') %>" target="_blank"><i class="youtube play icon"></i></a></div>
-                    <div class="ui button" id="dpEditButton-<%= distributingPoint.id %>"
-                         data-id="<%= distributingPoint.id %>"
-                         data-youtube="<%= distributingPoint.get('youtubeLink') %>"
-                         data-address="<%= distributingPoint.get('address') %>"
-                         <% if (distributingPoint.get('distributor')) { %>
-                            data-distributor="<%= distributingPoint.get('distributor').id %>"
-                         <% } else { %>
-                            data-distributor=""
-                         <% } %>
-                         >Edit</div>
+                    <div class="ui button" id="dpEditButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>" data-youtube="<%= distributingPoint.get('youtubeLink') %>" data-address="<%= distributingPoint.get('address') %>">Edit</div>
                     <div class="ui button" id="dpDeleteButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>"><i class="remove circle outline icon"></i></div>
                 </div>
             </div>
         </div>
-            <% if(distributingPoint.get('distributor')) { %>
-                <div class="dish-intro description" style="padding-bottom: 30px">
-                    Contact: <%= distributingPoint.get('distributor').get('firstName') %> (<%= distributingPoint.get('distributor').get('telnum') %>)
-                </div>
-            <% } else { %>
-                <div class="dish-intro description" style="padding-bottom: 30px">
-                    No distributor assigned
-                </div>
-            <% } %>
         <% })%>
     </div>
 </div>
@@ -39,27 +21,68 @@
     <i class="add icon"></i>
     Add a new location
 </div>
-<div class="ui divider"></div>
-<div class="row">
-    <div class="ui top attached segment">
-        <h4 class="ui red header">
-            <i class="small file text outline icon"></i>Manage weekly menu
-        </h4>
-        <div class="ui menu">
-            <div class="ui dropdown fluid item week-selection">
-                <i class="small calendar icon"></i><div class="default text" id="weekMenu">Select Week</div><i class="dropdown icon"></i>
-                <div class="menu">
-                    <% _.each(weeks, function(week) { %>
-                    <a class="item" data-value="<%= week %>">Weekly Menu <%= week %></a>
-                    <% })%>
-                </div>
+
+<h4 class="ui top attached red header">
+    <i class="users icon small"></i>Drivers & Distributors
+</h4>    
+<div class="ui attached segment">
+    <div class="ui middle aligned selection list">
+        <div class="item">
+            <div class="right floated content">
+                <div class="ui mini basic button">Edit</div>
+            </div>
+            <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
+            <div class="content">
+                <div class="header">Helen</div>
+                <div class="description">Driver</div>
             </div>
         </div>
-        <div id="menuList"></div>
-        <div class="ui fluid vertical basic buttons">
-            <button id="showDistributorStatus" class="ui button">Check distributor status <i class="right arrow icon"></i></button>
-            <button id="showDriverStatus" class="ui button">Check driver status <i class="right arrow icon"></i></button>
+        <div class="item">
+            <div class="right floated content">
+                <div class="ui mini basic button">Edit</div>
+            </div>
+            <img class="ui avatar image" src="/images/avatar/small/christian.jpg">
+            <div class="content">
+                <div class="header">Christian</div>
+                <div class="description">Driver</div>
+            </div>
         </div>
+        <div class="item">
+            <div class="right floated content">
+                <div class="ui mini basic button">Edit</div>
+            </div>
+            <img class="ui avatar image" src="/images/avatar/small/daniel.jpg">
+            <div class="content">
+                <div class="header">Daniel</div>
+                <div class="description">Distriputor</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui bottom attached button" id="addPerson" data-youtubeLink="" data-address="">
+    <i class="add icon"></i>
+    Add a new person
+</div>
+
+<h4 class="ui red top attached header">
+    <i class="small file text outline icon"></i>Manage weekly menu
+</h4>
+
+<div class="ui bottom attached segment">
+    <div class="ui menu">
+        <div class="ui dropdown fluid item week-selection">
+            <i class="small calendar icon"></i><div class="default text" id="weekMenu">Select Week</div><i class="dropdown icon"></i>
+            <div class="menu">
+                <% _.each(weeks, function(week) { %>
+                <a class="item" data-value="<%= week %>">Weekly Menu <%= week %></a>
+                <% })%>
+            </div>
+        </div>
+    </div>
+    <div id="menuList"></div>
+    <div class="ui fluid vertical basic buttons">
+        <button id="showDistributorStatus" class="ui button">Check distributor status <i class="right arrow icon"></i></button>
+        <button id="showDriverStatus" class="ui button">Check driver status <i class="right arrow icon"></i></button>
     </div>
 </div>
 
@@ -79,30 +102,16 @@
                 </div>
             </div>
         </div>
-        <div id="dtinfo" class="two fields">
-            <div class="ui fluid field" style="padding-left: 20px; padding-bottom: 20px">
-                <select id="distributorSelector">
-                    <option value="">Select your distributor</option>
-                    <% _.each(distributors, function(distributor) { %>
-                        <option value="<%= distributor.id %>">
-                            <%= distributor.get('firstName') %> <%= distributor.get('lastName') %>
-                        </option>
-                    <% }) %>
-                </select>
-            </div>
-        </div>
     </div>
     <div class="actions">
-        <div class="two fluid ui buttons">
             <div class="ui basic cancel button">
                 <i class="remove icon"></i>
                 <label id="DPCancel">Cancel</label>
             </div>
-            <div class="ui ok basic button">
+            <div class="ui ok green button">
                 <i class="checkmark icon"></i>
                 <label id="DPSave">Save</label>
             </div>
-        </div>
     </div>
 </div>
 
@@ -114,16 +123,14 @@
         Do you really want to delete this Distribution Point?
     </div>
     <div class="actions">
-        <div class="two fluid ui buttons">
             <div class="ui basic cancel button">
                 <i class="remove icon"></i>
                 <label id="deleteDPCancel">Cancel</label>
             </div>
-            <div class="ui ok basic button">
+            <div class="ui ok red button">
                 <i class="checkmark icon"></i>
-                <label id="deleteDPConfirm">Confirm</label>
+                <label id="deleteDPConfirm">Delete</label>
             </div>
-        </div>
     </div>
 </div>
 
@@ -136,15 +143,84 @@
         <span id="publishMenuWarningLine" class="red"></span>
     </div>
     <div class="actions">
-        <div class="two fluid ui buttons">
-            <div class="ui basic cancel button">
+            <div class="ui cancel button">
                 <i class="remove icon"></i>
                 <label id="publishMenuCancel">Cancel</label>
             </div>
-            <div class="ui ok basic button">
+            <div class="ui green ok button">
                 <i class="checkmark icon"></i>
                 <label id="publishMenuConfirm">Confirm</label>
             </div>
+    </div>
+</div>
+
+<div id="addPerson" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        <label id="editPersonLabel">Add a new Driver/Distributor</label>
+    </div>
+    <div action="" method="POST" id="new-personForm" class="ui form">
+        <div id="basicinfo">
+            <div id="personInfo" class="two fields">
+                <div class="ui fluid field">
+                    <input id="personName" class="ui input" type="text" name="" placeholder="Name" value="">
+                </div>
+                <div class="ui fluid field">
+                    <input id="personTitle" class="ui input" type="text" name="" placeholder="Title"  value="Driver">
+                </div>
+            </div>
         </div>
     </div>
+    <div class="actions">
+        <div class="two fluid ui buttons">
+            <div class="ui basic cancel button">
+                <i class="remove icon"></i>
+                <label id="DPCancel">Cancel</label>
+            </div>
+            <div class="ui ok green button">
+                <i class="checkmark icon"></i>
+                <label id="DPSave">Add</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editPerson" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        <label id="editPersonLabel">Edit Driver/Distributor information</label>
+    </div>
+    <div action="" method="POST" id="dpForm" class="ui form">
+        <div id="basicinfo">
+            <div id="personInfo" class="two fields">
+                <div class="ui fluid field">
+                    <input id="personName" class="ui input" type="text" name="" value="Helen">
+                </div>
+                <div class="ui fluid field">
+                    <input id="personTitle" class="ui input" type="text" name=""  value="Driver">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="two fluid ui buttons">
+            <div class="ui basic cancel button">
+                <i class="remove icon"></i>
+                <label id="DPCancel">Cancel</label>
+            </div>
+            <div class="ui ok green button">
+                <i class="checkmark icon"></i>
+                <label id="DPSave">Save</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Statistic Visualization -->
+<div class="ui segment">
+    <h4 class="ui red header" style="padding-left: 10px; padding-top: 10px">
+        <i class="line chart icon small"></i>Sales Summary
+    </h4>
+    <span style="padding-left: 10px">Date: <input type="text" id="datepicker"></span>
+    <table class="ui small celled unstackable table" id="salesTableBody">
+    </table>
 </div>
