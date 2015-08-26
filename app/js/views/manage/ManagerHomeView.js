@@ -18,7 +18,8 @@ define([
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
             'click #showDriverStatus': 'onShowDriverStatusClick',
             'click #publishMenu': 'onPublishMenuClick',
-            'click #concealMenu': 'onConcealMenuClick'
+            'click #concealMenu': 'onConcealMenuClick',
+            'click #addPerson': 'onEditOrAddPersonClick'
         },
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
@@ -312,6 +313,19 @@ define([
             var date = $(ev.currentTarget).data('date');
             window.location.hash = "#menuEdit?inventoryIds=" + inventoryIds + "&date=" + date;
 
+        },
+
+        onEditOrAddPersonClick: function() {
+            $('#editPersonDialog').modal({
+                closable: false,
+                onDeny: function () {
+                    //Do nothing
+                },
+                onApprove: function () {
+                    //TODO@Jenny - Extract all the person information data out, refer to the implementation of onEditOrAddClick() below
+                    //TODO@Jenny - Save the user to Parse
+                }
+            }).modal('show');
         },
 
         onEditOrAddClick: function(ev) {
