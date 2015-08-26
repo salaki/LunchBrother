@@ -1,5 +1,4 @@
 define([
-  'models/dish/DishModel',
   'models/dish/DishCollection',
   'models/order/OrderModel',
   'models/order/PaymentModel',
@@ -14,7 +13,7 @@ define([
   'text!templates/order/orderTemplate.html',
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
-], function (DishModel, DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate) {
+], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate) {
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -82,7 +81,7 @@ define([
 
                                         that.$("#addressdetails").change(function() {
                                             that.$("#youtubeDiv").show();
-                                            that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1");
+                                            that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
                                         });
 
                                         //Localization
