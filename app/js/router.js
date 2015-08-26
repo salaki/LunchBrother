@@ -123,24 +123,22 @@ define([
           appRouter.on('route:showStatus', function () {
               var currentUser = Parse.User.current();
               if(currentUser != null) {
-                  permission = currentUser.get('permission');
-              }
-              if(permission >=1) {
-                  // Call render on the module we loaded in via the dependency array
                   var statusView = new StatusView();
                   statusView.render();
+              } else {
+                  var loginorsignupView = new LoginorsignupView();
+                  loginorsignupView.render();
               }
           });
 
           appRouter.on('route:showHome', function () {
               var currentUser = Parse.User.current();
               if(currentUser != null) {
-                  permission = currentUser.get('permission');
-              }
-              if(permission >=1) {
-                  // Call render on the module we loaded in via the dependency array
                   var homeView = new HomeView();
                   homeView.render();
+              } else {
+                  var loginorsignupView = new LoginorsignupView();
+                  loginorsignupView.render();
               }
           });
 

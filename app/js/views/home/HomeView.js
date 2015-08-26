@@ -30,9 +30,6 @@ define(['views/home/DishView',
         inventoryMap : {},
 
 		initialize : function() {
-			// Move to account panel view when added
-			$('#referlink input').val('https://www.lunchbrother.com/?refer=' + Parse.User.current().id + '#signupemail');
-
 			_.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
 			this.$el.html(_.template(homeTemplate)());
 
@@ -59,8 +56,9 @@ define(['views/home/DishView',
 				$("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
 				$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
 				$("#accountBarFirstName").text(currentUser.get('firstName'));
+                $('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
+                $('#account').show();
 			}
-			$('#account').show();
 
             this.dishes = new DishCollection;
 
@@ -135,18 +133,18 @@ define(['views/home/DishView',
                 charge += order.count * order.price;
             });
 
-			this.stats.tax = parseFloat((charge * 0.11).toFixed(2));
-			var currentUser = Parse.User.current();
-			var ordercoupon = 3 * this.dishes.totalCount();
-			if (ordercoupon <= currentUser.get('creditBalance')) {
-				this.stats.coupon = ordercoupon;
-			} else {
-				this.stats.coupon = currentUser.get('creditBalance');
-			}
-			this.stats.totalCharge = parseFloat((charge + this.stats.tax - this.stats.coupon).toFixed(2));
-			this.$('#orderStats').html(this.statsTemplate(this.stats));
-			this.delegateEvents();
-			return this;
+            this.stats.tax = parseFloat((charge * 0.11).toFixed(2));
+            var currentUser = Parse.User.current();
+            var ordercoupon = 3 * this.dishes.totalCount();
+            if (ordercoupon <= currentUser.get('creditBalance')) {
+                this.stats.coupon = ordercoupon;
+            } else {
+                this.stats.coupon = currentUser.get('creditBalance');
+            }
+            this.stats.totalCharge = parseFloat((charge + this.stats.tax - this.stats.coupon).toFixed(2));
+            this.$('#orderStats').html(this.statsTemplate(this.stats));
+            this.delegateEvents();
+            return this;
 		},
 
 		addOne : function(dish) {
