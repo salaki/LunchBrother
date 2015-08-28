@@ -315,7 +315,75 @@ define([
 
         },
 
-        onEditOrAddPersonClick: function() {
+        onEditOrAddPersonClick: function(ev) {
+            this.$('.ui.form').form({
+                firstName: {
+                    identifier: 'firstName',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter the first name'
+                    }]
+                },
+                lastName: {
+                    identifier: 'lastName',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter the last name'
+                    }]
+                },
+                email: {
+                    identifier: 'email',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter the email address'
+                    }, {
+                        type: 'email',
+                        prompt: 'Please enter a valid e-mail'
+                    }]
+                },
+                phonenumber: {
+                    identifier: 'phonenumber',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter cell phone number'
+                    }, {
+                        type: 'length[10]',
+                        prompt:'Your phone number must be 10 digits'
+                    }]
+                },
+                password: {
+                    identifier: 'password',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter your password'
+                    }]
+                },
+                titleOptions: {
+                    identifier: 'titleOptions',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please select a title'
+                    }]
+                }
+            }, {
+                on: 'blur',
+                inline: 'true'
+            });
+            var self = this;
+            var pId = $(ev.currentTarget).data('id');
+            var pFirstName = $(ev.currentTarget).data('first_name');
+            var pLastName = $(ev.currentTarget).data('last_name');
+            var pEmail = $(ev.currentTarget).data('email');
+            var pPhoneNumber = $(ev.currentTarget).data('phonenumber');
+            var pPassword = $(ev.currentTarget).data('password');
+            var pTitle = $(ev.currentTarget).data('title');
+            
+            $('#first_name').val(pFirstName);
+            $('#last_name').val(pLastName);
+            $('#email').val(pEmail);
+            $('#phonenumber').val(pPhoneNumber);
+            $('#password').val(pPassword);
+            $('#titleOptions').val(pTitle);
             $('#editPersonDialog').modal({
                 closable: false,
                 onDeny: function () {
@@ -324,6 +392,7 @@ define([
                 onApprove: function () {
                     //TODO@Jenny - Extract all the person information data out, refer to the implementation of onEditOrAddClick() below
                     //TODO@Jenny - Save the user to Parse
+                	self.savePerson(pId, $("#first_name").val(), $("#last_name").val(), $('#email').val(), $('#phonenumber').val(), $('#password').val(), $('#titleOptions').val());                	
                 }
             }).modal('show');
         },
@@ -430,7 +499,40 @@ define([
                 alert("Please enter the required information.");
             }
         },
-
+        
+        savePerson: function(id, firstname, lastname, email, phonenumber, password, title){
+            if (1) {
+                var person = new Parse.User();
+                person.id = id;
+                person.set("username", email);
+                person.set("password", password);
+                person.set("firstName", firstname);
+                person.set("lastName", lastname);
+                person.set("email", email);               
+                person.set("telnum", Number(phonenumber));
+                
+                if(title == "Driver")
+                	person.set("permission", 3);
+                else if(title == "Distributor")
+                	person.set("permission", 4); 
+                person.save(null, {
+                    success: function(person) {
+                    if (id === undefined) {
+                        alert('New Driver/Distributor created with Id: ' + person.id);
+                    } else {
+                        alert('Driver/Distributor info updated!');
+                    }
+                    },
+                    error: function(error) {
+                        alert('Update failed! Reason: ' + error.message);
+                    }
+                });
+            } else {
+                alert("Please enter the required information.");
+            }
+        },
+        
+        
         deleteDP: function(id) {
             var dp = new PickUpLocationModel();
             dp.id = id;

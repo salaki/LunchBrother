@@ -196,13 +196,32 @@
             <!--TODO@Jenny Take a look at signupemailTemplate, move all content under basicinfo div to here. -->
             <!--TODO@Jenny Then add two input radio boxes, one for driver, and one for distributor, only one can be chosen. -->
             <!--TODO@Jenny Once you've done it, give me a screen shot of it. Then go to ManagerHomeView.js-->
-            <div id="personInfo" class="two fields">
-                <div class="ui fluid field">
-                    <input id="personName" class="ui input" type="text" name="" placeholder="Name" value="">
-                </div>
-                <div class="ui fluid field">
-                    <input id="personTitle" class="ui input" type="text" name="" placeholder="Title"  value="Driver">
-                </div>
+            <div id="basicinfo">
+			<div id="nameinfo" class="two fields">
+				<div class="ui fluid field">
+					<input id="first_name" class="ui input fname" placeholder="First Name" type="text" name="first_name" value="">
+				</div>
+				<div class="ui fluid field">
+					<input id="last_name" class="ui input lname" placeholder="Last Name" type="text" name="last_name" value="">
+				</div>
+			</div>
+			<div class="ui fluid field">
+				<input id="email" class="ui input required email" placeholder="E-mail, this will be your username" type="text" name="email">
+			</div>
+			<div class="ui fluid required field">
+				<input id="phonenumber" class="ui input required phonenumber" placeholder="Phone Number, e.g. 7772228888" type="text" name="phonenumber">
+			</div>
+			<div class="ui fluid field">
+				<input id="password" class="ui input required password" placeholder="Password" type="password" name="password">
+			</div>
+			<div class="ui fluid field">
+                <select id="titleOptions">
+                    <option value="">Select your title</option>
+                    <option value="Driver">Driver</option>
+                    <option value="Distributor">Distributor</option>                    
+                </select>
+			</div>
+			
             </div>
         </div>
     </div>
