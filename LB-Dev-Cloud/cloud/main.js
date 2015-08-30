@@ -429,6 +429,42 @@ function twilioSMSService(targetNumber, messageBody) {
     );
 }
 
+Parse.Cloud.define("updateUser", function (request, response) {
+    var user = new Parse.User();
+    Parse.Cloud.useMasterKey();
+    user.id = request.params.userId;
+    user.set("username", request.params.email);
+    user.set("password", request.params.password);
+    user.set("firstName", request.params.firstName);
+    user.set("lastName", request.params.lastName);
+    user.set("email", request.params.email);
+    user.set("telnum", Number(request.params.telnum));
+    user.set("permission", Number(request.params.permission));
+    user.save(null, {
+        success: function(user) {
+            response.success("Update user successfully!");
+        },
+        error: function(error) {
+            response.error(error.message);
+        }
+    });
+});
+
+Parse.Cloud.define("deleteUser", function (request, response) {
+    var userId = request.params.userId;
+    Parse.Cloud.useMasterKey();
+    var user = new Parse.User();
+    user.id = userId;
+    user.destroy({
+        success: function() {
+            response.success("Delete user successfully!");
+        },
+        error: function(error) {
+            response.error(error.message);
+        }
+    });
+});
+
 Parse.Cloud.define("saveResetKeyForUser", function (request, response) {
     var email = request.params.emailAddress;
     var resetKey = request.params.resetKey;

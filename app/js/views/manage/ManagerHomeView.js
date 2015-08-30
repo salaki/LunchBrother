@@ -142,13 +142,26 @@ define([
                     var friday3 = new Date(monday3.setDate(diff6));
                     thirdWeek += (friday3.getMonth() + 1) + "/" + friday3.getDate();
 
-                    //Query distributors
+                    //Query offline workers
                     var userQuery = new Parse.Query(Parse.User);
-                    userQuery.equalTo("permission", 4);
+                    userQuery.greaterThan("permission", 2);
+                    userQuery.lessThan("permission", 5);
                     userQuery.equalTo("gridId", Parse.User.current().get('gridId'));
                     userQuery.find({
-                        success: function(distributors) {
-                            self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
+                        success: function(workers) {
+                            var distributors = [];
+                            var newEvent2 = {};
+
+                            _.each(workers, function(worker) {
+                                newEvent2["click #workerEditButton-" + worker.id] = 'onEditOrAddPersonClick';
+                                newEvent2["click #workerDeleteButton-" + worker.id] = 'onDeletePersonClick';
+                                if (worker.get('permission') === DISTRIBUTOR) {
+                                    distributors.push(worker);
+                                }
+                            });
+                            self.delegateEvents(_.extend(self.events, newEvent2));
+
+                            self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers}));
 
                             if (self.options.week !== "") {
                                 self.refreshWeekMenu(self.options.week);
@@ -371,10 +384,10 @@ define([
             });
             var self = this;
             var pId = $(ev.currentTarget).data('id');
-            var pFirstName = $(ev.currentTarget).data('first_name');
-            var pLastName = $(ev.currentTarget).data('last_name');
+            var pFirstName = $(ev.currentTarget).data('firstName');
+            var pLastName = $(ev.currentTarget).data('lastName');
             var pEmail = $(ev.currentTarget).data('email');
-            var pPhoneNumber = $(ev.currentTarget).data('phonenumber');
+            var pPhoneNumber = $(ev.currentTarget).data('phoneNumber');
             var pPassword = $(ev.currentTarget).data('password');
             var pTitle = $(ev.currentTarget).data('title');
             
@@ -390,8 +403,6 @@ define([
                     //Do nothing
                 },
                 onApprove: function () {
-                    //TODO@Jenny - Extract all the person information data out, refer to the implementation of onEditOrAddClick() below
-                    //TODO@Jenny - Save the user to Parse
                 	self.savePerson(pId, $("#first_name").val(), $("#last_name").val(), $('#email').val(), $('#phonenumber').val(), $('#password').val(), $('#titleOptions').val());                	
                 }
             }).modal('show');
@@ -434,7 +445,7 @@ define([
 
                 },
                 onApprove: function () {
-                    self.saveDP(dpId, $("#dp_location").val(), $("#dp_youtubeLink").val());
+                    self.saveDP(dpId, $("#dp_location").val(), $("#dp_youtubeLink").val(), $("#distributorSelector").val());
                 }
             }).modal('show');
         },
@@ -449,6 +460,20 @@ define([
                 },
                 onApprove: function () {
                     self.deleteDP(dpId);
+                }
+            }).modal('show');
+        },
+
+        onDeletePersonClick: function(ev) {
+            var self = this;
+            var userId = $(ev.currentTarget).data('id');
+            $('#deletePersonDialog').modal({
+                closable: false,
+                onDeny: function () {
+
+                },
+                onApprove: function () {
+                    self.deletePerson(userId);
                 }
             }).modal('show');
         },
@@ -501,44 +526,71 @@ define([
         },
         
         savePerson: function(id, firstname, lastname, email, phonenumber, password, title){
-            if (1) {
+            if (id) {
+                this.updatePerson(id, firstname, lastname, email, phonenumber, password, title);
+            } else {
                 var person = new Parse.User();
-                person.id = id;
                 person.set("username", email);
                 person.set("password", password);
                 person.set("firstName", firstname);
                 person.set("lastName", lastname);
-                person.set("email", email);               
+                person.set("email", email);
                 person.set("telnum", Number(phonenumber));
-                
-                if(title == "Driver")
-                	person.set("permission", 3);
-                else if(title == "Distributor")
-                	person.set("permission", 4); 
+                person.set("gridId", Parse.User.current().get("gridId"));
+                person.set("permission", Number(title));
                 person.save(null, {
                     success: function(person) {
-                    if (id === undefined) {
                         alert('New Driver/Distributor created with Id: ' + person.id);
-                    } else {
-                        alert('Driver/Distributor info updated!');
-                    }
+                        location.reload();
                     },
                     error: function(error) {
                         alert('Update failed! Reason: ' + error.message);
                     }
                 });
-            } else {
-                alert("Please enter the required information.");
             }
         },
-        
-        
+
+        updatePerson: function(id, firstname, lastname, email, phonenumber, password, title) {
+            Parse.Cloud.run('updateUser', {
+                userId: id,
+                firstName: firstname,
+                lastName: lastname,
+                email: email,
+                telnum: phonenumber,
+                password: password,
+                permission: title
+            }, {
+                success: function (success) {
+                    alert(success);
+                    location.reload();
+                },
+                error: function (error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
+        deletePerson: function(id) {
+            Parse.Cloud.run('deleteUser', {
+                userId: id
+            }, {
+                success: function (success) {
+                    console.log(success);
+                    alert("Delete worker successfully!");
+                    location.reload();
+                },
+                error: function (error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
         deleteDP: function(id) {
             var dp = new PickUpLocationModel();
             dp.id = id;
             dp.destroy({
                 success: function(dp) {
-                    alert("Delete Distributing Point successfully!");
+                    alert("Create Distributing Point successfully!");
                     location.reload();
                 },
                 error: function(dp, error) {

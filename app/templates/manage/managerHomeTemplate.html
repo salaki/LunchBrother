@@ -42,42 +42,33 @@
 
 <h4 class="ui top attached red header">
     <i class="users icon small"></i>Drivers & Distributors
-</h4>    
+</h4>
 <div class="ui attached segment">
     <div class="ui middle aligned selection list">
+        <% _.each(workers, function(worker) { %>
         <div class="item">
             <div class="right floated ui basic mini buttons">
-                <div class="ui button">Edit</div>
-                <div class="ui button"><i class="remove circle outline icon"></i></div>
+                <div class="ui button" id="workerEditButton-<%= worker.id %>"
+                     data-id="<%= worker.id %>"
+                     data-first-name="<%= worker.get('firstName') %>"
+                     data-last-name="<%= worker.get('lastName') %>"
+                     data-email="<%= worker.get('email') %>"
+                     data-phone-number="<%= worker.get('telnum') %>"
+                     data-password="<%= worker.get('password') %>"
+                     data-title="<%= worker.get('permission') %>">Edit</div>
+                <div class="ui button" id="workerDeleteButton-<%= worker.id %>" data-id="<%= worker.id %>"><i class="remove circle outline icon"></i></div>
             </div>
             <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
             <div class="content">
-                <div class="header">Helen</div>
-                <div class="description">Driver</div>
+                <div class="header"><%= worker.get('firstName') %></div>
+                <% if(worker.get('permission') === DRIVER) { %>
+                    <div class="description">Driver</div>
+                <% } else { %>
+                    <div class="description">Distributor</div>
+                <% } %>
             </div>
         </div>
-        <div class="item">
-            <div class="right floated ui basic mini buttons">
-                <div class="ui button">Edit</div>
-                <div class="ui button"><i class="remove circle outline icon"></i></div>
-            </div>
-            <img class="ui avatar image" src="/images/avatar/small/christian.jpg">
-            <div class="content">
-                <div class="header">Christian</div>
-                <div class="description">Driver</div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="right floated ui basic mini buttons">
-                <div class="ui button">Edit</div>
-                <div class="ui button"><i class="remove circle outline icon"></i></div>
-            </div>
-            <img class="ui avatar image" src="/images/avatar/small/daniel.jpg">
-            <div class="content">
-                <div class="header">Daniel</div>
-                <div class="description">Distributor</div>
-            </div>
-        </div>
+        <% }) %>
     </div>
 </div>
 <div class="ui bottom attached button" id="addPerson" data-youtubeLink="" data-address="">
@@ -156,14 +147,33 @@
         Do you really want to delete this Distribution Point?
     </div>
     <div class="actions">
-            <div class="ui basic cancel button">
-                <i class="remove icon"></i>
-                <label id="deleteDPCancel">Cancel</label>
-            </div>
-            <div class="ui ok red button">
-                <i class="checkmark icon"></i>
-                <label id="deleteDPConfirm">Delete</label>
-            </div>
+        <div class="ui basic cancel button">
+            <i class="remove icon"></i>
+            <label id="deleteDPCancel">Cancel</label>
+        </div>
+        <div class="ui ok red button">
+            <i class="checkmark icon"></i>
+            <label id="deleteDPConfirm">Delete</label>
+        </div>
+    </div>
+</div>
+
+<div id="deletePersonDialog" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        <label id="deletePersonLabel">Are you sure?</label>
+    </div>
+    <div class="content">
+        Do you really want to remove this person?
+    </div>
+    <div class="actions">
+        <div class="ui basic cancel button">
+            <i class="remove icon"></i>
+            <label id="deletePersonCancel">Cancel</label>
+        </div>
+        <div class="ui ok red button">
+            <i class="checkmark icon"></i>
+            <label id="deletePersonConfirm">Delete</label>
+        </div>
     </div>
 </div>
 
@@ -189,39 +199,35 @@
 
 <div id="editPersonDialog" class="ui small test modal">
     <div class="header" style="background-color: #ffffff">
-        <label id="editPersonLabel">Add a new Driver/Distributor or Edit Driver/Distributor information</label>
+        <label id="editPersonLabel">Driver/Distributor Editor</label>
     </div>
     <div action="" method="POST" id="new-personForm" class="ui form">
         <div id="basicPersonInfo">
-            <!--TODO@Jenny Take a look at signupemailTemplate, move all content under basicinfo div to here. -->
-            <!--TODO@Jenny Then add two input radio boxes, one for driver, and one for distributor, only one can be chosen. -->
-            <!--TODO@Jenny Once you've done it, give me a screen shot of it. Then go to ManagerHomeView.js-->
             <div id="basicinfo">
-			<div id="nameinfo" class="two fields">
-				<div class="ui fluid field">
-					<input id="first_name" class="ui input fname" placeholder="First Name" type="text" name="first_name" value="">
-				</div>
-				<div class="ui fluid field">
-					<input id="last_name" class="ui input lname" placeholder="Last Name" type="text" name="last_name" value="">
-				</div>
-			</div>
-			<div class="ui fluid field">
-				<input id="email" class="ui input required email" placeholder="E-mail, this will be your username" type="text" name="email">
-			</div>
-			<div class="ui fluid required field">
-				<input id="phonenumber" class="ui input required phonenumber" placeholder="Phone Number, e.g. 7772228888" type="text" name="phonenumber">
-			</div>
-			<div class="ui fluid field">
-				<input id="password" class="ui input required password" placeholder="Password" type="password" name="password">
-			</div>
-			<div class="ui fluid field">
-                <select id="titleOptions">
-                    <option value="">Select your title</option>
-                    <option value="Driver">Driver</option>
-                    <option value="Distributor">Distributor</option>                    
-                </select>
-			</div>
-			
+                <div id="nameinfo" class="two fields">
+                    <div class="ui fluid field">
+                        <input id="first_name" class="ui input fname" placeholder="First Name" type="text" name="first_name" value="">
+                    </div>
+                    <div class="ui fluid field">
+                        <input id="last_name" class="ui input lname" placeholder="Last Name" type="text" name="last_name" value="">
+                    </div>
+                </div>
+                <div class="ui fluid field">
+                    <input id="email" class="ui input required email" placeholder="E-mail, this will be your username" type="text" name="email">
+                </div>
+                <div class="ui fluid required field">
+                    <input id="phonenumber" class="ui input required phonenumber" placeholder="Phone Number, e.g. 7772228888" type="text" name="phonenumber">
+                </div>
+                <div class="ui fluid field">
+                    <input id="password" class="ui input required password" placeholder="Password" type="password" name="password">
+                </div>
+                <div class="ui fluid field">
+                    <select id="titleOptions">
+                        <option value="">Select your title</option>
+                        <option value="3">Driver</option>
+                        <option value="4">Distributor</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
