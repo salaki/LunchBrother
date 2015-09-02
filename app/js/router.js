@@ -15,7 +15,8 @@ define([
   'views/account/ProfileView',
 	'views/account/ForgotpasswordView',
   'views/account/ResetPasswordView',
-  'views/manage/ManageRestaurantsView' 
+  'views/manage/ManageRestaurantsView',
+  'views/manage/NewdishView' 
 ], function (LandingView,
         HomeView,
 		OrderView, 
@@ -32,7 +33,8 @@ define([
 		ProfileView,
 		ForgotpasswordView,
         ResetPasswordView,
-    ManageRestaurantsView) {
+    ManageRestaurantsView,
+        NewdishView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -54,6 +56,7 @@ define([
             'forgotpassword' : 'showForgotpassword',
             'resetPassword?*queryString' : 'showResetPassword',
             'manageRestaurants': 'showManageRestaurants',
+            'newdish' : 'showNewdish',
             // Default
             '*actions': 'defaultAction'
             
@@ -272,6 +275,11 @@ define([
             manageRestaurantsView.render();
         });
 
+        appRouter.on('route:showNewdish', function () {
+            // Call render on the module we loaded in via the dependency array
+            var newdishView = new NewdishView();
+            newdishView.render();
+        });
 
         appRouter.on('route:defaultAction', function (actions) {
             var currentUser = Parse.User.current();
