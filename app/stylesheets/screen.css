@@ -920,10 +920,6 @@ header {
   top: 2px;
 }
 
-/* line 415, ../sass/screen.scss */
-.ui.form .field > .selection.dropdown {
-  width: 25%;
-}
 /* line 418, ../sass/screen.scss */
 .ui.form .fields .wide.field {
   width: 6.25%;
