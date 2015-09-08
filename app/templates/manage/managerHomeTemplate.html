@@ -6,9 +6,8 @@
         <% _.each(distributingPoints, function(distributingPoint) { %>
         <div class="item">
             <div class="right floated content">
-                <div class="ui basic mini buttons">
-                    <div class="ui button"><a href="<%= distributingPoint.get('youtubeLink') %>" target="_blank"><i class="youtube play icon"></i></a></div>
-                    <div class="ui button" id="dpEditButton-<%= distributingPoint.id %>"
+              <button class="ui circular youtube small icon button"> <i class="youtube play icon"><a href="<%= distributingPoint.get('youtubeLink') %>" target="_blank"></a></i></button>
+                    <button class="ui circular orange icon small button" id="dpEditButton-<%= distributingPoint.id %>"
                                            data-id="<%= distributingPoint.id %>"
                                            data-youtube="<%= distributingPoint.get('youtubeLink') %>"
                                            data-address="<%= distributingPoint.get('address') %>"
@@ -17,9 +16,9 @@
                                            <% } else { %>
                                            data-distributor=""
                                            <% } %>
-                                           >Edit</div>
-                    <div class="ui button" id="dpDeleteButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>"><i class="remove circle outline icon"></i></div>
-                </div>
+                                           ><i class="icon edit"></i></button>
+                    <button class="ui circular icon small button" id="dpDeleteButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>"><i class="remove icon"></i>
+                </button>
             </div>
             <div class="content">
                 <div class="header">
@@ -51,17 +50,15 @@
         <% _.each(workers, function(worker) { %>
         <div class="item">
             <div class="right floated content">
-                <div class="ui mini basic buttons">
-                    <div class="ui button" id="workerEditButton-<%= worker.id %>"
+                    <button class="ui circular orange small icon button" id="workerEditButton-<%= worker.id %>"
                          data-id="<%= worker.id %>"
                          data-first-name="<%= worker.get('firstName') %>"
                          data-last-name="<%= worker.get('lastName') %>"
                          data-email="<%= worker.get('email') %>"
                          data-phone-number="<%= worker.get('telnum') %>"
                          data-password="<%= worker.get('password') %>"
-                         data-title="<%= worker.get('permission') %>">Edit</div>
-                    <div class="ui button" id="workerDeleteButton-<%= worker.id %>" data-id="<%= worker.id %>"><i class="remove circle outline icon"></i></div>
-                </div>
+                         data-title="<%= worker.get('permission') %>"><i class="icon edit"></i></button>
+                    <button class="ui circular small icon button" id="workerDeleteButton-<%= worker.id %>" data-id="<%= worker.id %>"><i class="remove icon"></i></button>
             </div>
             <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
             <div class="content">
