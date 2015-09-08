@@ -1,0 +1,72 @@
+<h1 class="ui small center aligned header">Add a new dish</h1>
+<form class="ui form">
+  <div class="field">
+    <label>Dish Name</label>
+    <input type="text" name="dish-name">
+  </div> 
+
+  <div class="field">
+    <label>Dish Description</label>
+    <textarea rows="2" name="dish-description" placeholder="Tell us something about the dish or you..."></textarea>
+  </div> 
+
+  <div class="field">
+    <label>Ingredients</label>
+    <textarea rows="2" name="dish-description" placeholder="Split ingredients by ','"></textarea>
+  </div> 
+  <div class="field">
+    <div class="ui labeled input">
+      <div class="ui label">$</div>
+      <input type="text" placeholder="Price">
+    </div>
+  </div>
+
+  <div class="fields">
+    <div class="field">
+      <div class="ui slider checkbox">
+        <input type="checkbox" tabindex="0" class="hidden">
+        <label>Spicy</label>
+      </div>
+      <label></label>
+    </div>
+    <div class="field">
+      <div class="ui slider checkbox">
+        <input type="checkbox" tabindex="0" class="hidden">
+        <label>Gluten free</label>
+      </div>
+      <label></label>
+    </div>
+  </div> 
+  <div class="field">
+    <div class="ui selection dropdown">
+      <input type="hidden" name="">
+      <i class="dropdown icon"></i>
+      <div class="default text">Type</div>
+      <div class="menu">
+        <div class="item" data-value="4">Vegetable</div>
+        <div class="item" data-value="3">Chicken</div>
+        <div class="item" data-value="2">Pork</div>
+        <div class="item" data-value="1">Beef</div>
+        <div class="item" data-value="0">Fish</div>
+      </div>
+    </div>
+  </div>
+  <div class="ui action input">
+    <input type="text" placeholder="Upload dish image...">
+    <button class="ui orange right labeled icon button">
+      <i class="file image outline icon"></i>
+      Browse
+    </button>
+  </div>
+
+</form>
+<div class="ui divider hidden"></div>
+<button id="" class="center aligned ui red button">Add this dish</button>
+<div class="ui divider hidden"></div>
+<button id="" class="center aligned ui grey button">Cancel</button>
+
+<script>
+$('.ui.checkbox')
+.checkbox()
+  ;
+</script>

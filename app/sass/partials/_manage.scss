@@ -1,3 +1,9 @@
+.desc-line{
+  color:$color_grey;
+  font-size:$sm;
+  padding-top:5px;
+}
+
 #menuList{
   padding:0 1.2em;
   & .item{
@@ -16,8 +22,6 @@
   & .header {
     margin-bottom:30px;
   }
-
-
 }
 
 

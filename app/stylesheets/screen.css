@@ -13,7 +13,7 @@
 }
 
 /* line 35, ../sass/global/_variable.scss */
-#orderBtn.grey, .ui.button.grey, #loginBtn.grey {
+#orderBtn.grey, .ui.button.grey, #loginBtn {
   background-color: #dddddd;
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   color: #9b9b9b;
@@ -51,21 +51,7 @@ time, mark, audio, video {
   font-size: 100%;
   vertical-align: baseline;
 }
-#youtubeDiv {
-    position:relative;
-    padding-bottom:56.25%;
-    padding-top:30px;
-    height:0;
-    overflow:hidden;
-}
 
-#youtubeDiv iframe {
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-}
 /* line 22, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
@@ -448,30 +434,42 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 
 /* line 1, ../sass/partials/_manage.scss */
+.desc-line {
+  color: #9b9b9b;
+  font-size: 0.8rem;
+  padding-top: 5px;
+}
+
+/* line 7, ../sass/partials/_manage.scss */
 #menuList {
   padding: 0 1.2em;
 }
-/* line 3, ../sass/partials/_manage.scss */
+/* line 9, ../sass/partials/_manage.scss */
 #menuList .item {
   margin-top: 10px;
 }
-/* line 6, ../sass/partials/_manage.scss */
+/* line 12, ../sass/partials/_manage.scss */
 #menuList .item .ui.grid.content {
   color: #9b9b9b;
   font-size: 0.8rem;
   padding: 0 10px;
 }
-/* line 10, ../sass/partials/_manage.scss */
+/* line 16, ../sass/partials/_manage.scss */
 #menuList .item .ui.grid.content .column {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-/* line 16, ../sass/partials/_manage.scss */
+/* line 22, ../sass/partials/_manage.scss */
 #menuList .header {
   margin-bottom: 30px;
 }
 
-/* line 18, ../sass/screen.scss */
+/* line 19, ../sass/screen.scss */
+.default.text {
+  color: #e3151a;
+}
+
+/* line 24, ../sass/screen.scss */
 html {
   overflow-x: hidden;
   overflow-y: auto;
@@ -479,39 +477,39 @@ html {
   font-family: 'Roboto', sans-serif;
 }
 
-/* line 24, ../sass/screen.scss */
+/* line 30, ../sass/screen.scss */
 header {
   min-width: 320px;
 }
 
-/* line 27, ../sass/screen.scss */
+/* line 34, ../sass/screen.scss */
 .space {
   width: 100%;
   clear: both;
   height: 100px;
 }
 
-/* line 32, ../sass/screen.scss */
+/* line 39, ../sass/screen.scss */
 #today {
   margin-top: 4px;
   font-weight: normal;
   width: 33.33%;
 }
 
-/* line 37, ../sass/screen.scss */
+/* line 44, ../sass/screen.scss */
 #barTitle {
   width: 31%;
   text-align: center;
   float: left;
 }
 
-/* line 42, ../sass/screen.scss */
+/* line 49, ../sass/screen.scss */
 #hamBtnWrapper {
   text-align: right;
   padding-top: 0;
   padding-bottom: 0;
 }
-/* line 46, ../sass/screen.scss */
+/* line 53, ../sass/screen.scss */
 #hamBtnWrapper > div {
   margin: 0;
   padding-top: 11px;
@@ -519,100 +517,109 @@ header {
   width: 40%;
 }
 
-/* line 55, ../sass/screen.scss */
+/* line 62, ../sass/screen.scss */
 #language {
   display: inline-block;
 }
 
-/* line 58, ../sass/screen.scss */
+/* line 65, ../sass/screen.scss */
 .language-text {
   float: left;
 }
 
-/* line 64, ../sass/screen.scss */
+/* line 71, ../sass/screen.scss */
 .ui.button.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 69, ../sass/screen.scss */
+/* line 76, ../sass/screen.scss */
 .ui.button.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 78, ../sass/screen.scss */
+/* line 85, ../sass/screen.scss */
 .ui.button.grey:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 83, ../sass/screen.scss */
+/* line 90, ../sass/screen.scss */
 .ui.button.grey:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 94, ../sass/screen.scss */
-#loginBtn.grey:hover {
+/* line 98, ../sass/screen.scss */
+#loginBtn {
+  background-color: #f2711c;
+  color: white;
+}
+/* line 102, ../sass/screen.scss */
+#loginBtn:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 99, ../sass/screen.scss */
-#loginBtn.grey:active {
+/* line 107, ../sass/screen.scss */
+#loginBtn:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
+/* line 113, ../sass/screen.scss */
+#loginBtn a {
+  color: white;
+}
 
-/* line 106, ../sass/screen.scss */
+/* line 117, ../sass/screen.scss */
 #arriveBtn {
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
   width: 100%;
   position: relative;
 }
-/* line 114, ../sass/screen.scss */
+/* line 125, ../sass/screen.scss */
 #arriveBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 119, ../sass/screen.scss */
+/* line 130, ../sass/screen.scss */
 #arriveBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 126, ../sass/screen.scss */
+/* line 137, ../sass/screen.scss */
 #fbLoginBtn {
   box-shadow: 0 -0.3em 0 0 rgba(39, 41, 43, 0.15) inset;
   padding: 1em 2em 1.35em;
   width: 100%;
   position: relative;
 }
-/* line 132, ../sass/screen.scss */
+/* line 143, ../sass/screen.scss */
 #fbLoginBtn:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 137, ../sass/screen.scss */
+/* line 148, ../sass/screen.scss */
 #fbLoginBtn:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 146, ../sass/screen.scss */
+/* line 157, ../sass/screen.scss */
 #loginBtnContent.grey {
   color: #9b9b9b;
 }
-/* line 149, ../sass/screen.scss */
+/* line 160, ../sass/screen.scss */
 #loginBtnContent.red {
   color: white;
 }
 
-/* line 153, ../sass/screen.scss */
+/* line 164, ../sass/screen.scss */
 .notification {
   margin-top: 30px;
 }
 
-/* line 156, ../sass/screen.scss */
+/* line 167, ../sass/screen.scss */
 #orderMessage {
   box-shadow: none;
   background: none;
@@ -621,64 +628,64 @@ header {
   padding: 20px 0 20px 0 !important;
   margin: 0 !important;
 }
-/* line 164, ../sass/screen.scss */
+/* line 175, ../sass/screen.scss */
 #orderMessage a {
   color: #E3151E;
 }
 
-/* line 168, ../sass/screen.scss */
+/* line 179, ../sass/screen.scss */
 #statusTracker {
   font-size: 12px;
 }
 
-/* line 171, ../sass/screen.scss */
+/* line 182, ../sass/screen.scss */
 #payment {
   padding: 15px;
 }
 
-/* line 174, ../sass/screen.scss */
+/* line 185, ../sass/screen.scss */
 #addressOption {
   min-width: 150px;
   margin-left: 2%;
 }
-/* line 177, ../sass/screen.scss */
+/* line 188, ../sass/screen.scss */
 #addressOption .default {
   float: left;
   width: 75%;
   text-shadow: 0.5px -0.5px white;
 }
-/* line 183, ../sass/screen.scss */
+/* line 194, ../sass/screen.scss */
 #addressOption .dropdown.icon {
   margin-bottom: 10px;
 }
 
-/* line 187, ../sass/screen.scss */
+/* line 198, ../sass/screen.scss */
 #expyear {
   min-width: 150px;
 }
 
-/* line 190, ../sass/screen.scss */
+/* line 201, ../sass/screen.scss */
 .check {
   width: 85%;
   margin-left: 20px;
 }
 
-/* line 194, ../sass/screen.scss */
+/* line 205, ../sass/screen.scss */
 .thanks {
   color: #E3151A;
 }
 
-/* line 197, ../sass/screen.scss */
+/* line 208, ../sass/screen.scss */
 #customerinfo {
   padding: 10px;
 }
 
-/* line 200, ../sass/screen.scss */
+/* line 211, ../sass/screen.scss */
 .order-detail {
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-/* line 203, ../sass/screen.scss */
+/* line 214, ../sass/screen.scss */
 .send {
   opacity: 1;
   transition: opacity .25s ease-in-out;
@@ -686,39 +693,39 @@ header {
   background: #E3151A !important;
   height: 78px;
 }
-/* line 210, ../sass/screen.scss */
+/* line 221, ../sass/screen.scss */
 .send:hover {
   opacity: 0.8;
 }
-/* line 213, ../sass/screen.scss */
+/* line 224, ../sass/screen.scss */
 .send i {
   color: white;
   margin: 0 auto;
   width: 100%;
 }
 
-/* line 219, ../sass/screen.scss */
+/* line 230, ../sass/screen.scss */
 .red {
   color: #E3151A;
 }
 
-/* line 222, ../sass/screen.scss */
+/* line 233, ../sass/screen.scss */
 .gray {
   color: #9b9b9b;
 }
 
-/* line 226, ../sass/screen.scss */
+/* line 237, ../sass/screen.scss */
 #orderStats .column {
   padding-top: 0;
   padding-bottom: 0;
 }
-/* line 230, ../sass/screen.scss */
+/* line 241, ../sass/screen.scss */
 #orderStats .summary-list {
   margin-bottom: 0;
   margin-top: 0;
 }
 
-/* line 235, ../sass/screen.scss */
+/* line 246, ../sass/screen.scss */
 #inputCardInfo {
   display: block;
   margin: 0 0 .2857rem;
@@ -728,77 +735,77 @@ header {
   text-transform: none;
 }
 
-/* line 245, ../sass/screen.scss */
+/* line 256, ../sass/screen.scss */
 #newCardInfo {
   transform: none;
   margin: 2%;
 }
 
-/* line 250, ../sass/screen.scss */
+/* line 261, ../sass/screen.scss */
 #contactinfo {
   margin: 2%;
 }
 
-/* line 253, ../sass/screen.scss */
+/* line 264, ../sass/screen.scss */
 #agreements {
   margin: 2%;
 }
 
-/* line 256, ../sass/screen.scss */
+/* line 267, ../sass/screen.scss */
 #basicinfo {
   margin: 2%;
 }
 
-/* line 259, ../sass/screen.scss */
+/* line 270, ../sass/screen.scss */
 #cardselector {
   margin: 2%;
 }
 
-/* line 262, ../sass/screen.scss */
+/* line 273, ../sass/screen.scss */
 #cw2 {
   max-width: 160px !important;
 }
 
-/* line 265, ../sass/screen.scss */
+/* line 276, ../sass/screen.scss */
 #fullscreen {
   display: none;
 }
 
-/* line 268, ../sass/screen.scss */
+/* line 279, ../sass/screen.scss */
 #smallmap {
   width: 100%;
 }
 
-/* line 271, ../sass/screen.scss */
+/* line 282, ../sass/screen.scss */
 .arrived {
   color: #e3151a;
 }
 
-/* line 274, ../sass/screen.scss */
+/* line 285, ../sass/screen.scss */
 #loginorsignup {
   margin-top: 0;
 }
 
-/* line 277, ../sass/screen.scss */
+/* line 288, ../sass/screen.scss */
 #logo {
   text-align: center;
 }
 
 @media (max-width: 736px) {
-  /* line 281, ../sass/screen.scss */
+  /* line 292, ../sass/screen.scss */
   #img {
     width: 100%;
     height: 100%;
   }
 }
 @media (min-width: 736px) {
-  /* line 287, ../sass/screen.scss */
+  /* line 298, ../sass/screen.scss */
   #img {
     width: 50%;
     height: 50%;
   }
 }
-/* line 292, ../sass/screen.scss */
+/* line 303, ../sass/screen.scss */
 #signupReminder {
   font-size: 15px;
   color: #9b9b9b;
@@ -806,7 +813,7 @@ header {
   margin: 10px;
 }
 
-/* line 302, ../sass/screen.scss */
+/* line 313, ../sass/screen.scss */
 .profilePic {
   border-radius: 100%;
   overflow: hidden;
@@ -817,45 +824,45 @@ header {
   height: 90px;
 }
 
-/* line 313, ../sass/screen.scss */
+/* line 324, ../sass/screen.scss */
 #userFullName {
   margin: 15px 0;
   color: #e3151a;
   font-weight: bold;
 }
 
-/* line 318, ../sass/screen.scss */
+/* line 329, ../sass/screen.scss */
 #referlink {
   margin: 0 auto;
 }
 
-/* line 321, ../sass/screen.scss */
+/* line 332, ../sass/screen.scss */
 #forgotlink {
   font-size: 14px;
   float: right;
 }
 
-/* line 325, ../sass/screen.scss */
+/* line 336, ../sass/screen.scss */
 #sidebarWrapper {
   padding-left: 14px !important;
   padding-right: 14px !important;
 }
 
-/* line 329, ../sass/screen.scss */
+/* line 340, ../sass/screen.scss */
 .ui.inverted.menu {
   background-color: #E3151A;
   opacity: 0.9;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
-/* line 334, ../sass/screen.scss */
+/* line 345, ../sass/screen.scss */
 .ui.inverted.menu.bottom {
   font-size: 0.6em;
 }
-/* line 336, ../sass/screen.scss */
+/* line 347, ../sass/screen.scss */
 .ui.inverted.menu.bottom .item {
   display: block;
 }
-/* line 339, ../sass/screen.scss */
+/* line 350, ../sass/screen.scss */
 .ui.inverted.menu.bottom .icon {
   display: block;
   text-align: center;
@@ -864,67 +871,63 @@ header {
   font-size: 1.8em;
 }
 
-/* line 348, ../sass/screen.scss */
+/* line 359, ../sass/screen.scss */
 .dishes .card {
   width: 100%;
 }
 
-/* line 353, ../sass/screen.scss */
+/* line 364, ../sass/screen.scss */
 #paymentBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 358, ../sass/screen.scss */
+/* line 369, ../sass/screen.scss */
 #paymentBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 366, ../sass/screen.scss */
+/* line 377, ../sass/screen.scss */
 #signUpBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 371, ../sass/screen.scss */
+/* line 382, ../sass/screen.scss */
 #signUpBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 379, ../sass/screen.scss */
+/* line 390, ../sass/screen.scss */
 #sendemailBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 384, ../sass/screen.scss */
+/* line 395, ../sass/screen.scss */
 #sendemailBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 392, ../sass/screen.scss */
+/* line 403, ../sass/screen.scss */
 #resetBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 397, ../sass/screen.scss */
+/* line 408, ../sass/screen.scss */
 #resetBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;
 }
 
-/* line 404, ../sass/screen.scss */
-.ui.form .field > .selection.dropdown {
-  width: 25%;
-}
-/* line 407, ../sass/screen.scss */
+/* line 418, ../sass/screen.scss */
 .ui.form .fields .wide.field {
   width: 6.25%;
   padding-left: 0;
   padding-right: 0;
 }
 
-/* line 416, ../sass/screen.scss */
+/* line 427, ../sass/screen.scss */
 .clearfix:after {
   content: ".";
   visibility: hidden;
@@ -933,16 +936,16 @@ header {
   clear: both;
 }
 
-/* line 423, ../sass/screen.scss */
+/* line 434, ../sass/screen.scss */
 #termsandconditions > a {
   padding-left: 8%;
 }
 
-/* line 427, ../sass/screen.scss */
+/* line 438, ../sass/screen.scss */
 .college-selector {
   color: rgba(0, 0, 0, 0.95) !important;
 }
-/* line 429, ../sass/screen.scss */
+/* line 440, ../sass/screen.scss */
 .college-selector .default.text {
   color: rgba(0, 0, 0, 0.95) !important;
 }

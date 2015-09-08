@@ -47,6 +47,7 @@
     <i class="users icon small"></i>Drivers & Distributors
 </h4>
 <div class="ui attached segment">
+<<<<<<< HEAD
     <div class="ui middle aligned selection list">
         <% _.each(workers, function(worker) { %>
         <div class="item">
@@ -69,6 +70,46 @@
                 <% } else { %>
                     <div class="description">Distributor</div>
                 <% } %>
+=======
+    <div class="ui middle very relaxed aligned list">
+        <div class="item">
+            <div class="right floated content">
+                <div class="ui mini basic buttons">
+                    <div class="ui button">Edit</div>
+                    <div class="ui button"><i class="remove circle outline icon"></i></div>
+                </div>
+            </div>
+            <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
+            <div class="content">
+                <div class="header">Helen</div>
+                <div class="description desc-line">Driver</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="right floated content">
+                <div class="ui mini basic buttons">
+                    <div class="ui button">Edit</div>
+                    <div class="ui button"><i class="remove circle outline icon"></i></div>
+                </div>
+            </div>
+            <img class="ui avatar image" src="/images/avatar/small/christian.jpg">
+            <div class="content">
+                <div class="header">Christian</div>
+                <div class="description desc-line">Driver</div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="right floated content">
+                <div class="ui mini basic buttons">
+                    <div class="ui button">Edit</div>
+                    <div class="ui button"><i class="remove circle outline icon"></i></div>
+                </div>
+            </div>
+            <img class="ui avatar image" src="/images/avatar/small/daniel.jpg">
+            <div class="content">
+                <div class="header">Daniel</div>
+                <div class="description desc-line">Distriputor</div>
+>>>>>>> origin/MPD-55
             </div>
         </div>
         <% }) %>
@@ -157,6 +198,7 @@
             <i class="checkmark icon"></i>
             <label id="deleteDPConfirm">Delete</label>
         </div>
+<<<<<<< HEAD
     </div>
 </div>
 
@@ -176,6 +218,8 @@
             <i class="checkmark icon"></i>
             <label id="deletePersonConfirm">Delete</label>
         </div>
+=======
+>>>>>>> origin/MPD-55
     </div>
 </div>
 

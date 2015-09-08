@@ -14,8 +14,12 @@ define([
   'views/account/SignupemailView',
   'views/account/ProfileView',
 	'views/account/ForgotpasswordView',
-    'views/account/ResetPasswordView'
-], function (LandingView,
+  'views/account/ResetPasswordView',
+  'views/manage/ManageRestaurantsView',
+  'views/manage/NewdishView', 
+  'views/manage/NewRestaurantView' 
+  
+  ], function (LandingView,
         HomeView,
 		OrderView, 
 		PolicyView, 
@@ -30,7 +34,10 @@ define([
 		SignupemailView,
 		ProfileView,
 		ForgotpasswordView,
-        ResetPasswordView) {
+        ResetPasswordView,
+    ManageRestaurantsView,
+        NewdishView,
+        NewRestaurantView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -51,8 +58,12 @@ define([
             'signupemail' : 'showSignupemail',
             'forgotpassword' : 'showForgotpassword',
             'resetPassword?*queryString' : 'showResetPassword',
+            'manageRestaurants': 'showManageRestaurants',
+            'newdish' : 'showNewdish',
+            'newRestaurant' : 'showNewRestaurant',
             // Default
             '*actions': 'defaultAction'
+            
         }
     });
 
@@ -260,6 +271,24 @@ define([
                 resetKey: params.resetKey
             });
             resetPasswordView.render();
+        });
+
+        appRouter.on('route:showManageRestaurants', function () {
+            // Call render on the module we loaded in via the dependency array
+            var manageRestaurantsView = new ManageRestaurantsView();
+            manageRestaurantsView.render();
+        });
+
+        appRouter.on('route:showNewdish', function () {
+            // Call render on the module we loaded in via the dependency array
+            var newdishView = new NewdishView();
+            newdishView.render();
+        });
+
+        appRouter.on('route:showNewRestaurant', function () {
+            // Call render on the module we loaded in via the dependency array
+            var newRestaurantView = new NewRestaurantView();
+            newRestaurantView.render();
         });
 
         appRouter.on('route:defaultAction', function (actions) {
