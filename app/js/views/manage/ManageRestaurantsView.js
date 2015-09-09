@@ -5,6 +5,10 @@ define([
     var ManageRestaurantsView = Parse.View.extend({
         el: $("#page"),
 
+        events: {
+            //TODO@Lian: Add a button event here to click to a method which directs the user to another page
+        },
+
         initialize: function () {
             _.bindAll(this, 'render');
         },
