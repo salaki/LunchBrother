@@ -104,7 +104,9 @@
     <div class="header" style="background-color: #ffffff">
         <label id="editDPLabel">Distribution Point Editor</label>
     </div>
-    <div action="" method="POST" id="dpForm" class="ui form">
+    <div class="content">
+    <form action="" method="POST" id="dpForm" class="ui form">
+        <div class="field">
         <div id="basicDPInfo">
             <div id="dpinfo" class="two fields">
                 <div class="ui fluid field">
@@ -115,18 +117,18 @@
                 </div>
             </div>
         </div>
-        <div id="dtinfo" class="two fields">
-            <div class="ui fluid field" style="padding-left: 20px; padding-bottom: 20px">
-                <select id="distributorSelector">
-                    <option value="">Select your distributor</option>
+        </div>
+        <div class="field">
+                <select class="ui dropdown" id="distributorSelector">
+                    <option value="">Select yourtest distributor</option>
                     <% _.each(distributors, function(distributor) { %>
                     <option value="<%= distributor.id %>">
                     <%= distributor.get('firstName') %> <%= distributor.get('lastName') %>
                     </option>
                     <% }) %>
                 </select>
-            </div>
         </div>
+    </form>
     </div>
     <div class="actions">
         <div class="ui basic cancel button">
@@ -152,7 +154,7 @@
             <i class="remove icon"></i>
             <label id="deleteDPCancel">Cancel</label>
         </div>
-        <div class="ui ok red button">
+        <div class="ui ok orange button">
             <i class="checkmark icon"></i>
             <label id="deleteDPConfirm">Delete</label>
         </div>
@@ -171,7 +173,7 @@
             <i class="remove icon"></i>
             <label id="deletePersonCancel">Cancel</label>
         </div>
-        <div class="ui ok red button">
+        <div class="ui ok orange button">
             <i class="checkmark icon"></i>
             <label id="deletePersonConfirm">Delete</label>
         </div>
@@ -187,7 +189,7 @@
         <span id="publishMenuWarningLine" class="red"></span>
     </div>
     <div class="actions">
-        <div class="ui cancel button">
+        <div class="ui basic cancel button">
             <i class="remove icon"></i>
             <label id="publishMenuCancel">Cancel</label>
         </div>
@@ -233,7 +235,6 @@
         </div>
     </div>
     <div class="actions">
-        <div class="two fluid ui buttons">
             <div class="ui basic cancel button">
                 <i class="remove icon"></i>
                 <label id="editPersonCancel">Cancel</label>
@@ -242,7 +243,6 @@
                 <i class="checkmark icon"></i>
                 <label id="editPersonSave">Save</label>
             </div>
-        </div>
     </div>
 </div>
 

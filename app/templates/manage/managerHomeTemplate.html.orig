@@ -190,15 +190,14 @@
         Do you really want to delete this Distribution Point?
     </div>
     <div class="actions">
-        <div class="ui basic cancel button">
+        <div class="ui cancel button">
             <i class="remove icon"></i>
             <label id="deleteDPCancel">Cancel</label>
         </div>
-        <div class="ui ok red button">
+        <div class="ui ok orange button">
             <i class="checkmark icon"></i>
             <label id="deleteDPConfirm">Delete</label>
         </div>
-<<<<<<< HEAD
     </div>
 </div>
 
@@ -210,16 +209,14 @@
         Do you really want to remove this person?
     </div>
     <div class="actions">
-        <div class="ui basic cancel button">
+        <div class="ui cancel button">
             <i class="remove icon"></i>
             <label id="deletePersonCancel">Cancel</label>
         </div>
-        <div class="ui ok red button">
+        <div class="ui ok orange button">
             <i class="checkmark icon"></i>
             <label id="deletePersonConfirm">Delete</label>
         </div>
-=======
->>>>>>> origin/MPD-55
     </div>
 </div>
 
@@ -279,7 +276,7 @@
     </div>
     <div class="actions">
         <div class="two fluid ui buttons">
-            <div class="ui basic cancel button">
+            <div class="ui  cancel button">
                 <i class="remove icon"></i>
                 <label id="editPersonCancel">Cancel</label>
             </div>
