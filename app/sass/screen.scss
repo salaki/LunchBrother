@@ -15,6 +15,12 @@
 //original selectors
 //#orderBtn.red, #paymentBtn.red, #loginBtn.red, #arriveBtn.red, #signUpBtn.red, #sendemailBtn.red, #resetBtn.red
 
+//global UI
+.default.text{
+  color:$color_red;
+}
+
+
 html {
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -24,6 +30,7 @@ html {
 header {
 	min-width: 320px;
 }
+
 .space {
 	width: 100%;
 	clear: both;
@@ -89,8 +96,9 @@ header {
 }
 
 #loginBtn {
-	&.grey {
-		@extend %extend_2;
+		background-color:#f2711c;
+    color:white;
+    @extend %extend_2;
 		&:hover {
 			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
 			box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
@@ -101,7 +109,10 @@ header {
 			box-shadow: 0 0 $color_btn_active;
 			top: 2px;
 		}
-	}
+
+    & a{
+      color:white;
+    }
 }
 #arriveBtn {
 	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
@@ -401,9 +412,9 @@ header {
 	}
 }
 .ui.form {
-	.field > .selection.dropdown {
-		width: 25%;
-	}
+//	.field > .selection.dropdown {
+//		width: 25%;
+//	}
 	.fields .wide.field {
 		width: 6.25%;
 		padding-left: 0;

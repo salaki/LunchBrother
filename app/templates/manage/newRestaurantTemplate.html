@@ -1,0 +1,35 @@
+<h1 class="ui small center aligned header">Add a new restaurant</h1>
+<form class="ui form">
+  <div class="field">
+    <label>Restaurant Name</label>
+    <input type="text" name="restaurant-name">
+  </div> 
+  <div class="field">
+    <label>Restaurant Type</label>
+    <div class="ui fluid search selection dropdown">
+       <input type="hidden" name="type">
+        <i class="dropdown icon"></i>
+         <div class="default text">Select Restaurant Type</div>
+          <div class="menu">
+             <div class="item" data-value="">Thai</div>
+             <div class="item" data-value="">Mexican</div>
+            </div>
+          </div> 
+  </div>
+  <div class="field">
+    <label>Yelp Link</label>
+    <div class="ui left icon input">
+        <input type="text" placeholder="http://www.yelp.com/...">
+          <i class="yelp icon"></i>
+        </div>
+  </div>
+  <div class="field">
+    <label>Restaurant Information</label>
+    <textarea rows="2" name="restaurant-description" placeholder="Tell us something about the restaurant..."></textarea>
+  </div> 
+
+</form>
+<div class="ui divider hidden"></div><button id="" class="center aligned ui red button">Continue to add dishes</button>
+<div class="ui divider hidden"></div>
+<button id="" class="center aligned ui grey button">Cancel</button>
+
