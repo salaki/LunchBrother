@@ -270,8 +270,6 @@ define([
             // Call render on the module we loaded in via the dependency array
             var manageRestaurantsView = new ManageRestaurantsView();
             manageRestaurantsView.render();
-            console.log("test");
-        
         });
 
 
