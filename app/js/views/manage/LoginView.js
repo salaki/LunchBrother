@@ -60,22 +60,28 @@ define([
                 //chef:delivery
                 //getcurrentuser's permission
                 success: function (user) {
-                    var permission = user.get('permission');
+                    if (user.get("active") === false) {
+                        Parse.User.logOut();
+                        alert("You haven't activated your account yet, please activate with the link we sent to you.");
+                        window.location.reload();
+                    } else {
+                        var permission = user.get('permission');
 
-                    if (permission === GENERAL_USER) {
-                        window.location.hash = '#home';
-                    }
+                        if (permission === GENERAL_USER) {
+                            window.location.hash = '#home';
+                        }
 
-                    if (permission === LOCAL_MANAGER) {
-                        window.location.hash = '#managerHome?week=';
-                    }
+                        if (permission === LOCAL_MANAGER) {
+                            window.location.hash = '#managerHome?week=';
+                        }
 
-                    if (permission === DRIVER) {
-                        window.location.hash = '#driver';
-                    }
+                        if (permission === DRIVER) {
+                            window.location.hash = '#driver';
+                        }
 
-                    if (permission === DISTRIBUTOR) {
-                        window.location.hash = '#distributor';
+                        if (permission === DISTRIBUTOR) {
+                            window.location.hash = '#distributor';
+                        }
                     }
                 },
                 error: function (user, error) {
