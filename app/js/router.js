@@ -17,8 +17,9 @@ define([
   'views/account/ResetPasswordView',
   'views/manage/ManageRestaurantsView',
   'views/manage/NewdishView', 
-  'views/manage/NewRestaurantView' 
-  
+  'views/manage/NewRestaurantView', 
+  'views/manage/ManagerListView',
+  'views/manage/NewManagerView'
   ], function (LandingView,
         HomeView,
 		OrderView, 
@@ -37,7 +38,9 @@ define([
         ResetPasswordView,
     ManageRestaurantsView,
         NewdishView,
-        NewRestaurantView) {
+        NewRestaurantView,
+    ManagerListView,    
+        NewManagerView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -61,6 +64,8 @@ define([
             'manageRestaurants': 'showManageRestaurants',
             'newdish' : 'showNewdish',
             'newRestaurant' : 'showNewRestaurant',
+            'managerList' : 'showManagerList',
+            'newManager' : 'showNewManager',
             // Default
             '*actions': 'defaultAction'
             
@@ -289,6 +294,18 @@ define([
             // Call render on the module we loaded in via the dependency array
             var newRestaurantView = new NewRestaurantView();
             newRestaurantView.render();
+        });
+
+        appRouter.on('route:showManagerList', function () {
+            // Call render on the module we loaded in via the dependency array
+            var managerListView = new ManagerListView();
+            managerListView.render();
+        });
+        
+        appRouter.on('route:showNewManager', function () {
+            // Call render on the module we loaded in via the dependency array
+            var newManagerView = new NewManagerView();
+            newManagerView.render();
         });
 
         appRouter.on('route:defaultAction', function (actions) {
