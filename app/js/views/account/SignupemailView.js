@@ -148,6 +148,20 @@ define([
                     //TODO@Jenny - Step 1: Write the cloud code to send activation email (See LB-DEV-CLOUD/cloud/main.js for more detail)
                     //TODO@Jenny - Step 2: After user click "OK" in the modal, call the cloud code email service you've written above to send out the email
                     //TODO@Jenny          (Refer to the emailService function for how to call cloud code and pass in parameters)
+            	var activationLink = config.appUrl + "#activate?userId=" + user.id;
+            	Parse.Cloud.run('sendActivationEmail', {
+            		firstName: user.get("firstName"),
+                    emailAddress: user.get("email"),
+                    activationLink: activationLink
+                }, {
+                    success: function () {
+                        console.log("Activation email has been sent!");
+                    },
+
+                    error: function (error) {
+                        console.log("Fail to send email. Reason: " + error.message);
+                    }
+                });
                     Parse.User.logOut();
                     window.location.href = '#';
                 }
