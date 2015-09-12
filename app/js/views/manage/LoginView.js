@@ -1,13 +1,14 @@
 define([
     'models/order/PaymentModel',
     'models/order/OrderModel',
+    'models/RegistrationCodeModel',
     'views/manage/DriverView',
     'views/manage/DistributorView',
     'views/manage/ManagerHomeView',
     'views/home/HomeView',
     'views/account/FbLoginView',
     'text!templates/manage/loginTemplate.html'
-], function (PaymentModel, OrderModel, DriverView, DistributorView, ManagerHomeView, HomeView, FbLoginView, loginTemplate) {
+], function (PaymentModel, OrderModel, RegistrationCodeModel, DriverView, DistributorView, ManagerHomeView, HomeView, FbLoginView, loginTemplate) {
 
     var LoginView = Parse.View.extend({
         el: $("#page"),
@@ -43,6 +44,13 @@ define([
                         type: 'empty',
                         prompt: 'Please enter your password'
                     }]
+                },
+                'registrationCode': {
+                    identifier: 'registrationCode',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please provide your registration code'
+                    }]
                 }
             }, {
                 on: 'blur',
@@ -55,6 +63,7 @@ define([
             var self = this;
             var username = this.$("#username").val();
             var password = this.$("#password").val();
+            var registrationCode = this.$("#registrationCode").val();
             Parse.User.logIn(username, password, {
                 //lunchbrother:manage
                 //chef:delivery
@@ -63,7 +72,7 @@ define([
                     var permission = user.get('permission');
 
                     if (permission === GENERAL_USER) {
-                        window.location.hash = '#home';
+                        self.updateRegistrationCodeState(user, registrationCode);
                     }
 
                     if (permission === LOCAL_MANAGER) {
@@ -92,6 +101,33 @@ define([
         fbLogin: function(){
         	var fbLoginView = new FbLoginView();
         	fbLoginView.render();
+        },
+
+        updateRegistrationCodeState: function(user, code) {
+            var registrationCodeQuery = new Parse.Query(RegistrationCodeModel);
+            registrationCodeQuery.get(code, {
+                success: function(registrationCode) {
+                    if (registrationCode) {
+                        registrationCode.set("loginBy", user);
+                        registrationCode.set("usedToLogin", true);
+                        registrationCode.save(null, {
+                            success: function(updatedCode) {
+                                window.location.hash = '#home';
+                            },
+                            error: function(error) {
+                                console.log('Save registration code failed! Reason: ' + error.message);
+                            }
+                        });
+                    } else {
+                        alert("Your registration code is invalid!");
+                        Parse.User.logOut();
+                        window.location.hash = '#login';
+                    }
+                },
+                error: function(error) {
+                    console.log('Update failed! Reason: ' + error.message);
+                }
+            });
         }
     });
     return LoginView;
