@@ -45,8 +45,8 @@ define([
                         prompt: 'Please enter your password'
                     }]
                 },
-                'registrationCode': {
-                    identifier: 'registrationCode',
+                'loginRegistrationCode': {
+                    identifier: 'loginRegistrationCode',
                     rules: [{
                         type: 'empty',
                         prompt: 'Please provide your registration code'
@@ -63,7 +63,7 @@ define([
             var self = this;
             var username = this.$("#username").val();
             var password = this.$("#password").val();
-            var registrationCode = this.$("#registrationCode").val();
+            var registrationCode = this.$("#loginRegistrationCode").val();
             Parse.User.logIn(username, password, {
                 //lunchbrother:manage
                 //chef:delivery
@@ -125,7 +125,7 @@ define([
                             }
                         });
                     } else {
-                        alert("Your registration code is invalid!");
+                        alert("Your registration code is invalid or has been used to login!");
                         Parse.User.logOut();
                         window.location.hash = '#login';
                     }
