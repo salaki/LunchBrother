@@ -101,6 +101,7 @@ define([
                         user.set("username", this.$("#email").val());
                         user.set("password", this.$("#password").val());
                         user.set("permission", 1);
+                        user.set("active", false);
                         user.set("email", this.$("#email").val());
                         user.set("telnum", Number(this.$("#phonenumber").val()));
                         if(self.model.refer){
@@ -111,7 +112,7 @@ define([
                         			user.set("creditBalance", 40);
 	    	                        user.signUp(null, {
 	    	                            success: function(user) {
-	    	                                window.location.href = '#home';
+                                            self.signOutAndSendActivationEmail(user);
 	    	                            },
 	    	                            error: function(user, error) {
 	    	                                alert("Error: " + error.code + " " + error.message);
@@ -127,7 +128,7 @@ define([
                         	user.set("creditBalance", 30);
                             user.signUp(null, {
                                 success: function(user) {
-                                    window.location.href = '#home';
+                                    self.signOutAndSendActivationEmail(user);
                                 },
                                 error: function(user, error) {
                                     alert("Error: " + error.code + " " + error.message);
@@ -137,6 +138,34 @@ define([
                     }
                 }
             });
+        },
+
+        signOutAndSendActivationEmail: function(user) {
+            $('#sendAccountActivationEmailDialog').modal({
+                closable: false,
+                onApprove: function () {
+                    //TODO@Jenny - Goal: Send email to the new user and include a link for them to click and activate his/her account
+                    //TODO@Jenny - Step 1: Write the cloud code to send activation email (See LB-DEV-CLOUD/cloud/main.js for more detail)
+                    //TODO@Jenny - Step 2: After user click "OK" in the modal, call the cloud code email service you've written above to send out the email
+                    //TODO@Jenny          (Refer to the emailService function for how to call cloud code and pass in parameters)
+            	var activationLink = config.appUrl + "#activate?userId=" + user.id;
+            	Parse.Cloud.run('sendActivationEmail', {
+            		firstName: user.get("firstName"),
+                    emailAddress: user.get("email"),
+                    activationLink: activationLink
+                }, {
+                    success: function () {
+                        console.log("Activation email has been sent!");
+                    },
+
+                    error: function (error) {
+                        console.log("Fail to send email. Reason: " + error.message);
+                    }
+                });
+                    Parse.User.logOut();
+                    window.location.href = '#';
+                }
+            }).modal('show');
         }
 
     });

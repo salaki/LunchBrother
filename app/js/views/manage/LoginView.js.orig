@@ -76,9 +76,15 @@ define([
                     } else {
                         var permission = user.get('permission');
 
+<<<<<<< HEAD
                     if (permission === GENERAL_USER) {
                         self.updateRegistrationCodeState(user, registrationCode);
                     }
+=======
+                        if (permission === GENERAL_USER) {
+                            window.location.hash = '#home';
+                        }
+>>>>>>> MPD-31
 
                         if (permission === LOCAL_MANAGER) {
                             window.location.hash = '#managerHome?week=';
