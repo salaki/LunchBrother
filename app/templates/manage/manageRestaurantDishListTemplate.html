@@ -1,0 +1,17 @@
+<div class="item">
+    <button class="circular ui fluid small orange basic button">
+        <i class="icon plus"></i>
+        Add a dish
+    </button>
+</div>
+<% _.each(dishes, function(dish) { %>
+<div class="item">
+    <div class="right floated content">
+        <button class="ui circular small icon orange button"><i class="icon edit"></i></button>
+        <button class="ui circular small icon button"><i class="remove icon"></i></button>
+    </div>
+    <div class="content">
+        <%= dish.get('name') %>
+    </div>
+</div>
+<% }) %>

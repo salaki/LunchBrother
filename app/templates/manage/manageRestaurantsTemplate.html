@@ -4,17 +4,19 @@
 <div class="ui attached segment">
   <div class="ui grid"> 
     <div class="eleven wide column">
-      <div class="ui fluid search selection dropdown">
-        <div class="default text">Select a restaurant</div><i class="dropdown icon"></i>
+      <div class="ui fluid search selection dropdown manage-restaurant-selection">
+          <input type="hidden" name="restaurant">
+          <i class="dropdown icon"></i>
+        <div class="default text">Select a restaurant</div>
         <div class="menu">
-
-          <a class="item" data-value="">Resaurant name 1</a>
-          <a class="item" data-value="">Resaurant name 1</a>
+            <% _.each(restaurants, function(restaurant) { %>
+              <div class="item" data-value="<%= restaurant.id %>"><%= restaurant.get('name') %></div>
+            <% }) %>
         </div>
       </div>
     </div>
     <div class="five wide column right aligned">
-      <button class="circular ui icon small orange button">
+      <button class="circular ui icon small orange button toNewRestaurant">
         <i class="icon edit"></i>
       </button>
       <button class="circular ui icon small button">
@@ -22,42 +24,7 @@
       </button>
     </div>
   </div>
-
-  <div class="ui middle very relaxed aligned divided list">
-    <div class="item">
-      <button class="circular ui fluid small orange basic button">
-        <i class="icon plus"></i>
-        Add a dish
-      </button>
-    </div>
-    <div class="item">
-      <div class="right floated content">
-        <button class="ui circular small icon orange button toNewRestaurant"><i class="icon edit"></i></button>
-        <button class="ui circular small icon button"><i class="remove icon"></i></button>
-      </div>
-      <div class="content">
-        Dish Name
-      </div>
-    </div>
-    <div class="item">
-      <div class="right floated content">
-        <button class="ui circular small icon orange button toNewRestaurant"><i class="icon edit"></i></button>
-        <button class="ui circular small icon button"><i class="remove icon"></i></button>
-      </div>
-      <div class="content">
-        Dish Name
-      </div>
-    </div>
-    <div class="item">
-      <div class="right floated content">
-        <button class="ui circular small icon orange button toNewRestaurant"><i class="icon edit"></i></button>
-        <button class="ui circular small icon button"><i class="remove icon"></i></button>
-      </div>
-      <div class="content">
-        Dish Name
-      </div>
-    </div>
-  </div>
+  <div class="ui middle very relaxed aligned divided list" id="dishList"></div>
 </div>
 
 <div class="ui bottom attached orange button toNewRestaurant">
