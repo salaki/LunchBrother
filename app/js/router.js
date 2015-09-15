@@ -51,7 +51,7 @@ define([
             'login': 'showLogin',
             'distributor': 'showDistributor',
             'driver': 'showDriver',
-	    //'loginorsignup' : 'showLoginorsignup',
+	           //'loginorsignup' : 'showLoginorsignup',
             'managerHome?*queryString': 'showManagerHome',
             'menuEdit?*queryString': 'showMenuEdit',
             'profile': 'showProfile',
@@ -62,8 +62,7 @@ define([
             'newdish' : 'showNewdish',
             'newRestaurant' : 'showNewRestaurant',
             // Default
-            '*actions': 'defaultAction'
-            
+            '*actions': 'defaultAction'   
         }
     });
 

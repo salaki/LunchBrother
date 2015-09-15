@@ -7,6 +7,7 @@ define([
 
         events: {
             //TODO@Lian: Add a button event here to click to a method which directs the user to another page
+            "click .toNewRestaurant": "toNewRestaurantPageClick"
         },
 
         initialize: function () {
@@ -18,6 +19,10 @@ define([
         render: function () {
             this.$el.html(this.template());
             return this;
+        },
+
+        toNewRestaurantPageClick: function() {
+            window.location.href = '#newRestaurant';
         }
     });
     return ManageRestaurantsView;
