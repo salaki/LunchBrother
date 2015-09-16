@@ -38,11 +38,17 @@ define([
         },
 
         refreshDishList: function(restaurantId) {
+            var self = this;
             console.log(restaurantId);
-            //TODO@Lian - Step 1. Use Parse Query command to find the dishes belong to restaurantId (Use DishModel)
-            //TODO@Lian - Step 2. Once you find the dishes, pass the dishes object to the dishListTemplate like:
-            //TODO@Lian -         self.$("#dishList").html(self.template({dishes: dishes}))
-            //TODO@Lian - (Hint: You can look at above method or https://parse.com/docs/js/guide for your reference)
+            var dishQuery = new Parse.Query(DishModel);
+            dishQuery.find({
+                success: function(dishes) {
+                    self.$("#dishList").html(self.dishListTemplate({dishes: dishes}));
+                },
+                error: function(error) {
+                    alert("Find dishes failed! Reason: " + error.message);
+                }
+            });
         },
 
         toNewRestaurantPageClick: function() {
