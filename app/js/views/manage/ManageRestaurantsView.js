@@ -39,9 +39,12 @@ define([
 
         refreshDishList: function(restaurantId) {
             var self = this;
-            console.log(restaurantId);
             var dishQuery = new Parse.Query(DishModel);
-            dishQuery.equalTo(restaurantId);
+            dishQuery.equalTo("restaurant", {
+                __type:"Pointer",
+                className: "Restaurant",
+                objectId: restaurantId
+            });
             dishQuery.find({
                 success: function(dishes) {
                     self.$("#dishList").html(self.dishListTemplate({dishes: dishes}));
