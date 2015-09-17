@@ -41,6 +41,7 @@ define([
             var self = this;
             console.log(restaurantId);
             var dishQuery = new Parse.Query(DishModel);
+            dishQuery.equalTo(restaurantId);
             dishQuery.find({
                 success: function(dishes) {
                     self.$("#dishList").html(self.dishListTemplate({dishes: dishes}));
