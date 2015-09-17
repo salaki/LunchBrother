@@ -304,31 +304,6 @@ Parse.Cloud.define("emailResetPasswordLink",
         });
     });
 
-//TODO@Jenny - Finish this cloud code implementation
-Parse.Cloud.define("sendActivationEmail",
-    function (request, response) {
-        var fname = request.params.firstName;
-        var email = request.params.emailAddress;
-        var activationLink = request.params.activationLink;
-        sendEmail({
-            message: {
-                //TODO@Jenny - Draft the body for the email, you can refer to above example, remember to include the activation link.
-            	html: '<p style="position: relative" align="middle"><b><big>' + fname + '</big></b> </p>' +
-            	'<p style="position: relative" align="middle"><b><big>Thank you for signing up with LunchBrother.You must follow this link to activate your account:</big></b></p>' +
-            	'<p style="position: relative" align="middle"><b><big><a href="' + activationLink + '" style="color: blue">' + activationLink + '</a></big></b></p>',
-                subject: "Welcome! Please activate your LunchBrother account",
-                from_email: "orders@lunchbrother.com",
-                from_name: "LunchBrother",
-                to: [{
-                    email: email
-                }],
-                inline_css: true
-            },
-            success: function (httpResponse) { response.success("Activation email sent!"); },
-            error: function (httpResponse) { response.error("Uh oh, something went wrong"); }
-        });
-    });
-
 function sendEmail(options) {
     Parse.Cloud.httpRequest({
         method: 'POST',

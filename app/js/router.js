@@ -1,7 +1,6 @@
 define([
     'views/home/LandingView',
   'views/home/HomeView',
-    'views/home/ActivateView',
   'views/order/OrderView',
   'views/order/PolicyView',
   'views/confirm/ConfirmView',
@@ -18,7 +17,6 @@ define([
     'views/account/ResetPasswordView'
 ], function (LandingView,
         HomeView,
-        ActivateView,
 		OrderView, 
 		PolicyView, 
 		ConfirmView, 
@@ -49,7 +47,6 @@ define([
 	    //'loginorsignup' : 'showLoginorsignup',
             'managerHome?*queryString': 'showManagerHome',
             'menuEdit?*queryString': 'showMenuEdit',
-            'activate?*queryString': 'showActivate',
             'profile': 'showProfile',
             'signupemail' : 'showSignupemail',
             'forgotpassword' : 'showForgotpassword',
@@ -134,13 +131,6 @@ define([
               }
           });
 
-        appRouter.on('route:showActivate', function (queryString) {
-            var params = new ParseQueryString(queryString);
-            var activateView = new ActivateView({
-                userId: params.userId
-            });
-            activateView.render();
-        });
 
           appRouter.on('route:showHome', function () {
               var currentUser = Parse.User.current();

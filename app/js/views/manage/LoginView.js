@@ -69,12 +69,12 @@ define([
                 //chef:delivery
                 //getcurrentuser's permission
                 success: function (user) {
-                    if (user.get("active") === false) {
-                        Parse.User.logOut();
-                        alert("You haven't activated your account yet, please activate with the link we sent to you.");
-                        window.location.reload();
-                    } else {
-                        var permission = user.get('permission');
+            	if (user.get("emailVerified") === false) {
+                    Parse.User.logOut();
+                    alert("You haven't activated your account yet, please activate with the link we sent to you.");
+                    window.location.reload();
+                } else {
+                	var permission = user.get('permission');
 
                     if (permission === GENERAL_USER) {
                         self.updateRegistrationCodeState(user, registrationCode);
@@ -91,7 +91,7 @@ define([
                         if (permission === DISTRIBUTOR) {
                             window.location.hash = '#distributor';
                         }
-                    }
+                	}  
                 },
                 error: function (user, error) {
                 	self.$("#loginError").removeClass("hidden");
