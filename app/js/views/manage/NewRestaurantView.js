@@ -79,6 +79,33 @@ define([
               //TODO@Lian - Save the restaurant object (Refer to https://parse.com/docs/js/guide#objects-saving-objects)
               //TODO@Lian - In the success call back, prompt an alert view saying "Save restaurant successfully!" and then direct user back to manageRestaurant page,
               //TODO@Lian   and you should see one more restaurant is created in the dropdown
+              var savedRestaurant = new RestaurantModel();
+
+              savedRestaurant.save({
+                name: name,
+                type: type,
+                address: address,
+                telnum: telnum,
+                confirmNumber: confirmNumber,
+                managerName: managerName,
+                gridId: {
+                  __type: "Pointer",
+                  className: "Grid",
+                  objectId: gridId
+                },
+                url: url,
+                yelpLink: yelpLink,
+                description: description
+              }, {
+                success: function(savedRestaurant) {
+                  alert('Save restaurant successfully!');
+                  console.log(savedRestaurant.id);
+                  window.location.href='#manageRestaurants';
+                },
+                error: function(savedRestaurant, error) {
+                  alert('Failed to save restaurant, with error code: ' + error.message);
+                }
+              });
           }
       });
       return NewRestaurantView;

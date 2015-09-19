@@ -41,7 +41,7 @@ define([
             var self = this;
             var dishQuery = new Parse.Query(DishModel);
             dishQuery.equalTo("restaurant", {
-                __type:"Pointer",
+                __type: "Pointer",
                 className: "Restaurant",
                 objectId: restaurantId
             });
