@@ -9,7 +9,10 @@ define([
         el: $("#page"),
 
         events: {
-            "click .toNewRestaurant": "toNewRestaurantPageClick"
+            "click .toNewRestaurant": "toNewRestaurantPageClick",
+            "click .deleteDish": "onDeleteDishClick",
+            "click #editRestaurant": "onEditRestaurantClick",
+            "click #deleteRestaurant": "onDeleteRestaurantClick"
         },
 
         initialize: function () {
@@ -25,6 +28,8 @@ define([
             restaurantQuery.find({
                 success: function(restaurants) {
                     self.$el.html(self.template({restaurants: restaurants}));
+                    $("#editRestaurant").addClass('disabled');
+                    $("#deleteRestaurant").addClass('disabled');
                     $(".manage-restaurant-selection").dropdown({
                         onChange: function (restaurantId) {
                             self.refreshDishList(restaurantId);
@@ -38,6 +43,14 @@ define([
         },
 
         refreshDishList: function(restaurantId) {
+            if (restaurantId) {
+                $("#editRestaurant").removeClass('disabled');
+                $("#deleteRestaurant").removeClass('disabled');
+            } else {
+                $("#editRestaurant").addClass('disabled');
+                $("#deleteRestaurant").addClass('disabled');
+            }
+
             var self = this;
             var dishQuery = new Parse.Query(DishModel);
             dishQuery.equalTo("restaurant", {
@@ -57,6 +70,39 @@ define([
 
         toNewRestaurantPageClick: function() {
             window.location.href = '#newRestaurant';
+        },
+
+        onEditRestaurantClick: function() {
+            window.location.href = '#editRestaurant?id=' + $(".manage-restaurant-selection").dropdown('get value');
+        },
+
+        onDeleteRestaurantClick: function() {
+            $("#deleteContent").html("Do you really want to delete this restaurant?");
+            $('#deleteDishOrRestaurantDialog').modal({
+                closable: false,
+                onDeny: function () {
+                    //Do nothing
+                },
+                onApprove: function () {
+                    var restaurant = new RestaurantModel();
+                    restaurant.id = $(".manage-restaurant-selection").dropdown('get value');
+                    restaurant.destroy({
+                        success: function(restaurant) {
+                            alert("Delete restaurant successfully!");
+                            location.reload();
+                        },
+                        error: function(restaurant, error) {
+                            alert("Delete restaurant failed! Reason: " + error.message);
+                        }
+                    });
+                }
+            }).modal('show');
+        },
+
+        onDeleteDishClick: function(ev) {
+            var dishId = $(ev.currentTarget).data('id');
+            alert("This function is still under construction");
+            //TODO - Need more discussion to implement the delete function
         }
     });
     return ManageRestaurantsView;

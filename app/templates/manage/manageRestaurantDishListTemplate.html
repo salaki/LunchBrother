@@ -1,5 +1,5 @@
 <div class="item">
-    <button class="circular ui fluid small orange basic button">
+    <button class="circular ui fluid small orange basic button" onclick="location.href='#newdish'">
         <i class="icon plus"></i>
         Add a dish
     </button>
@@ -7,8 +7,8 @@
 <% _.each(dishes, function(dish) { %>
 <div class="item">
     <div class="right floated content">
-        <button class="ui circular small icon orange button"><i class="icon edit"></i></button>
-        <button class="ui circular small icon button"><i class="remove icon"></i></button>
+        <button class="ui circular small icon orange button" onclick="location.href='#editDish?id=<%= dish.id %>'"><i class="icon edit"></i></button>
+        <button class="ui circular small icon button deleteDish" data-id="<%= dish.id %>"><i class="remove icon"></i></button>
     </div>
     <div class="content">
         <%= dish.get('dishName') %>

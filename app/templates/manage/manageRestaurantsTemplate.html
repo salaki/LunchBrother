@@ -16,10 +16,10 @@
       </div>
     </div>
     <div class="five wide column right aligned">
-      <button class="circular ui icon small orange button toNewRestaurant">
+      <button class="circular ui icon small orange button" id="editRestaurant">
         <i class="icon edit"></i>
       </button>
-      <button class="circular ui icon small button">
+      <button class="circular ui icon small button" id="deleteRestaurant">
         <i class="icon remove"></i>
       </button>
     </div>
@@ -30,4 +30,21 @@
 <div class="ui bottom attached orange button toNewRestaurant">
   <i class="add icon"></i>
   Add a new restaurant
+</div>
+
+<div id="deleteDishOrRestaurantDialog" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        <label>Are you sure?</label>
+    </div>
+    <div class="content" id="deleteContent"></div>
+    <div class="actions">
+        <div class="ui basic cancel button">
+            <i class="remove icon"></i>
+            <label>Cancel</label>
+        </div>
+        <div class="ui ok orange button">
+            <i class="checkmark icon"></i>
+            <label>Delete</label>
+        </div>
+    </div>
 </div>

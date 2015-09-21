@@ -60,7 +60,9 @@ define([
             'resetPassword?*queryString' : 'showResetPassword',
             'manageRestaurants': 'showManageRestaurants',
             'newdish' : 'showNewdish',
+            'editDish?*queryString' : 'showEditDish',
             'newRestaurant' : 'showNewRestaurant',
+            'editRestaurant?*queryString' : 'showEditRestaurant',
             // Default
             '*actions': 'defaultAction'   
         }
@@ -239,6 +241,22 @@ define([
             }
         });
 
+        appRouter.on('route:showEditRestaurant', function (queryString) {
+//            var currentUser = Parse.User.current();
+//            if(currentUser != null) {
+//                permission = currentUser.get('permission');
+//            }
+//            if (permission === LB_ADMIN) {
+                var params = new ParseQueryString(queryString);
+                var newRestaurantView = new NewRestaurantView({
+                    id: params.id
+                });
+                newRestaurantView.render();
+//            } else {
+//                window.location.hash = "#login";
+//            }
+        });
+
         appRouter.on( 'route:showProfile', function () {
             var profileView = new ProfileView();
             profileView.render();
@@ -273,9 +291,16 @@ define([
         });
 
         appRouter.on('route:showManageRestaurants', function () {
-            // Call render on the module we loaded in via the dependency array
+//            var currentUser = Parse.User.current();
+//            if(currentUser != null) {
+//                permission = currentUser.get('permission');
+//            }
+//            if (permission === LB_ADMIN) {
             var manageRestaurantsView = new ManageRestaurantsView();
             manageRestaurantsView.render();
+//            } else {
+//                window.location.hash = "#login";
+//            }
         });
 
         appRouter.on('route:showNewdish', function () {
@@ -284,10 +309,33 @@ define([
             newdishView.render();
         });
 
+        appRouter.on('route:showEditDish', function (queryString) {
+//            var currentUser = Parse.User.current();
+//            if(currentUser != null) {
+//                permission = currentUser.get('permission');
+//            }
+//            if (permission === LB_ADMIN) {
+            var params = new ParseQueryString(queryString);
+            var newdishView = new NewdishView({
+                id: params.id
+            });
+            newdishView.render();
+//            } else {
+//                window.location.hash = "#login";
+//            }
+        });
+
         appRouter.on('route:showNewRestaurant', function () {
-            // Call render on the module we loaded in via the dependency array
+//            var currentUser = Parse.User.current();
+//            if(currentUser != null) {
+//                permission = currentUser.get('permission');
+//            }
+//            if (permission === LB_ADMIN) {
             var newRestaurantView = new NewRestaurantView();
             newRestaurantView.render();
+//            } else {
+//                window.location.hash = "#login";
+//            }
         });
 
         appRouter.on('route:defaultAction', function (actions) {

@@ -20,11 +20,30 @@ define([
           },
 
           render: function () {
-              var gridQuery = new Parse.Query(GridModel);
               var self = this;
+              var restaurantId = this.options.id;
+              if(restaurantId) {
+                  var restaurantQuery = new Parse.Query(RestaurantModel);
+                  restaurantQuery.get(restaurantId, {
+                      success: function(restaurant) {
+                          self.continueFindGridAndRender(restaurant);
+                      },
+                      error: function(error) {
+                          alert("Error in finding restaurant. Reason: " + error.message);
+                      }
+                  });
+              } else {
+                  var restaurant = new RestaurantModel();
+                  self.continueFindGridAndRender(restaurant);
+              }
+          },
+
+          continueFindGridAndRender: function(restaurant) {
+              var self = this;
+              var gridQuery = new Parse.Query(GridModel);
               gridQuery.find({
                   success: function(grids) {
-                      self.$el.html(self.template({grids: grids}));
+                      self.$el.html(self.template({grids: grids, restaurant: restaurant}));
 //                      $('.ui.form').form({
 //                          'restaurantName': {
 //                              identifier: 'restaurantName',
@@ -52,8 +71,17 @@ define([
 //                          inline: 'true'
 //                      });
 
-                      $(".restaurant-type-selection").dropdown();
-                      $(".restaurant-area-selection").dropdown();
+                      if (restaurant.id) {
+                          $(".restaurant-type-selection").dropdown('set selected', restaurant.get('type'));
+                          $(".restaurant-area-selection").dropdown('set selected', restaurant.get('gridId').id);
+                          $(".restaurant-type-selection").dropdown('set value', restaurant.get('type'));
+                          $(".restaurant-area-selection").dropdown('set value', restaurant.get('gridId').id);
+
+                      } else {
+                          $(".restaurant-type-selection").dropdown();
+                          $(".restaurant-area-selection").dropdown();
+                      }
+
                   },
                   error: function(error) {
                       alert("Error in finding grids. Reason: " + error.message);
@@ -63,6 +91,7 @@ define([
 
           saveRestaurant: function() {
               var self = this;
+              var id = $("#restaurantId").val();
               var name = $("#restaurantName").val();
               var type = $(".restaurant-type-selection").dropdown('get value');
               var address = $("#restaurantAddress").val();
@@ -74,13 +103,10 @@ define([
               var yelpLink = $("#yelpLink").val();
               var description = $("#restaurantDescription").val();
 
-              //TODO@Lian - Create a new restaurant model object, and put all the above values to the corresponding following field names:
-              //TODO@Lian   - name, type, address, telnum, confirmNumber, managerName, gridId, url, yelpLink, description
-              //TODO@Lian - Save the restaurant object (Refer to https://parse.com/docs/js/guide#objects-saving-objects)
-              //TODO@Lian - In the success call back, prompt an alert view saying "Save restaurant successfully!" and then direct user back to manageRestaurant page,
-              //TODO@Lian   and you should see one more restaurant is created in the dropdown
               var savedRestaurant = new RestaurantModel();
-
+              if (id) {
+                  savedRestaurant.id = id;
+              }
               savedRestaurant.save({
                 name: name,
                 type: type,
@@ -99,11 +125,10 @@ define([
               }, {
                 success: function(savedRestaurant) {
                   alert('Save restaurant successfully!');
-                  console.log(savedRestaurant.id);
                   window.location.href='#manageRestaurants';
                 },
                 error: function(savedRestaurant, error) {
-                  alert('Failed to save restaurant, with error code: ' + error.message);
+                  alert('Failed to save restaurant, with error message: ' + error.message);
                 }
               });
           }
