@@ -329,6 +329,22 @@ Parse.Cloud.define("sms",
     }
 );
 
+Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
+    var Stripe = require("stripe");
+    Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
+
+    // Create a transfer to the specified recipient
+    Stripe.transfers.create({
+        amount: 1000, // amount in cents
+        currency: "usd",
+        recipient: recipientId,
+        card: cardId,
+        statement_descriptor: "JULY SALES"
+    }, function(err, transfer) {
+        // transfer;
+    });
+});
+
 Parse.Cloud.job("weeklySMS", function(request, status) {
     //Assemble SMS Message
     var message = "Monday again, start a new fresh week w/ www.lunchbrother.com! Order by 10:25 and enjoy lunch at noon-12:30! *Could disable this reminder in ur profile page.";
