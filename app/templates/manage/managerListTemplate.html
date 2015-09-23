@@ -1,0 +1,56 @@
+<h1 class="ui small center aligned header">All Managers</h1>
+
+<div class="ui middle aligned very relaxed list">
+    <div class="item">
+        <div class="right floated content">
+            <button class="ui circular small icon orange button"><i class="icon edit"></i></button>
+            <button class="ui circular small icon button"><i class="remove icon"></i></button>
+        </div>
+        <img class="ui avatar image" src="/images/avatar2/small/lena.png">
+        <div class="content">
+            <a class="header">Helen Kahn</a>
+            University of Maryland
+        </div>
+    </div>
+    <div class="ui segments">
+        <div class="ui segment">
+            <i class="phone icon"></i>
+            302-132-3232
+        </div>
+        <div class="ui segment">
+            <i class="mail icon"></i>
+            <a href="mailto:jack@semantic-ui.com">jack@semantic-ui.com</a>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="item">
+        <div class="right floated content">
+            <button class="ui circular small icon orange button"><i class="icon edit"></i></button>
+            <button class="ui circular small icon button"><i class="remove icon"></i></button>
+        </div>
+        <img class="ui avatar image" src="/images/avatar2/small/lena.png">
+        <div class="content">
+            <a class="header">Helen Kahn</a>
+            University of Maryland
+        </div>
+    </div>
+    <div class="ui segments">
+        <div class="ui segment">
+            <i class="phone icon"></i>
+            302-132-3232
+        </div>
+        <div class="ui segment">
+            <i class="mail icon"></i>
+            <a href="mailto:jack@semantic-ui.com">jack@semantic-ui.com</a>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+$('.header').click(function(){
+    $('.segments')
+        .transition('vertical flip', '500ms');
+});
+</script>

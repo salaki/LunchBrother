@@ -65,9 +65,12 @@ define([
             'newdish?*queryString' : 'showNewdish',
             'editDish?*queryString' : 'showEditDish',
             'newRestaurant' : 'showNewRestaurant',
+<<<<<<< HEAD
             'editRestaurant?*queryString' : 'showEditRestaurant',
+=======
             'managerList' : 'showManagerList',
             'newManager' : 'showNewManager',
+>>>>>>> MPD-55
             // Default
             '*actions': 'defaultAction'   
         }
