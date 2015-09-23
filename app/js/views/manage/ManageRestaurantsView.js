@@ -24,16 +24,10 @@ define([
 
         render: function () {
             var self = this;
-            //TODO@Lian - Query users where permission equals to LOCAL_MANAGER
-            //TODO@Lian - In the success call back include continueQueryRestaurant function and also pass in returned users
-        },
-
-        continueQueryRestaurant: function(managers) {
-            var self = this;
             var restaurantQuery = new Parse.Query(RestaurantModel);
             restaurantQuery.find({
                 success: function(restaurants) {
-                    self.$el.html(self.template({restaurants: restaurants, managers: managers}));
+                    self.$el.html(self.template({restaurants: restaurants}));
                     $("#editRestaurant").addClass('disabled');
                     $("#deleteRestaurant").addClass('disabled');
                     $(".manage-restaurant-selection").dropdown({
