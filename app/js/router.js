@@ -59,7 +59,7 @@ define([
             'forgotpassword' : 'showForgotpassword',
             'resetPassword?*queryString' : 'showResetPassword',
             'manageRestaurants': 'showManageRestaurants',
-            'newdish' : 'showNewdish',
+            'newdish?*queryString' : 'showNewdish',
             'editDish?*queryString' : 'showEditDish',
             'newRestaurant' : 'showNewRestaurant',
             'editRestaurant?*queryString' : 'showEditRestaurant',
@@ -303,9 +303,12 @@ define([
 //            }
         });
 
-        appRouter.on('route:showNewdish', function () {
+        appRouter.on('route:showNewdish', function (queryString) {
             // Call render on the module we loaded in via the dependency array
-            var newdishView = new NewdishView();
+            var params = new ParseQueryString(queryString);
+            var newdishView = new NewdishView({
+                restaurantId: params.restaurantId
+            });
             newdishView.render();
         });
 
@@ -317,7 +320,7 @@ define([
 //            if (permission === LB_ADMIN) {
             var params = new ParseQueryString(queryString);
             var newdishView = new NewdishView({
-                id: params.id
+                dishId: params.dishId
             });
             newdishView.render();
 //            } else {

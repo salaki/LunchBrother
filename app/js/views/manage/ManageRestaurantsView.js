@@ -43,6 +43,9 @@ define([
         },
 
         refreshDishList: function(restaurantId) {
+            var newEvent = {"click #addNewDishBtn": 'toNewDishPage'};
+            this.delegateEvents(_.extend(this.events, newEvent));
+
             if (restaurantId) {
                 $("#editRestaurant").removeClass('disabled');
                 $("#deleteRestaurant").removeClass('disabled');
@@ -66,6 +69,10 @@ define([
                     alert("Find dishes failed! Reason: " + error.message);
                 }
             });
+        },
+
+        toNewDishPage: function() {
+            window.location.href='#newdish?restaurantId=' + $(".manage-restaurant-selection").dropdown('get value');
         },
 
         toNewRestaurantPageClick: function() {
