@@ -30,30 +30,36 @@ define([
         //Update registration code state
         var currentUser = Parse.User.current();
         var RegistrationCode = Parse.Object.extend("RegistrationCode");
-        var codeQuery = new Parse.Query(RegistrationCode);
-        codeQuery.equalTo("loginBy", currentUser);
-        codeQuery.first({
-            success: function(code) {
-                code.unset("loginBy");
-                code.set("usedToLogin", false);
-                code.save();
-
-                Parse.User.logOut();
-                $("#userEmail").text("");
-                $("#userPhone").text("");
-                $("#userFullName").text("");
-                $("#userCreditBalance").text("");
-                $("#accountBarFirstName").text("");
-                window.location.href='#';
-                location.reload();
-                $('#account').hide();
-            },
-            error: function(error) {
-                console.log('Update failed! Reason: ' + error.message);
-            }
-        });
+        if (currentUser.get('permission') === GENERAL_USER) {
+            var codeQuery = new Parse.Query(RegistrationCode);
+            codeQuery.equalTo("loginBy", currentUser);
+            codeQuery.first({
+                success: function(code) {
+                    code.unset("loginBy");
+                    code.set("usedToLogin", false);
+                    code.save();
+                    continueSignOut();
+                },
+                error: function(error) {
+                    console.log('Update failed! Reason: ' + error.message);
+                }
+            });
+        } else {
+            continueSignOut()
+        }
     });
 
+      var continueSignOut = function() {
+          Parse.User.logOut();
+          $("#userEmail").text("");
+          $("#userPhone").text("");
+          $("#userFullName").text("");
+          $("#userCreditBalance").text("");
+          $("#accountBarFirstName").text("");
+          window.location.href='#';
+          location.reload();
+          $('#account').hide();
+      };
 
       $(".editlink").on("click", function(e){
           e.preventDefault();
