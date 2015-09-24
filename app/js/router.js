@@ -131,6 +131,7 @@ define([
               }
           });
 
+
           appRouter.on('route:showHome', function () {
               var currentUser = Parse.User.current();
               if(currentUser != null) {

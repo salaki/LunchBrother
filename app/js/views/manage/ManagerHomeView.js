@@ -3,10 +3,11 @@ define([
     'models/Restaurant',
     'models/PickUpLocation',
     'models/InventoryModel',
+    'models/RegistrationCodeModel',
     'text!templates/manage/managerHomeTemplate.html',
     'text!templates/manage/menuListTemplate.html',
     'text!templates/manage/salesTableBodyTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, RegistrationCodeModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
@@ -494,6 +495,27 @@ define([
                 },
                 error: function(error) {
                     alert('Save failed! Reason: ' + error.message);
+                }
+            });
+        },
+
+        generateCode: function() {
+            //TODO - Need a confirmation modal view
+            //TODO - Need to pass in a number for how many registration codes need to generate
+            var codes = [];
+            for (var i=0; i<5; i++) {
+                var code = new RegistrationCodeModel();
+                code.set("usedToLogin", false);
+                code.set("usedToSignUp", false);
+                codes.push(code);
+            }
+
+            Parse.Object.saveAll(codes, {
+                success: function(objs) {
+                    alert(objs.length + " registration codes have been generated!");
+                },
+                error: function(error) {
+                    alert("Error: " + error.message);
                 }
             });
         }

@@ -152,17 +152,17 @@ Parse.Cloud.define("email",
                 if (address == "Regents Drive Parking Garage") {
                     var addressDetails = "Regents Drive Parking Garage, College Park, MD 20740";
                     var addressNotes = "Meter space, Ground Floor, next to the elevator in the South-East corner.";
-                    var contactInfo = "Fish：7245108760";
+                    var contactInfo = "Fish锛�7245108760";
                 }
                 if (address == "McKeldin Library") {
                     addressDetails = "Library Ln,College Park, MD 20740";
                     addressNotes = "Meter space, next to the health center.";
-                    contactInfo = "Jabber：2028124286";
+                    contactInfo = "Jabber锛�2028124286";
                 }
                 if (address == "AV Williams Bldg") {
                     addressDetails = "AV Williams Building, College Park, MD 20740, XX5 parking lot";
                     addressNotes = "Side entrance of A.V.W. close to Kim BLD";
-                    contactInfo = "Rachel：3013124798";
+                    contactInfo = "Rachel锛�3013124798";
                 }
 
                 sendEmail({
@@ -227,17 +227,17 @@ Parse.Cloud.define("emailNotification",
         if (pickupAddress == "Regents Drive Parking Garage") {
             var addressDetails = "Regents Drive Parking Garage, College Park, MD 20740";
             var addressNotes = "Meter space, Ground Floor, next to the elevator in the South-East corner.";
-            var contactInfo = "Fish：7245108760";
+            var contactInfo = "Fish锛�7245108760";
         }
         if (pickupAddress == "McKeldin Library") {
             addressDetails = "Library Ln,College Park, MD 20740";
             addressNotes = "Meter space, next to the health center.";
-            contactInfo = "Jabber：2028124286";
+            contactInfo = "Jabber锛�2028124286";
         }
         if (pickupAddress == "AV Williams Bldg") {
             addressDetails = "AV Williams Building, College Park, MD 20740, XX5 parking lot";
             addressNotes = "Side entrance of A.V.W. close to Kim BLD";
-            contactInfo = "Rachel：3013124798";
+            contactInfo = "Rachel锛�3013124798";
         }
 
         for (var i = 0; i < orders.length; i++) {
