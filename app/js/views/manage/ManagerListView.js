@@ -20,10 +20,17 @@ define([
 
           render: function () {
               var self = this;
-              //TODO@Lian - Query users where permission equals to LOCAL_MANAGER
-              //TODO@Lian - In the success call back, render the page (self.$el.html(self.template({managers: managers}));)
-            this.$el.html(this.template());
-            return this;
+              var managerQuery = new Parse.Query(Parse.User);
+              managerQuery.equalTo("permission", LOCAL_MANAGER);
+              managerQuery.include("gridId");
+              managerQuery.find({
+                  success: function(managers) {
+                      self.$el.html(self.template({managers: managers}));
+                  },
+                  error: function(error) {
+                      alert("Find managers failed! Reason: " + error.message);
+                  }
+              });
           },
 
           onNewManagerClick: function() {
