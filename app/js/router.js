@@ -61,13 +61,21 @@ define([
             'signupemail' : 'showSignupemail',
             'forgotpassword' : 'showForgotpassword',
             'resetPassword?*queryString' : 'showResetPassword',
+
+            // Restaurant
             'manageRestaurants': 'showManageRestaurants',
-            'newdish?*queryString' : 'showNewdish',
-            'editDish?*queryString' : 'showEditDish',
             'newRestaurant' : 'showNewRestaurant',
             'editRestaurant?*queryString' : 'showEditRestaurant',
+
+            // Dish
+            'newdish?*queryString' : 'showNewdish',
+            'editDish?*queryString' : 'showEditDish',
+
+            // Manager
             'managerList' : 'showManagerList',
             'newManager' : 'showNewManager',
+            'editManager?*queryString' : 'showEditManager',
+
             // Default
             '*actions': 'defaultAction'   
         }
@@ -356,6 +364,22 @@ define([
             // Call render on the module we loaded in via the dependency array
             var newManagerView = new NewManagerView();
             newManagerView.render();
+        });
+
+        appRouter.on('route:showEditManager', function (queryString) {
+//            var currentUser = Parse.User.current();
+//            if(currentUser != null) {
+//                permission = currentUser.get('permission');
+//            }
+//            if (permission === LB_ADMIN) {
+            var params = new ParseQueryString(queryString);
+            var newManagerView = new NewManagerView({
+                managerId: params.managerId
+            });
+            newManagerView.render();
+//            } else {
+//                window.location.hash = "#login";
+//            }
         });
 
         appRouter.on('route:defaultAction', function (actions) {

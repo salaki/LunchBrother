@@ -8,7 +8,8 @@ define([
           el: $("#page"),
 
           events: {
-              'click .toNewManager': 'onNewManagerClick'
+              'click .toNewManager': 'onNewManagerClick',
+              'click .deleteManager': "onDeleteManagerClick"
           },
 
           initialize: function () {
@@ -35,6 +36,12 @@ define([
 
           onNewManagerClick: function() {
               window.location.href = '#newManager';
+          },
+
+          onDeleteManagerClick: function(ev) {
+              var managerId = $(ev.currentTarget).data('id');
+              alert("Manager Id: " + managerId + ". This function is still under construction");
+              //TODO - Need more discussion to implement the delete function
           }
       });
       return ManagerListView;

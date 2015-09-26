@@ -67,6 +67,7 @@
           <input type="file" id="dishPhoto" name="dishPhoto" accept="image/*">
       <!--</button>      -->
   </div>
+    <div class="ui divider hidden"></div>
     <% if(dish.get('Image_File') != null) { %>
     <div class="previewRow">
         <img class="thumb" src="<%= dish.get('Image_File')._url %>" style="width: 400px"/>
