@@ -334,6 +334,61 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
     Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
 
     // Create a transfer to the specified recipient
+
+    //TODO - Find today's serving restaurants
+    var current = new Date();
+    current.setHours(0, 0, 0, 0);
+
+    var inventoryModel = Parse.Object.extend("Inventory");
+    var inventoryQuery = new Parse.Query(inventoryModel);
+    inventoryQuery.greaterThan("pickUpDate", current);
+    inventoryQuery.include("orderBy");
+    inventoryQuery.include("dish");
+    inventoryQuery.include("dish.restaurant");
+    inventoryQuery.find({
+        success: function(inventories) {
+            //TODO - Summarize today's sale by querying inventory and create transfer queue for restaurants and local managers
+            var transfers = [];
+            var TransferModel = Parse.Object.extend("Transfer");
+
+            _.each(inventories, function(inventory){
+                var restaurantTransfer = new TransferModel();
+                restaurantTransfer.set('amount', inventory.get('preorderQuantity') * inventory.get('dish').get('originalPrice'));
+                restaurantTransfer.set('restaurant', inventory.get('dish').get('restaurant'));
+                transfers.push(restaurantTransfer);
+
+                var managerTransfer = new TransferModel();
+                managerTransfer.set('amount', (inventory.get('preorderQuantity') - inventory.get('currentQuantity')));
+                managerTransfer.set('manager', inventory.get('orderBy'));
+                transfers.push(managerTransfer);
+            });
+
+            Parse.Object.saveAll(transfers, {
+                success: function(transfers) {
+                    console.log("Save transfer records successfully!");
+                },
+                error: function(error) {
+                    console.log('Save transfer records failed! Reason: ' + error.message);
+                }
+            });
+        },
+        error: function(error) {
+            console.log(error.message);
+        }
+    });
+
+
+    
+
+    //For restaurant owner
+    //TODO - Query TransferQueue class by restaurant, and sort the records by createdAt, then
+    //TODO - look at the last record, if it is two weeks before now, summarize all the records,
+    //TODO - transfer, and mark them as transferred
+
+    //For manager
+    //TODO - Query TransferQueue class by manager and do the same thing as above.
+
+
     Stripe.transfers.create({
         amount: 1000, // amount in cents
         currency: "usd",
