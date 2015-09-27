@@ -104,6 +104,7 @@ define([
             dish.set("descriptionEn", $("#dish-description").val());
             dish.set("ingredients", $("#dish-ingredients").val());
             dish.set("Unit_Price", Number($("#dish-price").val()));
+            dish.set("originalPrice", Number($("#dish-original-price").val()));
             dish.set("dishType", $(".dish-type-selection").dropdown('get value'));
             dish.set("spicy", $("#dish-spicy").is(':checked'));
             dish.set("glutenFree", $("#dish-gluten-free").is(':checked'));

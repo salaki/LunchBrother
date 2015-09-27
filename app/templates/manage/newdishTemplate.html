@@ -14,13 +14,25 @@
   <div class="field">
     <label>Ingredients</label>
     <textarea rows="2" id="dish-ingredients" name="dish-ingredients" placeholder="Split ingredients by ','"><%= dish.get('ingredients') %></textarea>
-  </div> 
-  <div class="field">
-    <div class="ui labeled input">
-      <div class="ui label">$</div>
-      <input type="text" id="dish-price" placeholder="Price" value="<%= dish.get('Unit_Price') %>">
-    </div>
   </div>
+
+    <div class="field">
+        <label>Original Price / LunchBrother Price</label>
+        <div class="two fields">
+            <div class="field">
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" id="dish-original-price" placeholder="Original Price" value="<%= dish.get('originalPrice') %>">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" id="dish-price" placeholder="LunchBrother Price" value="<%= dish.get('Unit_Price') %>">
+                </div>
+            </div>
+        </div>
+    </div>
 
   <div class="fields">
     <div class="field">
