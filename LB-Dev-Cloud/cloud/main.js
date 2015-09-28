@@ -440,6 +440,16 @@ Parse.Cloud.define("updateUser", function (request, response) {
     user.set("email", request.params.email);
     user.set("telnum", Number(request.params.telnum));
     user.set("permission", Number(request.params.permission));
+    user.set("gridId", {
+        __type: "Pointer",
+        className: "Grid",
+        objectId: request.params.gridId
+    });
+
+    if (request.params.imageFile) {
+        user.set("imageFile", request.params.imageFile);
+    }
+
     user.save(null, {
         success: function(user) {
             response.success("Update user successfully!");

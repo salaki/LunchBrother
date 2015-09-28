@@ -4,64 +4,47 @@
 <div class="ui attached segment">
   <div class="ui grid"> 
     <div class="eleven wide column">
-      <div class="ui fluid search selection dropdown">
-        <div class="default text">Select a restaurant</div><i class="dropdown icon"></i>
+      <div class="ui fluid search selection dropdown manage-restaurant-selection">
+          <input type="hidden" name="restaurant">
+          <i class="dropdown icon"></i>
+        <div class="default text">Select a restaurant</div>
         <div class="menu">
-
-          <a class="item" data-value="">Resaurant name 1</a>
-          <a class="item" data-value="">Resaurant name 1</a>
+            <% _.each(restaurants, function(restaurant) { %>
+              <div class="item" data-value="<%= restaurant.id %>"><%= restaurant.get('name') %></div>
+            <% }) %>
         </div>
       </div>
     </div>
     <div class="five wide column right aligned">
-      <button class="circular ui icon small orange button">
+      <button class="circular ui icon small orange button" id="editRestaurant">
         <i class="icon edit"></i>
       </button>
-      <button class="circular ui icon small button">
+      <button class="circular ui icon small button" id="deleteRestaurant">
         <i class="icon remove"></i>
       </button>
     </div>
   </div>
-
-  <div class="ui middle very relaxed aligned divided list">
-    <div class="item">
-      <button class="circular ui fluid small orange basic button">
-        <i class="icon plus"></i>
-        Add a dish
-      </button>
-    </div>
-    <div class="item">
-      <div class="right floated content">
-          <!--TODO@Lian: Link this button to the new restaurant page-->
-        <button class="ui circular small icon orange button"><i class="icon edit"></i></button>
-        <button class="ui circular small icon button"><i class="remove icon"></i></button>
-      </div>
-      <div class="content">
-        Dish Name
-      </div>
-    </div>
-    <div class="item">
-      <div class="right floated content">
-        <button class="ui circular small icon orange button"><i class="icon edit"></i></button>
-        <button class="ui circular small icon button"><i class="remove icon"></i></button>
-      </div>
-      <div class="content">
-        Dish Name
-      </div>
-    </div>
-    <div class="item">
-      <div class="right floated content">
-        <button class="ui circular small icon orange button"><i class="icon edit"></i></button>
-        <button class="ui circular small icon button"><i class="remove icon"></i></button>
-      </div>
-      <div class="content">
-        Dish Name
-      </div>
-    </div>
-  </div>
+  <div class="ui middle very relaxed aligned divided list" id="dishList"></div>
 </div>
-        <!--TODO@Lian: Link this button to the new restaurant page-->
-<div class="ui bottom attached orange button">
+
+<div class="ui bottom attached orange button toNewRestaurant">
   <i class="add icon"></i>
-  Add a new restaurant
+  Add new restaurant
+</div>
+
+<div id="deleteDishOrRestaurantDialog" class="ui small test modal">
+    <div class="header" style="background-color: #ffffff">
+        <label>Are you sure?</label>
+    </div>
+    <div class="content" id="deleteContent"></div>
+    <div class="actions">
+        <div class="ui basic cancel button">
+            <i class="remove icon"></i>
+            <label>Cancel</label>
+        </div>
+        <div class="ui ok orange button">
+            <i class="checkmark icon"></i>
+            <label>Delete</label>
+        </div>
+    </div>
 </div>
