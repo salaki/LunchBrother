@@ -117,6 +117,7 @@ define([
 
                                 //Add remainder restaurant dishes
                                 _.each(restaurantDishes, function(restaurantDish){
+                                    restaurantDish.price = restaurantDish.get('Unit_Price');
                                     dishes.push(restaurantDish);
                                 });
 

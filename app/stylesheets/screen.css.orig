@@ -52,6 +52,8 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
+<<<<<<< HEAD
+=======
 #youtubeDiv iframe {
     position:absolute;
     top:0;
@@ -72,6 +74,7 @@ time, mark, audio, video {
       margin: 45px 0px 0px 45px;
       padding: 0px 8px 0px 8px;  
 }
+>>>>>>> origin/master
 /* line 22, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
