@@ -330,15 +330,11 @@ Parse.Cloud.define("sms",
 );
 
 Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
-    var Stripe = require("stripe");
-    Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
-
-    // Create a transfer to the specified recipient
-
     //TODO - Find today's serving restaurants
     var current = new Date();
     current.setHours(0, 0, 0, 0);
 
+    var TransferModel = Parse.Object.extend("Transfer");
     var inventoryModel = Parse.Object.extend("Inventory");
     var inventoryQuery = new Parse.Query(inventoryModel);
     inventoryQuery.greaterThan("pickUpDate", current);
@@ -349,7 +345,6 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
         success: function(inventories) {
             //TODO - Summarize today's sale by querying inventory and create transfer queue for restaurants and local managers
             var transfers = [];
-            var TransferModel = Parse.Object.extend("Transfer");
 
             _.each(inventories, function(inventory){
                 var restaurantTransfer = new TransferModel();
@@ -377,28 +372,68 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
         }
     });
 
+    // Query dates setting
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(0, 0, 0, 0);
 
-    
+    var twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(yesterday.getDate() - 14);
+    twoWeeksAgo.setHours(0, 0, 0, 0);
 
+    //TODO - The transfer should happen on fixed date
     //For restaurant owner
-    //TODO - Query TransferQueue class by restaurant, and sort the records by createdAt, then
-    //TODO - look at the last record, if it is two weeks before now, summarize all the records,
-    //TODO - transfer, and mark them as transferred
+    var restaurantTransferQuery = new Parse.Query(TransferModel);
+    restaurantTransferQuery.doesNotExist("manager");
+    restaurantTransferQuery.lessThan("createdAt", yesterday);
+    restaurantTransferQuery.ascending("createdAt");
+    restaurantTransferQuery.find({
+        success: function(transfers) {
+            if (transfers.length > 0 && transfers[0].get('createdAt') < twoWeeksAgo) {
+                //TODO - Summarize the amount
+                //TODO - Transfer and mark them as transferred
+            } else {
+                //Do nothing
+            }
+        },
+        error: function(error) {
+            console.log('Save transfer records failed! Reason: ' + error.message);
+        }
+    });
 
     //For manager
-    //TODO - Query TransferQueue class by manager and do the same thing as above.
+    var managerTransferQuery = new Parse.Query(TransferModel);
+    managerTransferQuery.doesNotExist("restaurant");
+    managerTransferQuery.lessThan("createdAt", yesterday);
+    managerTransferQuery.ascending("createdAt");
+    managerTransferQuery.find({
+        success: function(transfers) {
+            if (transfers.length > 0 && transfers[0].get('createdAt') < twoWeeksAgo) {
+                //TODO - Summarize the amount
+                //TODO - Transfer and mark them as transferred
+            } else {
+                //Do nothing
+            }
+        },
+        error: function(error) {
+            console.log('Save transfer records failed! Reason: ' + error.message);
+        }
+    });
+});
 
-
+function transfer(recipientId, cardId, amount, descriptor) {
+    var Stripe = require("stripe");
+    Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
     Stripe.transfers.create({
-        amount: 1000, // amount in cents
+        amount: amount, // amount in cents
         currency: "usd",
         recipient: recipientId,
         card: cardId,
-        statement_descriptor: "JULY SALES"
+        statement_descriptor: descriptor  // e.g. "JULY SALES"
     }, function(err, transfer) {
         // transfer;
     });
-});
+}
 
 Parse.Cloud.job("weeklySMS", function(request, status) {
     //Assemble SMS Message
