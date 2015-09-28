@@ -1,15 +1,16 @@
 define([
   'text!templates/account/signupemailTemplate.html',
   'models/Grid',
-], function (signupemailTemplate, GridModel) {
+  'models/RegistrationCodeModel',
+], function (signupemailTemplate, GridModel, RegistrationCodeModel) {
     var SignupemailView = Parse.View.extend({
         el: $("#page"),
         events: {
-            'click  #signUpBtn': 'createAccount'
+            'click  #signUpBtn': 'checkRegistrationCode'
         },
 
         initialize: function () {
-            _.bindAll(this, 'render', 'createAccount');
+            _.bindAll(this, 'render', 'checkRegistrationCode', 'createAccount');
             
         },
 
@@ -69,6 +70,13 @@ define([
                                  type: 'empty',
                                  prompt: 'Please select an area for you'
                              }]
+                         },
+                         'signUpRegistrationCode': {
+                             identifier: 'signUpRegistrationCode',
+                             rules: [{
+                                 type: 'empty',
+                                 prompt: 'Please provide your registration code'
+                             }]
                          }
                      }, {
                          on: 'blur',
@@ -80,6 +88,38 @@ define([
                  }
              });
              return this;
+        },
+
+        checkRegistrationCode: function() {
+            var self = this;
+            var inputCode = this.$("#signUpRegistrationCode").val();
+            var email = this.$("#email").val();
+            var codeQuery = new Parse.Query(RegistrationCodeModel);
+            codeQuery.equalTo("objectId", inputCode);
+            codeQuery.notEqualTo("usedToSignUp", true);
+            codeQuery.first({
+                success: function(code) {
+                    if (code) {
+                        code.set("usedToSignUp", true);
+                        code.set("signUpByEmail", email);
+                        code.save({
+                            success: function(code) {
+                                self.createAccount();
+                            },
+                            error: function(error) {
+                                console.log('Update registration code failed! Reason: ' + error.message);
+                            }
+                        });
+
+                    } else {
+                        alert("Your registration code is invalid or has been used to sign up!");
+                    }
+                },
+                error: function(error) {
+                    console.log('Check registration code failed! Reason: ' + error.message);
+                }
+            });
+
         },
 
         createAccount: function() {
@@ -111,7 +151,7 @@ define([
                         			user.set("creditBalance", 40);
 	    	                        user.signUp(null, {
 	    	                            success: function(user) {
-	    	                                window.location.href = '#home';
+                                            self.signOutAndSendActivationEmail(user);
 	    	                            },
 	    	                            error: function(user, error) {
 	    	                                alert("Error: " + error.code + " " + error.message);
@@ -127,7 +167,7 @@ define([
                         	user.set("creditBalance", 30);
                             user.signUp(null, {
                                 success: function(user) {
-                                    window.location.href = '#home';
+                                    self.signOutAndSendActivationEmail(user);
                                 },
                                 error: function(user, error) {
                                     alert("Error: " + error.code + " " + error.message);
@@ -137,6 +177,16 @@ define([
                     }
                 }
             });
+        },
+
+        signOutAndSendActivationEmail: function(user) {
+            $('#sendAccountActivationEmailDialog').modal({
+                closable: false,
+                onApprove: function () {         
+                    Parse.User.logOut();
+                    window.location.href = '#';
+                }
+            }).modal('show');
         }
 
     });
