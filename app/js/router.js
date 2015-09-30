@@ -19,7 +19,8 @@ define([
   'views/manage/NewdishView', 
   'views/manage/NewRestaurantView', 
   'views/manage/ManagerListView',
-  'views/manage/NewManagerView'
+  'views/manage/NewManagerView',
+  'views/manage/BankView'
   ], function (LandingView,
         HomeView,
 		OrderView, 
@@ -40,7 +41,8 @@ define([
         NewdishView,
         NewRestaurantView,
     ManagerListView,    
-        NewManagerView) {
+        NewManagerView,
+        BankView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -75,6 +77,7 @@ define([
             'managerList' : 'showManagerList',
             'newManager' : 'showNewManager',
             'editManager?*queryString' : 'showEditManager',
+            'bank' : 'showBank',
 
             // Default
             '*actions': 'defaultAction'   
@@ -381,6 +384,12 @@ define([
 //            } else {
 //                window.location.hash = "#login";
 //            }
+        });
+
+        appRouter.on('route:showBank', function () {
+            // Call render on the module we loaded in via the dependency array
+            var newBankView = new BankView();
+            newBankView.render();
         });
 
         appRouter.on('route:defaultAction', function (actions) {
