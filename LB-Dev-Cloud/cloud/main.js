@@ -389,8 +389,16 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
     restaurantTransferQuery.ascending("createdAt");
     restaurantTransferQuery.find({
         success: function(transfers) {
+            var totalTransferAmount = 0;
             if (transfers.length > 0 && transfers[0].get('createdAt') < twoWeeksAgo) {
-                //TODO - Summarize the amount
+                //Summarize the amount
+                _.each(transfers, function(transfer) {
+                    totalTransferAmount += transfer.get('amount');
+                });
+
+                //TODO@QQ - Add UI for saving bank account for manager and restaurant
+                transfer();
+
                 //TODO - Transfer and mark them as transferred
             } else {
                 //Do nothing
@@ -408,8 +416,16 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
     managerTransferQuery.ascending("createdAt");
     managerTransferQuery.find({
         success: function(transfers) {
+            var totalTransferAmount = 0;
             if (transfers.length > 0 && transfers[0].get('createdAt') < twoWeeksAgo) {
-                //TODO - Summarize the amount
+                //Summarize the amount
+                _.each(transfers, function(transfer) {
+                    totalTransferAmount += transfer.get('amount');
+                });
+
+                //TODO@QQ - Add UI for saving bank account for manager and restaurant
+                transfer();
+
                 //TODO - Transfer and mark them as transferred
             } else {
                 //Do nothing
@@ -421,15 +437,19 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
     });
 });
 
-function transfer(recipientId, cardId, amount, descriptor) {
+Parse.Cloud.job("testTransfer", function(request, status) {
+    transfer(10, 'rp_16q23kB1YtHTqvL2MjRWBLvk', 'rp_16q23kB1YtHTqvL2MjRWBLvk', 'test transfer');
+});
+
+function transfer(amount, recipientId, bankAccountId, description) {
     var Stripe = require("stripe");
     Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
-    Stripe.transfers.create({
+    stripe.transfers.create({
         amount: amount, // amount in cents
         currency: "usd",
         recipient: recipientId,
-        card: cardId,
-        statement_descriptor: descriptor  // e.g. "JULY SALES"
+        //bank_account: bankAccountId,
+        statement_descriptor: description //"JULY SALES"
     }, function(err, transfer) {
         // transfer;
     });
