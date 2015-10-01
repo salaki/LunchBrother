@@ -45,8 +45,8 @@ define([
                         prompt: 'Please enter your password'
                     }]
                 },
-                'loginRegistrationCode': {
-                    identifier: 'loginRegistrationCode',
+                'registrationCode': {
+                    identifier: 'registrationCode',
                     rules: [{
                         type: 'empty',
                         prompt: 'Please provide your registration code'
@@ -63,22 +63,28 @@ define([
             var self = this;
             var username = this.$("#username").val();
             var password = this.$("#password").val();
-            var registrationCode = this.$("#loginRegistrationCode").val();
+            var registrationCode = this.$("#registrationCode").val();
             Parse.User.logIn(username, password, {
                 //lunchbrother:manage
                 //chef:delivery
                 //getcurrentuser's permission
                 success: function (user) {
-            	if (user.get("emailVerified") === false) {
-                    Parse.User.logOut();
-                    alert("You haven't activated your account yet, please activate with the link we sent to you.");
-                    window.location.reload();
-                } else {
-                	var permission = user.get('permission');
+                    if (user.get("active") === false) {
+                        Parse.User.logOut();
+                        alert("You haven't activated your account yet, please activate with the link we sent to you.");
+                        window.location.reload();
+                    } else {
+                        var permission = user.get('permission');
 
+<<<<<<< HEAD
                     if (permission === GENERAL_USER) {
                         self.updateRegistrationCodeState(user, registrationCode);
                     }
+=======
+                        if (permission === GENERAL_USER) {
+                            window.location.hash = '#home';
+                        }
+>>>>>>> MPD-31
 
                         if (permission === LOCAL_MANAGER) {
                             window.location.hash = '#managerHome?week=';
@@ -91,7 +97,7 @@ define([
                         if (permission === DISTRIBUTOR) {
                             window.location.hash = '#distributor';
                         }
-                	}  
+                    }
                 },
                 error: function (user, error) {
                 	self.$("#loginError").removeClass("hidden");
@@ -125,7 +131,7 @@ define([
                             }
                         });
                     } else {
-                        alert("Your registration code is invalid or has been used to login!");
+                        alert("Your registration code is invalid!");
                         Parse.User.logOut();
                         window.location.hash = '#login';
                     }

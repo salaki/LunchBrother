@@ -3,10 +3,11 @@ define([
     'models/Restaurant',
     'models/PickUpLocation',
     'models/InventoryModel',
+    'models/RegistrationCodeModel',
     'text!templates/manage/managerHomeTemplate.html',
     'text!templates/manage/menuListTemplate.html',
     'text!templates/manage/salesTableBodyTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, RegistrationCodeModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
@@ -18,7 +19,8 @@ define([
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
             'click #showDriverStatus': 'onShowDriverStatusClick',
             'click #publishMenu': 'onPublishMenuClick',
-            'click #concealMenu': 'onConcealMenuClick'
+            'click #concealMenu': 'onConcealMenuClick',
+            'click #addPerson': 'onEditOrAddPersonClick'
         },
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
@@ -141,13 +143,26 @@ define([
                     var friday3 = new Date(monday3.setDate(diff6));
                     thirdWeek += (friday3.getMonth() + 1) + "/" + friday3.getDate();
 
-                    //Query distributors
+                    //Query offline workers
                     var userQuery = new Parse.Query(Parse.User);
-                    userQuery.equalTo("permission", 4);
+                    userQuery.greaterThan("permission", 2);
+                    userQuery.lessThan("permission", 5);
                     userQuery.equalTo("gridId", Parse.User.current().get('gridId'));
                     userQuery.find({
-                        success: function(distributors) {
-                            self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek]}));
+                        success: function(workers) {
+                            var distributors = [];
+                            var newEvent2 = {};
+
+                            _.each(workers, function(worker) {
+                                newEvent2["click #workerEditButton-" + worker.id] = 'onEditOrAddPersonClick';
+                                newEvent2["click #workerDeleteButton-" + worker.id] = 'onDeletePersonClick';
+                                if (worker.get('permission') === DISTRIBUTOR) {
+                                    distributors.push(worker);
+                                }
+                            });
+                            self.delegateEvents(_.extend(self.events, newEvent2));
+
+                            self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers}));
 
                             if (self.options.week !== "") {
                                 self.refreshWeekMenu(self.options.week);
@@ -314,6 +329,86 @@ define([
 
         },
 
+        onEditOrAddPersonClick: function(ev) {
+            this.$('.ui.form').form({
+                firstName: {
+                    identifier: 'firstName',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter the first name'
+                    }]
+                },
+                lastName: {
+                    identifier: 'lastName',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter the last name'
+                    }]
+                },
+                email: {
+                    identifier: 'email',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter the email address'
+                    }, {
+                        type: 'email',
+                        prompt: 'Please enter a valid e-mail'
+                    }]
+                },
+                phonenumber: {
+                    identifier: 'phonenumber',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter cell phone number'
+                    }, {
+                        type: 'length[10]',
+                        prompt:'Your phone number must be 10 digits'
+                    }]
+                },
+                password: {
+                    identifier: 'password',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter your password'
+                    }]
+                },
+                titleOptions: {
+                    identifier: 'titleOptions',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please select a title'
+                    }]
+                }
+            }, {
+                on: 'blur',
+                inline: 'true'
+            });
+            var self = this;
+            var pId = $(ev.currentTarget).data('id');
+            var pFirstName = $(ev.currentTarget).data('firstName');
+            var pLastName = $(ev.currentTarget).data('lastName');
+            var pEmail = $(ev.currentTarget).data('email');
+            var pPhoneNumber = $(ev.currentTarget).data('phoneNumber');
+            var pPassword = $(ev.currentTarget).data('password');
+            var pTitle = $(ev.currentTarget).data('title');
+            
+            $('#first_name').val(pFirstName);
+            $('#last_name').val(pLastName);
+            $('#email').val(pEmail);
+            $('#phonenumber').val(pPhoneNumber);
+            $('#password').val(pPassword);
+            $('#titleOptions').val(pTitle);
+            $('#editPersonDialog').modal({
+                closable: false,
+                onDeny: function () {
+                    //Do nothing
+                },
+                onApprove: function () {
+                	self.savePerson(pId, $("#first_name").val(), $("#last_name").val(), $('#email').val(), $('#phonenumber').val(), $('#password').val(), $('#titleOptions').val());                	
+                }
+            }).modal('show');
+        },
+
         onEditOrAddClick: function(ev) {
             this.$('.ui.form').form({
                 dp_location: {
@@ -351,7 +446,7 @@ define([
 
                 },
                 onApprove: function () {
-                    self.saveDP(dpId, $("#dp_location").val(), $("#dp_youtubeLink").val());
+                    self.saveDP(dpId, $("#dp_location").val(), $("#dp_youtubeLink").val(), $("#distributorSelector").val());
                 }
             }).modal('show');
         },
@@ -366,6 +461,20 @@ define([
                 },
                 onApprove: function () {
                     self.deleteDP(dpId);
+                }
+            }).modal('show');
+        },
+
+        onDeletePersonClick: function(ev) {
+            var self = this;
+            var userId = $(ev.currentTarget).data('id');
+            $('#deletePersonDialog').modal({
+                closable: false,
+                onDeny: function () {
+
+                },
+                onApprove: function () {
+                    self.deletePerson(userId);
                 }
             }).modal('show');
         },
@@ -416,13 +525,73 @@ define([
                 alert("Please enter the required information.");
             }
         },
+        
+        savePerson: function(id, firstname, lastname, email, phonenumber, password, title){
+            if (id) {
+                this.updatePerson(id, firstname, lastname, email, phonenumber, password, title);
+            } else {
+                var person = new Parse.User();
+                person.set("username", email);
+                person.set("password", password);
+                person.set("firstName", firstname);
+                person.set("lastName", lastname);
+                person.set("email", email);
+                person.set("telnum", Number(phonenumber));
+                person.set("gridId", Parse.User.current().get("gridId"));
+                person.set("permission", Number(title));
+                person.save(null, {
+                    success: function(person) {
+                        alert('New Driver/Distributor created with Id: ' + person.id);
+                        location.reload();
+                    },
+                    error: function(error) {
+                        alert('Update failed! Reason: ' + error.message);
+                    }
+                });
+            }
+        },
+
+        updatePerson: function(id, firstname, lastname, email, phonenumber, password, title) {
+            Parse.Cloud.run('updateUser', {
+                userId: id,
+                firstName: firstname,
+                lastName: lastname,
+                email: email,
+                telnum: phonenumber,
+                password: password,
+                permission: title
+            }, {
+                success: function (success) {
+                    alert(success);
+                    location.reload();
+                },
+                error: function (error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
+        deletePerson: function(id) {
+            Parse.Cloud.run('deleteUser', {
+                userId: id
+            }, {
+                success: function (success) {
+                    console.log(success);
+                    alert("Delete worker successfully!");
+                    location.reload();
+                },
+                error: function (error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
 
         deleteDP: function(id) {
             var dp = new PickUpLocationModel();
             dp.id = id;
             dp.destroy({
                 success: function(dp) {
-                    alert("Delete Distributing Point successfully!");
+                    alert("Create Distributing Point successfully!");
                     location.reload();
                 },
                 error: function(dp, error) {
@@ -494,6 +663,27 @@ define([
                 },
                 error: function(error) {
                     alert('Save failed! Reason: ' + error.message);
+                }
+            });
+        },
+
+        generateCode: function() {
+            //TODO - Need a confirmation modal view
+            //TODO - Need to pass in a number for how many registration codes need to generate
+            var codes = [];
+            for (var i=0; i<5; i++) {
+                var code = new RegistrationCodeModel();
+                code.set("usedToLogin", false);
+                code.set("usedToSignUp", false);
+                codes.push(code);
+            }
+
+            Parse.Object.saveAll(codes, {
+                success: function(objs) {
+                    alert(objs.length + " registration codes have been generated!");
+                },
+                error: function(error) {
+                    alert("Error: " + error.message);
                 }
             });
         }

@@ -1,6 +1,6 @@
 var config = {
     "appUrl": "https://lunchbrother.com",
-//    "appUrl": "http://localhost/lunchbrother/app/index.html",
+//    "appUrl": "http://localhost:63342/public/app/index.html",
     "baseUrl": "js",
     "paths": {
         jquery: 'libs/jquery/jquery-1.11.2.min',
@@ -40,7 +40,7 @@ var config = {
 
 
 //Permission code
-var GENERAL_USER = 1, LOCAL_MANAGER = 2, DRIVER = 3, DISTRIBUTOR = 4;
+var GENERAL_USER = 1, LOCAL_MANAGER = 2, DRIVER = 3, DISTRIBUTOR = 4, LB_ADMIN = 5;
 
 require.config(config);
 

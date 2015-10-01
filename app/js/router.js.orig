@@ -19,8 +19,7 @@ define([
   'views/manage/NewdishView', 
   'views/manage/NewRestaurantView', 
   'views/manage/ManagerListView',
-  'views/manage/NewManagerView',
-  'views/manage/BankView'
+  'views/manage/NewManagerView'
   ], function (LandingView,
         HomeView,
 		OrderView, 
@@ -41,8 +40,7 @@ define([
         NewdishView,
         NewRestaurantView,
     ManagerListView,    
-        NewManagerView,
-        BankView) {
+        NewManagerView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -63,22 +61,16 @@ define([
             'signupemail' : 'showSignupemail',
             'forgotpassword' : 'showForgotpassword',
             'resetPassword?*queryString' : 'showResetPassword',
-
-            // Restaurant
             'manageRestaurants': 'showManageRestaurants',
-            'newRestaurant' : 'showNewRestaurant',
-            'editRestaurant?*queryString' : 'showEditRestaurant',
-
-            // Dish
             'newdish?*queryString' : 'showNewdish',
             'editDish?*queryString' : 'showEditDish',
-
-            // Manager
+            'newRestaurant' : 'showNewRestaurant',
+<<<<<<< HEAD
+            'editRestaurant?*queryString' : 'showEditRestaurant',
+=======
             'managerList' : 'showManagerList',
             'newManager' : 'showNewManager',
-            'editManager?*queryString' : 'showEditManager',
-            'bank' : 'showBank',
-
+>>>>>>> MPD-55
             // Default
             '*actions': 'defaultAction'   
         }
@@ -158,7 +150,6 @@ define([
                   loginorsignupView.render();
               }
           });
-
 
           appRouter.on('route:showHome', function () {
               var currentUser = Parse.User.current();
@@ -368,28 +359,6 @@ define([
             // Call render on the module we loaded in via the dependency array
             var newManagerView = new NewManagerView();
             newManagerView.render();
-        });
-
-        appRouter.on('route:showEditManager', function (queryString) {
-//            var currentUser = Parse.User.current();
-//            if(currentUser != null) {
-//                permission = currentUser.get('permission');
-//            }
-//            if (permission === LB_ADMIN) {
-            var params = new ParseQueryString(queryString);
-            var newManagerView = new NewManagerView({
-                managerId: params.managerId
-            });
-            newManagerView.render();
-//            } else {
-//                window.location.hash = "#login";
-//            }
-        });
-
-        appRouter.on('route:showBank', function () {
-            // Call render on the module we loaded in via the dependency array
-            var newBankView = new BankView();
-            newBankView.render();
         });
 
         appRouter.on('route:defaultAction', function (actions) {
