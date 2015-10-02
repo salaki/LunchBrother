@@ -20,7 +20,8 @@ define([
             'click #showDriverStatus': 'onShowDriverStatusClick',
             'click #publishMenu': 'onPublishMenuClick',
             'click #concealMenu': 'onConcealMenuClick',
-            'click #addPerson': 'onEditOrAddPersonClick'
+            'click #addPerson': 'onEditOrAddPersonClick',
+            'click .toBankAccount': 'showBankInfo'
         },
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
@@ -686,6 +687,10 @@ define([
                     alert("Error: " + error.message);
                 }
             });
+        },
+
+        showBankInfo: function() {
+            window.location.href='#bank';
         }
     });
     return ManagerHomeView;
