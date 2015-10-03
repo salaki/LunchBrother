@@ -1,23 +1,28 @@
+<div class="ui two buttons">
+    <button class="ui orange button"><i class="food icon"></i>Work as distributor</button>
+    <button class="ui orange button"><i class="car icon"></i>Work as driver</button>
+</div>
 <h4 class="ui top attached red header">
     <i class="marker icon small"></i>Manage distribution points
 </h4>    
+
 <div class="ui attached segment">
     <div class="ui middle very relaxed aligned list">
         <% _.each(distributingPoints, function(distributingPoint) { %>
         <div class="item">
             <div class="right floated content">
-              <button class="ui circular youtube small icon button"> <i class="youtube play icon"><a href="<%= distributingPoint.get('youtubeLink') %>" target="_blank"></a></i></button>
-                    <button class="ui circular orange icon small button" id="dpEditButton-<%= distributingPoint.id %>"
-                                           data-id="<%= distributingPoint.id %>"
-                                           data-youtube="<%= distributingPoint.get('youtubeLink') %>"
-                                           data-address="<%= distributingPoint.get('address') %>"
-                                           <% if (distributingPoint.get('distributor')) { %>
-                                           data-distributor="<%= distributingPoint.get('distributor').id %>"
-                                           <% } else { %>
-                                           data-distributor=""
-                                           <% } %>
-                                           ><i class="icon edit"></i></button>
-                    <button class="ui circular icon small button" id="dpDeleteButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>"><i class="remove icon"></i>
+                <button class="ui circular youtube small icon button"> <i class="youtube play icon"><a href="<%= distributingPoint.get('youtubeLink') %>" target="_blank"></a></i></button>
+                <button class="ui circular orange icon small button" id="dpEditButton-<%= distributingPoint.id %>"
+                                                                     data-id="<%= distributingPoint.id %>"
+                                                                     data-youtube="<%= distributingPoint.get('youtubeLink') %>"
+                                                                     data-address="<%= distributingPoint.get('address') %>"
+                                                                     <% if (distributingPoint.get('distributor')) { %>
+                                                                     data-distributor="<%= distributingPoint.get('distributor').id %>"
+                                                                     <% } else { %>
+                                                                     data-distributor=""
+                                                                     <% } %>
+                                                                     ><i class="icon edit"></i></button>
+                <button class="ui circular icon small button" id="dpDeleteButton-<%= distributingPoint.id %>" data-id="<%= distributingPoint.id %>"><i class="remove icon"></i>
                 </button>
             </div>
             <div class="content">
@@ -50,23 +55,23 @@
         <% _.each(workers, function(worker) { %>
         <div class="item">
             <div class="right floated content">
-                    <button class="ui circular orange small icon button" id="workerEditButton-<%= worker.id %>"
-                         data-id="<%= worker.id %>"
-                         data-first-name="<%= worker.get('firstName') %>"
-                         data-last-name="<%= worker.get('lastName') %>"
-                         data-email="<%= worker.get('email') %>"
-                         data-phone-number="<%= worker.get('telnum') %>"
-                         data-password="<%= worker.get('password') %>"
-                         data-title="<%= worker.get('permission') %>"><i class="icon edit"></i></button>
-                    <button class="ui circular small icon button" id="workerDeleteButton-<%= worker.id %>" data-id="<%= worker.id %>"><i class="remove icon"></i></button>
+                <button class="ui circular orange small icon button" id="workerEditButton-<%= worker.id %>"
+                                                                     data-id="<%= worker.id %>"
+                                                                     data-first-name="<%= worker.get('firstName') %>"
+                                                                     data-last-name="<%= worker.get('lastName') %>"
+                                                                     data-email="<%= worker.get('email') %>"
+                                                                     data-phone-number="<%= worker.get('telnum') %>"
+                                                                     data-password="<%= worker.get('password') %>"
+                                                                     data-title="<%= worker.get('permission') %>"><i class="icon edit"></i></button>
+                <button class="ui circular small icon button" id="workerDeleteButton-<%= worker.id %>" data-id="<%= worker.id %>"><i class="remove icon"></i></button>
             </div>
             <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
             <div class="content">
                 <div class="header"><%= worker.get('firstName') %></div>
                 <% if(worker.get('permission') === DRIVER) { %>
-                    <div class="description desc-line">Driver</div>
+                <div class="description desc-line">Driver</div>
                 <% } else { %>
-                    <div class="description desc-line">Distributor</div>
+                <div class="description desc-line">Distributor</div>
                 <% } %>
             </div>
         </div>
@@ -95,10 +100,6 @@
     <div id="menuList"></div>
 </div>
 
-<div class="ui two bottom attached orange buttons">
-    <div class="ui button"><i class="food icon"></i>Distributor status</div>
-    <div class="ui button"><i class="car icon"></i>Driver status</div>
-</div>
 
 <!--Widget Dialogs-->
 <div id="editDPDialog" class="ui small test modal">
@@ -106,20 +107,20 @@
         <label id="editDPLabel">Distribution Point Editor</label>
     </div>
     <div class="content">
-    <form action="" method="POST" id="dpForm" class="ui form">
-        <div class="field">
-        <div id="basicDPInfo">
-            <div id="dpinfo" class="two fields">
-                <div class="ui fluid field">
-                    <input id="dp_location" class="ui input location" placeholder="Name of Location" type="text" name="dp_location" value="">
-                </div>
-                <div class="ui fluid field">
-                    <input id="dp_youtubeLink" class="ui input youtubeLink" placeholder="Youtube Link" type="text" name="dp_youtube_link" value="">
+        <form action="" method="POST" id="dpForm" class="ui form">
+            <div class="field">
+                <div id="basicDPInfo">
+                    <div id="dpinfo" class="two fields">
+                        <div class="ui fluid field">
+                            <input id="dp_location" class="ui input location" placeholder="Name of Location" type="text" name="dp_location" value="">
+                        </div>
+                        <div class="ui fluid field">
+                            <input id="dp_youtubeLink" class="ui input youtubeLink" placeholder="Youtube Link" type="text" name="dp_youtube_link" value="">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
-        <div class="field">
+            <div class="field">
                 <select class="ui dropdown" id="distributorSelector">
                     <option value="">Select yourtest distributor</option>
                     <% _.each(distributors, function(distributor) { %>
@@ -128,8 +129,8 @@
                     </option>
                     <% }) %>
                 </select>
-        </div>
-    </form>
+            </div>
+        </form>
     </div>
     <div class="actions">
         <div class="ui basic cancel button">
@@ -236,22 +237,22 @@
         </div>
     </div>
     <div class="actions">
-            <div class="ui basic cancel button">
-                <i class="remove icon"></i>
-                <label id="editPersonCancel">Cancel</label>
-            </div>
-            <div class="ui ok green button">
-                <i class="checkmark icon"></i>
-                <label id="editPersonSave">Save</label>
-            </div>
+        <div class="ui basic cancel button">
+            <i class="remove icon"></i>
+            <label id="editPersonCancel">Cancel</label>
+        </div>
+        <div class="ui ok green button">
+            <i class="checkmark icon"></i>
+            <label id="editPersonSave">Save</label>
+        </div>
     </div>
 </div>
 
 
 <!-- Statistic Visualization -->
-<div class="ui segment">
+<div class="ui top attached segment">
     <h4 class="ui red header" style="padding-left: 10px; padding-top: 10px">
-        <i class="line chart icon small"></i>Sales Summary
+        <i class="line chart icon small"></i>Account Summary
     </h4>
     <span style="padding-left: 10px">Date: <input type="text" id="datepicker"></span>
     <table class="ui small celled unstackable table" id="salesTableBody">
