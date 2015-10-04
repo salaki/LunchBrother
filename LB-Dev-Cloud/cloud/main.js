@@ -119,7 +119,44 @@ Parse.Cloud.define("saveCard", function (request, response) {
         card.save();
         response.success(customer.id);
     });
-})
+});
+
+Parse.Cloud.define("saveRecipient", function (request, response) {
+    createRecipient({
+        params: {
+            name: request.params.name,
+            type: request.params.type,
+            bankAccount: request.params.bankAccount,
+            email: request.params.email
+        },
+        success: function (httpResponse) {
+            var BankAccount = Parse.Object.extend("BankAccount");
+            var bankAccount = new BankAccount();
+            bankAccount.set("recipientId", httpResponse.data.id);
+            bankAccount.set("createdBy", Parse.User.current());
+            bankAccount.set("last4DigitAccount", request.params.last4DigitForAccountNumber);
+            bankAccount.save();
+            response.success(httpResponse);
+        },
+        error: function (httpResponse) {
+            response.error(httpResponse);
+        }
+    });
+});
+
+function createRecipient(options) {
+    Parse.Cloud.httpRequest({
+        method: 'POST',
+        url: 'https://sk_test_aslYgXx9b5OXsHKWqw3JxDCC:@api.stripe.com/v1/recipients?' +
+        'name=' + encodeURI(options.params.name) +
+        '&type=' + options.params.type +
+        '&bank_account=' + options.params.bankAccount +
+        '&email=' + options.params.email,
+        success: options.success,
+        error: options.error
+    });
+}
+
 Parse.Cloud.define("email",
     function (request, response) {
         /*var Mandrill = require('mandrill');
@@ -421,12 +458,42 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
                 //Summarize the amount
                 _.each(transfers, function(transfer) {
                     totalTransferAmount += transfer.get('amount');
+                    transfer.set('transferred', true);
                 });
 
-                //TODO@QQ - Add UI for saving bank account for manager and restaurant
-                transfer();
+                //Query bankAccount for createdBy to get recipientId and initiate the transfer
+                var BankAccount = Parse.Object.extend("BankAccount");
+                var bankAccount = new BankAccount();
+                var bankAccountQuery = new Parse.Query(bankAccount);
+                bankAccountQuery.equalTo("createdBy", transfers[0].get('manager'));
+                bankAccountQuery.first({
+                    success: function(bankAccount){
+                        transfer({
+                            params: {
+                                currency: "usd",
+                                amount: totalTransferAmount,
+                                recipient: bankAccount.get("recipientId")
+                            },
+                            success: function (httpResponse) {
+                                Parse.Object.saveAll(transfers, {
+                                    success: function(transfers) {
+                                        console.log("Update transfer records successfully!");
+                                    },
+                                    error: function(error) {
+                                        console.log('Save transfer records failed! Reason: ' + error.message);
+                                    }
+                                });
+                            },
+                            error: function (httpResponse) {
+                                console.log(httpResponse);
+                            }
+                        });
+                    },
+                    error: function(error){
+                        console.log(error.message);
+                    }
+                });
 
-                //TODO - Transfer and mark them as transferred
             } else {
                 //Do nothing
             }
@@ -437,21 +504,49 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
     });
 });
 
-Parse.Cloud.job("testTransfer", function(request, status) {
-    transfer(10, 'rp_16q23kB1YtHTqvL2MjRWBLvk', 'rp_16q23kB1YtHTqvL2MjRWBLvk', 'test transfer');
+Parse.Cloud.define("addFundsImmediatelyForTest",
+    function (request, response) {
+        var Stripe = require("stripe");
+        Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
+        var params = {
+            amount: 10000,
+            currency: "usd",
+            card: 4000000000000077,
+            customer: "cus_6M8Um7v2nAO17z"
+        };
+        Stripe.Charges.create(params, {
+                success: function (httpResponse) {
+                    response.success("Funds added!");
+                },
+                error: function (httpResponse) {
+                    response.error("Error: " + httpResponse.message);
+                }
+            }
+        );
+    }
+);
+
+Parse.Cloud.define("testTransfer", function(request, response) {
+    transfer({
+        params: {
+            currency: "usd",
+            amount: "100",
+            recipient: "rp_16q23kB1YtHTqvL2MjRWBLvk"
+        },
+        success: function (httpResponse) { response.success(httpResponse.message); },
+        error: function (httpResponse) { response.error(httpResponse.message); }
+    });
 });
 
-function transfer(amount, recipientId, bankAccountId, description) {
-    var Stripe = require("stripe");
-    Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
-    stripe.transfers.create({
-        amount: amount, // amount in cents
-        currency: "usd",
-        recipient: recipientId,
-        //bank_account: bankAccountId,
-        statement_descriptor: description //"JULY SALES"
-    }, function(err, transfer) {
-        // transfer;
+function transfer(options) {
+    Parse.Cloud.httpRequest({
+        method: 'POST',
+        url: 'https://sk_test_aslYgXx9b5OXsHKWqw3JxDCC:@api.stripe.com/v1/transfers?' +
+        'currency=' + options.params.currency +
+        '&amount=' + options.params.amount +
+        '&recipient=' + options.params.recipient,
+        success: options.success,
+        error: options.error
     });
 }
 
