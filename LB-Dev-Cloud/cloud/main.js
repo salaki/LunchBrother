@@ -367,11 +367,31 @@ Parse.Cloud.define("sms",
 );
 
 Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
-    //TODO - Find today's serving restaurants
+    var TransferModel = Parse.Object.extend("Transfer");
+
+    //Save Today's Sales
+    summarizeSalesOfToday(TransferModel);
+
+    // Query dates setting
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(0, 0, 0, 0);
+
+    var twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(yesterday.getDate() - 14);
+    twoWeeksAgo.setHours(0, 0, 0, 0);
+
+    //For restaurant owner
+    createTransfer(TransferModel, yesterday, twoWeeksAgo, "RESTAURANT");
+
+    //For manager
+    createTransfer(TransferModel, yesterday, twoWeeksAgo, "MANAGER");
+});
+
+function summarizeSalesOfToday (TransferModel) {
     var current = new Date();
     current.setHours(0, 0, 0, 0);
 
-    var TransferModel = Parse.Object.extend("Transfer");
     var inventoryModel = Parse.Object.extend("Inventory");
     var inventoryQuery = new Parse.Query(inventoryModel);
     inventoryQuery.greaterThan("pickUpDate", current);
@@ -380,7 +400,7 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
     inventoryQuery.include("dish.restaurant");
     inventoryQuery.find({
         success: function(inventories) {
-            //TODO - Summarize today's sale by querying inventory and create transfer queue for restaurants and local managers
+            //Summarize today's sale by querying inventory and create transfer queue for restaurants and local managers
             var transfers = [];
 
             _.each(inventories, function(inventory){
@@ -408,50 +428,20 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
             console.log(error.message);
         }
     });
+}
 
-    // Query dates setting
-    var yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    yesterday.setHours(0, 0, 0, 0);
+function createTransfer(TransferModel, yesterday, twoWeeksAgo, target) {
+    var transferQuery = new Parse.Query(TransferModel);
 
-    var twoWeeksAgo = new Date();
-    twoWeeksAgo.setDate(yesterday.getDate() - 14);
-    twoWeeksAgo.setHours(0, 0, 0, 0);
+    if (target === "RESTAURANT") {
+        transferQuery.doesNotExist("manager");
+    } else {
+        transferQuery.doesNotExist("restaurant");
+    }
 
-    //TODO - The transfer should happen on fixed date
-    //For restaurant owner
-    var restaurantTransferQuery = new Parse.Query(TransferModel);
-    restaurantTransferQuery.doesNotExist("manager");
-    restaurantTransferQuery.lessThan("createdAt", yesterday);
-    restaurantTransferQuery.ascending("createdAt");
-    restaurantTransferQuery.find({
-        success: function(transfers) {
-            var totalTransferAmount = 0;
-            if (transfers.length > 0 && transfers[0].get('createdAt') < twoWeeksAgo) {
-                //Summarize the amount
-                _.each(transfers, function(transfer) {
-                    totalTransferAmount += transfer.get('amount');
-                });
-
-                //TODO@QQ - Add UI for saving bank account for manager and restaurant
-                transfer();
-
-                //TODO - Transfer and mark them as transferred
-            } else {
-                //Do nothing
-            }
-        },
-        error: function(error) {
-            console.log('Save transfer records failed! Reason: ' + error.message);
-        }
-    });
-
-    //For manager
-    var managerTransferQuery = new Parse.Query(TransferModel);
-    managerTransferQuery.doesNotExist("restaurant");
-    managerTransferQuery.lessThan("createdAt", yesterday);
-    managerTransferQuery.ascending("createdAt");
-    managerTransferQuery.find({
+    transferQuery.lessThan("createdAt", yesterday);
+    transferQuery.ascending("createdAt");
+    transferQuery.find({
         success: function(transfers) {
             var totalTransferAmount = 0;
             if (transfers.length > 0 && transfers[0].get('createdAt') < twoWeeksAgo) {
@@ -465,7 +455,13 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
                 var BankAccount = Parse.Object.extend("BankAccount");
                 var bankAccount = new BankAccount();
                 var bankAccountQuery = new Parse.Query(bankAccount);
-                bankAccountQuery.equalTo("createdBy", transfers[0].get('manager'));
+
+                if (target === "RESTAURANT") {
+                    bankAccountQuery.equalTo("createdBy", transfers[0].get('restaurant'));
+                } else {
+                    bankAccountQuery.equalTo("createdBy", transfers[0].get('manager'));
+                }
+
                 bankAccountQuery.first({
                     success: function(bankAccount){
                         transfer({
@@ -502,7 +498,8 @@ Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
             console.log('Save transfer records failed! Reason: ' + error.message);
         }
     });
-});
+
+}
 
 Parse.Cloud.define("addFundsImmediatelyForTest",
     function (request, response) {
