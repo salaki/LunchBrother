@@ -4,16 +4,19 @@ define([
     'models/PickUpLocation',
     'models/InventoryModel',
     'models/RegistrationCodeModel',
+    'models/BankAccount',
     'text!templates/manage/managerHomeTemplate.html',
     'text!templates/manage/menuListTemplate.html',
-    'text!templates/manage/salesTableBodyTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, RegistrationCodeModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
+    'text!templates/manage/salesTableBodyTemplate.html',
+    'text!templates/manage/managerBankInfoTemplate.html'
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, RegistrationCodeModel, BankAccountModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate, managerBankInfoTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
         template: _.template(managerHomeTemplate),
         menuListTemplate: _.template(menuListTemplate),
         salesTableBodyTemplate: _.template(salesTableBodyTemplate),
+        managerBankInfoTemplate: _.template(managerBankInfoTemplate),
         events: {
             'click #DPAdd': 'onEditOrAddClick',
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
@@ -145,93 +148,121 @@ define([
                     thirdWeek += (friday3.getMonth() + 1) + "/" + friday3.getDate();
 
                     //Query offline workers
-                    var userQuery = new Parse.Query(Parse.User);
-                    userQuery.greaterThan("permission", 2);
-                    userQuery.lessThan("permission", 5);
-                    userQuery.equalTo("gridId", Parse.User.current().get('gridId'));
-                    userQuery.find({
-                        success: function(workers) {
-                            var distributors = [];
-                            var newEvent2 = {};
-
-                            _.each(workers, function(worker) {
-                                newEvent2["click #workerEditButton-" + worker.id] = 'onEditOrAddPersonClick';
-                                newEvent2["click #workerDeleteButton-" + worker.id] = 'onDeletePersonClick';
-                                if (worker.get('permission') === DISTRIBUTOR) {
-                                    distributors.push(worker);
-                                }
-                            });
-                            self.delegateEvents(_.extend(self.events, newEvent2));
-
-                            self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers}));
-
-                            if (self.options.week !== "") {
-                                self.refreshWeekMenu(self.options.week);
-
-                                //We need to do this crazy stuff to both set the value and have it to be selectable
-                                $(".week-selection").dropdown('set selected', self.options.week);
-                                $(".week-selection").dropdown({
-                                    onChange: function (week) {
-                                        self.refreshWeekMenu(week);
-                                    }
-                                });
-
-                            } else {
-                                $(".week-selection").dropdown({
-                                    onChange: function (week) {
-                                        self.refreshWeekMenu(week);
-                                    }
-                                });
-                            }
-
-                            self.$("#publishMenu").addClass('disabled');
-
-                            //Sales data
-                            self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00}));
-                            self.$( "#datepicker" ).datepicker({
-                                onSelect: function(dateText){
-                                    var month = parseInt(dateText.split("/")[0]) - 1;
-                                    var date = parseInt(dateText.split("/")[1]);
-                                    var year = parseInt(dateText.split("/")[2]);
-
-                                    var dayStart = new Date();
-                                    dayStart.setFullYear(year, month, date);
-                                    dayStart.setHours(0, 0, 0, 0);
-
-                                    var dayEnd = new Date();
-                                    dayEnd.setFullYear(year, month, date);
-                                    dayEnd.setHours(23, 59, 59, 0);
-
-                                    var inventoryQuery = new Parse.Query(InventoryModel);
-                                    inventoryQuery.equalTo("orderBy", Parse.User.current());
-                                    inventoryQuery.include("dish");
-                                    inventoryQuery.lessThan("pickUpDate", dayEnd);
-                                    inventoryQuery.greaterThan("pickUpDate", dayStart);
-                                    inventoryQuery.find({
-                                        success: function(inventories) {
-                                            var income = 0;
-                                            if (inventories.length !== 0) {
-                                                _.each(inventories, function(inventory) {
-                                                    income += (inventory.get("preorderQuantity") - inventory.get("currentQuantity")) * inventory.get("price");
-                                                });
-                                            }
-
-                                            self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income}));
-                                        },
-                                        error: function(error) {
-                                            alert("Error: " + error.code + " " + error.message);
-                                        }
-                                    });
-                                }
-                            });
-                        },
-                        error: function(error) {
-                            console.log(error.message);
-                        }
-                    });
+                    self.queryWorkers(locations, firstWeek, secondWeek, thirdWeek);
                 },
                 error: function(error) {
                     console.log(error.message);
+                }
+            });
+        },
+
+        queryWorkers: function(locations, firstWeek, secondWeek, thirdWeek) {
+            var self = this;
+            var userQuery = new Parse.Query(Parse.User);
+            userQuery.greaterThan("permission", 2);
+            userQuery.lessThan("permission", 5);
+            userQuery.equalTo("gridId", Parse.User.current().get('gridId'));
+            userQuery.find({
+                success: function(workers) {
+                    var distributors = [];
+                    var newEvent2 = {};
+
+                    _.each(workers, function(worker) {
+                        newEvent2["click #workerEditButton-" + worker.id] = 'onEditOrAddPersonClick';
+                        newEvent2["click #workerDeleteButton-" + worker.id] = 'onDeletePersonClick';
+                        if (worker.get('permission') === DISTRIBUTOR) {
+                            distributors.push(worker);
+                        }
+                    });
+                    self.delegateEvents(_.extend(self.events, newEvent2));
+
+                    self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers}));
+
+                    if (self.options.week !== "") {
+                        self.refreshWeekMenu(self.options.week);
+
+                        //We need to do this crazy stuff to both set the value and have it to be selectable
+                        $(".week-selection").dropdown('set selected', self.options.week);
+                        $(".week-selection").dropdown({
+                            onChange: function (week) {
+                                self.refreshWeekMenu(week);
+                            }
+                        });
+
+                    } else {
+                        $(".week-selection").dropdown({
+                            onChange: function (week) {
+                                self.refreshWeekMenu(week);
+                            }
+                        });
+                    }
+
+                    self.$("#publishMenu").addClass('disabled');
+
+                    //Sales data
+                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00}));
+                    self.$( "#datepicker" ).datepicker({
+                        onSelect: function(dateText){
+                            var month = parseInt(dateText.split("/")[0]) - 1;
+                            var date = parseInt(dateText.split("/")[1]);
+                            var year = parseInt(dateText.split("/")[2]);
+
+                            var dayStart = new Date();
+                            dayStart.setFullYear(year, month, date);
+                            dayStart.setHours(0, 0, 0, 0);
+
+                            var dayEnd = new Date();
+                            dayEnd.setFullYear(year, month, date);
+                            dayEnd.setHours(23, 59, 59, 0);
+
+                            // Query Sales Data
+                            self.querySalesData(dayStart, dayEnd);
+                        }
+                    });
+
+                    // Query Bank Account Info
+                    self.queryBankInfo();
+                },
+                error: function(error) {
+                    console.log(error.message);
+                }
+            });
+        },
+
+        querySalesData: function(dayStart, dayEnd) {
+            var self = this;
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            inventoryQuery.equalTo("orderBy", Parse.User.current());
+            inventoryQuery.include("dish");
+            inventoryQuery.lessThan("pickUpDate", dayEnd);
+            inventoryQuery.greaterThan("pickUpDate", dayStart);
+            inventoryQuery.find({
+                success: function(inventories) {
+                    var income = 0;
+                    if (inventories.length !== 0) {
+                        _.each(inventories, function(inventory) {
+                            income += (inventory.get("preorderQuantity") - inventory.get("currentQuantity")) * inventory.get("price");
+                        });
+                    }
+
+                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income}));
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
+        queryBankInfo: function() {
+            var self = this;
+            var bankAccountQuery = new Parse.Query(BankAccountModel);
+            bankAccountQuery.equalTo("createdBy", Parse.User.current());
+            bankAccountQuery.first({
+                success: function(bankAccount) {
+                    self.$("#bankSection").html(self.managerBankInfoTemplate({bankAccount: bankAccount}));
+                },
+                error: function(error) {
+                    alert(error.message);
                 }
             });
         },
