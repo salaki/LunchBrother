@@ -135,8 +135,16 @@ Parse.Cloud.define("saveRecipient", function (request, response) {
             bankAccount.set("recipientId", httpResponse.data.id);
             bankAccount.set("createdBy", Parse.User.current());
             bankAccount.set("last4DigitAccount", request.params.last4DigitForAccountNumber);
-            bankAccount.save();
-            response.success(httpResponse);
+            bankAccount.set("accountNumber", request.params.accountNumber);
+            bankAccount.set("routingNumber", request.params.routingNumber);
+            bankAccount.save({
+                success: function(bankInfo) {
+                    response.success(bankInfo);
+                },
+                error: function(error) {
+                    response.error(error.message);
+                }
+            });
         },
         error: function (httpResponse) {
             response.error(httpResponse);

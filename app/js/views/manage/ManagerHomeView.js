@@ -7,16 +7,14 @@ define([
     'models/BankAccount',
     'text!templates/manage/managerHomeTemplate.html',
     'text!templates/manage/menuListTemplate.html',
-    'text!templates/manage/salesTableBodyTemplate.html',
-    'text!templates/manage/managerBankInfoTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, RegistrationCodeModel, BankAccountModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate, managerBankInfoTemplate) {
+    'text!templates/manage/salesTableBodyTemplate.html'
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, RegistrationCodeModel, BankAccountModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
         template: _.template(managerHomeTemplate),
         menuListTemplate: _.template(menuListTemplate),
         salesTableBodyTemplate: _.template(salesTableBodyTemplate),
-        managerBankInfoTemplate: _.template(managerBankInfoTemplate),
         events: {
             'click #DPAdd': 'onEditOrAddClick',
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
@@ -176,57 +174,68 @@ define([
                     });
                     self.delegateEvents(_.extend(self.events, newEvent2));
 
-                    self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers}));
-
-                    if (self.options.week !== "") {
-                        self.refreshWeekMenu(self.options.week);
-
-                        //We need to do this crazy stuff to both set the value and have it to be selectable
-                        $(".week-selection").dropdown('set selected', self.options.week);
-                        $(".week-selection").dropdown({
-                            onChange: function (week) {
-                                self.refreshWeekMenu(week);
+                    var bankAccount = Parse.User.current().get('bankAccount');
+                    bankAccount.fetch({
+                        success: function(bankAccount) {
+                            var bank = new BankAccountModel();
+                            if (bankAccount) {
+                                bank = bankAccount;
                             }
-                        });
 
-                    } else {
-                        $(".week-selection").dropdown({
-                            onChange: function (week) {
-                                self.refreshWeekMenu(week);
-                            }
-                        });
-                    }
+                            self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers, bankAccount: bank}));
+                            self.configureMenuSelection();
 
-                    self.$("#publishMenu").addClass('disabled');
+                            //Sales data
+                            self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00}));
+                            self.$( "#datepicker" ).datepicker({
+                                onSelect: function(dateText){
+                                    var month = parseInt(dateText.split("/")[0]) - 1;
+                                    var date = parseInt(dateText.split("/")[1]);
+                                    var year = parseInt(dateText.split("/")[2]);
 
-                    //Sales data
-                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00}));
-                    self.$( "#datepicker" ).datepicker({
-                        onSelect: function(dateText){
-                            var month = parseInt(dateText.split("/")[0]) - 1;
-                            var date = parseInt(dateText.split("/")[1]);
-                            var year = parseInt(dateText.split("/")[2]);
+                                    var dayStart = new Date();
+                                    dayStart.setFullYear(year, month, date);
+                                    dayStart.setHours(0, 0, 0, 0);
 
-                            var dayStart = new Date();
-                            dayStart.setFullYear(year, month, date);
-                            dayStart.setHours(0, 0, 0, 0);
+                                    var dayEnd = new Date();
+                                    dayEnd.setFullYear(year, month, date);
+                                    dayEnd.setHours(23, 59, 59, 0);
 
-                            var dayEnd = new Date();
-                            dayEnd.setFullYear(year, month, date);
-                            dayEnd.setHours(23, 59, 59, 0);
-
-                            // Query Sales Data
-                            self.querySalesData(dayStart, dayEnd);
+                                    // Query Sales Data
+                                    self.querySalesData(dayStart, dayEnd);
+                                }
+                            });
                         }
                     });
-
-                    // Query Bank Account Info
-                    self.queryBankInfo();
                 },
                 error: function(error) {
                     console.log(error.message);
                 }
             });
+        },
+
+        configureMenuSelection: function() {
+            var self = this;
+            if (self.options.week !== "") {
+                self.refreshWeekMenu(self.options.week);
+
+                //We need to do this crazy stuff to both set the value and have it to be selectable
+                $(".week-selection").dropdown('set selected', self.options.week);
+                $(".week-selection").dropdown({
+                    onChange: function (week) {
+                        self.refreshWeekMenu(week);
+                    }
+                });
+
+            } else {
+                $(".week-selection").dropdown({
+                    onChange: function (week) {
+                        self.refreshWeekMenu(week);
+                    }
+                });
+            }
+
+            self.$("#publishMenu").addClass('disabled');
         },
 
         querySalesData: function(dayStart, dayEnd) {
@@ -249,20 +258,6 @@ define([
                 },
                 error: function(error) {
                     alert("Error: " + error.code + " " + error.message);
-                }
-            });
-        },
-
-        queryBankInfo: function() {
-            var self = this;
-            var bankAccountQuery = new Parse.Query(BankAccountModel);
-            bankAccountQuery.equalTo("createdBy", Parse.User.current());
-            bankAccountQuery.first({
-                success: function(bankAccount) {
-                    self.$("#bankSection").html(self.managerBankInfoTemplate({bankAccount: bankAccount}));
-                },
-                error: function(error) {
-                    alert(error.message);
                 }
             });
         },
@@ -720,8 +715,9 @@ define([
             });
         },
 
-        showBankInfo: function() {
-            window.location.href='#bank';
+        showBankInfo: function(ev) {
+            var bankId = $(ev.currentTarget).data('id');
+            window.location.href='#bank?id=' + bankId;
         }
     });
     return ManagerHomeView;

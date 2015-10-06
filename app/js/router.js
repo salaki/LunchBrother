@@ -77,7 +77,7 @@ define([
             'managerList' : 'showManagerList',
             'newManager' : 'showNewManager',
             'editManager?*queryString' : 'showEditManager',
-            'bank' : 'showBank',
+            'bank?*queryString' : 'showBank',
 
             // Default
             '*actions': 'defaultAction'   
@@ -386,9 +386,12 @@ define([
 //            }
         });
 
-        appRouter.on('route:showBank', function () {
+        appRouter.on('route:showBank', function (queryString) {
             // Call render on the module we loaded in via the dependency array
-            var newBankView = new BankView();
+            var params = new ParseQueryString(queryString);
+            var newBankView = new BankView({
+                id:params.id
+            });
             newBankView.render();
         });
 
