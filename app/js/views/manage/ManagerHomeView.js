@@ -175,41 +175,49 @@ define([
                     self.delegateEvents(_.extend(self.events, newEvent2));
 
                     var bankAccount = Parse.User.current().get('bankAccount');
-                    bankAccount.fetch({
-                        success: function(bankAccount) {
-                            var bank = new BankAccountModel();
-                            if (bankAccount) {
-                                bank = bankAccount;
+                    if (bankAccount) {
+                        bankAccount.fetch({
+                            success: function(bankAccount) {
+                                self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers, bankAccount: bankAccount}));
+                                self.menuSelectionAndSalesData();
                             }
+                        });
 
-                            self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers, bankAccount: bank}));
-                            self.configureMenuSelection();
+                    } else {
+                        bankAccount = new BankAccountModel();
+                        self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers, bankAccount: bankAccount}));
+                        self.menuSelectionAndSalesData();
+                    }
 
-                            //Sales data
-                            self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00}));
-                            self.$( "#datepicker" ).datepicker({
-                                onSelect: function(dateText){
-                                    var month = parseInt(dateText.split("/")[0]) - 1;
-                                    var date = parseInt(dateText.split("/")[1]);
-                                    var year = parseInt(dateText.split("/")[2]);
-
-                                    var dayStart = new Date();
-                                    dayStart.setFullYear(year, month, date);
-                                    dayStart.setHours(0, 0, 0, 0);
-
-                                    var dayEnd = new Date();
-                                    dayEnd.setFullYear(year, month, date);
-                                    dayEnd.setHours(23, 59, 59, 0);
-
-                                    // Query Sales Data
-                                    self.querySalesData(dayStart, dayEnd);
-                                }
-                            });
-                        }
-                    });
                 },
                 error: function(error) {
                     console.log(error.message);
+                }
+            });
+        },
+
+        menuSelectionAndSalesData: function() {
+            var self = this;
+            this.configureMenuSelection();
+
+            //Sales data
+            this.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00}));
+            this.$( "#datepicker" ).datepicker({
+                onSelect: function(dateText){
+                    var month = parseInt(dateText.split("/")[0]) - 1;
+                    var date = parseInt(dateText.split("/")[1]);
+                    var year = parseInt(dateText.split("/")[2]);
+
+                    var dayStart = new Date();
+                    dayStart.setFullYear(year, month, date);
+                    dayStart.setHours(0, 0, 0, 0);
+
+                    var dayEnd = new Date();
+                    dayEnd.setFullYear(year, month, date);
+                    dayEnd.setHours(23, 59, 59, 0);
+
+                    // Query Sales Data
+                    self.querySalesData(dayStart, dayEnd);
                 }
             });
         },

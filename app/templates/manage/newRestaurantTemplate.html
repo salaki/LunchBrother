@@ -1,5 +1,5 @@
 <h1 class="ui small center aligned header">Add a new restaurant</h1>
-<form class="ui form">
+<form class="ui form" id="restaurantForm">
   <input type="hidden" name="restaurantId" id="restaurantId" value="<%= restaurant.id %>">
   <h4 class="ui dividing header">Basic Information</h4>
   <div class="field">
@@ -57,6 +57,11 @@
   </div>
 
   <div class="field">
+    <label>Restaurant Email</label>
+    <input type="text" name="restaurantEmail" id="restaurantEmail" value="<%= restaurant.get('email') %>">
+  </div>
+
+  <div class="field">
     <label>Order Confirm Number (For SMS Confirmation Purpose)</label>
     <input type="text" name="orderConfirmNumber" id="orderConfirmNumber" value="<%= restaurant.get('confirmNumber') %>">
   </div>
@@ -76,18 +81,24 @@
   </div>
   <h4 class="ui dividing header">Payment</h4>
   <div class="field">
-    <label>Account number</label>
-    <div class="ui input">
-      <input type="text" placeholder="Put your bank account number here...">
-    </div>
-  </div>
-
-  <div class="field">
     <label>Routing number</label>
     <div class="ui input">
-      <input type="text" placeholder="Put your bank rounting number here...">
+      <input type="text" class="restaurant-routing-number" placeholder="Put your bank routing number here, e.g. 111000025" data-stripe="routing-number" value="<%= bankAccount.get('routingNumber') %>">
     </div>
   </div>
+  <div class="field">
+    <label>Account number</label>
+    <div class="ui input">
+      <input type="text" class="restaurant-account-number" placeholder="Put your bank account number here, e.g. 000123456789" data-stripe="account-number" value="<%= bankAccount.get('accountNumber') %>">
+    </div>
+  </div>
+  <div class="field">
+    <input type="hidden" class="account-country" data-stripe="country" value="US" disabled>
+  </div>
+  <div class="field">
+    <input type="hidden" class="account-currency" data-stripe="currency" value="USD" disabled>
+  </div>
+
 </form>
 <div class="ui divider hidden"></div>
 <button class="center aligned ui red button" id="saveRestaurantBtn">Save this restaurant</button>

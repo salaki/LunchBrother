@@ -133,7 +133,8 @@ Parse.Cloud.define("saveRecipient", function (request, response) {
             var BankAccount = Parse.Object.extend("BankAccount");
             var bankAccount = new BankAccount();
             bankAccount.set("recipientId", httpResponse.data.id);
-            bankAccount.set("createdBy", Parse.User.current());
+            bankAccount.set("type", request.params.type);
+            bankAccount.set("createdById", request.params.createdById);
             bankAccount.set("last4DigitAccount", request.params.last4DigitForAccountNumber);
             bankAccount.set("accountNumber", request.params.accountNumber);
             bankAccount.set("routingNumber", request.params.routingNumber);
@@ -465,9 +466,9 @@ function createTransfer(TransferModel, yesterday, twoWeeksAgo, target) {
                 var bankAccountQuery = new Parse.Query(bankAccount);
 
                 if (target === "RESTAURANT") {
-                    bankAccountQuery.equalTo("createdBy", transfers[0].get('restaurant'));
+                    bankAccountQuery.equalTo("createdById", transfers[0].get('restaurant').id);
                 } else {
-                    bankAccountQuery.equalTo("createdBy", transfers[0].get('manager'));
+                    bankAccountQuery.equalTo("createdById", transfers[0].get('manager').id);
                 }
 
                 bankAccountQuery.first({

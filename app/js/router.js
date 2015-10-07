@@ -390,7 +390,7 @@ define([
             // Call render on the module we loaded in via the dependency array
             var params = new ParseQueryString(queryString);
             var newBankView = new BankView({
-                id:params.id
+                id: params.id
             });
             newBankView.render();
         });

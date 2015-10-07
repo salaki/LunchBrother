@@ -8,7 +8,8 @@ define([
         el: $("#page"),
 
         events: {
-            'submit #bankForm': 'saveBankAccount'
+            'submit #bankForm': 'saveBankAccount',
+            'click .cancelBankBtn': 'onCancelClick'
         },
 
         initialize: function () {
@@ -20,24 +21,26 @@ define([
 
         render: function () {
             var self = this;
-            var bankQuery = new Parse.Query(BankAccountModel);
-            bankQuery.get(this.options.id, {
-                success: function(bankAccount) {
-                    var bank = new BankAccountModel();
-                    if (bankAccount) {
-                        bank = bankAccount;
+            if (this.options.id) {
+                var bankQuery = new Parse.Query(BankAccountModel);
+                bankQuery.get(this.options.id, {
+                    success: function(bankAccount) {
+                        self.$el.html(self.template({bankAccount: bankAccount}));
+                    },
+                    error: function(error) {
+                        alert(error.message);
                     }
-                    self.$el.html(self.template({bankAccount: bank}));
-                },
-                error: function(error) {
-                    alert(error.message);
-                }
-            });
+                });
+            } else {
+                var bankAccount = new BankAccountModel();
+                self.$el.html(self.template({bankAccount: bankAccount}));
+            }
 
             return this;
         },
 
         saveBankAccount: function(e) {
+            //TODO - Check original bank info to see if needed to go through stripe
             e.preventDefault();
             var $form = this.$('form');
             //Disable the button
@@ -58,16 +61,10 @@ define([
             } else {
                 // response contains id and bank_account, which contains additional bank account details
                 var token = response.id;
-                // Insert the token into the form so it gets submitted to the server
-                //$form.append($('<input type="hidden" name="stripeToken" />').val(token));
-                // and submit
-                //$form.get(0).submit();
                 var accountNumber = $(".account-number").val();
                 var routingNumber = $(".routing-number").val();
                 var last4DigitForAccountNumber = $(".account-number").val().slice(-4);
                 var currentUser = Parse.User.current();
-
-                //TODO - Need to add a logic to check if this is for restaurant or local manager
 
                 Parse.Cloud.run('saveRecipient', {
                     name: currentUser.get('firstName') + " " + currentUser.get('lastName'),
@@ -76,18 +73,14 @@ define([
                     accountNumber: accountNumber,
                     routingNumber: routingNumber,
                     last4DigitForAccountNumber: last4DigitForAccountNumber,
-                    email: currentUser.get('email')
+                    email: currentUser.get('email'),
+                    createdById: currentUser.id
                 }, {
                     success: function (response) {
-                        console.log(response);
-
-                        ////TODO - If it's for restaurant, save bankAccount to restaurant, otherwise save it to current user (manager)
                         currentUser.set('bankAccount', response);
                         currentUser.save();
-
                         alert("Bank account created successfully!");
                         window.location.href = '#managerHome?week=';
-
                     },
                     error: function(error) {
                         alert("Oops, something went wrong! Please check your account number and routing number then try again.");
@@ -95,6 +88,10 @@ define([
                     }
                 });
             }
+        },
+
+        onCancelClick: function() {
+            window.location.href='#managerHome?week=';
         }
     });
     return BankView;
