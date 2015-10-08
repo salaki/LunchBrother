@@ -84,12 +84,14 @@
     <label>Routing number</label>
     <div class="ui input">
       <input type="text" class="restaurant-routing-number" placeholder="Put your bank routing number here, e.g. 111000025" data-stripe="routing-number" value="<%= bankAccount.get('routingNumber') %>">
+      <input type="hidden" class="original-restaurant-routing-number" value="<%= bankAccount.get('routingNumber') %>">
     </div>
   </div>
   <div class="field">
     <label>Account number</label>
     <div class="ui input">
       <input type="text" class="restaurant-account-number" placeholder="Put your bank account number here, e.g. 000123456789" data-stripe="account-number" value="<%= bankAccount.get('accountNumber') %>">
+      <input type="hidden" class="original-restaurant-account-number" value="<%= bankAccount.get('accountNumber') %>">
     </div>
   </div>
   <div class="field">

@@ -40,14 +40,26 @@ define([
         },
 
         saveBankAccount: function(e) {
-            //TODO - Check original bank info to see if needed to go through stripe
-            e.preventDefault();
-            var $form = this.$('form');
-            //Disable the button
-            $('#bankBtn').removeClass('red').addClass('grey');
-            $('#bankBtn').prop('disabled', true);
+            if (this.isOldBankAccount()) {
+                window.location.href = '#managerHome?week=';
 
-            Stripe.bankAccount.createToken($form, this.stripeResponseHandler);
+            } else {
+                e.preventDefault();
+                var $form = this.$('form');
+                //Disable the button
+                $('#bankBtn').removeClass('red').addClass('grey');
+                $('#bankBtn').prop('disabled', true);
+
+                Stripe.bankAccount.createToken($form, this.stripeResponseHandler);
+            }
+        },
+
+        isOldBankAccount: function() {
+            var accountNumber = $(".account-number").val().trim();
+            var routingNumber = $(".routing-number").val().trim();
+            var originalAccountNumber = $(".original-account-number").val().trim();
+            var originalRoutingNumber = $(".original-routing-number").val().trim();
+            return (accountNumber === originalAccountNumber) && (routingNumber === originalRoutingNumber);
         },
 
         stripeResponseHandler: function(status, response) {

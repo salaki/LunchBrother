@@ -149,6 +149,8 @@ define([
               if (this.validateBankFields()) {
                   var $form = this.$('form');
                   Stripe.bankAccount.createToken($form, this.stripeResponseHandler);
+              } else {
+                  window.location.href='#manageRestaurants';
               }
           },
 
@@ -194,16 +196,22 @@ define([
           },
 
           validateBankFields: function() {
-              //TODO - Also need to check if the same as original and modify/create recipient
               var hasBankInfo = false;
-              var accountNumber = $(".restaurant-account-number").val();
-              var routingNumber = $(".restaurant-routing-number").val();
-              if (accountNumber.trim() !== "" && routingNumber.trim() !== "") {
+              var accountNumber = $(".restaurant-account-number").val().trim();
+              var routingNumber = $(".restaurant-routing-number").val().trim();
+              if (accountNumber !== "" && routingNumber !== "" && !this.isOldBankAccount()) {
                   hasBankInfo = true;
               }
               return hasBankInfo;
-          }
+          },
 
+          isOldBankAccount: function() {
+              var accountNumber = $(".restaurant-account-number").val().trim();
+              var routingNumber = $(".restaurant-routing-number").val().trim();
+              var originalAccountNumber = $(".original-restaurant-account-number").val().trim();
+              var originalRoutingNumber = $(".original-restaurant-routing-number").val().trim();
+              return (accountNumber === originalAccountNumber) && (routingNumber === originalRoutingNumber);
+          }
       });
       return NewRestaurantView;
 
