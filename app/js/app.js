@@ -37,8 +37,6 @@ var config = {
     }
 };
 
-
-
 //Permission code
 var GENERAL_USER = 1, LOCAL_MANAGER = 2, DRIVER = 3, DISTRIBUTOR = 4, LB_ADMIN = 5;
 

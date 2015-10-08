@@ -375,7 +375,7 @@ Parse.Cloud.define("sms",
     }
 );
 
-Parse.Cloud.job("transferToRestaurantOwner", function(request, status) {
+Parse.Cloud.job("saveSalesAndTransfer", function(request, status) {
     var TransferModel = Parse.Object.extend("Transfer");
 
     //Save Today's Sales
