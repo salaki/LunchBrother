@@ -258,3 +258,14 @@
     <table class="ui small celled unstackable table" id="salesTableBody">
     </table>
 </div>
+
+<!--Bank Account Section-->
+<h4 class="ui top attached red header">
+    <i class="money icon small"></i>Bank Account
+</h4>
+<div class="ui attached segment">
+    Last 4 Digit of Your Bank Account Number: <%= bankAccount.get('last4DigitAccount') %>
+</div>
+<div class="ui bottom attached orange button toBankAccount" data-id="<%= bankAccount.id %>">
+    Create/Change Bank Account
+</div>

@@ -1,9 +1,11 @@
 define([
+    'stripe',
     'models/Restaurant',
     'models/Grid',
+    'models/BankAccount',
     'text!templates/manage/newRestaurantTemplate.html'
 
-    ], function (RestaurantModel, GridModel, newRestaurantTemplate) {
+    ], function (Stripe, RestaurantModel, GridModel, BankAccountModel, newRestaurantTemplate) {
 
       var NewRestaurantView = Parse.View.extend({
           el: $("#page"),
@@ -16,7 +18,7 @@ define([
 
           initialize: function () {
             _.bindAll(this, 'render', 'saveRestaurant');
-
+              Stripe.setPublishableKey('pk_test_pb95pxk797ZxEFRk55wswMRk');
           },
 
           render: function () {
@@ -24,6 +26,7 @@ define([
               var restaurantId = this.options.id;
               if(restaurantId) {
                   var restaurantQuery = new Parse.Query(RestaurantModel);
+                  restaurantQuery.include('bankAccount');
                   restaurantQuery.get(restaurantId, {
                       success: function(restaurant) {
                           self.continueFindGridAndRender(restaurant);
@@ -43,7 +46,13 @@ define([
               var gridQuery = new Parse.Query(GridModel);
               gridQuery.find({
                   success: function(grids) {
-                      self.$el.html(self.template({grids: grids, restaurant: restaurant}));
+                      var bankAccount = new BankAccountModel();
+
+                      if (restaurant.get('bankAccount')) {
+                          bankAccount = restaurant.get('bankAccount')
+                      }
+
+                      self.$el.html(self.template({grids: grids, restaurant: restaurant, bankAccount: bankAccount}));
 //                      $('.ui.form').form({
 //                          'restaurantName': {
 //                              identifier: 'restaurantName',
@@ -95,6 +104,7 @@ define([
               var name = $("#restaurantName").val();
               var type = $(".restaurant-type-selection").dropdown('get value');
               var address = $("#restaurantAddress").val();
+              var email = $("#restaurantEmail").val();
               var telnum = $("#restaurantTelnum").val();
               var confirmNumber = $("#orderConfirmNumber").val();
               var managerName = $("#restaurantManager").val();
@@ -111,6 +121,7 @@ define([
                 name: name,
                 type: type,
                 address: address,
+                  email: email,
                 telnum: telnum,
                 confirmNumber: confirmNumber,
                 managerName: managerName,
@@ -125,12 +136,81 @@ define([
               }, {
                 success: function(savedRestaurant) {
                   alert('Save restaurant successfully!');
-                  window.location.href='#manageRestaurants';
+                    $("#restaurantId").val(savedRestaurant.id);
+                    self.createBankAccount();
                 },
                 error: function(savedRestaurant, error) {
                   alert('Failed to save restaurant, with error message: ' + error.message);
                 }
               });
+          },
+
+          createBankAccount: function() {
+              if (this.validateBankFields()) {
+                  var $form = this.$('form');
+                  Stripe.bankAccount.createToken($form, this.stripeResponseHandler);
+              } else {
+                  window.location.href='#manageRestaurants';
+              }
+          },
+
+          stripeResponseHandler: function(status, response) {
+              var $form = $('#restaurantForm');
+
+              if (response.error) {
+                  // Show the errors on the form
+                  alert(response.error.message);
+                  $form.find('.bank-errors').text(response.error.message);
+                  $form.find('button').prop('disabled', false);
+              } else {
+                  var token = response.id;
+                  var accountNumber = $(".restaurant-account-number").val();
+                  var routingNumber = $(".restaurant-routing-number").val();
+                  var last4DigitForAccountNumber = $(".restaurant-account-number").val().slice(-4);
+                  var restaurantId = $("#restaurantId").val();
+
+                  Parse.Cloud.run('saveRecipient', {
+                      name: $("#restaurantName").val(),
+                      type: 'corporation',
+                      bankAccount: token,
+                      accountNumber: accountNumber,
+                      routingNumber: routingNumber,
+                      last4DigitForAccountNumber: last4DigitForAccountNumber,
+                      email: $("#restaurantEmail").val(),
+                      createdById: restaurantId
+                  }, {
+                      success: function (response) {
+                          var restaurant = new RestaurantModel();
+                          restaurant.id = restaurantId;
+                          restaurant.set('bankAccount', response);
+                          restaurant.save();
+                          alert("Bank account created successfully!");
+                          window.location.href='#manageRestaurants';
+                      },
+                      error: function(error) {
+                          alert("Oops, something went wrong! Please check your account number and routing number then try again.");
+                          console.log(error.message);
+                      }
+                  });
+              }
+          },
+
+          validateBankFields: function() {
+              var hasBankInfo = false;
+              var accountNumber = $(".restaurant-account-number").val().trim();
+              var routingNumber = $(".restaurant-routing-number").val().trim();
+              if (accountNumber !== "" && routingNumber !== "" && !this.isOldBankAccount()) {
+                  hasBankInfo = true;
+              }
+              return hasBankInfo;
+          },
+
+          isOldBankAccount: function() {
+              var accountNumber = $(".restaurant-account-number").val().trim();
+              var routingNumber = $(".restaurant-routing-number").val().trim();
+              var originalAccountNumber = $(".original-restaurant-account-number").val().trim();
+              var originalRoutingNumber = $(".original-restaurant-routing-number").val().trim();
+              return (accountNumber === originalAccountNumber) && (routingNumber === originalRoutingNumber);
           }
       });
       return NewRestaurantView;

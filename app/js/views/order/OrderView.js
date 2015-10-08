@@ -1,4 +1,5 @@
 define([
+    'models/dish/DishModel',
   'models/dish/DishCollection',
   'models/order/OrderModel',
   'models/order/PaymentModel',
@@ -9,11 +10,12 @@ define([
   'views/home/DishCollectionView',
   'views/confirm/ConfirmView',
   'views/confirm/TextView',
+    'stripe',
   'text!templates/home/statsTemplate.html',
   'text!templates/order/orderTemplate.html',
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
-], function (DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, statsTemplate, orderTemplate) {
+], function (DishModel, DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, Stripe, statsTemplate, orderTemplate) {
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -33,6 +35,7 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render', 'stripeResponseHandler', 'orderSubmit', 'toggleNewCardForm', 'charge');
+            Stripe.setPublishableKey('pk_test_pb95pxk797ZxEFRk55wswMRk');
        },
 
         render: function () {
@@ -155,59 +158,112 @@ define([
             return this;
         },
 
-        stripeResponseHandler: function (status, response) {
-            var $form = $('#paymentForm');
-            if (response.error) {
-                // Pop out the error message window
-                this.displayPaymentFailDialog(response.error.message);
-            	$('#orderBtn').prop('disabled', false);
-                $('#orderBtn').removeClass('grey').addClass('red');
-            }
-            else {
-            	// No errors, submit the form.
-            	var self = this;
-            	if(this.$('#rememberme input[type=checkbox]').is(':checked')){
-            		var user = Parse.User.current();
-            		var last4Digit = $form.find('input[name=number]').val().slice(-4);
-            		
-            		Parse.Cloud.run('saveCard', {
-            	        card: response.id,
-            	        last4Digit: last4Digit
-            	    }, {
-                        success: function (customer) {
-                        	self.charge({
-                				totalCharge: self.model.totalCharge,
-                				customerId: customer,
-                				coupon: self.model.coupon
-                			});
-                        	console.log(self.model.coupon);
-                        }
-                    });
-            	}
-            	else{
-	                this.charge({
-	                    totalCharge: this.model.totalCharge,
-	                    paymentToken: response.id,
-	                    coupon: this.model.coupon
-	                });
-	                console.log(this.model.coupon);
-            	}
-            }
-        },
         toggleNewCardForm: function(e) {
         	$('#newCardInfo').transition('slide down');
         	$('#userCardList').toggleClass('disabled');
         	$('.ui.checkbox', '#userCardList').toggleClass('disabled');
         	
         },
+
         orderSubmit: function (e) {
             e.preventDefault();
+            this.checkInventory();
+        },
+
+        checkInventory: function() {
+            var dishCountMap = {};
+            var inventoryIds = [];
+            _.each(this.model.orders, function (dish) {
+                inventoryIds.push(dish.inventoryId);
+                dishCountMap[dish.inventoryId] = dish.count;
+            });
+
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            inventoryQuery.containedIn("objectId", inventoryIds);
+            var self = this;
+            var exceedInventory = false;
+            inventoryQuery.find({
+                success: function(inventories) {
+                    _.each(inventories, function(inventory) {
+                        var newQantity = inventory.get('currentQuantity') - dishCountMap[inventory.id];
+                        if (newQantity < 0) {
+                            exceedInventory = true;
+                        }
+                    });
+
+                    if (exceedInventory) {
+                        $('#inventoryExceededAlert').modal({
+                            closable: false,
+                            onApprove: function () {
+                                window.location.href='#home';
+                            }
+                        }).modal('show');
+                    } else {
+                        self.createToken();
+                    }
+                },
+                error: function(err) {
+                    console.log(err.message);
+                }
+            });
+        },
+
+        createToken: function() {
             var $form = this.$('form');
             //Disable the button
             $('#orderBtn').removeClass('red').addClass('grey');
             $('#orderBtn').prop('disabled', true);
 
-            this.checkInventory();
+            if(this.$('#userCardList').length == 0 || this.$('#userCardList').find('.disabled').length > 0){
+                Stripe.card.createToken($form, this.stripeResponseHandler);
+            }
+            else{
+                this.charge({
+                    customerId: this.$('input[type=radio]:checked', '#userCardList').val(),
+                    totalCharge: this.model.totalCharge,
+                    coupon: this.model.coupon
+                });
+            }
+        },
+
+        stripeResponseHandler: function (status, response) {
+            var $form = $('#paymentForm');
+            if (response.error) {
+                // Pop out the error message window
+                this.displayPaymentFailDialog(response.error.message);
+                $('#orderBtn').prop('disabled', false);
+                $('#orderBtn').removeClass('grey').addClass('red');
+            }
+            else {
+                // No errors, submit the form.
+                var self = this;
+                if(this.$('#rememberme input[type=checkbox]').is(':checked')){
+                    var user = Parse.User.current();
+                    var last4Digit = $form.find('input[name=number]').val().slice(-4);
+
+                    Parse.Cloud.run('saveCard', {
+                        card: response.id,
+                        last4Digit: last4Digit
+                    }, {
+                        success: function (customer) {
+                            self.charge({
+                                totalCharge: self.model.totalCharge,
+                                customerId: customer,
+                                coupon: self.model.coupon
+                            });
+                            console.log(self.model.coupon);
+                        }
+                    });
+                }
+                else{
+                    this.charge({
+                        totalCharge: this.model.totalCharge,
+                        paymentToken: response.id,
+                        coupon: this.model.coupon
+                    });
+                    console.log(this.model.coupon);
+                }
+            }
         },
 
         displayPaymentFailDialog: function (errorMessage) {
@@ -218,29 +274,6 @@ define([
                     //Do nothing
                 }
             }).modal('show');
-        },
-        
-        chargeCreditBalance: function(coupon){
-        	var currentUser = Parse.User.current();
-        	var currentCredit = parseFloat((currentUser.get('creditBalance') - coupon).toFixed(2));
-            	currentUser.set('creditBalance', currentCredit);
-            	currentUser.save();
-        },
-        
-        
-        emailService: function (paymentId) {
-            Parse.Cloud.run('email', {
-                orderId: paymentId
-
-            }, {
-                success: function () {
-                    console.log("Confirmation email has been sent!");
-                },
-
-                error: function (error) {
-                    console.log("Fail to send email. Reason: " + error.message);
-                }
-            });
         },
         
         charge: function(params){
@@ -304,45 +337,28 @@ define([
             });
         },
 
-        checkInventory: function() {
-            var dishCountMap = {};
-            var inventoryIds = [];
-            _.each(this.model.orders, function (dish) {
-                inventoryIds.push(dish.inventoryId);
-                dishCountMap[dish.inventoryId] = dish.count;
-            });
-
-            var inventoryQuery = new Parse.Query(InventoryModel);
-            inventoryQuery.containedIn("objectId", inventoryIds);
-            var self = this;
-            var exceedInventory = false;
-            inventoryQuery.find({
-                success: function(inventories) {
-                    _.each(inventories, function(inventory) {
-                        var newQantity = inventory.get('currentQuantity') - dishCountMap[inventory.id];
-                        if (newQantity < 0) {
-                            exceedInventory = true;
+        saveOrders: function(paymentDetails) {
+            _.each(this.model.orders, function (order) {
+                var dish = new DishModel();
+                dish.id = order.dishId;
+                var orderDetails = new OrderModel();
+                orderDetails.set('dishId', dish);
+                orderDetails.set('quantity', order.count);
+                orderDetails.set('paymentId', paymentDetails);
+                orderDetails.set('orderBy', Parse.User.current());
+                orderDetails.set('unitPrice', order.price);
+                orderDetails.set('subTotalPrice', order.price * order.count);
+                orderDetails.set('restaurantId', order.restaurant);
+                orderDetails.set('pickUpLocation', paymentDetails.get('pickUpLocation'));
+                orderDetails.save(null, {
+                        success: function() {
+                            //Do nothing
+                        },
+                        error: function(err) {
+                            console.log("Failed to save orders. Reason: " + err.message);
                         }
-                    });
-
-                    if (exceedInventory) {
-                        $('#inventoryExceededAlert').modal({
-                            closable: false,
-                            onApprove: function () {
-                                window.location.href='#home';
-                            }
-                        }).modal('show');
-                    } else {
-                        self.charge({
-                            customerId: self.$('input[type=radio]:checked', '#userCardList').val(),
-                            totalCharge: self.model.totalCharge,
-                            coupon: self.model.coupon
-                        });
                     }
-                },
-                error: function(err) {
-                    console.log(err.message);
-                }
+                );
             });
         },
 
@@ -369,29 +385,26 @@ define([
             });
         },
 
-        saveOrders: function(paymentDetails) {
-            _.each(this.model.orders, function (order) {
-                var dish = new DishModel();
-                dish.id = order.dishId;
-                var orderDetails = new OrderModel();
-                orderDetails.set('dishId', dish);
-                orderDetails.set('quantity', order.count);
-                orderDetails.set('paymentId', paymentDetails);
-                orderDetails.set('orderBy', Parse.User.current());
-                orderDetails.set('unitPrice', order.price);
-                orderDetails.set('subTotalPrice', order.price * order.count);
-                orderDetails.set('restaurantId', order.restaurant);
-                orderDetails.set('pickUpLocation', paymentDetails.get('pickUpLocation'));
-                orderDetails.save(null, {
-                        success: function() {
-                            //Do nothing
-                        },
-                        error: function(err) {
-                            console.log("Failed to save orders. Reason: " + err.message);
-                        }
-                    }
-                );
+        emailService: function (paymentId) {
+            Parse.Cloud.run('email', {
+                orderId: paymentId
+
+            }, {
+                success: function () {
+                    console.log("Confirmation email has been sent!");
+                },
+
+                error: function (error) {
+                    console.log("Fail to send email. Reason: " + error.message);
+                }
             });
+        },
+
+        chargeCreditBalance: function(coupon){
+            var currentUser = Parse.User.current();
+            var currentCredit = parseFloat((currentUser.get('creditBalance') - coupon).toFixed(2));
+            currentUser.set('creditBalance', currentCredit);
+            currentUser.save();
         }
     });
     return OrderView;

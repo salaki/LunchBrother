@@ -119,7 +119,53 @@ Parse.Cloud.define("saveCard", function (request, response) {
         card.save();
         response.success(customer.id);
     });
-})
+});
+
+Parse.Cloud.define("saveRecipient", function (request, response) {
+    createRecipient({
+        params: {
+            name: request.params.name,
+            type: request.params.type,
+            bankAccount: request.params.bankAccount,
+            email: request.params.email
+        },
+        success: function (httpResponse) {
+            var BankAccount = Parse.Object.extend("BankAccount");
+            var bankAccount = new BankAccount();
+            bankAccount.set("recipientId", httpResponse.data.id);
+            bankAccount.set("type", request.params.type);
+            bankAccount.set("createdById", request.params.createdById);
+            bankAccount.set("last4DigitAccount", request.params.last4DigitForAccountNumber);
+            bankAccount.set("accountNumber", request.params.accountNumber);
+            bankAccount.set("routingNumber", request.params.routingNumber);
+            bankAccount.save({
+                success: function(bankInfo) {
+                    response.success(bankInfo);
+                },
+                error: function(error) {
+                    response.error(error.message);
+                }
+            });
+        },
+        error: function (httpResponse) {
+            response.error(httpResponse);
+        }
+    });
+});
+
+function createRecipient(options) {
+    Parse.Cloud.httpRequest({
+        method: 'POST',
+        url: 'https://sk_test_aslYgXx9b5OXsHKWqw3JxDCC:@api.stripe.com/v1/recipients?' +
+        'name=' + encodeURI(options.params.name) +
+        '&type=' + options.params.type +
+        '&bank_account=' + options.params.bankAccount +
+        '&email=' + options.params.email,
+        success: options.success,
+        error: options.error
+    });
+}
+
 Parse.Cloud.define("email",
     function (request, response) {
         /*var Mandrill = require('mandrill');
@@ -328,6 +374,187 @@ Parse.Cloud.define("sms",
         twilioSMSService('+1' + targetNumber, messageBody);
     }
 );
+
+Parse.Cloud.job("saveSalesAndTransfer", function(request, status) {
+    var TransferModel = Parse.Object.extend("Transfer");
+
+    //Save Today's Sales
+    summarizeSalesOfToday(TransferModel);
+
+    // Query dates setting
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(0, 0, 0, 0);
+
+    var twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(yesterday.getDate() - 14);
+    twoWeeksAgo.setHours(0, 0, 0, 0);
+
+    //For restaurant owner
+    createTransfer(TransferModel, yesterday, twoWeeksAgo, "RESTAURANT");
+
+    //For manager
+    createTransfer(TransferModel, yesterday, twoWeeksAgo, "MANAGER");
+});
+
+function summarizeSalesOfToday (TransferModel) {
+    var current = new Date();
+    current.setHours(0, 0, 0, 0);
+
+    var inventoryModel = Parse.Object.extend("Inventory");
+    var inventoryQuery = new Parse.Query(inventoryModel);
+    inventoryQuery.greaterThan("pickUpDate", current);
+    inventoryQuery.include("orderBy");
+    inventoryQuery.include("dish");
+    inventoryQuery.include("dish.restaurant");
+    inventoryQuery.find({
+        success: function(inventories) {
+            //Summarize today's sale by querying inventory and create transfer queue for restaurants and local managers
+            var transfers = [];
+
+            _.each(inventories, function(inventory){
+                var restaurantTransfer = new TransferModel();
+                restaurantTransfer.set('amount', inventory.get('preorderQuantity') * inventory.get('dish').get('originalPrice'));
+                restaurantTransfer.set('restaurant', inventory.get('dish').get('restaurant'));
+                transfers.push(restaurantTransfer);
+
+                var managerTransfer = new TransferModel();
+                managerTransfer.set('amount', (inventory.get('preorderQuantity') - inventory.get('currentQuantity')));
+                managerTransfer.set('manager', inventory.get('orderBy'));
+                transfers.push(managerTransfer);
+            });
+
+            Parse.Object.saveAll(transfers, {
+                success: function(transfers) {
+                    console.log("Save transfer records successfully!");
+                },
+                error: function(error) {
+                    console.log('Save transfer records failed! Reason: ' + error.message);
+                }
+            });
+        },
+        error: function(error) {
+            console.log(error.message);
+        }
+    });
+}
+
+function createTransfer(TransferModel, yesterday, twoWeeksAgo, target) {
+    var transferQuery = new Parse.Query(TransferModel);
+
+    if (target === "RESTAURANT") {
+        transferQuery.doesNotExist("manager");
+    } else {
+        transferQuery.doesNotExist("restaurant");
+    }
+
+    transferQuery.lessThan("createdAt", yesterday);
+    transferQuery.ascending("createdAt");
+    transferQuery.find({
+        success: function(transfers) {
+            var totalTransferAmount = 0;
+            if (transfers.length > 0 && transfers[0].get('createdAt') < twoWeeksAgo) {
+                //Summarize the amount
+                _.each(transfers, function(transfer) {
+                    totalTransferAmount += transfer.get('amount');
+                    transfer.set('transferred', true);
+                });
+
+                //Query bankAccount for createdBy to get recipientId and initiate the transfer
+                var BankAccount = Parse.Object.extend("BankAccount");
+                var bankAccount = new BankAccount();
+                var bankAccountQuery = new Parse.Query(bankAccount);
+
+                if (target === "RESTAURANT") {
+                    bankAccountQuery.equalTo("createdById", transfers[0].get('restaurant').id);
+                } else {
+                    bankAccountQuery.equalTo("createdById", transfers[0].get('manager').id);
+                }
+
+                bankAccountQuery.first({
+                    success: function(bankAccount){
+                        transfer({
+                            params: {
+                                currency: "usd",
+                                amount: totalTransferAmount,
+                                recipient: bankAccount.get("recipientId")
+                            },
+                            success: function (httpResponse) {
+                                Parse.Object.saveAll(transfers, {
+                                    success: function(transfers) {
+                                        console.log("Update transfer records successfully!");
+                                    },
+                                    error: function(error) {
+                                        console.log('Save transfer records failed! Reason: ' + error.message);
+                                    }
+                                });
+                            },
+                            error: function (httpResponse) {
+                                console.log(httpResponse);
+                            }
+                        });
+                    },
+                    error: function(error){
+                        console.log(error.message);
+                    }
+                });
+
+            } else {
+                //Do nothing
+            }
+        },
+        error: function(error) {
+            console.log('Save transfer records failed! Reason: ' + error.message);
+        }
+    });
+
+}
+
+Parse.Cloud.define("addFundsImmediatelyForTest",
+    function (request, response) {
+        var Stripe = require("stripe");
+        Stripe.initialize('sk_test_aslYgXx9b5OXsHKWqw3JxDCC');
+        var params = {
+            amount: 10000,
+            currency: "usd",
+            card: 4000000000000077,
+            customer: "cus_6M8Um7v2nAO17z"
+        };
+        Stripe.Charges.create(params, {
+                success: function (httpResponse) {
+                    response.success("Funds added!");
+                },
+                error: function (httpResponse) {
+                    response.error("Error: " + httpResponse.message);
+                }
+            }
+        );
+    }
+);
+
+Parse.Cloud.define("testTransfer", function(request, response) {
+    transfer({
+        params: {
+            currency: "usd",
+            amount: "100",
+            recipient: "rp_16q23kB1YtHTqvL2MjRWBLvk"
+        },
+        success: function (httpResponse) { response.success(httpResponse.message); },
+        error: function (httpResponse) { response.error(httpResponse.message); }
+    });
+});
+
+function transfer(options) {
+    Parse.Cloud.httpRequest({
+        method: 'POST',
+        url: 'https://sk_test_aslYgXx9b5OXsHKWqw3JxDCC:@api.stripe.com/v1/transfers?' +
+        'currency=' + options.params.currency +
+        '&amount=' + options.params.amount +
+        '&recipient=' + options.params.recipient,
+        success: options.success,
+        error: options.error
+    });
+}
 
 Parse.Cloud.job("weeklySMS", function(request, status) {
     //Assemble SMS Message
