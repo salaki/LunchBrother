@@ -141,7 +141,8 @@ define(['views/home/DishView',
             } else {
                 this.stats.coupon = currentUser.get('creditBalance');
             }
-            this.stats.totalCharge = parseFloat((charge + this.stats.tax - this.stats.coupon).toFixed(2));
+            //this.stats.totalCharge = parseFloat((charge + this.stats.tax - this.stats.coupon).toFixed(2));
+            this.stats.totalCharge = parseFloat((charge).toFixed(2));
             this.$('#orderStats').html(this.statsTemplate(this.stats));
             this.delegateEvents();
             return this;
