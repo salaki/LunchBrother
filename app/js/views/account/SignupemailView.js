@@ -143,6 +143,16 @@ define([
                         user.set("permission", 1);
                         user.set("email", this.$("#email").val());
                         user.set("telnum", Number(this.$("#phonenumber").val()));
+                        user.signUp(null, {
+                                success: function(user) {
+                                    self.signOutAndSendActivationEmail(user);
+                                },
+                                error: function(user, error) {
+                                    alert("Error: " + error.code + " " + error.message);
+                                }
+                        });
+			//Disable Balance Setting.
+                        /*
                         if(self.model.refer){
 	                        var referQuery = new Parse.Query(Parse.User);
 	                        referQuery.get(self.model.refer, {
@@ -174,6 +184,7 @@ define([
                                 }
                             });
                         }
+                        */
                     }
                 }
             });
