@@ -270,9 +270,6 @@ header {
 #cardselector {
 	margin: 2%;
 }
-#cw2 {
-	max-width: 160px !important;
-}
 #fullscreen {
 	display: none;
 }
@@ -411,19 +408,7 @@ header {
 		top: 2px;
 	}
 }
-.ui.form {
-//	.field > .selection.dropdown {
-//		width: 25%;
-//	}
-	.fields .wide.field {
-		width: 6.25%;
-		padding-left: 0;
-		padding-right: 0;
-	}
-}
-//.ui.mini.input {
-//	width: 25%;
-//}
+
 .clearfix:after {
 	content: ".";
 	visibility: hidden;
