@@ -23,7 +23,14 @@ define([
     var dayOfWeek = cnDay[today.getDay()];
     var date = today.toLocaleDateString();
     $('#today').text(dayOfWeek + ', ' + date);
-
+    
+    //The logo direct to the home page
+    $(".brand").on("click", function(){
+    	window.location.href="#";
+    	location.reload();
+    })
+    
+    
     $('#signOutBtn').click(function() {
         $('.ui.sidebar').sidebar('hide');
 

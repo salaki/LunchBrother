@@ -83,8 +83,25 @@ define([
 
 
                                         that.$("#addressdetails").change(function() {
-                                            that.$("#youtubeDiv").show();
+                                            
+                                        	that.$("#youtubeDiv").show();
                                             that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
+                                             
+                                            
+                                        	
+                                           /* var link = pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1";
+                                            console.log(link);
+                                            // Try to check the link @@might not work
+                                            $.ajax({
+                                            	url: link,
+                                            	type: 'GET',
+                                            	complete: function(response) {
+                                            		if(response.status == 200) {
+                                            			that.$("#frame").attr("src", link);
+                                            			that.$("#youtubeDiv").show();
+                                            		}
+                                            	}
+                                            });*/
                                         });
 
                                         //Localization
@@ -140,8 +157,23 @@ define([
                                 });
 
                                 that.$("#addressdetails").change(function() {
-                                    that.$("#youtubeDiv").show();
-                                    that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1");
+                                	that.$("#youtubeDiv").show();
+                                    that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
+                                     
+                                	
+                                   /* var link = pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1";
+                                    console.log(link);
+                                    // Try to check the link @@might not work
+                                    $.ajax({
+                                    	url: link,
+                                    	type: 'GET',
+                                    	complete: function(response) {
+                                    		if(response.status == 200) {
+                                    			that.$("#frame").attr("src", link);
+                                    			that.$("#youtubeDiv").show();
+                                    		}
+                                    	}
+                                    });*/
                                 });
 
                                 that.$("#addressdetails").dropdown();
