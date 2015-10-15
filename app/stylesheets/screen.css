@@ -268,10 +268,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   font-weight: bold;
   padding-top: 0.8rem;
 }
-/* line 62, ../sass/partials/_dish.scss */
-#page .ui.segment {
-  padding: 0.4em;
-}
 /* line 65, ../sass/partials/_dish.scss */
 #page .card .content .ui.button {
   font-size: 0.7rem;
