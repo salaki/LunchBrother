@@ -539,24 +539,52 @@ define([
                 dp.save(null, {
                     success: function(dp) {
                         if (id === undefined) {
-                            alert('New distributing point created with Id: ' + dp.id);
+                            $("#alertTitle").text("Success");
+                            $("#alertMessage").text('New distributing point created with Id: ' + dp.id);
+                            $('#alertDialog').modal({
+                                closable: false,
+                                onApprove: function () {
+                                    location.reload();
+                                }
+                            }).modal('show');
                         } else {
-                            alert('Distributing point info updated!');
+                            $("#alertTitle").text("Success");
+                            $("#alertMessage").text('Distributing point info updated!');
+                            $('#alertDialog').modal({
+                                closable: false,
+                                onApprove: function () {
+                                    location.reload();
+                                }
+                            }).modal('show');
                         }
-                        location.reload();
                     },
                     error: function(error) {
-                        alert('Update failed! Reason: ' + error.message);
+                        $("#alertTitle").text("Failed");
+                        $("#alertMessage").text('Update failed! Reason: ' + error.message);
+                        $('#alertDialog').modal({
+                            closable: false,
+                            onApprove: function () {
+                                //Do nothing
+                            }
+                        }).modal('show');
                     }
                 });
             } else {
-                alert("Please enter the required information.");
+                $("#alertTitle").text("Failed");
+                $("#alertMessage").text("Please enter the required information.");
+                $('#alertDialog').modal({
+                    closable: false,
+                    onApprove: function () {
+                        //Do nothing
+                    }
+                }).modal('show');
             }
         },
         
         savePerson: function(id, firstname, lastname, email, phonenumber, password, title){
+            var gridId = Parse.User.current().get("gridId").id;
             if (id) {
-                this.updatePerson(id, firstname, lastname, email, phonenumber, password, title);
+                this.updatePerson(id, firstname, lastname, email, phonenumber, password, title, gridId);
             } else {
                 var person = new Parse.User();
                 person.set("username", email);
@@ -565,21 +593,38 @@ define([
                 person.set("lastName", lastname);
                 person.set("email", email);
                 person.set("telnum", Number(phonenumber));
-                person.set("gridId", Parse.User.current().get("gridId"));
+                person.set("gridId", {
+                    __type: "Pointer",
+                    className: "Grid",
+                    objectId: gridId
+                });
                 person.set("permission", Number(title));
                 person.save(null, {
                     success: function(person) {
-                        alert('New Driver/Distributor created with Id: ' + person.id);
-                        location.reload();
+                        $("#alertTitle").text("Success");
+                        $("#alertMessage").text('New Driver/Distributor created with Id: ' + person.id);
+                        $('#alertDialog').modal({
+                            closable: false,
+                            onApprove: function () {
+                                location.reload();
+                            }
+                        }).modal('show');
                     },
                     error: function(error) {
-                        alert('Update failed! Reason: ' + error.message);
+                        $("#alertTitle").text("Failed");
+                        $("#alertMessage").text('Update failed! Reason: ' + error.message);
+                        $('#alertDialog').modal({
+                            closable: false,
+                            onApprove: function () {
+                                //Do nothing
+                            }
+                        }).modal('show');
                     }
                 });
             }
         },
 
-        updatePerson: function(id, firstname, lastname, email, phonenumber, password, title) {
+        updatePerson: function(id, firstname, lastname, email, phonenumber, password, title, gridId) {
             Parse.Cloud.run('updateUser', {
                 userId: id,
                 firstName: firstname,
@@ -587,14 +632,28 @@ define([
                 email: email,
                 telnum: phonenumber,
                 password: password,
-                permission: title
+                permission: title,
+                gridId: gridId
             }, {
                 success: function (success) {
-                    alert(success);
-                    location.reload();
+                    $("#alertTitle").text("Success");
+                    $("#alertMessage").text(success);
+                    $('#alertDialog').modal({
+                        closable: false,
+                        onApprove: function () {
+                            location.reload();
+                        }
+                    }).modal('show');
                 },
                 error: function (error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    $("#alertTitle").text("Failed");
+                    $("#alertMessage").text("Error: " + error.code + " " + error.message);
+                    $('#alertDialog').modal({
+                        closable: false,
+                        onApprove: function () {
+                            //Do nothing
+                        }
+                    }).modal('show');
                 }
             });
         },
@@ -605,11 +664,24 @@ define([
             }, {
                 success: function (success) {
                     console.log(success);
-                    alert("Delete worker successfully!");
-                    location.reload();
+                    $("#alertTitle").text("Success");
+                    $("#alertMessage").text("Delete worker successfully!");
+                    $('#alertDialog').modal({
+                        closable: false,
+                        onApprove: function () {
+                            location.reload();
+                        }
+                    }).modal('show');
                 },
                 error: function (error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    $("#alertTitle").text("Failed");
+                    $("#alertMessage").text("Error: " + error.code + " " + error.message);
+                    $('#alertDialog').modal({
+                        closable: false,
+                        onApprove: function () {
+                            //Do nothing
+                        }
+                    }).modal('show');
                 }
             });
         },
@@ -619,11 +691,24 @@ define([
             dp.id = id;
             dp.destroy({
                 success: function(dp) {
-                    alert("Create Distributing Point successfully!");
-                    location.reload();
+                    $("#alertTitle").text("Success");
+                    $("#alertMessage").text("Create Distributing Point successfully!");
+                    $('#alertDialog').modal({
+                        closable: false,
+                        onApprove: function () {
+                            location.reload();
+                        }
+                    }).modal('show');
                 },
                 error: function(dp, error) {
-                    alert("Delete fail: Reason: " + error.message);
+                    $("#alertTitle").text("Failed");
+                    $("#alertMessage").text("Error: " + error.code + " " + error.message);
+                    $('#alertDialog').modal({
+                        closable: false,
+                        onApprove: function () {
+                            //Do nothing
+                        }
+                    }).modal('show');
                 }
             });
         },
