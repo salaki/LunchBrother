@@ -452,13 +452,6 @@ define([
                         type: 'empty',
                         prompt: 'Please enter the name of your location'
                     }]
-                },
-                dp_youtube_link: {
-                    identifier: 'dp_youtube_link',
-                    rules: [{
-                        type: 'empty',
-                        prompt: 'Please enter youtube link'
-                    }]
                 }
             }, {
                 on: 'blur',
