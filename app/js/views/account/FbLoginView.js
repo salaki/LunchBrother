@@ -35,9 +35,13 @@ define( [
                         {
                             if ( response && !response.error )
                             {
+                                var grid = new GridModel();
+                                grid.id = this.$("#gridOptions").val();
+                                
                                 console.log( user.id );
                                 user = Parse.User.current();
                                 user.set( "gridName", "UMCP" );
+                                user.set("gridId", grid);
                                 user.set( "firstName", response.first_name );
                                 user.set( "lastName", response.last_name );
                                 user.set( "username", response.name );
