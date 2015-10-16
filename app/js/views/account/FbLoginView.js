@@ -1,7 +1,8 @@
 define( [
     'text!templates/account/fbLoginTemplate.html',
-    'facebook'
-], function ( fbLoginTemplate )
+    'facebook',
+    'models/Grid'
+], function ( fbLoginTemplate, GridModel )
 {
 
     var FbLoginView = Parse.View.extend( {
@@ -37,7 +38,7 @@ define( [
                             {
                                 var grid = new GridModel();
                                 grid.id = this.$("#gridOptions").val();
-                                
+
                                 console.log( user.id );
                                 user = Parse.User.current();
                                 user.set( "gridName", "UMCP" );
