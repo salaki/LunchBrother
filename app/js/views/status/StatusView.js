@@ -85,13 +85,13 @@
                                         grid.get("name"), "", "", grid.get("driver"));
                                 },
                                 error: function(object, error) {
-                                    alert("Error: " + error.code + " " + error.message);
+                                    showMessage("Error", "Get grid failed! Error: " + error.code + " " + error.message);
                                 }
                             });
                         }
                     },
                     error: function(error) {
-                        alert("Error: " + error.code + " " + error.message);
+                        showMessage("Error", "Find payment record failed! Error: " + error.code + " " + error.message);
                     }
                 });
             }
@@ -127,7 +127,7 @@
                     var pickUpLocationMarker = new google.maps.Marker({position: pickUpLocation, map: map, title: "Your are here!"});
                 },
                 error: function (error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find delivery record failed! Error: " + error.code + " " + error.message);
                 }
             });
         }

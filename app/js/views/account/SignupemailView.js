@@ -83,8 +83,8 @@ define([
                          inline: 'true'
                      });
                  },
-                 error: function(){
-                     console.log("Error finding grid data.");
+                 error: function(error){
+                     showMessage("Error", "Find grid failed! Reason: " + error.message);
                  }
              });
              return this;
@@ -107,16 +107,16 @@ define([
                                 self.createAccount();
                             },
                             error: function(error) {
-                                console.log('Update registration code failed! Reason: ' + error.message);
+                                showMessage("Error", "Update registration code failed! Reason: " + error.message);
                             }
                         });
 
                     } else {
-                        alert("Your registration code is invalid or has been used to sign up!");
+                        showMessage("Oops!", "Your registration code is invalid or has been used to sign up!");
                     }
                 },
                 error: function(error) {
-                    console.log('Check registration code failed! Reason: ' + error.message);
+                    showMessage("Error", "Check registration code failed! Reason: " + error.message);
                 }
             });
 
@@ -129,7 +129,7 @@ define([
             query.find({
                 success: function(users) {
                     if (users.length > 0) {
-                        alert("This username already exists!");
+                        showMessage("Oops", "This username already exists!");
                     } else {
                         var user = new Parse.User();
                         var grid = new GridModel();
@@ -148,7 +148,7 @@ define([
                                     self.signOutAndSendActivationEmail(user);
                                 },
                                 error: function(user, error) {
-                                    alert("Error: " + error.code + " " + error.message);
+                                    showMessage("Error", "User sign up failed! Reason: " + error.message);
                                 }
                         });
 			//Disable Balance Setting.

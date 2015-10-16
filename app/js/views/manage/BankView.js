@@ -28,7 +28,7 @@ define([
                         self.$el.html(self.template({bankAccount: bankAccount}));
                     },
                     error: function(error) {
-                        alert(error.message);
+                        showMessage("Error", "Find bank failed! Reason: " + error.message);
                     }
                 });
             } else {
@@ -67,7 +67,7 @@ define([
 
             if (response.error) {
                 // Show the errors on the form
-                alert(response.error.message);
+                showMessage("Error", response.error.message);
                 $form.find('.bank-errors').text(response.error.message);
                 $form.find('button').prop('disabled', false);
             } else {
@@ -91,12 +91,12 @@ define([
                     success: function (response) {
                         currentUser.set('bankAccount', response);
                         currentUser.save();
-                        alert("Bank account created successfully!");
-                        window.location.href = '#managerHome?week=';
+                        showMessage("Success", "Bank account created successfully!", function() {
+                            window.location.href = '#managerHome?week=';
+                        });
                     },
                     error: function(error) {
-                        alert("Oops, something went wrong! Please check your account number and routing number then try again.");
-                        console.log(error.message);
+                        showMessage("Error", "Oops, something went wrong! Please check your account number and routing number then try again. Details: " + error.message);
                     }
                 });
             }

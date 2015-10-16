@@ -96,7 +96,7 @@ define([
               },
               error: function ( user, error )
               {
-                  alert( "Error: " + error.code + " " + error.message );
+                  showMessage("Error", "Save user failed! Reason: " + error.message);
               }
           } );
       });
@@ -115,7 +115,7 @@ define([
               },
               error: function ( user, error )
               {
-                  alert( "Error: " + error.code + " " + error.message );
+                  showMessage("Error", "Save user failed! Reason: " + error.message);
               }
           } );
       });

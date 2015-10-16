@@ -33,7 +33,7 @@ define([
                         $("#dishPhoto").change(self.handleFileSelect);
                     },
                     error: function(error) {
-                        alert("Error in finding restaurant. Reason: " + error.message);
+                        showMessage("Error", "Find restaurants failed! Reason: " + error.message);
                     }
                 });
             } else {
@@ -111,11 +111,12 @@ define([
             dish.set("vegetarian", $("#dish-vegetarian").is(':checked'));
             dish.save({
                 success: function(dish) {
-                    alert("Dish save successfully!");
-                    window.location.href = "#manageRestaurants";
+                    showMessage("Success", "Dish save successfully!", function () {
+                        window.location.href = "#manageRestaurants";
+                    });
                 },
                 error: function(error) {
-                    alert("Dish save failed! Reason: " + error.message);
+                    showMessage("Error", "Dish save failed! Reason: " + error.message);
                 }
             });
         }

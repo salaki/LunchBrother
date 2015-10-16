@@ -32,7 +32,7 @@ define([
                           self.continueFindGridAndRender(restaurant);
                       },
                       error: function(error) {
-                          alert("Error in finding restaurant. Reason: " + error.message);
+                          showMessage("Error", "Find restaurants failed! Reason: " + error.message);
                       }
                   });
               } else {
@@ -93,7 +93,7 @@ define([
 
                   },
                   error: function(error) {
-                      alert("Error in finding grids. Reason: " + error.message);
+                      showMessage("Error", "Error in finding grids. Reason: " + error.message);
                   }
               });
           },
@@ -135,12 +135,13 @@ define([
                 description: description
               }, {
                 success: function(savedRestaurant) {
-                  alert('Save restaurant successfully!');
-                    $("#restaurantId").val(savedRestaurant.id);
-                    self.createBankAccount();
+                    showMessage("Success", "Save restaurant successfully!", function() {
+                        $("#restaurantId").val(savedRestaurant.id);
+                        self.createBankAccount();
+                    });
                 },
                 error: function(savedRestaurant, error) {
-                  alert('Failed to save restaurant, with error message: ' + error.message);
+                    showMessage("Error", "Failed to save restaurant, with error message: " + error.message);
                 }
               });
           },
@@ -159,7 +160,7 @@ define([
 
               if (response.error) {
                   // Show the errors on the form
-                  alert(response.error.message);
+                  showMessage("Error", response.error.message);
                   $form.find('.bank-errors').text(response.error.message);
                   $form.find('button').prop('disabled', false);
               } else {
@@ -184,11 +185,12 @@ define([
                           restaurant.id = restaurantId;
                           restaurant.set('bankAccount', response);
                           restaurant.save();
-                          alert("Bank account created successfully!");
-                          window.location.href='#manageRestaurants';
+                          showMessage("Success", "Bank account created successfully!", function() {
+                              window.location.href='#manageRestaurants';
+                          });
                       },
                       error: function(error) {
-                          alert("Oops, something went wrong! Please check your account number and routing number then try again.");
+                          showMessage("Error", "Oops, something went wrong! Please check your account number and routing number then try again.");
                           console.log(error.message);
                       }
                   });

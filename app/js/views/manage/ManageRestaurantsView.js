@@ -39,7 +39,7 @@ define([
                     });
                 },
                 error: function(error) {
-                    alert("Find restaurants failed! Reason: " + error.message);
+                    showMessage("Error", "Find restaurants failed! Reason: " + error.message);
                 }
             });
         },
@@ -68,7 +68,7 @@ define([
                     self.$("#dishList").html(self.dishListTemplate({dishes: dishes}));
                 },
                 error: function(error) {
-                    alert("Find dishes failed! Reason: " + error.message);
+                    showMessage("Error", "Find dishes failed! Reason: " + error.message);
                 }
             });
         },
@@ -97,11 +97,12 @@ define([
                     restaurant.id = $(".manage-restaurant-selection").dropdown('get value');
                     restaurant.destroy({
                         success: function(restaurant) {
-                            alert("Delete restaurant successfully!");
-                            location.reload();
+                            showMessage("Error", "Delete restaurant successfully!", function() {
+                                location.reload();
+                            });
                         },
                         error: function(restaurant, error) {
-                            alert("Delete restaurant failed! Reason: " + error.message);
+                            showMessage("Error", "Delete restaurant failed! Reason: " + error.message);
                         }
                     });
                 }
@@ -110,7 +111,7 @@ define([
 
         onDeleteDishClick: function(ev) {
             var dishId = $(ev.currentTarget).data('id');
-            alert("This function is still under construction");
+            showMessage("Oops!", "Delete function is still under construction");
             //TODO - Need more discussion to implement the delete function
         },
 

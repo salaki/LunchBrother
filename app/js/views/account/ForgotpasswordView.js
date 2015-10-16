@@ -61,24 +61,14 @@ define([
                         }
                     });
 
-                    $("#alertTitle").text("Success");
-                    $("#alertMessage").text("An email has been sent to " + email + ", please follow the instructions to reset your password!");
-                    $('#alertDialog').modal({
-                        closable: false,
-                        onApprove: function () {
-                            window.location.hash = "#";
-                        }
-                    }).modal('show');
+                    showMessage("Success", "An email has been sent to " + email + ", please follow the instructions to reset your password!", function() {
+                        window.location.hash = "#";
+                    });
                 },
                 error: function (error) {
-                    $("#alertTitle").text("Error");
-                    $("#alertMessage").text(error.message);
-                    $('#alertDialog').modal({
-                        closable: false,
-                        onApprove: function () {
-                            window.location.hash = "#forgotpassword";
-                        }
-                    }).modal('show');
+                    showMessage("Error", error.message, function() {
+                        window.location.hash = "#forgotpassword";
+                    });
                 }
             });
         },

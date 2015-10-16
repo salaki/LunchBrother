@@ -325,7 +325,7 @@ define([
                             $('#orderBtn').removeClass('grey').addClass('red');
                         },
                         error: function (payment, error) {
-                            alert('Failed to create new object, with error code: ' + error.message);
+                            showMessage("Fail", "Save payment record failed! Error: " + error.code + " " + error.message);
                         }
                     });
                 },

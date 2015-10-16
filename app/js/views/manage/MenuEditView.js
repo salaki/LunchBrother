@@ -237,13 +237,11 @@ define([
 
                         //Validate quantity and price inputs
                         if (!self.isInteger(quantity)) {
-                            alert("Quantity has to be an integer number!");
-                            return;
+                            showMessage("Oops!", "Quantity has to be an integer number!");
                         }
 
                         if (!Number(price)) {
-                            alert("Price has to be a number!");
-                            return;
+                            showMessage("Oops!", "Price has to be a number!");
                         }
 
                         if (self.addedInventories === 0) {
