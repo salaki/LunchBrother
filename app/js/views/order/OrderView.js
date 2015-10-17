@@ -81,27 +81,11 @@ define([
                                             inline: 'true'
                                         });
 
-
                                         that.$("#addressdetails").change(function() {
-                                            
-                                        	that.$("#youtubeDiv").show();
-                                            that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
-                                             
-                                            
-                                        	
-                                           /* var link = pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1";
-                                            console.log(link);
-                                            // Try to check the link @@might not work
-                                            $.ajax({
-                                            	url: link,
-                                            	type: 'GET',
-                                            	complete: function(response) {
-                                            		if(response.status == 200) {
-                                            			that.$("#frame").attr("src", link);
-                                            			that.$("#youtubeDiv").show();
-                                            		}
-                                            	}
-                                            });*/
+                                            if (pickUpLocationMap[$("#addressdetails").val()]['youtubeLink']) {
+                                                that.$("#youtubeDiv").show();
+                                                that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
+                                            }
                                         });
 
                                         //Localization
