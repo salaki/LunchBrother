@@ -112,6 +112,8 @@ define([
         var appRouter = new AppRouter();
 	    var permission = 0;
 
+        var HOME_VIEW = new HomeView();
+
           appRouter.on('route:showOrder', function () {
               var currentUser = Parse.User.current();
               if(currentUser != null) {
@@ -163,8 +165,8 @@ define([
           appRouter.on('route:showHome', function () {
               var currentUser = Parse.User.current();
               if(currentUser != null) {
-                  var homeView = new HomeView();
-                  homeView.render();
+                  //var homeView = new HomeView();
+                  HOME_VIEW.render();
               } else {
                   var loginorsignupView = new LoginorsignupView();
                   loginorsignupView.render();
@@ -399,8 +401,8 @@ define([
             var currentUser = Parse.User.current();
             // we have no matching route, lets display the signup&login page
             if(currentUser != null) {
-                var homeView = new HomeView();
-                homeView.render();
+                //var homeView = new HomeView();
+                HOME_VIEW.render();
             }else{
                 var loginorsignupView = new LoginorsignupView();
                 loginorsignupView.render();
