@@ -34,14 +34,9 @@ define([
                         var timeDifference = (current.getTime() - updateTime.getTime())/1000/60;
 
                         if (timeDifference > 5) {
-                            $("#alertTitle").text("Reset Link Expired");
-                            $("#alertMessage").text("Your reset password link is expired, please submit the request again.");
-                            $('#alertDialog').modal({
-                                closable: false,
-                                onApprove: function () {
-                                    window.location.hash = "#forgotpassword";
-                                }
-                            }).modal('show');
+                            showMessage("Reset Link Expired", "Your reset password link is expired, please submit the request again.", function() {
+                                window.location.hash = "#forgotpassword";
+                            });
                         } else {
                             self.$el.html(self.template());
                             self.$('.ui.form').form({
@@ -65,16 +60,11 @@ define([
                             });
                         }
                     },
-                error:function(error){
-                    $("#alertTitle").text("Invalid Reset Key");
-                    $("#alertMessage").text("Your reset key is invalid, please try again");
-                    $('#alertDialog').modal({
-                        closable: false,
-                        onApprove: function () {
+                    error:function(error){
+                        showMessage("Invalid Reset Key", "Your reset key is invalid, please try again.", function() {
                             window.location.hash = "#forgotpassword";
-                        }
-                    }).modal('show');
-                }
+                        });
+                    }
         	    });
             return this;
         },
@@ -88,9 +78,7 @@ define([
                 //do nothing
             } else {
                 if( newPassword != confirmPassword) {
-                    $("#alertTitle").text("Passwords Mismatch");
-                    $("#alertMessage").text("Your passwords do not match, please check them and try again.");
-                    $('#alertDialog').modal('show');
+                    showMessage("Passwords Mismatch", "Your passwords do not match, please check them and try again.");
                 } else {
                     query.get(this.options.userId, {
                         success: function(user) {
@@ -101,25 +89,20 @@ define([
                                     password: this.$("#newPassword").val()
                                 },{
                                     success: function() {
-                                        $("#alertTitle").text("Success");
-                                        $("#alertMessage").text("Your password has been reset, now you can login with your new password!");
-                                        $('#alertDialog').modal({
-                                            closable: false,
-                                            onApprove: function () {
-                                                window.location.hash = "#";
-                                            }
-                                        }).modal('show');
+                                        showMessage("Success", "Your password has been reset, now you can login with your new password!", function () {
+                                            window.location.hash = "#";
+                                        });
                                     },
                                     error: function(error) {
-                                        console.log("Save new password failed! Reason: " + error.message);
+                                        showMessage("Error", "Save new password failed! Reason: " + error.message);
                                     }
                                 });
-                            }else {
-                                console.log("Reset key does not match!");
+                            } else {
+                                showMessage("Error", "Reset key does not match!");
                             }
                         },
                         error: function() {
-                            console.log("Can't find this user!");
+                            showMessage("Error", "Can't find user!");
                         }
                     });
                 }

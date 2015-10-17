@@ -45,7 +45,7 @@ define( [
                 },
                 error: function ( user, error )
                 {
-                    alert( "Error: " + error.code + " " + error.message );
+                    showMessage("Error", "Save profile failed! Reason: " + error.message);
                 }
             } );
         }

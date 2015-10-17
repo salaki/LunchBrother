@@ -77,7 +77,7 @@ define(['views/home/DishView',
                     self.dishes.bind('all', self.render);
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find inventory failed! Reason: " + error.message);
                 }
             });
 		},
@@ -201,7 +201,7 @@ define(['views/home/DishView',
                     }
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find request records failed! Reason: " + error.message);
                 }
             });
         },
@@ -218,7 +218,7 @@ define(['views/home/DishView',
                     inventory.save();
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find inventory failed! Reason: " + error.message + "Inventory Id: " + inventoryId);
                 }
             })
         },

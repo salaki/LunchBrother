@@ -28,7 +28,7 @@ define([
                           self.continueFindGridAndRender(manager);
                       },
                       error: function(error) {
-                          alert("Error in finding restaurant. Reason: " + error.message);
+                          showMessage("Error!", "Find restaurant failed. Reason: " + error.message);
                       }
                   });
               } else {
@@ -55,7 +55,7 @@ define([
                       }
                   },
                   error: function(error) {
-                      alert("Error in finding grids. Reason: " + error.message);
+                      showMessage("Error", "Find grids failed. Reason: " + error.message);
                   }
               });
           },
@@ -113,7 +113,7 @@ define([
                           self.continueSaveManager(managerId, username, password, firstName, lastName, email, telnum, permission, imageFile, gridId);
                       },
                       error: function (error) {
-                          alert("Error: " + error.code + " " + error.message);
+                          showMessage("Error", error.message);
                       }
                   });
               } else {
@@ -135,11 +135,12 @@ define([
                       gridId: gridId
                   }, {
                       success: function (success) {
-                          alert("Save manager successfully!");
-                          window.location.href = "#managerList";
+                          showMessage("Success", "Save manager successfully!", function(){
+                              window.location.href = "#managerList";
+                          });
                       },
                       error: function (error) {
-                          alert("Error: " + error.code + " " + error.message);
+                          showMessage("Error", "Save manager failed! Reason: " + error.message);
                       }
                   });
               } else {

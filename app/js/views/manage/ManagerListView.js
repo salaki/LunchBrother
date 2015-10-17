@@ -29,7 +29,7 @@ define([
                       self.$el.html(self.template({managers: managers}));
                   },
                   error: function(error) {
-                      alert("Find managers failed! Reason: " + error.message);
+                      showMessage("Error", "Find managers failed! Reason: " + error.message);
                   }
               });
           },
@@ -40,7 +40,7 @@ define([
 
           onDeleteManagerClick: function(ev) {
               var managerId = $(ev.currentTarget).data('id');
-              alert("Manager Id: " + managerId + ". This function is still under construction");
+              showMessage("Oops!", "Delete function is still under construction");
               //TODO - Need more discussion to implement the delete function
           }
       });

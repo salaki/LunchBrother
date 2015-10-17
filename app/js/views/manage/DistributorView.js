@@ -48,7 +48,7 @@ define([
                     }
                 },
                 error: function(error) {
-                    alert("Pick Up Location Query Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Pick Up Location Query Error: " + error.code + " " + error.message);
                 }
             });
 
@@ -108,7 +108,7 @@ define([
                     self.queryOrder(payments);
                 },
                 error: function (error) {
-                    alert("Payment Query Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Payment Query Error: " + error.code + " " + error.message);
                 }
             });
         },
@@ -123,7 +123,7 @@ define([
                     self.populateDistributorView(payments, orders);
                 },
                 error: function (error) {
-                    alert("Order Query Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Order Query Error: " + error.code + " " + error.message);
                 }
             });
         },
@@ -199,7 +199,7 @@ define([
                     //Do nothing
                 },
                 error: function (error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Save payment failed! Reason: " + error.message);
                 }
             });
         },

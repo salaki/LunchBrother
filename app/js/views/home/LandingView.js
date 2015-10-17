@@ -20,8 +20,6 @@ define([
         },
 
         render: function() {
-//            var x = document.cookie;
-//            console.log(x);
             var self = this;            
             var universityQuery = new Parse.Query(UniversityModel);
             universityQuery.equalTo("e_country", "USA");
@@ -56,7 +54,7 @@ define([
                     }
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Oops!", "Find grid failed! Reason: " + error.message);
                 }
             });
         },
@@ -71,7 +69,7 @@ define([
                     self.getManagerInventory(manager);
                 },
                 error: function(error){
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Oops!", "Find manager failed! Reason" + error.message);
                 }
             });
         },
@@ -143,7 +141,7 @@ define([
                     self.$("#weeklyMenu").html(self.weeklyMenuTemplate({menu:[firstWeekMenu, secondWeekMenu, thirdWeekMenu], weeks: [firstWeek, secondWeek, thirdWeek]}));
                 },
                 error: function (error) {
-                    console.log("Inventory Query Error: " + error.code + " " + error.message);
+                    showMessage("Oops!", "Inventory Query Error: " + error.code + " " + error.message);
                 }
             });
         },
@@ -168,11 +166,14 @@ define([
                             var collegeRegex = /\.edu/;
 
                             if (voterEmail.trim() === "") {
-                                alert("Please enter your email address.");
+                                showMessage("Oops!", "Please enter your email address.");
+
                             } else if (!emailRegEx.test(voterEmail)) {
-                                alert("Please enter valid email address.");
+                                showMessage("Oops!", "Please enter valid email address.");
+
                             } else if (!collegeRegex.test(voterEmail)) {
-                                alert("Sorry, we currently only accept school email address.");
+                                showMessage("Oops!", "Sorry, we currently only accept school email address.");
+
                             } else {
                                 var requestQuery = new Parse.Query(UserRequestModel);
                                 requestQuery.equalTo("requestByEmail", voterEmail);
@@ -180,7 +181,8 @@ define([
                                 requestQuery.find({
                                     success: function(users) {
                                         if (users.length > 0){
-                                            alert("We already have your request record, thank you very much!");
+                                            showMessage("Success", "We already have your request record, thank you very much!");
+
                                         } else {
                                             var newRequest = new UserRequestModel();
                                             newRequest.set("requestType", "SERVICE");
@@ -188,16 +190,16 @@ define([
                                             newRequest.set("requestTargetId", collegeName);
                                             newRequest.save({
                                                 success: function(request) {
-                                                    alert("Request saved, thank you for your response!");
+                                                    showMessage("Success", "Request saved, thank you for your response!");
                                                 },
                                                 error: function(error) {
-                                                    alert("Error: " + error.code + " " + error.message);
+                                                    showMessage("Error", "Save request failed! Error: " + error.code + " " + error.message);
                                                 }
                                             });
                                         }
                                     },
                                     error: function(error) {
-                                        alert("Error: " + error.code + " " + error.message);
+                                        showMessage("Error", "Save request record failed! Error: " + error.code + " " + error.message);
                                     }
                                 });
                             }
@@ -205,7 +207,7 @@ define([
                     }).modal('show');
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find request record failed! Error: " + error.code + " " + error.message);
                 }
             });
         }
