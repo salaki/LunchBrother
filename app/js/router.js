@@ -84,6 +84,33 @@ define([
         }
     });
 
+    var showSideBar = function(currentUser) {
+        currentUser.fetch();
+        $("#userEmail").text(currentUser.get('email'));
+        var gridId = "nmbyDzTp7m";
+        if (currentUser.get('gridId') == undefined) {
+            $("#userGrid").text("University of Maryland College Park");
+        }else {
+            var GridModel = Parse.Object.extend("Grid");
+            var gridQuery = new Parse.Query(GridModel);
+            gridId = currentUser.get('gridId').id;
+            gridQuery.get(currentUser.get('gridId').id, {
+                success: function(grid) {
+                    $("#userGrid").text(grid.get('name'));
+                },
+                error: function(object, error) {
+                    console.log(error.message);
+                }
+            });
+        }
+        $("#userPhone").text(currentUser.get('telnum'));
+        $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
+        $("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
+        $("#accountBarFirstName").text(currentUser.get('firstName'));
+        $('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
+        $('#account').show();
+    };
+
     var ParseQueryString = function(queryString){
             var params = {};
             if(queryString){
@@ -165,7 +192,7 @@ define([
           appRouter.on('route:showHome', function () {
               var currentUser = Parse.User.current();
               if(currentUser != null) {
-                  //var homeView = new HomeView();
+                  showSideBar(currentUser);
                   HOME_VIEW.render();
               } else {
                   var loginorsignupView = new LoginorsignupView();
@@ -232,6 +259,7 @@ define([
 
             var currentUser = Parse.User.current();
             if(currentUser != null) {
+                showSideBar(currentUser);
                 permission = currentUser.get('permission');
             }
             if (permission === LOCAL_MANAGER) {
@@ -401,7 +429,7 @@ define([
             var currentUser = Parse.User.current();
             // we have no matching route, lets display the signup&login page
             if(currentUser != null) {
-                //var homeView = new HomeView();
+                showSideBar(currentUser);
                 HOME_VIEW.render();
             }else{
                 var loginorsignupView = new LoginorsignupView();

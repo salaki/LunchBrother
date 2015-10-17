@@ -17,8 +17,6 @@ define([
     
     router.initialize();
 
-      var currentUser = Parse.User.current();
-
     $('.ui.dropdown').dropdown();
     var cnDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     var today = new Date();
@@ -31,37 +29,10 @@ define([
     	window.location.href="#";
     	location.reload();
     });
-
-      if (currentUser != null) {
-          currentUser.fetch();
-          $("#userEmail").text(currentUser.get('email'));
-          var gridId = "nmbyDzTp7m";
-          if (currentUser.get('gridId') == undefined) {
-              $("#userGrid").text("University of Maryland College Park");
-          }else {
-              var GridModel = Parse.Object.extend("Grid");
-              var gridQuery = new Parse.Query(GridModel);
-              gridId = currentUser.get('gridId').id;
-              gridQuery.get(currentUser.get('gridId').id, {
-                  success: function(grid) {
-                      $("#userGrid").text(grid.get('name'));
-                  },
-                  error: function(object, error) {
-                      console.log(error.message);
-                  }
-              });
-          }
-          $("#userPhone").text(currentUser.get('telnum'));
-          $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
-          $("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
-          $("#accountBarFirstName").text(currentUser.get('firstName'));
-          $('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
-          $('#account').show();
-      }
     
     $('#signOutBtn').click(function() {
         $('.ui.sidebar').sidebar('hide');
-
+        var currentUser = Parse.User.current();
         //Update registration code state
         var RegistrationCode = Parse.Object.extend("RegistrationCode");
         if (currentUser.get('permission') === GENERAL_USER) {
@@ -108,6 +79,7 @@ define([
           savebtn.css("display", "block");
       });
       $(".savebtn").on("click", function(e){
+          var currentUser = Parse.User.current();
           e.preventDefault();
           var elink   = $(this).prev(".editlink");
           var dataset = elink.prev(".datainfo");
@@ -134,6 +106,7 @@ define([
           } );
       });
       $("#smsCheckbox").on("change", function(e){
+          var currentUser = Parse.User.current();
           e.preventDefault();
           if ($(this).is(':checked')) {
               currentUser.set( "smsEnabled", true );
@@ -153,6 +126,7 @@ define([
       });
 
       $('#account').click(function() {
+          var currentUser = Parse.User.current();
           if (currentUser.get('smsEnabled') == undefined || currentUser.get('smsEnabled') == true) {
               $("#smsCheckbox").prop('checked', true);
           } else {
