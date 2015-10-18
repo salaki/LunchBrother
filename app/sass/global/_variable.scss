@@ -51,5 +51,16 @@ $lg: 1.2rem;
 	color: $color_grey;
 }
 
+//original selectors
+//#frame
+%extend_4 {
+	height: 315px;
+	width: 560px;
+}
 
-
+//original selectors
+//#youtubeDiv 
+%extend_5{
+	width:100%;
+	height:100%;
+}

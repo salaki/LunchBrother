@@ -71,30 +71,6 @@ define([
         initialize: function() {
             _.bindAll(this, 'render');
             var currentUser = Parse.User.current();
-            if(currentUser != null) {
-                currentUser.fetch();
-                $("#userEmail").text(currentUser.get('email'));
-                var gridId = "nmbyDzTp7m";
-                if (currentUser.get('gridId') == undefined) {
-                    $("#userGrid").text("University of Maryland College Park");
-                }else {
-                    var gridQuery = new Parse.Query(GridModel);
-                    gridId = currentUser.get('gridId').id;
-                    gridQuery.get(currentUser.get('gridId').id, {
-                        success: function(grid) {
-                            $("#userGrid").text(grid.get('name'));
-                        },
-                        error: function(object, error) {
-                            console.log(error.message);
-                        }
-                    });
-                }
-                $("#userPhone").text(currentUser.get('telnum'));
-                $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
-                $("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
-                $("#accountBarFirstName").text(currentUser.get('firstName'));
-            }
-            $('#account').show();
         },
 
         render: function() {
@@ -265,7 +241,7 @@ define([
                     self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income}));
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find inventory failed! Reason: " + error.message);
                 }
             });
         },
@@ -452,13 +428,6 @@ define([
                         type: 'empty',
                         prompt: 'Please enter the name of your location'
                     }]
-                },
-                dp_youtube_link: {
-                    identifier: 'dp_youtube_link',
-                    rules: [{
-                        type: 'empty',
-                        prompt: 'Please enter youtube link'
-                    }]
                 }
             }, {
                 on: 'blur',
@@ -530,7 +499,7 @@ define([
                 chefGrid.id = "nmbyDzTp7m";
             }
 
-            if (address.trim() !== "" && youtubeLink.trim() !== "") {
+            if (address.trim() !== "") {
                 var dp = new PickUpLocationModel();
                 dp.id = id;
                 dp.set("gridId", chefGrid);
@@ -546,24 +515,28 @@ define([
                 dp.save(null, {
                     success: function(dp) {
                         if (id === undefined) {
-                            alert('New distributing point created with Id: ' + dp.id);
+                            showMessage("Success", "New distributing point created with Id: " + dp.id, function() {
+                                location.reload();
+                            });
                         } else {
-                            alert('Distributing point info updated!');
+                            showMessage("Success", "Distributing point info updated!", function() {
+                                location.reload();
+                            });
                         }
-                        location.reload();
                     },
                     error: function(error) {
-                        alert('Update failed! Reason: ' + error.message);
+                        showMessage("Fail", "Update failed! Reason: " + error.message);
                     }
                 });
             } else {
-                alert("Please enter the required information.");
+                showMessage("Fail", "Please enter the name for this distributing point.");
             }
         },
         
         savePerson: function(id, firstname, lastname, email, phonenumber, password, title){
+            var gridId = Parse.User.current().get("gridId").id;
             if (id) {
-                this.updatePerson(id, firstname, lastname, email, phonenumber, password, title);
+                this.updatePerson(id, firstname, lastname, email, phonenumber, password, title, gridId);
             } else {
                 var person = new Parse.User();
                 person.set("username", email);
@@ -572,21 +545,26 @@ define([
                 person.set("lastName", lastname);
                 person.set("email", email);
                 person.set("telnum", Number(phonenumber));
-                person.set("gridId", Parse.User.current().get("gridId"));
+                person.set("gridId", {
+                    __type: "Pointer",
+                    className: "Grid",
+                    objectId: gridId
+                });
                 person.set("permission", Number(title));
                 person.save(null, {
                     success: function(person) {
-                        alert('New Driver/Distributor created with Id: ' + person.id);
-                        location.reload();
+                        showMessage("Success", "Save worker successfully!", function() {
+                            location.reload();
+                        });
                     },
                     error: function(error) {
-                        alert('Update failed! Reason: ' + error.message);
+                        showMessage("Error", "Save worker failed! Reason: " + error.message);
                     }
                 });
             }
         },
 
-        updatePerson: function(id, firstname, lastname, email, phonenumber, password, title) {
+        updatePerson: function(id, firstname, lastname, email, phonenumber, password, title, gridId) {
             Parse.Cloud.run('updateUser', {
                 userId: id,
                 firstName: firstname,
@@ -594,14 +572,16 @@ define([
                 email: email,
                 telnum: phonenumber,
                 password: password,
-                permission: title
+                permission: title,
+                gridId: gridId
             }, {
                 success: function (success) {
-                    alert(success);
-                    location.reload();
+                    showMessage("Success", success, function() {
+                        location.reload();
+                    });
                 },
                 error: function (error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Update user failed! Reason: " + error.message);
                 }
             });
         },
@@ -611,12 +591,12 @@ define([
                 userId: id
             }, {
                 success: function (success) {
-                    console.log(success);
-                    alert("Delete worker successfully!");
-                    location.reload();
+                    showMessage("Success", "Delete worker successfully!", function() {
+                        location.reload();
+                    });
                 },
                 error: function (error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Delete worker failed! Reason: " + error.message);
                 }
             });
         },
@@ -626,11 +606,10 @@ define([
             dp.id = id;
             dp.destroy({
                 success: function(dp) {
-                    alert("Create Distributing Point successfully!");
-                    location.reload();
+                    showMessage("Success", "Delete distributing point successfully!");
                 },
                 error: function(dp, error) {
-                    alert("Delete fail: Reason: " + error.message);
+                    showMessage("Error", "Delete distributing point failed! Reason: " + error.message);
                 }
             });
         },
@@ -669,10 +648,10 @@ define([
 
                     Parse.Object.saveAll(inventories, {
                         success: function(inventories) {
-                            console.log("Week menu published!");
+                            showMessage("Success", "Save menu successfully!");
                         },
                         error: function(error) {
-                            console.log('Save failed! Reason: ' + error.message + 'Inventories: ' + inventories);
+                            showMessage("Error", "Save menu failed! Reason: " + error.message + "Menu: " + + inventories);
                         }
                     });
                 }
@@ -694,10 +673,10 @@ define([
 
             Parse.Object.saveAll(inventories, {
                 success: function(inventories) {
-                    console.log("Week menu published!");
+                    showMessage("Success", "Week menu un-published successfully!");
                 },
                 error: function(error) {
-                    alert('Save failed! Reason: ' + error.message);
+                    showMessage("Error", "Save inventories failed! Reason: " + error.message);
                 }
             });
         },
@@ -715,10 +694,10 @@ define([
 
             Parse.Object.saveAll(codes, {
                 success: function(objs) {
-                    alert(objs.length + " registration codes have been generated!");
+                    showMessage("Success", objs.length + " registration codes have been generated!");
                 },
                 error: function(error) {
-                    alert("Error: " + error.message);
+                    showMessage("Error", error.message);
                 }
             });
         },

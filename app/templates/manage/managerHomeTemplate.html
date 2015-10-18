@@ -1,6 +1,6 @@
 <div class="ui two buttons">
-    <button class="ui orange button"><i class="food icon"></i>Work as distributor</button>
-    <button class="ui orange button"><i class="car icon"></i>Work as driver</button>
+    <button class="ui orange button" id="showDistributorStatus"><i class="food icon"></i>Work as distributor</button>
+    <button class="ui orange button" id="showDriverStatus"><i class="car icon"></i>Work as driver</button>
 </div>
 <h4 class="ui top attached red header">
     <i class="marker icon small"></i>Manage distribution points
@@ -115,14 +115,14 @@
                             <input id="dp_location" class="ui input location" placeholder="Name of Location" type="text" name="dp_location" value="">
                         </div>
                         <div class="ui fluid field">
-                            <input id="dp_youtubeLink" class="ui input youtubeLink" placeholder="Youtube Link" type="text" name="dp_youtube_link" value="">
+                            <input id="dp_youtubeLink" class="ui input youtubeLink" placeholder="Youtube Link (optional)" type="text" name="dp_youtube_link" value="">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="field">
                 <select class="ui dropdown" id="distributorSelector">
-                    <option value="">Select yourtest distributor</option>
+                    <option value="">Select your distributor</option>
                     <% _.each(distributors, function(distributor) { %>
                     <option value="<%= distributor.id %>">
                     <%= distributor.get('firstName') %> <%= distributor.get('lastName') %>

@@ -53,3 +53,16 @@ function getParameterByName(name) {
         results = regex.exec(location.search);
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+
+function showMessage(title, message, callback) {
+    $("#alertTitle").text(title);
+    $("#alertMessage").text(message);
+    $('#alertDialog').modal({
+        closable: false,
+        onApprove: function () {
+            if (callback != undefined && callback != null) {
+                callback.call(this);
+            }
+        }
+    }).modal('show');
+}
