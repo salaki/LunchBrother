@@ -1,6 +1,6 @@
 # A sample Gemfile
 source "https://rubygems.org"
-gem 'nokogiri'
+gem 'nokogiri', '~> 1.6.6.2'
 gem 'rack', '~>1.1'
 gem 'rspec', :require => 'spec'
 gem 'sass', "3.4.13"
