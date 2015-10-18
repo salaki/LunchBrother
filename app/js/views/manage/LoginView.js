@@ -71,8 +71,10 @@ define([
                 success: function (user) {
             	if (user.get("emailVerified") === false) {
                     Parse.User.logOut();
-                    alert("You haven't activated your account yet, please activate with the link we sent to you.");
-                    window.location.reload();
+                    showMessage("Error", "You haven't activated your account yet, please activate with the link we sent to you.", function(){
+                        window.location.reload();
+                    });
+
                 } else {
                 	var permission = user.get('permission');
 
@@ -125,9 +127,10 @@ define([
                             }
                         });
                     } else {
-                        alert("Your registration code is invalid or has been used to login!");
-                        Parse.User.logOut();
-                        window.location.hash = '#login';
+                        showMessage("Error", "Your registration code is invalid or has been used to login!", function(){
+                            Parse.User.logOut();
+                            window.location.hash = '#login';
+                        });
                     }
                 },
                 error: function(error) {

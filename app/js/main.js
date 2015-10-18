@@ -23,12 +23,17 @@ define([
     var dayOfWeek = cnDay[today.getDay()];
     var date = today.toLocaleDateString();
     $('#today').text(dayOfWeek + ', ' + date);
-
+    
+    //The logo direct to the home page
+    $(".brand").on("click", function(){
+    	window.location.href="#";
+    	location.reload();
+    });
+    
     $('#signOutBtn').click(function() {
         $('.ui.sidebar').sidebar('hide');
-
-        //Update registration code state
         var currentUser = Parse.User.current();
+        //Update registration code state
         var RegistrationCode = Parse.Object.extend("RegistrationCode");
         if (currentUser.get('permission') === GENERAL_USER) {
             var codeQuery = new Parse.Query(RegistrationCode);
@@ -74,6 +79,7 @@ define([
           savebtn.css("display", "block");
       });
       $(".savebtn").on("click", function(e){
+          var currentUser = Parse.User.current();
           e.preventDefault();
           var elink   = $(this).prev(".editlink");
           var dataset = elink.prev(".datainfo");
@@ -83,7 +89,6 @@ define([
           $(this).css("display", "none");
           dataset.html(newval);
           elink.css("display", "block");
-          var currentUser = Parse.User.current();
           if (newid.indexOf('Email') > -1) {
               currentUser.set( "email", newval );
           } else {
@@ -96,13 +101,13 @@ define([
               },
               error: function ( user, error )
               {
-                  alert( "Error: " + error.code + " " + error.message );
+                  showMessage("Error", "Save user failed! Reason: " + error.message);
               }
           } );
       });
       $("#smsCheckbox").on("change", function(e){
-          e.preventDefault();
           var currentUser = Parse.User.current();
+          e.preventDefault();
           if ($(this).is(':checked')) {
               currentUser.set( "smsEnabled", true );
           } else {
@@ -115,7 +120,7 @@ define([
               },
               error: function ( user, error )
               {
-                  alert( "Error: " + error.code + " " + error.message );
+                  showMessage("Error", "Save user failed! Reason: " + error.message);
               }
           } );
       });

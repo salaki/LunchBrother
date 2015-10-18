@@ -71,30 +71,6 @@ define([
         initialize: function() {
             _.bindAll(this, 'render');
             var currentUser = Parse.User.current();
-            if(currentUser != null) {
-                currentUser.fetch();
-                $("#userEmail").text(currentUser.get('email'));
-                var gridId = "nmbyDzTp7m";
-                if (currentUser.get('gridId') == undefined) {
-                    $("#userGrid").text("University of Maryland College Park");
-                }else {
-                    var gridQuery = new Parse.Query(GridModel);
-                    gridId = currentUser.get('gridId').id;
-                    gridQuery.get(currentUser.get('gridId').id, {
-                        success: function(grid) {
-                            $("#userGrid").text(grid.get('name'));
-                        },
-                        error: function(object, error) {
-                            console.log(error.message);
-                        }
-                    });
-                }
-                $("#userPhone").text(currentUser.get('telnum'));
-                $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
-                $("#userCreditBalance").text(currentUser.get('creditBalance').toFixed(2));
-                $("#accountBarFirstName").text(currentUser.get('firstName'));
-            }
-            $('#account').show();
         },
 
         render: function() {
@@ -265,7 +241,7 @@ define([
                     self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income}));
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find inventory failed! Reason: " + error.message);
                 }
             });
         },
@@ -523,7 +499,7 @@ define([
                 chefGrid.id = "nmbyDzTp7m";
             }
 
-            if (address.trim() !== "" && youtubeLink.trim() !== "") {
+            if (address.trim() !== "") {
                 var dp = new PickUpLocationModel();
                 dp.id = id;
                 dp.set("gridId", chefGrid);
@@ -539,45 +515,21 @@ define([
                 dp.save(null, {
                     success: function(dp) {
                         if (id === undefined) {
-                            $("#alertTitle").text("Success");
-                            $("#alertMessage").text('New distributing point created with Id: ' + dp.id);
-                            $('#alertDialog').modal({
-                                closable: false,
-                                onApprove: function () {
-                                    location.reload();
-                                }
-                            }).modal('show');
+                            showMessage("Success", "New distributing point created with Id: " + dp.id, function() {
+                                location.reload();
+                            });
                         } else {
-                            $("#alertTitle").text("Success");
-                            $("#alertMessage").text('Distributing point info updated!');
-                            $('#alertDialog').modal({
-                                closable: false,
-                                onApprove: function () {
-                                    location.reload();
-                                }
-                            }).modal('show');
+                            showMessage("Success", "Distributing point info updated!", function() {
+                                location.reload();
+                            });
                         }
                     },
                     error: function(error) {
-                        $("#alertTitle").text("Failed");
-                        $("#alertMessage").text('Update failed! Reason: ' + error.message);
-                        $('#alertDialog').modal({
-                            closable: false,
-                            onApprove: function () {
-                                //Do nothing
-                            }
-                        }).modal('show');
+                        showMessage("Fail", "Update failed! Reason: " + error.message);
                     }
                 });
             } else {
-                $("#alertTitle").text("Failed");
-                $("#alertMessage").text("Please enter the required information.");
-                $('#alertDialog').modal({
-                    closable: false,
-                    onApprove: function () {
-                        //Do nothing
-                    }
-                }).modal('show');
+                showMessage("Fail", "Please enter the name for this distributing point.");
             }
         },
         
@@ -601,24 +553,12 @@ define([
                 person.set("permission", Number(title));
                 person.save(null, {
                     success: function(person) {
-                        $("#alertTitle").text("Success");
-                        $("#alertMessage").text('New Driver/Distributor created with Id: ' + person.id);
-                        $('#alertDialog').modal({
-                            closable: false,
-                            onApprove: function () {
-                                location.reload();
-                            }
-                        }).modal('show');
+                        showMessage("Success", "Save worker successfully!", function() {
+                            location.reload();
+                        });
                     },
                     error: function(error) {
-                        $("#alertTitle").text("Failed");
-                        $("#alertMessage").text('Update failed! Reason: ' + error.message);
-                        $('#alertDialog').modal({
-                            closable: false,
-                            onApprove: function () {
-                                //Do nothing
-                            }
-                        }).modal('show');
+                        showMessage("Error", "Save worker failed! Reason: " + error.message);
                     }
                 });
             }
@@ -636,24 +576,12 @@ define([
                 gridId: gridId
             }, {
                 success: function (success) {
-                    $("#alertTitle").text("Success");
-                    $("#alertMessage").text(success);
-                    $('#alertDialog').modal({
-                        closable: false,
-                        onApprove: function () {
-                            location.reload();
-                        }
-                    }).modal('show');
+                    showMessage("Success", success, function() {
+                        location.reload();
+                    });
                 },
                 error: function (error) {
-                    $("#alertTitle").text("Failed");
-                    $("#alertMessage").text("Error: " + error.code + " " + error.message);
-                    $('#alertDialog').modal({
-                        closable: false,
-                        onApprove: function () {
-                            //Do nothing
-                        }
-                    }).modal('show');
+                    showMessage("Error", "Update user failed! Reason: " + error.message);
                 }
             });
         },
@@ -663,25 +591,12 @@ define([
                 userId: id
             }, {
                 success: function (success) {
-                    console.log(success);
-                    $("#alertTitle").text("Success");
-                    $("#alertMessage").text("Delete worker successfully!");
-                    $('#alertDialog').modal({
-                        closable: false,
-                        onApprove: function () {
-                            location.reload();
-                        }
-                    }).modal('show');
+                    showMessage("Success", "Delete worker successfully!", function() {
+                        location.reload();
+                    });
                 },
                 error: function (error) {
-                    $("#alertTitle").text("Failed");
-                    $("#alertMessage").text("Error: " + error.code + " " + error.message);
-                    $('#alertDialog').modal({
-                        closable: false,
-                        onApprove: function () {
-                            //Do nothing
-                        }
-                    }).modal('show');
+                    showMessage("Error", "Delete worker failed! Reason: " + error.message);
                 }
             });
         },
@@ -691,24 +606,10 @@ define([
             dp.id = id;
             dp.destroy({
                 success: function(dp) {
-                    $("#alertTitle").text("Success");
-                    $("#alertMessage").text("Create Distributing Point successfully!");
-                    $('#alertDialog').modal({
-                        closable: false,
-                        onApprove: function () {
-                            location.reload();
-                        }
-                    }).modal('show');
+                    showMessage("Success", "Delete distributing point successfully!");
                 },
                 error: function(dp, error) {
-                    $("#alertTitle").text("Failed");
-                    $("#alertMessage").text("Error: " + error.code + " " + error.message);
-                    $('#alertDialog').modal({
-                        closable: false,
-                        onApprove: function () {
-                            //Do nothing
-                        }
-                    }).modal('show');
+                    showMessage("Error", "Delete distributing point failed! Reason: " + error.message);
                 }
             });
         },
@@ -747,10 +648,10 @@ define([
 
                     Parse.Object.saveAll(inventories, {
                         success: function(inventories) {
-                            console.log("Week menu published!");
+                            showMessage("Success", "Save menu successfully!");
                         },
                         error: function(error) {
-                            console.log('Save failed! Reason: ' + error.message + 'Inventories: ' + inventories);
+                            showMessage("Error", "Save menu failed! Reason: " + error.message + "Menu: " + + inventories);
                         }
                     });
                 }
@@ -772,10 +673,10 @@ define([
 
             Parse.Object.saveAll(inventories, {
                 success: function(inventories) {
-                    console.log("Week menu published!");
+                    showMessage("Success", "Week menu un-published successfully!");
                 },
                 error: function(error) {
-                    alert('Save failed! Reason: ' + error.message);
+                    showMessage("Error", "Save inventories failed! Reason: " + error.message);
                 }
             });
         },
@@ -793,10 +694,10 @@ define([
 
             Parse.Object.saveAll(codes, {
                 success: function(objs) {
-                    alert(objs.length + " registration codes have been generated!");
+                    showMessage("Success", objs.length + " registration codes have been generated!");
                 },
                 error: function(error) {
-                    alert("Error: " + error.message);
+                    showMessage("Error", error.message);
                 }
             });
         },

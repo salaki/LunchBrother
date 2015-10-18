@@ -33,33 +33,6 @@ define(['views/home/DishView',
 			_.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
 			this.$el.html(_.template(homeTemplate)());
 
-			var currentUser = Parse.User.current();
-			if (currentUser != null) {
-				currentUser.fetch();
-				$("#userEmail").text(currentUser.get('email'));
-                var gridId = "nmbyDzTp7m";
-                if (currentUser.get('gridId') == undefined) {
-                    $("#userGrid").text("University of Maryland College Park");
-                }else {
-                    var gridQuery = new Parse.Query(GridModel);
-                    gridId = currentUser.get('gridId').id;
-                    gridQuery.get(currentUser.get('gridId').id, {
-                        success: function(grid) {
-                            $("#userGrid").text(grid.get('name'));
-                        },
-                        error: function(object, error) {
-                            console.log(error.message);
-                        }
-                    });
-                }
-				$("#userPhone").text(currentUser.get('telnum'));
-				$("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
-				$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
-				$("#accountBarFirstName").text(currentUser.get('firstName'));
-                $('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
-                $('#account').show();
-			}
-
             this.dishes = new DishCollection;
 
             var self = this;
@@ -104,7 +77,7 @@ define(['views/home/DishView',
                     self.dishes.bind('all', self.render);
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find inventory failed! Reason: " + error.message);
                 }
             });
 		},
@@ -228,7 +201,7 @@ define(['views/home/DishView',
                     }
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find request records failed! Reason: " + error.message);
                 }
             });
         },
@@ -245,7 +218,7 @@ define(['views/home/DishView',
                     inventory.save();
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    showMessage("Error", "Find inventory failed! Reason: " + error.message + "Inventory Id: " + inventoryId);
                 }
             })
         },
