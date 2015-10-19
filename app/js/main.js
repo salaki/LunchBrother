@@ -24,11 +24,11 @@ define([
     var date = today.toLocaleDateString();
     $('#today').text(dayOfWeek + ', ' + date);
     
-    //The logo direct to the home page
-    $(".brand").on("click", function(){
-    	window.location.href="#";
-    	location.reload();
-    });
+    ////The logo direct to the home page
+    //$(".brand").on("click", function(){
+    //	window.location.href="#";
+    //	location.reload();
+    //});
     
     $('#signOutBtn').click(function() {
         $('.ui.sidebar').sidebar('hide');
@@ -64,6 +64,12 @@ define([
           window.location.href='#';
           location.reload();
           $('#account').hide();
+
+          //Hide bottom bar
+          $("#bottom-bar-menu").hide();
+          $("#bottom-bar-tracking").hide();
+          $("#bottom-bar-manager").hide();
+          $("#bottom-bar-admin").hide();
       };
 
       $(".editlink").on("click", function(e){

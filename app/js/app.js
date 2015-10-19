@@ -38,7 +38,7 @@ var config = {
 };
 
 //Permission code
-var GENERAL_USER = 1, LOCAL_MANAGER = 2, DRIVER = 3, DISTRIBUTOR = 4, LB_ADMIN = 5;
+var GENERAL_USER = 1, DRIVER = 2, DISTRIBUTOR = 3, LOCAL_MANAGER = 4, LB_ADMIN = 5;
 
 require.config(config);
 

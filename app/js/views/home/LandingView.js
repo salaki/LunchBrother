@@ -29,6 +29,8 @@ define([
             universityQuery.find({
                 success: function(universities) {
                     self.$el.html(self.template({universities: universities}));
+                    self.$(".college-selector").dropdown('set selected', "University of Maryland College Park");
+                    self.refreshWeeklyMenu("University of Maryland College Park");
                     self.$(".college-selector").dropdown({
                         onChange: function (collegeName) {
                             self.refreshWeeklyMenu(collegeName);
@@ -62,7 +64,7 @@ define([
         getGridManager: function(grid) {
             var self = this;
             var userQuery = new Parse.Query(Parse.User);
-            userQuery.equalTo("permission", 2);  // find all the women
+            userQuery.equalTo("permission", LOCAL_MANAGER);
             userQuery.equalTo("gridId", grid);
             userQuery.first({
                 success: function(manager) {

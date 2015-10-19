@@ -26,8 +26,6 @@ define([
 
         template: _.template(loginTemplate),
 
-
-
         render: function () {
             this.$el.html(this.template());
             this.$('.ui.form').form({
@@ -65,33 +63,36 @@ define([
             var password = this.$("#password").val();
             var registrationCode = this.$("#loginRegistrationCode").val();
             Parse.User.logIn(username, password, {
-                //lunchbrother:manage
-                //chef:delivery
-                //getcurrentuser's permission
                 success: function (user) {
-            	if (user.get("emailVerified") === false) {
-                    Parse.User.logOut();
-                    showMessage("Error", "You haven't activated your account yet, please activate with the link we sent to you.", function(){
-                        window.location.reload();
-                    });
+                    if (user.get("emailVerified") === false) {
+                        Parse.User.logOut();
+                        showMessage("Error", "You haven't activated your account yet, please activate with the link we sent to you.", function(){
+                            window.location.reload();
+                        });
 
-                } else {
-                	var permission = user.get('permission');
+                    } else {
+                        var permission = user.get('permission');
+                        self.showSideBar(user);
+                        self.displayBottomBarItems(permission);
 
-                    if (permission === GENERAL_USER) {
-                        self.updateRegistrationCodeState(user, registrationCode);
-                    }
+                        if (permission === LB_ADMIN) {
+                            window.location.hash = '#admin';
+                        }
 
                         if (permission === LOCAL_MANAGER) {
                             window.location.hash = '#managerHome?week=';
+                        }
+
+                        if (permission === DISTRIBUTOR) {
+                            window.location.hash = '#distributor';
                         }
 
                         if (permission === DRIVER) {
                             window.location.hash = '#driver';
                         }
 
-                        if (permission === DISTRIBUTOR) {
-                            window.location.hash = '#distributor';
+                        if (permission === GENERAL_USER) {
+                            self.updateRegistrationCodeState(user, registrationCode);
                         }
                 	}  
                 },
@@ -105,7 +106,52 @@ define([
             $form.find('#loginBtn').prop('disabled', true);
             return false;
         },
-        
+
+        showSideBar: function(currentUser) {
+            currentUser.fetch();
+            $("#userEmail").text(currentUser.get('email'));
+            var gridId = "nmbyDzTp7m";
+            if (currentUser.get('gridId') == undefined) {
+                $("#userGrid").text("University of Maryland College Park");
+            }else {
+                var GridModel = Parse.Object.extend("Grid");
+                var gridQuery = new Parse.Query(GridModel);
+                gridId = currentUser.get('gridId').id;
+                gridQuery.get(currentUser.get('gridId').id, {
+                    success: function(grid) {
+                        $("#userGrid").text(grid.get('name'));
+                    },
+                    error: function(object, error) {
+                        console.log(error.message);
+                    }
+                });
+            }
+            $("#userPhone").text(currentUser.get('telnum'));
+            $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
+            $("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
+            $("#accountBarFirstName").text(currentUser.get('firstName'));
+            $('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
+            $('#account').show();
+        },
+
+        displayBottomBarItems: function(permission) {
+            if (permission === LB_ADMIN) {
+                $("#bottom-bar-menu").show();
+                $("#bottom-bar-tracking").show();
+                $("#bottom-bar-manager").show();
+                $("#bottom-bar-admin").show();
+
+            } else if (permission === LOCAL_MANAGER) {
+                $("#bottom-bar-menu").show();
+                $("#bottom-bar-tracking").show();
+                $("#bottom-bar-manager").show();
+
+            } else {
+                $("#bottom-bar-menu").show();
+                $("#bottom-bar-tracking").show();
+            }
+        },
+
         fbLogin: function(){
         	var fbLoginView = new FbLoginView();
         	fbLoginView.render();
