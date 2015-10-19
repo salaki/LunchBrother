@@ -329,6 +329,15 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   color: #454545;
   font-size: 1rem;
 }
+/* line 119, ../sass/partials/_dish.scss */
+#page .extra.content.horizontal.segments {
+  padding: 0;
+}
+/* line 121, ../sass/partials/_dish.scss */
+#page .extra.content.horizontal.segments span {
+  width: 100%;
+  text-align: center;
+}
 
 /* line 3, ../sass/partials/_home.scss */
 .column {
