@@ -20,7 +20,8 @@ define([
   'views/manage/NewRestaurantView', 
   'views/manage/ManagerListView',
   'views/manage/NewManagerView',
-  'views/manage/BankView'
+  'views/manage/BankView',
+    'views/manage/lbAdminView'
   ], function (LandingView,
         HomeView,
 		OrderView, 
@@ -42,7 +43,8 @@ define([
         NewRestaurantView,
     ManagerListView,    
         NewManagerView,
-        BankView) {
+        BankView,
+        AdminView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -54,15 +56,17 @@ define([
             'confirm': 'showConfirm',
             'status': 'showStatus',
             'login': 'showLogin',
-            'distributor': 'showDistributor',
-            'driver': 'showDriver',
-	           //'loginorsignup' : 'showLoginorsignup',
-            'managerHome?*queryString': 'showManagerHome',
-            'menuEdit?*queryString': 'showMenuEdit',
+            'loginorsignup' : 'showLoginorsignup',
             'profile': 'showProfile',
             'signupemail' : 'showSignupemail',
             'forgotpassword' : 'showForgotpassword',
             'resetPassword?*queryString' : 'showResetPassword',
+
+            // Local Manager
+            'managerHome?*queryString': 'showManagerHome',
+            'menuEdit?*queryString': 'showMenuEdit',
+            'distributor': 'showDistributor',
+            'driver': 'showDriver',
 
             // Restaurant
             'manageRestaurants': 'showManageRestaurants',
@@ -79,10 +83,51 @@ define([
             'editManager?*queryString' : 'showEditManager',
             'bank?*queryString' : 'showBank',
 
+            // Admin
+            'admin' : 'showAdminPage',
+
             // Default
             '*actions': 'defaultAction'   
         }
     });
+
+    var ParseQueryString = function(queryString){
+        var params = {};
+        if(queryString){
+            _.each(
+                _.map(decodeURI(queryString).split(/&/g),function(el,i){
+                    var aux = el.split('='), o = {};
+                    if(aux.length >= 1){
+                        var val = undefined;
+                        if(aux.length == 2)
+                            val = aux[1];
+                        o[aux[0]] = val;
+                    }
+                    return o;
+                }),
+                function(o){
+                    _.extend(params,o);
+                }
+            );
+        }
+        return params;
+    };
+
+    var renderView = function(role, view) {
+        var currentUser = Parse.User.current();
+        if(currentUser != null) {
+            showSideBar(currentUser);
+            var permission = currentUser.get('permission');
+            displayBottomBarItems(permission);
+            if (permission >= role) {
+                view.render();
+            } else {
+                window.location.hash = "#home";
+            }
+        } else {
+            window.location.hash = "#loginorsignup";
+        }
+    };
 
     var showSideBar = function(currentUser) {
         currentUser.fetch();
@@ -111,162 +156,69 @@ define([
         $('#account').show();
     };
 
-    var ParseQueryString = function(queryString){
-            var params = {};
-            if(queryString){
-                _.each(
-                    _.map(decodeURI(queryString).split(/&/g),function(el,i){
-                        var aux = el.split('='), o = {};
-                        if(aux.length >= 1){
-                            var val = undefined;
-                            if(aux.length == 2)
-                                val = aux[1];
-                            o[aux[0]] = val;
-                        }
-                        return o;
-                    }),
-                    function(o){
-                        _.extend(params,o);
-                    }
-                );
-            }
-            return params;
+    var displayBottomBarItems = function(permission) {
+        if (permission === LB_ADMIN) {
+            $("#bottom-bar-menu").show();
+            $("#bottom-bar-tracking").show();
+            $("#bottom-bar-manager").show();
+            $("#bottom-bar-admin").show();
+
+        } else if (permission === LOCAL_MANAGER) {
+            $("#bottom-bar-menu").show();
+            $("#bottom-bar-tracking").show();
+            $("#bottom-bar-manager").show();
+
+        } else {
+            $("#bottom-bar-menu").show();
+            $("#bottom-bar-tracking").show();
         }
+    };
 
     var initialize = function () {
         console.log('router initialize');
 
         var appRouter = new AppRouter();
-	    var permission = 0;
 
-        var HOME_VIEW = new HomeView();
-
-          appRouter.on('route:showOrder', function () {
-              var currentUser = Parse.User.current();
-              if(currentUser != null) {
-                  permission = currentUser.get('permission');
-              }
-              if(permission >=1){
-                  // Call render on the module we loaded in via the dependency array
-                  var orderView = new OrderView();
-                  orderView.render();
-              }
-          });
-
-          appRouter.on('route:showPolicy', function () {
-              var currentUser = Parse.User.current();
-              if(currentUser != null) {
-                  permission = currentUser.get('permission');
-              }
-              if(permission >=1) {
-                  // Call render on the module we loaded in via the dependency array
-                  var policyView = new PolicyView();
-                  policyView.render();
-              }
-          });
-
-          appRouter.on('route:showConfirm', function () {
-              var currentUser = Parse.User.current();
-              if(currentUser != null) {
-                  permission = currentUser.get('permission');
-              }
-              if(permission >=1) {
-                  // Call render on the module we loaded in via the dependency array
-                  var confirmView = new ConfirmView();
-                  confirmView.render();
-              }
-          });
-
-          appRouter.on('route:showStatus', function () {
-              var currentUser = Parse.User.current();
-              if(currentUser != null) {
-                  var statusView = new StatusView();
-                  statusView.render();
-              } else {
-                  var loginorsignupView = new LoginorsignupView();
-                  loginorsignupView.render();
-              }
-          });
-
-
-          appRouter.on('route:showHome', function () {
-              var currentUser = Parse.User.current();
-              if(currentUser != null) {
-                  showSideBar(currentUser);
-                  HOME_VIEW.render();
-              } else {
-                  var loginorsignupView = new LoginorsignupView();
-                  loginorsignupView.render();
-              }
-          });
-
-        appRouter.on('route:showLanding', function () {
-            var landingView = new LandingView();
-            landingView.render();
+        /**
+         * General user related pages
+         * Authorization: Permission >= GENERAL_USER
+         */
+        appRouter.on('route:showOrder', function () {
+            var orderView = new OrderView();
+            renderView(GENERAL_USER, orderView);
         });
 
-        appRouter.on('route:showLogin', function () {
-            // Call render on the module we loaded in via the dependency array
-            var loginView = new LoginView();
-            loginView.render();
+        appRouter.on('route:showPolicy', function () {
+            var policyView = new PolicyView();
+            renderView(GENERAL_USER, policyView);
         });
 
-        appRouter.on('route:showSignupemail', function () {
-            // Call render on the module we loaded in via the dependency array
-            var signupemailView = new SignupemailView({ 
-            	model: {
-            		refer: getParameterByName('refer')
-        		}
-        	});
-            
-            signupemailView.render();
+        appRouter.on('route:showConfirm', function () {
+            var confirmView = new ConfirmView();
+            renderView(GENERAL_USER, confirmView);
         });
 
-        appRouter.on('route:showDistributor', function () {
-            // Call render on the module we loaded in via the dependency array
-            var distributorView = new DistributorView();
-            var currentUser = Parse.User.current();
-            if(currentUser != null) {
-                permission = currentUser.get('permission');
-            }
-            if (permission === DISTRIBUTOR || permission === LOCAL_MANAGER) {
-                 distributorView.render();
-            } else {
-                window.location.hash = "#login";
-            }
+        appRouter.on('route:showStatus', function () {
+            var statusView = new StatusView();
+            renderView(GENERAL_USER, statusView);
         });
 
-        appRouter.on('route:showDriver', function () {
-            // Call render on the module we loaded in via the dependency array
-            var driverView = new DriverView();
-            var currentUser = Parse.User.current();
-            if(currentUser != null) {
-                permission = currentUser.get('permission');
-            }
-            if (permission === DRIVER || permission === LOCAL_MANAGER) {
-                 driverView.render();
-            } else {
-                window.location.hash = "#login";
-            }
+        appRouter.on('route:showHome', function () {
+            var homeView = new HomeView();
+            renderView(GENERAL_USER, homeView);
         });
 
+        /**
+         * Local manager related pages
+         * Authorization: Permission >= LOCAL_MANAGER
+         */
         appRouter.on('route:showManagerHome', function (queryString) {
             // Call render on the module we loaded in via the dependency array
             var params = new ParseQueryString(queryString);
             var managerHomeView = new ManagerHomeView({
                 week: params.week
             });
-
-            var currentUser = Parse.User.current();
-            if(currentUser != null) {
-                showSideBar(currentUser);
-                permission = currentUser.get('permission');
-            }
-            if (permission === LOCAL_MANAGER) {
-                managerHomeView.render();
-            } else {
-                window.location.hash = "#login";
-            }
+            renderView(LOCAL_MANAGER, managerHomeView);
         });
 
         appRouter.on('route:showMenuEdit', function (queryString) {
@@ -276,32 +228,40 @@ define([
                 inventoryIds: params.inventoryIds,
                 date: params.date
             });
-
-            var currentUser = Parse.User.current();
-            if(currentUser != null) {
-                permission = currentUser.get('permission');
-            }
-            if (permission === LOCAL_MANAGER) {
-                menuEditView.render();
-            } else {
-                window.location.hash = "#login";
-            }
+            renderView(LOCAL_MANAGER, menuEditView);
         });
 
-        appRouter.on('route:showEditRestaurant', function (queryString) {
-//            var currentUser = Parse.User.current();
-//            if(currentUser != null) {
-//                permission = currentUser.get('permission');
-//            }
-//            if (permission === LB_ADMIN) {
-                var params = new ParseQueryString(queryString);
-                var newRestaurantView = new NewRestaurantView({
-                    id: params.id
-                });
-                newRestaurantView.render();
-//            } else {
-//                window.location.hash = "#login";
-//            }
+        appRouter.on('route:showDistributor', function () {
+            // Call render on the module we loaded in via the dependency array
+            var distributorView = new DistributorView();
+            renderView(DISTRIBUTOR, distributorView);
+        });
+
+        appRouter.on('route:showDriver', function () {
+            // Call render on the module we loaded in via the dependency array
+            var driverView = new DriverView();
+            renderView(DRIVER, driverView);
+        });
+
+        /**
+         * Login and signup related pages
+         * Authorization: Public
+         */
+        appRouter.on('route:showLogin', function () {
+            // Call render on the module we loaded in via the dependency array
+            var loginView = new LoginView();
+            loginView.render();
+        });
+
+        appRouter.on('route:showSignupemail', function () {
+            // Call render on the module we loaded in via the dependency array
+            var signupemailView = new SignupemailView({
+                model: {
+                    refer: getParameterByName('refer')
+                }
+            });
+
+            signupemailView.render();
         });
 
         appRouter.on( 'route:showProfile', function () {
@@ -311,7 +271,6 @@ define([
 
         appRouter.on('route:showLoginorsignup', function () {
             // Call render on the module we loaded in via the dependency array
-			console.log("showLoginorsignup");
             var loginorsignupView = new LoginorsignupView();
             loginorsignupView.render();
         });
@@ -337,83 +296,31 @@ define([
             resetPasswordView.render();
         });
 
+        appRouter.on('route:showLanding', function () {
+            var landingView = new LandingView();
+            landingView.render();
+        });
+
+        /**
+         * Restaurant and dish related pages
+         * Authorization: Permission >= LB_ADMIN
+         */
         appRouter.on('route:showManageRestaurants', function () {
-//            var currentUser = Parse.User.current();
-//            if(currentUser != null) {
-//                permission = currentUser.get('permission');
-//            }
-//            if (permission === LB_ADMIN) {
             var manageRestaurantsView = new ManageRestaurantsView();
-            manageRestaurantsView.render();
-//            } else {
-//                window.location.hash = "#login";
-//            }
-        });
-
-        appRouter.on('route:showNewdish', function (queryString) {
-            // Call render on the module we loaded in via the dependency array
-            var params = new ParseQueryString(queryString);
-            var newdishView = new NewdishView({
-                restaurantId: params.restaurantId
-            });
-            newdishView.render();
-        });
-
-        appRouter.on('route:showEditDish', function (queryString) {
-//            var currentUser = Parse.User.current();
-//            if(currentUser != null) {
-//                permission = currentUser.get('permission');
-//            }
-//            if (permission === LB_ADMIN) {
-            var params = new ParseQueryString(queryString);
-            var newdishView = new NewdishView({
-                dishId: params.dishId
-            });
-            newdishView.render();
-//            } else {
-//                window.location.hash = "#login";
-//            }
+            renderView(LB_ADMIN, manageRestaurantsView);
         });
 
         appRouter.on('route:showNewRestaurant', function () {
-//            var currentUser = Parse.User.current();
-//            if(currentUser != null) {
-//                permission = currentUser.get('permission');
-//            }
-//            if (permission === LB_ADMIN) {
             var newRestaurantView = new NewRestaurantView();
-            newRestaurantView.render();
-//            } else {
-//                window.location.hash = "#login";
-//            }
+            renderView(LB_ADMIN, newRestaurantView);
         });
 
-        appRouter.on('route:showManagerList', function () {
-            // Call render on the module we loaded in via the dependency array
-            var managerListView = new ManagerListView();
-            managerListView.render();
-        });
-        
-        appRouter.on('route:showNewManager', function () {
-            // Call render on the module we loaded in via the dependency array
-            var newManagerView = new NewManagerView();
-            newManagerView.render();
-        });
-
-        appRouter.on('route:showEditManager', function (queryString) {
-//            var currentUser = Parse.User.current();
-//            if(currentUser != null) {
-//                permission = currentUser.get('permission');
-//            }
-//            if (permission === LB_ADMIN) {
+        appRouter.on('route:showEditRestaurant', function (queryString) {
             var params = new ParseQueryString(queryString);
-            var newManagerView = new NewManagerView({
-                managerId: params.managerId
+            var newRestaurantView = new NewRestaurantView({
+                id: params.id
             });
-            newManagerView.render();
-//            } else {
-//                window.location.hash = "#login";
-//            }
+            renderView(LB_ADMIN, newRestaurantView);
         });
 
         appRouter.on('route:showBank', function (queryString) {
@@ -425,15 +332,63 @@ define([
             newBankView.render();
         });
 
+        appRouter.on('route:showNewdish', function (queryString) {
+            // Call render on the module we loaded in via the dependency array
+            var params = new ParseQueryString(queryString);
+            var newdishView = new NewdishView({
+                restaurantId: params.restaurantId
+            });
+            renderView(LB_ADMIN, newdishView);
+        });
+
+        appRouter.on('route:showEditDish', function (queryString) {
+            var params = new ParseQueryString(queryString);
+            var newdishView = new NewdishView({
+                dishId: params.dishId
+            });
+            renderView(LB_ADMIN, newdishView);
+        });
+
+        /**
+         * Manager related pages
+         * Authorization: Permission >= LB_ADMIN
+         */
+        appRouter.on('route:showManagerList', function () {
+            var managerListView = new ManagerListView();
+            renderView(LB_ADMIN, managerListView);
+        });
+        
+        appRouter.on('route:showNewManager', function () {
+            var newManagerView = new NewManagerView();
+            renderView(LB_ADMIN, newManagerView);
+        });
+
+        appRouter.on('route:showEditManager', function (queryString) {
+            var params = new ParseQueryString(queryString);
+            var newManagerView = new NewManagerView({
+                managerId: params.managerId
+            });
+            renderView(LB_ADMIN, newManagerView);
+        });
+
+        /**
+         * LunchBrother admin related page
+         * Authorization: Permission >= LB_ADMIN
+         */
+        appRouter.on('route:showAdminPage', function () {
+            var adminView = new AdminView();
+            renderView(LB_ADMIN, adminView);
+        });
+
+        /**
+         * Default page redirect
+         */
         appRouter.on('route:defaultAction', function (actions) {
-            var currentUser = Parse.User.current();
-            // we have no matching route, lets display the signup&login page
-            if(currentUser != null) {
-                showSideBar(currentUser);
-                HOME_VIEW.render();
-            }else{
-                var loginorsignupView = new LoginorsignupView();
-                loginorsignupView.render();
+            if(Parse.User.current() != null) {
+                window.location.hash = "#home";
+
+            } else {
+                window.location.hash = "#landing";
             }
         });
 
