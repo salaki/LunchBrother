@@ -29,6 +29,12 @@ html {
 }
 header {
 	min-width: 320px;
+  .brand.item {
+    img {
+      width: 1.5em;
+      padding:0 7px;
+    }
+  }
 }
 
 .space {
