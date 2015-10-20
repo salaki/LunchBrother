@@ -681,27 +681,6 @@ define([
             });
         },
 
-        generateCode: function() {
-            //TODO - Need a confirmation modal view
-            //TODO - Need to pass in a number for how many registration codes need to generate
-            var codes = [];
-            for (var i=0; i<5; i++) {
-                var code = new RegistrationCodeModel();
-                code.set("usedToLogin", false);
-                code.set("usedToSignUp", false);
-                codes.push(code);
-            }
-
-            Parse.Object.saveAll(codes, {
-                success: function(objs) {
-                    showMessage("Success", objs.length + " registration codes have been generated!");
-                },
-                error: function(error) {
-                    showMessage("Error", error.message);
-                }
-            });
-        },
-
         showBankInfo: function(ev) {
             var bankId = $(ev.currentTarget).data('id');
             window.location.href='#bank?id=' + bankId;
