@@ -1,9 +1,11 @@
 define([
     'models/Restaurant',
     'models/dish/DishModel',
+    'models/order/OrderModel',
+    'models/InventoryModel',
     'text!templates/manage/manageRestaurantsTemplate.html',
     'text!templates/manage/manageRestaurantDishListTemplate.html'
-], function (RestaurantModel, DishModel, manageRestaurantsTemplate, manageRestaurantDishListTemplate) {
+], function (RestaurantModel, DishModel, OrderModel, InventoryModel, manageRestaurantsTemplate, manageRestaurantDishListTemplate) {
 
     var ManageRestaurantsView = Parse.View.extend({
         el: $("#page"),
@@ -63,6 +65,7 @@ define([
                 className: "Restaurant",
                 objectId: restaurantId
             });
+            dishQuery.notEqualTo("active", false);
             dishQuery.find({
                 success: function(dishes) {
                     self.$("#dishList").html(self.dishListTemplate({dishes: dishes}));
@@ -97,7 +100,7 @@ define([
                     restaurant.id = $(".manage-restaurant-selection").dropdown('get value');
                     restaurant.destroy({
                         success: function(restaurant) {
-                            showMessage("Error", "Delete restaurant successfully!", function() {
+                            showMessage("Success", "Delete restaurant successfully!", function() {
                                 location.reload();
                             });
                         },
@@ -110,9 +113,72 @@ define([
         },
 
         onDeleteDishClick: function(ev) {
+            var self = this;
             var dishId = $(ev.currentTarget).data('id');
-            showMessage("Oops!", "Delete function is still under construction");
-            //TODO - Need more discussion to implement the delete function
+            var dish = new DishModel();
+            dish.id = dishId;
+
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            inventoryQuery.equalTo('dish', dish);
+            inventoryQuery.count({
+                success: function(number) {
+                    console.log("Inventory count for this dish: " + number);
+                    if (number > 0) {
+                        showMessage("Error", "This dish has been published in the weekly menu so it can't be deleted!");
+                    } else {
+                        self.checkOrderHistory(dish);
+                    }
+                },
+                error: function(error) {
+                    console.log(error.message);
+                }
+            });
+        },
+
+        checkOrderHistory: function(dish) {
+            var self = this;
+            var orderQuery = new Parse.Query(OrderModel);
+            orderQuery.equalTo('dishId', dish);
+            orderQuery.count({
+                success: function(number) {
+                    console.log("Order count for this dish: " + number);
+                    if (number > 0) {
+                        self.softDeleteDish(dish);
+                    } else {
+                        self.hardDeleteDish(dish);
+                    }
+                },
+                error: function(error) {
+                    console.log(error.message);
+                }
+            });
+        },
+
+        softDeleteDish: function(dish) {
+            dish.set('active', false);
+            dish.save({
+                success: function(dish) {
+                    showMessage("Success", "Delete dish successfully!", function() {
+                        $("#dishRow-" + dish.id).remove();
+                    });
+                },
+                error: function(restaurant, error) {
+                    showMessage("Error", "Delete dish failed! Reason: " + error.message);
+                }
+            });
+        },
+
+        hardDeleteDish: function(dish) {
+            dish.destroy({
+                success: function(dish) {
+                    showMessage("Success", "Delete dish successfully!", function() {
+                        $("#dishRow-" + dish.id).remove();
+                    });
+                },
+                error: function(restaurant, error) {
+                    showMessage("Error", "Delete dish failed! Reason: " + error.message);
+                }
+            });
         },
 
         onTestTransfer: function() {

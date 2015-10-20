@@ -1,5 +1,5 @@
 <h1 class="ui small center aligned header">Add a new dish</h1>
-<form class="ui form">
+<div class="ui form">
     <input type="hidden" id="dish-id" value="<%= dish.id %>">
   <div class="field">
     <label>Dish Name</label>
@@ -73,11 +73,7 @@
     </div>
   </div>
   <div class="ui action input dish-photo-upload">
-      <!--<input type="text" id="_dishPhoto">-->
-      <!--<button class="ui orange right labeled icon button">-->
-      <!--<i class="file image outline icon"></i>-->
-          <input type="file" id="dishPhoto" name="dishPhoto" accept="image/*">
-      <!--</button>      -->
+      <input type="file" id="dishPhoto" name="dishPhoto" accept="image/*">
   </div>
     <div class="ui divider hidden"></div>
     <% if(dish.get('Image_File') != null) { %>
@@ -85,15 +81,12 @@
         <img class="thumb" src="<%= dish.get('Image_File')._url %>" style="width: 400px"/>
     </div>
     <% } %>
-
-</form>
+</div>
 <div class="ui divider hidden"></div>
 <button class="center aligned ui red button save-dish-btn">Add this dish</button>
 <div class="ui divider hidden"></div>
-<button class="center aligned ui grey button" onclick="location.href='#manageRestaurants'">Cancel</button>
+<button class="center aligned ui grey button cancel-dish-btn">Cancel</button>
 
 <script>
-$('.ui.checkbox')
-.checkbox()
-  ;
+    $('.ui.checkbox').checkbox();
 </script>
