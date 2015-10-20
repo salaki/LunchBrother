@@ -79,6 +79,22 @@
       <i class="yelp icon"></i>
     </div>
   </div>
+
+  <div class="field">
+    <div class="ui selection dropdown yelp-rating-selection">
+      <input type="hidden" name="">
+      <i class="dropdown icon"></i>
+      <div class="default text">Yelp Rating</div>
+      <div class="menu">
+        <div class="item" data-value="1">1</div>
+        <div class="item" data-value="2">2</div>
+        <div class="item" data-value="3">3</div>
+        <div class="item" data-value="4">4</div>
+        <div class="item" data-value="5">5</div>
+      </div>
+    </div>
+  </div>
+
   <h4 class="ui dividing header">Payment</h4>
   <div class="field">
     <label>Routing number</label>
@@ -105,5 +121,5 @@
 <div class="ui divider hidden"></div>
 <button class="center aligned ui red button" id="saveRestaurantBtn">Save this restaurant</button>
 <div class="ui divider hidden"></div>
-<button class="center aligned ui grey button" onclick="location.href='#manageRestaurants'">Cancel</button>
+<button class="center aligned ui grey button" id="cancelRestaurantBtn">Cancel</button>
 
