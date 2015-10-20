@@ -53,32 +53,6 @@ define([
                       }
 
                       self.$el.html(self.template({grids: grids, restaurant: restaurant, bankAccount: bankAccount}));
-//                      $('.ui.form').form({
-//                          'restaurantName': {
-//                              identifier: 'restaurantName',
-//                              rules: [{
-//                                  type: 'empty',
-//                                  prompt: 'Please enter your restaurant name'
-//                              }]
-//                          },
-//                          'yelpLink': {
-//                              identifier: 'yelpLink',
-//                              rules: [{
-//                                  type: 'empty',
-//                                  prompt: 'Please enter your yelp link'
-//                              }]
-//                          },
-//                          area: {
-//                              identifier: 'area',
-//                              rules: [{
-//                                  type: 'empty',
-//                                  prompt: 'Please select an area for this restaurant'
-//                              }]
-//                          }
-//                      }, {
-//                          on: 'blur',
-//                          inline: 'true'
-//                      });
 
                       if (restaurant.id) {
                           $(".restaurant-type-selection").dropdown('set selected', restaurant.get('type'));
