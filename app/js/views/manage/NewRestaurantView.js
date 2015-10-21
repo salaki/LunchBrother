@@ -13,7 +13,8 @@ define([
           template: _.template(newRestaurantTemplate),
 
           events: {
-              'click #saveRestaurantBtn': 'saveRestaurant'
+              'click #saveRestaurantBtn': 'saveRestaurant',
+              'click #cancelRestaurantBtn': 'cancelRestaurant'
           },
 
           initialize: function () {
@@ -53,44 +54,19 @@ define([
                       }
 
                       self.$el.html(self.template({grids: grids, restaurant: restaurant, bankAccount: bankAccount}));
-//                      $('.ui.form').form({
-//                          'restaurantName': {
-//                              identifier: 'restaurantName',
-//                              rules: [{
-//                                  type: 'empty',
-//                                  prompt: 'Please enter your restaurant name'
-//                              }]
-//                          },
-//                          'yelpLink': {
-//                              identifier: 'yelpLink',
-//                              rules: [{
-//                                  type: 'empty',
-//                                  prompt: 'Please enter your yelp link'
-//                              }]
-//                          },
-//                          area: {
-//                              identifier: 'area',
-//                              rules: [{
-//                                  type: 'empty',
-//                                  prompt: 'Please select an area for this restaurant'
-//                              }]
-//                          }
-//                      }, {
-//                          on: 'blur',
-//                          inline: 'true'
-//                      });
 
                       if (restaurant.id) {
                           $(".restaurant-type-selection").dropdown('set selected', restaurant.get('type'));
                           $(".restaurant-area-selection").dropdown('set selected', restaurant.get('gridId').id);
+                          $(".yelp-rating-selection").dropdown('set selected', restaurant.get('rating'));
                           $(".restaurant-type-selection").dropdown('set value', restaurant.get('type'));
                           $(".restaurant-area-selection").dropdown('set value', restaurant.get('gridId').id);
-
+                          $(".yelp-rating-selection").dropdown('set value', restaurant.get('rating'));
                       } else {
                           $(".restaurant-type-selection").dropdown();
                           $(".restaurant-area-selection").dropdown();
+                          $(".yelp-rating-selection").dropdown();
                       }
-
                   },
                   error: function(error) {
                       showMessage("Error", "Error in finding grids. Reason: " + error.message);
@@ -111,6 +87,7 @@ define([
               var gridId = $(".restaurant-area-selection").dropdown('get value');
               var url = $("#restaurantWebsite").val();
               var yelpLink = $("#yelpLink").val();
+              var yelpRating = Number($(".yelp-rating-selection").dropdown('get value'));
               var description = $("#restaurantDescription").val();
 
               var savedRestaurant = new RestaurantModel();
@@ -132,6 +109,7 @@ define([
                 },
                 url: url,
                 yelpLink: yelpLink,
+                  rating: yelpRating,
                 description: description
               }, {
                 success: function(savedRestaurant) {
@@ -151,6 +129,7 @@ define([
                   var $form = this.$('form');
                   Stripe.bankAccount.createToken($form, this.stripeResponseHandler);
               } else {
+                  location.reload();
                   window.location.href='#manageRestaurants';
               }
           },
@@ -186,6 +165,7 @@ define([
                           restaurant.set('bankAccount', response);
                           restaurant.save();
                           showMessage("Success", "Bank account created successfully!", function() {
+                              location.reload();
                               window.location.href='#manageRestaurants';
                           });
                       },
@@ -213,6 +193,11 @@ define([
               var originalAccountNumber = $(".original-restaurant-account-number").val().trim();
               var originalRoutingNumber = $(".original-restaurant-routing-number").val().trim();
               return (accountNumber === originalAccountNumber) && (routingNumber === originalRoutingNumber);
+          },
+
+          cancelRestaurant: function() {
+              location.reload();
+              window.location.href='#manageRestaurants'
           }
       });
       return NewRestaurantView;

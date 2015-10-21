@@ -7,7 +7,8 @@ define([
         el: $("#page"),
 
         events: {
-            "click .save-dish-btn": "saveDish"
+            "click .save-dish-btn": "saveDish",
+            "click .cancel-dish-btn": "cancelDish"
         },
 
         initialize: function () {
@@ -109,9 +110,14 @@ define([
             dish.set("spicy", $("#dish-spicy").is(':checked'));
             dish.set("glutenFree", $("#dish-gluten-free").is(':checked'));
             dish.set("vegetarian", $("#dish-vegetarian").is(':checked'));
+            dish.set("active", true);
             dish.save({
                 success: function(dish) {
                     showMessage("Success", "Dish save successfully!", function () {
+                        //http://stackoverflow.com/questions/15626528/click-is-calling-function-twice-in-backbone
+                        //This is very popular backbone js issue, I have tried above solutions and all didn't work.
+                        //So I decided to reload the page to remove ghost views.
+                        location.reload();
                         window.location.href = "#manageRestaurants";
                     });
                 },
@@ -119,6 +125,14 @@ define([
                     showMessage("Error", "Dish save failed! Reason: " + error.message);
                 }
             });
+        },
+
+        cancelDish: function() {
+            //http://stackoverflow.com/questions/15626528/click-is-calling-function-twice-in-backbone
+            //This is very popular backbone js issue, I have tried above solutions and all didn't work.
+            //So I decided to reload the page to remove ghost views.
+            location.reload();
+            window.location.href = "#manageRestaurants";
         }
     });
     return NewdishView;

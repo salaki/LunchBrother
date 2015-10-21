@@ -28,32 +28,32 @@ define([
 
         render: function () {
             this.$el.html(this.template());
-            this.$('.ui.form').form({
-                'username': {
-                    identifier: 'username',
-                    rules: [{
-                        type: 'empty',
-                        prompt: 'Please enter your username'
-                    }]
-                },
-                'password': {
-                    identifier: 'password',
-                    rules: [{
-                        type: 'empty',
-                        prompt: 'Please enter your password'
-                    }]
-                },
-                'loginRegistrationCode': {
-                    identifier: 'loginRegistrationCode',
-                    rules: [{
-                        type: 'empty',
-                        prompt: 'Please provide your registration code'
-                    }]
-                }
-            }, {
-                on: 'blur',
-                inline: 'true'
-            });
+            //this.$('.ui.form').form({
+            //    'username': {
+            //        identifier: 'username',
+            //        rules: [{
+            //            type: 'empty',
+            //            prompt: 'Please enter your username'
+            //        }]
+            //    },
+            //    'password': {
+            //        identifier: 'password',
+            //        rules: [{
+            //            type: 'empty',
+            //            prompt: 'Please enter your password'
+            //        }]
+            //    },
+            //    'loginRegistrationCode': {
+            //        identifier: 'loginRegistrationCode',
+            //        rules: [{
+            //            type: 'empty',
+            //            prompt: 'Please provide your registration code'
+            //        }]
+            //    }
+            //}, {
+            //    on: 'blur',
+            //    inline: 'true'
+            //});
             return this;
         },
 
@@ -61,7 +61,7 @@ define([
             var self = this;
             var username = this.$("#username").val();
             var password = this.$("#password").val();
-            var registrationCode = this.$("#loginRegistrationCode").val();
+            var registrationCode = this.$("#loginRegistrationCode").val().trim();
             Parse.User.logIn(username, password, {
                 success: function (user) {
                     if (user.get("emailVerified") === false) {
@@ -92,7 +92,14 @@ define([
                         }
 
                         if (permission === GENERAL_USER) {
-                            self.updateRegistrationCodeState(user, registrationCode);
+                            if (registrationCode) {
+                                self.updateRegistrationCodeState(user, registrationCode);
+                            } else {
+                                showMessage("Registration Code Required", "Please enter a registration code to login!", function(){
+                                    Parse.User.logOut();
+                                    location.reload();
+                                });
+                            }
                         }
                 	}  
                 },

@@ -9,9 +9,10 @@ define([
    
   var initialize = function() {
     console.log("main init");
-    
-    var appId = 'Cgz1qCbMW85tSsBrYhMlWThKm1pYT5D4U0NmEGxX';
-    var jsKey = 'FAfMIEjgQENLxipP5ddW3YYqu14l9dG9uzGyRSLG';
+
+      //Prod
+      var appId = 'shB8up4c14Idr6eFH4SBjzqZ1vdYT0Q79LSaPQwT';
+      var jsKey = 'PQrHeggtLnjUfFh4KI1IV5vLhZXztUzfdlUnk5X2';
 
     Parse.initialize(appId, jsKey);
     
@@ -23,7 +24,7 @@ define([
     var dayOfWeek = cnDay[today.getDay()];
     var date = today.toLocaleDateString();
     $('#today').text(dayOfWeek + ', ' + date);
-    
+
     ////The logo direct to the home page
     //$(".brand").on("click", function(){
     //	window.location.href="#";
