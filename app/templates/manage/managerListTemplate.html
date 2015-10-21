@@ -12,17 +12,17 @@
         <% } else { %>
             <img class="ui avatar image" src="img/default_user.png">
         <% } %>
-        <div class="content">
+        <div class="content clickToShow" data-id="<%= manager.id %>">
             <a class="header"><%= manager.get('firstName') %> <%= manager.get('lastName') %></a>
             <%= manager.get('gridId').get('name') %>
         </div>
     </div>
-    <div class="ui segments">
-        <div class="ui segment">
+    <div class="ui segments" id="<%= manager.id %>-content">
+        <div class="ui segment" >
             <i class="phone icon"></i>
             <%= manager.get('telnum') %>
         </div>
-        <div class="ui segment">
+        <div class="ui segment" >
             <i class="mail icon"></i>
             <a href="mailto:<%= manager.get('email') %>"><%= manager.get('email') %></a>
         </div>
@@ -36,9 +36,3 @@
     Add new manager
 </div>
 
-<script>
-$('.header').click(function(){
-    $('.segments')
-        .transition('vertical flip', '500ms');
-});
-</script>

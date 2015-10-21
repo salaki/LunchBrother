@@ -51,6 +51,17 @@ time, mark, audio, video {
   font-size: 100%;
   vertical-align: baseline;
 }
+#youtubeDiv{
+	height:300px;
+	width:100%
+}
+#frame {
+	height: 100%;
+	width: 100%;
+}
+#clickSegment{
+	visibility:hidden
+}
 
 /* line 22, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html {
