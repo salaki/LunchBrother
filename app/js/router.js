@@ -132,7 +132,7 @@ define([
     var showSideBar = function(currentUser) {
         currentUser.fetch();
         $("#userEmail").text(currentUser.get('email'));
-        var gridId = "nmbyDzTp7m";
+        var gridId = UMCP_GRID_ID;
         if (currentUser.get('gridId') == undefined) {
             $("#userGrid").text("University of Maryland College Park");
         }else {

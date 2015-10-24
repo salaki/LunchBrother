@@ -32,7 +32,7 @@ define([
             //default chef's grid to University of Maryland College Park
             if (chefGrid == undefined){
                 chefGrid = new GridModel();
-                chefGrid.id = "nmbyDzTp7m";
+                chefGrid.id = UMCP_GRID_ID;
             }
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
             pickUpLocationQuery.equalTo("gridId", chefGrid);

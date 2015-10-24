@@ -64,7 +64,7 @@
                                 payments[0].get("pickUpLocation").get("distributor").get('telnum'),
                                 payments[0].get("pickUpLocation").get("gridId").get("driver"));
                         } else {
-                            var gridId = "nmbyDzTp7m";
+                            var gridId = UMCP_GRID_ID;
                             if (currentUser.get('gridId') !== undefined) {
                                 gridId = currentUser.get('gridId').id;
                             }

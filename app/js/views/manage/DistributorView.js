@@ -135,7 +135,7 @@ define([
             var newEvent = {};
             _.each(payments, function(payment) {
                 if (payment.get("pickUpLocation") !== undefined) {
-                    var paymentGridId = "nmbyDzTp7m";  //For old user backward compatibility
+                    var paymentGridId = UMCP_GRID_ID;  //For old user backward compatibility
                     if (payment.get("pickUpLocation") !== undefined) {
                         paymentGridId = payment.get("pickUpLocation").get("gridId").id;
                     }

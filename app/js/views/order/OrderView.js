@@ -45,7 +45,7 @@ define([
             var grid = Parse.User.current().get('gridId');
             if (grid === undefined) {
                 var gridQuery = new Parse.Query(GridModel);
-                gridQuery.get("nmbyDzTp7m", {
+                gridQuery.get(UMCP_GRID_ID, {
                     success: function(defaultGrid) {
                         var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
                         pickUpLocationQuery.equalTo('gridId', defaultGrid);
