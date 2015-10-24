@@ -5,6 +5,8 @@
         <div class="ui column grid summary-list">
             <% if(rest){ %>
             <div class="sixteen wide column center aligned">Our delivery man is at rest now.</div>
+            <% } else if (locationName === "NA") { %>
+            <div class="sixteen wide column center aligned" style="font-style: italic">No driver for your location yet.</div>
             <% } else if (locationName !== "") { %>
             <div class="six wide column">
                 <span class="summary-location"><%= locationName %></span>
