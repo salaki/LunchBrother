@@ -5,10 +5,11 @@ define([
     'models/InventoryModel',
     'models/RegistrationCodeModel',
     'models/BankAccount',
+    'models/Transfer',
     'text!templates/manage/managerHomeTemplate.html',
     'text!templates/manage/menuListTemplate.html',
     'text!templates/manage/salesTableBodyTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, RegistrationCodeModel, BankAccountModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, RegistrationCodeModel, BankAccountModel, TransferModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
@@ -66,10 +67,16 @@ define([
             ]
         },
 
+        nextPayment: {
+            date: "",
+            amount: 0.00
+        },
+
         inventoryIds: [],
 
         initialize: function() {
             _.bindAll(this, 'render');
+            this.nextPaymentCalculation();
             var currentUser = Parse.User.current();
         },
 
@@ -177,7 +184,7 @@ define([
             this.configureMenuSelection();
 
             //Sales data
-            this.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00}));
+            this.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00, nextPaymentDate: this.nextPayment.date, nextPaymentAmount: this.nextPayment.amount}));
             this.$( "#datepicker" ).datepicker({
                 onSelect: function(dateText){
                     var month = parseInt(dateText.split("/")[0]) - 1;
@@ -194,6 +201,45 @@ define([
 
                     // Query Sales Data
                     self.querySalesData(dayStart, dayEnd);
+                }
+            });
+        },
+
+        nextPaymentCalculation: function() {
+            var self = this;
+            var transferQuery = new Parse.Query(TransferModel);
+            transferQuery.equalTo("manager", Parse.User.current());
+            transferQuery.equalTo("transferred", false);
+            transferQuery.find({
+                success: function(transfers) {
+                    var amount = 0.00;
+                    _.each(transfers, function(transfer){
+                        amount += transfer.get('amount');
+                    });
+                    self.nextPayment.amount = amount;
+                },
+                error: function(error) {
+                    console.log(error.message);
+                }
+            });
+
+            var transferQueryForNextPayDate = new Parse.Query(TransferModel);
+            transferQueryForNextPayDate.equalTo("manager", Parse.User.current());
+            transferQueryForNextPayDate.equalTo("transferred", true);
+            transferQueryForNextPayDate.descending("updatedAt");
+            transferQuery.first({
+                success: function(transfer) {
+                    if (transfer) {
+                        var lastPayDate = transfer.get('updatedAt');
+                        var date = new Date(lastPayDate.getTime() + 24 * 60 * 60 * 1000 * 14);
+                        var dateString = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
+                        self.nextPayment.date = dateString;
+                    } else {
+                        self.nextPayment.date = "TBD";
+                    }
+                },
+                error: function(error) {
+                    console.log(error.message);
                 }
             });
         },
@@ -238,7 +284,8 @@ define([
                         });
                     }
 
-                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income}));
+                    var current = new Date();
+                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income, nextPaymentDate: self.nextPayment.date, nextPaymentAmount: self.nextPayment.amount}));
                 },
                 error: function(error) {
                     showMessage("Error", "Find inventory failed! Reason: " + error.message);

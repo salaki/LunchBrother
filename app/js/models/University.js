@@ -2,8 +2,8 @@
  * Created by Jack on 2/27/15.
  */
 define(function() {
-    var RestaurantModel = Parse.Object.extend("University", {
+    var UniversityModel = Parse.Object.extend("University", {
 
     });
-    return RestaurantModel;
+    return UniversityModel;
 });
