@@ -115,6 +115,14 @@
       font-size:$md;
     }
   }
+
+  .extra.content.horizontal.segments {
+    padding:0;
+    & span {
+      width:100%;
+      text-align:center;
+    }
+  }
 }
 
 
