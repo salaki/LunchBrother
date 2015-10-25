@@ -9,10 +9,18 @@ define([
    
   var initialize = function() {
     console.log("main init");
+<<<<<<< HEAD
+    
+
+    //Prod
+    var appId = 'shB8up4c14Idr6eFH4SBjzqZ1vdYT0Q79LSaPQwT';
+    var jsKey = 'PQrHeggtLnjUfFh4KI1IV5vLhZXztUzfdlUnk5X2';
+=======
 
       //Prod
       var appId = 'shB8up4c14Idr6eFH4SBjzqZ1vdYT0Q79LSaPQwT';
       var jsKey = 'PQrHeggtLnjUfFh4KI1IV5vLhZXztUzfdlUnk5X2';
+>>>>>>> master
 
     Parse.initialize(appId, jsKey);
     
