@@ -9,7 +9,8 @@ define([
 
           events: {
               'click .toNewManager': 'onNewManagerClick',
-              'click .deleteManager': "onDeleteManagerClick"
+              'click .deleteManager': "onDeleteManagerClick",
+              'click .clickToShow': 'onClickToShowClick'
           },
 
           initialize: function () {
@@ -27,6 +28,11 @@ define([
               managerQuery.find({
                   success: function(managers) {
                       self.$el.html(self.template({managers: managers}));
+                      for(var i = 0; i < managers.length; i++) {
+                    	  var temp='#'+managers[i].toJSON().objectId+'-content';  
+                    	  console.log(temp);
+                    	  $(temp).hide();
+                      }
                   },
                   error: function(error) {
                       showMessage("Error", "Find managers failed! Reason: " + error.message);
@@ -40,8 +46,16 @@ define([
 
           onDeleteManagerClick: function(ev) {
               var managerId = $(ev.currentTarget).data('id');
+              console.log(managerId);
               showMessage("Oops!", "Delete function is still under construction");
               //TODO - Need more discussion to implement the delete function
+          },
+          
+          onClickToShowClick: function(ev){
+        	  var managerId = $(ev.currentTarget).data('id');
+        	 //divId="#"+divId;
+        	 console.log(managerId);
+        	 $('#'+managerId+'-content').transition('vertical flip', '500ms');
           }
       });
       return ManagerListView;
