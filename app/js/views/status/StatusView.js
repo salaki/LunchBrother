@@ -64,7 +64,7 @@
                                 payments[0].get("pickUpLocation").get("distributor").get('telnum'),
                                 payments[0].get("pickUpLocation").get("gridId").get("driver"));
                         } else {
-                            var gridId = "nmbyDzTp7m";
+                            var gridId = UMCP_GRID_ID;
                             if (currentUser.get('gridId') !== undefined) {
                                 gridId = currentUser.get('gridId').id;
                             }
@@ -90,36 +90,42 @@
         },
 
         displayDriverLocation: function(pickUpLocationLatitude, pickUpLocationLongitude, locationName, distributorName, distributorNumber, driver) {
-            var current = new Date();
-            var self = this;
-            var deliverQuery = new Parse.Query(DeliveryModel);
-            deliverQuery.equalTo("deliverBy", {__type: "Pointer", className: "_User", objectId: driver.id});
-            deliverQuery.lessThan("updatedAt", current);
-            deliverQuery.descending("updatedAt");
-            deliverQuery.first({
-                success: function (delivery) {
-                    self.$el.html(self.template({rest: false, locationName: locationName, contactName: distributorName, contactNumber: distributorNumber, status: delivery.get('status')}));
-                    $("h1.ui.small.center.aligned.header").html("Where is your delivery man?");
+            if (driver) {
+                var current = new Date();
+                var self = this;
+                var deliverQuery = new Parse.Query(DeliveryModel);
+                deliverQuery.equalTo("deliverBy", {__type: "Pointer", className: "_User", objectId: driver.id});
+                deliverQuery.lessThan("updatedAt", current);
+                deliverQuery.descending("updatedAt");
+                deliverQuery.first({
+                    success: function (delivery) {
+                        self.$el.html(self.template({rest: false, locationName: locationName, contactName: distributorName, contactNumber: distributorNumber, status: delivery.get('status')}));
+                        $("h1.ui.small.center.aligned.header").html("Where is your delivery man?");
 
-                    var pickUpLocation = new google.maps.LatLng(pickUpLocationLatitude, pickUpLocationLongitude);
-                    var myOptions = {
-                        center: pickUpLocation,
-                        zoom: 10,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP,
-                        mapTypeControl: false,
-                        streetViewControl:false,
-                        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}
-                    };
-                    var icon = 'img/car.png';
-                    var map = new google.maps.Map(document.getElementById("mapHolder"), myOptions);
-                    var driverLocation = new google.maps.LatLng(delivery.get('latitude'), delivery.get('longitude'));
-                    var driverMarker = new google.maps.Marker({position: driverLocation, map: map, icon: icon, title: "Your lunch is here!"});
-                    var pickUpLocationMarker = new google.maps.Marker({position: pickUpLocation, map: map, title: "Your are here!"});
-                },
-                error: function (error) {
-                    showMessage("Error", "Find delivery record failed! Error: " + error.code + " " + error.message);
-                }
-            });
+                        var pickUpLocation = new google.maps.LatLng(pickUpLocationLatitude, pickUpLocationLongitude);
+                        var myOptions = {
+                            center: pickUpLocation,
+                            zoom: 10,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP,
+                            mapTypeControl: false,
+                            streetViewControl:false,
+                            navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}
+                        };
+                        var icon = 'img/car.png';
+                        var map = new google.maps.Map(document.getElementById("mapHolder"), myOptions);
+                        var driverLocation = new google.maps.LatLng(delivery.get('latitude'), delivery.get('longitude'));
+                        var driverMarker = new google.maps.Marker({position: driverLocation, map: map, icon: icon, title: "Your lunch is here!"});
+                        var pickUpLocationMarker = new google.maps.Marker({position: pickUpLocation, map: map, title: "Your are here!"});
+                    },
+                    error: function (error) {
+                        showMessage("Error", "Find delivery record failed! Error: " + error.code + " " + error.message);
+                    }
+                });
+
+            } else {
+                this.$el.html(this.template({rest: false, locationName: "NA", contactName: "", contactNumber: "", status: ""}));
+                $("#mapHolder").hide();
+            }
         }
     });
 

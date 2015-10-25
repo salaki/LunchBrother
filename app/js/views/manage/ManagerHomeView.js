@@ -80,7 +80,7 @@ define([
             //default chef's grid to University of Maryland College Park
             if (chefGrid == undefined){
                 chefGrid = new GridModel();
-                chefGrid.id = "nmbyDzTp7m";
+                chefGrid.id = UMCP_GRID_ID;
             }
 
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
@@ -133,8 +133,8 @@ define([
         queryWorkers: function(locations, firstWeek, secondWeek, thirdWeek) {
             var self = this;
             var userQuery = new Parse.Query(Parse.User);
-            userQuery.greaterThan("permission", 2);
-            userQuery.lessThan("permission", 5);
+            userQuery.greaterThan("permission", 1);
+            userQuery.lessThan("permission", 4);
             userQuery.equalTo("gridId", Parse.User.current().get('gridId'));
             userQuery.find({
                 success: function(workers) {
@@ -412,7 +412,7 @@ define([
             $('#editPersonDialog').modal({
                 closable: false,
                 onDeny: function () {
-                    //Do nothing
+                    location.reload();
                 },
                 onApprove: function () {
                 	self.savePerson(pId, $("#first_name").val(), $("#last_name").val(), $('#email').val(), $('#phonenumber').val(), $('#password').val(), $('#titleOptions').val());                	
@@ -447,7 +447,7 @@ define([
             $('#editDPDialog').modal({
                 closable: false,
                 onDeny: function () {
-
+                    location.reload();
                 },
                 onApprove: function () {
                     self.saveDP(dpId, $("#dp_location").val(), $("#dp_youtubeLink").val(), $("#distributorSelector").val());
@@ -461,7 +461,7 @@ define([
             $('#deleteDPDialog').modal({
                 closable: false,
                 onDeny: function () {
-
+                    location.reload();
                 },
                 onApprove: function () {
                     self.deleteDP(dpId);
@@ -475,7 +475,7 @@ define([
             $('#deletePersonDialog').modal({
                 closable: false,
                 onDeny: function () {
-
+                    location.reload();
                 },
                 onApprove: function () {
                     self.deletePerson(userId);
@@ -496,7 +496,7 @@ define([
             //default chef's grid to University of Maryland College Park
             if (chefGrid === undefined){
                 chefGrid = new GridModel();
-                chefGrid.id = "nmbyDzTp7m";
+                chefGrid.id = UMCP_GRID_ID;
             }
 
             if (address.trim() !== "") {
@@ -631,7 +631,7 @@ define([
             $('#publishMenuDialog').modal({
                 closable: false,
                 onDeny: function () {
-                    //Do nothing
+                    location.reload();
                 },
                 onApprove: function () {
                     $("#publishMenu").addClass('disabled');
@@ -648,10 +648,14 @@ define([
 
                     Parse.Object.saveAll(inventories, {
                         success: function(inventories) {
-                            showMessage("Success", "Save menu successfully!");
+                            showMessage("Success", "Save menu successfully!", function() {
+                                location.reload();
+                            });
                         },
                         error: function(error) {
-                            showMessage("Error", "Save menu failed! Reason: " + error.message + "Menu: " + + inventories);
+                            showMessage("Error", "Save menu failed! Reason: " + error.message + "Menu: " + + inventories, function() {
+                                location.reload();
+                            });
                         }
                     });
                 }

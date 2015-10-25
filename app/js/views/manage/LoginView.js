@@ -117,7 +117,7 @@ define([
         showSideBar: function(currentUser) {
             currentUser.fetch();
             $("#userEmail").text(currentUser.get('email'));
-            var gridId = "nmbyDzTp7m";
+            var gridId = UMCP_GRID_ID;
             if (currentUser.get('gridId') == undefined) {
                 $("#userGrid").text("University of Maryland College Park");
             }else {
@@ -137,7 +137,7 @@ define([
             $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
             //$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
             $("#accountBarFirstName").text(currentUser.get('firstName'));
-            $('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
+            //$('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
             $('#account').show();
         },
 

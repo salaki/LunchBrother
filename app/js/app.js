@@ -40,6 +40,10 @@ var config = {
 //Permission code
 var GENERAL_USER = 1, DRIVER = 2, DISTRIBUTOR = 3, LOCAL_MANAGER = 4, LB_ADMIN = 5;
 
+//UMCP grid id
+var UMCP_GRID_ID = 'nmbyDzTp7m'; //dev
+//var UMCP_GRID_ID = 'GPOeekfiTI'; //prod
+
 require.config(config);
 
 // Load the main app module to start the app
