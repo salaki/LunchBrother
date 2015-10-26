@@ -207,35 +207,59 @@ define([
 
         nextPaymentCalculation: function() {
             var self = this;
-            var transferQuery = new Parse.Query(TransferModel);
-            transferQuery.equalTo("manager", Parse.User.current());
-            transferQuery.equalTo("transferred", false);
-            transferQuery.find({
-                success: function(transfers) {
-                    var amount = 0.00;
-                    _.each(transfers, function(transfer){
-                        amount += transfer.get('amount');
-                    });
-                    self.nextPayment.amount = amount;
-                },
-                error: function(error) {
-                    console.log(error.message);
-                }
-            });
 
+            /**
+             *  Find next payment date
+             */
             var transferQueryForNextPayDate = new Parse.Query(TransferModel);
             transferQueryForNextPayDate.equalTo("manager", Parse.User.current());
             transferQueryForNextPayDate.equalTo("transferred", true);
             transferQueryForNextPayDate.descending("updatedAt");
-            transferQuery.first({
+            transferQueryForNextPayDate.first({
                 success: function(transfer) {
                     if (transfer) {
                         var lastPayDate = transfer.get('updatedAt');
                         var date = new Date(lastPayDate.getTime() + 24 * 60 * 60 * 1000 * 14);
                         var dateString = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
                         self.nextPayment.date = dateString;
-                    } else {
-                        self.nextPayment.date = "TBD";
+                    }
+                },
+                error: function(error) {
+                    console.log(error.message);
+                }
+            });
+
+            /**
+             *  Find next payment amount
+             */
+            var transferQuery = new Parse.Query(TransferModel);
+            transferQuery.equalTo("manager", Parse.User.current());
+            transferQuery.equalTo("transferred", false);
+            transferQuery.ascending("updatedAt");
+            transferQuery.find({
+                success: function(transfers) {
+                    var amount = 0.00;
+                    var firstPayDateString = ""; //For the very first transfer pay date
+                    _.each(transfers, function(transfer){
+                        if (firstPayDateString) {
+                            var firstTransferDate = transfer.get('updatedAt');
+                            var firstPayDate = new Date(firstTransferDate.getTime() + 24 * 60 * 60 * 1000 * 14);
+                            firstPayDateString = firstPayDate.getMonth() + 1 + "/" + firstPayDate.getDate() + "/" + firstPayDate.getFullYear();
+                        }
+                        amount += transfer.get('amount');
+                    });
+
+                    self.nextPayment.amount = amount;
+
+                    /**
+                     * If no next payment date set, set it here
+                     */
+                    if (!self.nextPayment.date) {
+                        if (!firstPayDateString) {
+                            self.nextPayment.date = "TBD";
+                        } else {
+                            self.nextPayment.date = firstPayDateString;
+                        }
                     }
                 },
                 error: function(error) {
@@ -284,7 +308,6 @@ define([
                         });
                     }
 
-                    var current = new Date();
                     self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income, nextPaymentDate: self.nextPayment.date, nextPaymentAmount: self.nextPayment.amount}));
                 },
                 error: function(error) {
