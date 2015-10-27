@@ -236,20 +236,25 @@ define(['views/home/DishView',
                 model : this.stats
             });
 
-            if ((weekday == 6) || (weekday == 0 && currentTime < stopOrderTimeEnd)) {
-                $("#timeAlert").css("display", "block");
-                $("#paymentBtn").addClass('disabled');
-                $("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 2:00PM.");
-            } else if(weekday !== 0 && (currentTime > stopOrderTimeStart && currentTime < stopOrderTimeEnd)) {
-                $("#timeAlert").css("display", "block");
-                $("#paymentBtn").addClass('disabled');
-                $("#timeAlert").text("Sorry, we don't take order after 11:45AM. Our order time is 2:00PM-11:45AM.");
-            } else if ((weekday == 0 && currentTime > stopOrderTimeEnd) || (weekday == 5 && currentTime < stopOrderTimeStart) && ($("#order").length == 0)) {
+            if (Parse.User.current().get('permission') == LB_ADMIN) {
                 $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
                 $("#page").append(view.render().el);
-            } else if ((weekday >= 1 && weekday <= 4) && (currentTime < stopOrderTimeStart || currentTime > stopOrderTimeEnd) && ($("#order").length == 0)) {
-                $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-                $("#page").append(view.render().el);
+            } else {
+                if ((weekday == 6) || (weekday == 0 && currentTime < stopOrderTimeEnd)) {
+                    $("#timeAlert").css("display", "block");
+                    $("#paymentBtn").addClass('disabled');
+                    $("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 2:00PM.");
+                } else if(weekday !== 0 && (currentTime > stopOrderTimeStart && currentTime < stopOrderTimeEnd)) {
+                    $("#timeAlert").css("display", "block");
+                    $("#paymentBtn").addClass('disabled');
+                    $("#timeAlert").text("Sorry, we don't take order after 11:45AM. Our order time is 2:00PM-11:45AM.");
+                } else if ((weekday == 0 && currentTime > stopOrderTimeEnd) || (weekday == 5 && currentTime < stopOrderTimeStart) && ($("#order").length == 0)) {
+                    $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
+                    $("#page").append(view.render().el);
+                } else if ((weekday >= 1 && weekday <= 4) && (currentTime < stopOrderTimeStart || currentTime > stopOrderTimeEnd) && ($("#order").length == 0)) {
+                    $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
+                    $("#page").append(view.render().el);
+                }
             }
 		}
 	});
