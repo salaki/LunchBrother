@@ -96,12 +96,12 @@ define([
                                     var dish = orders[j].get('dishId');
 
                                     if (orders[j].get("pickUpLocation").id == locations[i].id) {
-                                        var index = orderDetailMap["dishNames"].indexOf(dish.id);
+                                        var index = orderDetailMap["dishNames"].indexOf(dish.get('dishName'));
                                         if (index > 0) {
                                             orderDetailMap["quantity"][index] += orders[j].get('quantity');
                                             orderDetailMap["subTotalPrice"][index] += orders[j].get('subTotalPrice');
                                         } else {
-                                            orderDetailMap["dishNames"].push(dish.id);
+                                            orderDetailMap["dishNames"].push(dish.get('dishName'));
                                             orderDetailMap["dishTypes"].push(dish.get('typeEn'));
                                             orderDetailMap["quantity"].push(orders[j].get('quantity'));
                                             orderDetailMap["subTotalPrice"].push(orders[j].get('subTotalPrice'));
@@ -111,7 +111,7 @@ define([
                                             dishQuantityMap[dish.id]['dishQuantity'] += orders[j].get('quantity');
                                         } else {
                                             dishQuantityMap[dish.id] = {
-                                                dishName: dish.get('typeEn'),
+                                                dishName: dish.get('dishName'),
                                                 dishQuantity: orders[j].get('quantity')
                                             }
                                         }
@@ -130,7 +130,7 @@ define([
                                 pickUpSummary['dishQuantity'] = dishQuantityString;
 
 
-                                var orderDetailZip = _.zip(orderDetailMap["dishTypes"], orderDetailMap["quantity"], orderDetailMap["subTotalPrice"]);
+                                var orderDetailZip = _.zip(orderDetailMap["dishNames"], orderDetailMap["quantity"], orderDetailMap["subTotalPrice"]);
                                 ordersByLocations.push(orderDetailZip);
                             }
 
