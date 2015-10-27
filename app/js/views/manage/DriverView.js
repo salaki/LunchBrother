@@ -5,9 +5,10 @@ define([
     'models/Grid',
     'models/Restaurant',
     'models/PickUpLocation',
+    'models/InventoryModel',
     'views/manage/LoginView',
     'text!templates/manage/driverTemplate.html'
-], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, LoginView, driverTemplate) {
+], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, LoginView, driverTemplate) {
 
     var DriverView = Parse.View.extend({
         el: $("#page"),
@@ -133,22 +134,86 @@ define([
                                 ordersByLocations.push(orderDetailZip);
                             }
 
-//                            console.log(ordersByLocations);
-//                            console.log(locationNames);
-//                                    self.$el.html(self.template({ordersByLocations: orderSummary}));
                             var zipped = _.zip(locationNames, ordersByLocations);
-//                                    self.$el.html(self.template({locationNames: locationNames, ordersByLocations: ordersByLocations}));
                             self.$el.html(self.template({ordersByLocations: zipped}));
 
-                            self.$("#resName").html(pickUpSummary['restaurantName']);
-                            self.$("#resNumber").html(pickUpSummary['restaurantNumber']);
-                            self.$("#resAddress").html(pickUpSummary['restaurantAddress']);
-                            self.$("#dishQuan").html(pickUpSummary['dishQuantity']);
+                            //Find Inventory Info
+                            self.findTodayPickupInfo();
                         },
                         error: function(error) {
                             console.log(error.message);
                         }
                     });
+                },
+                error: function(error) {
+                    console.log(error.message);
+                }
+            });
+        },
+
+        findTodayPickupInfo: function() {
+            var self = this;
+
+            //Find today's inventory
+            var current = new Date();
+            var currentHour = current.getHours();
+            if (currentHour < 12) {
+                //Before 12:00, display the inventory for today
+                var lowerDate = current;
+                lowerDate.setHours(8, 0, 0, 0);
+                var upperDate = new Date(current.getTime());
+                upperDate.setHours(12, 0, 0, 0);
+            } else {
+                //After 12:00, display the inventory for tomorrow
+                lowerDate = current;
+                lowerDate.setHours(12, 0, 0, 0);
+                upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                upperDate.setHours(12, 0, 0, 0);
+            }
+
+            var driverGrid = Parse.User.current().get('gridId');
+            //default chef's grid to University of Maryland College Park
+            if (driverGrid == undefined){
+                driverGrid = new GridModel();
+                driverGrid.id = UMCP_GRID_ID;
+            }
+
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            inventoryQuery.greaterThan("pickUpDate", lowerDate);
+            inventoryQuery.lessThan("pickUpDate", upperDate);
+            inventoryQuery.include("dish");
+            inventoryQuery.include("dish.restaurant");
+            inventoryQuery.find({
+                success: function(inventories) {
+                    var restaurantName = "";
+                    var restaurantNumber = "";
+                    var restaurantAddress = "";
+                    var dishQuantity = "";
+
+                    _.each(inventories, function(inventory) {
+                        if (!restaurantName) {
+                            restaurantName = inventory.get('dish').get('restaurant').get('name');
+                        }
+
+                        if (!restaurantNumber) {
+                            restaurantNumber = inventory.get('dish').get('restaurant').get('telnum');
+                        }
+
+                        if (!restaurantAddress) {
+                            restaurantAddress = inventory.get('dish').get('restaurant').get('address');
+                        }
+
+                        if (!dishQuantity) {
+                            dishQuantity = inventory.get('dish').get('dishName') + " - " + inventory.get('preorderQuantity');
+                        } else {
+                            dishQuantity += "; " + inventory.get('dish').get('dishName') + " - " + inventory.get('preorderQuantity');
+                        }
+                    });
+
+                    self.$("#resName").html(restaurantName);
+                    self.$("#resNumber").html(restaurantNumber);
+                    self.$("#resAddress").html(restaurantAddress);
+                    self.$("#dishQuan").html(dishQuantity);
                 },
                 error: function(error) {
                     console.log(error.message);
