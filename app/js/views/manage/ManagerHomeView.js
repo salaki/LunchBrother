@@ -184,7 +184,7 @@ define([
             this.configureMenuSelection();
 
             //Sales data
-            this.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00, nextPaymentDate: this.nextPayment.date, nextPaymentAmount: this.nextPayment.amount}));
+            this.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00, nextPaymentDate: this.nextPayment.date, nextPaymentAmount: this.nextPayment.amount.toFixed(2)}));
             this.$( "#datepicker" ).datepicker({
                 onSelect: function(dateText){
                     var month = parseInt(dateText.split("/")[0]) - 1;
@@ -218,7 +218,7 @@ define([
             transferQueryForNextPayDate.first({
                 success: function(transfer) {
                     if (transfer) {
-                        var lastPayDate = transfer.get('updatedAt');
+                        var lastPayDate = transfer.updatedAt;
                         var date = new Date(lastPayDate.getTime() + 24 * 60 * 60 * 1000 * 14);
                         var dateString = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
                         self.nextPayment.date = dateString;
@@ -238,15 +238,16 @@ define([
             transferQuery.ascending("updatedAt");
             transferQuery.find({
                 success: function(transfers) {
+                    console.log(transfers);
                     var amount = 0.00;
                     var firstPayDateString = ""; //For the very first transfer pay date
                     _.each(transfers, function(transfer){
-                        if (firstPayDateString) {
-                            var firstTransferDate = transfer.get('updatedAt');
+                        amount += transfer.get('amount');
+                        if (!firstPayDateString) {
+                            var firstTransferDate = transfer.updatedAt;
                             var firstPayDate = new Date(firstTransferDate.getTime() + 24 * 60 * 60 * 1000 * 14);
                             firstPayDateString = firstPayDate.getMonth() + 1 + "/" + firstPayDate.getDate() + "/" + firstPayDate.getFullYear();
                         }
-                        amount += transfer.get('amount');
                     });
 
                     self.nextPayment.amount = amount;
@@ -302,13 +303,16 @@ define([
             inventoryQuery.find({
                 success: function(inventories) {
                     var income = 0;
+                    var restaurantIncome = 0;
                     if (inventories.length !== 0) {
                         _.each(inventories, function(inventory) {
+                            restaurantIncome += inventory.get("preorderQuantity") * inventory.get("dish").get('originalPrice');
                             income += (inventory.get("preorderQuantity") - inventory.get("currentQuantity")) * inventory.get("price");
                         });
                     }
 
-                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: income, nextPaymentDate: self.nextPayment.date, nextPaymentAmount: self.nextPayment.amount}));
+                    var managerIncome = income - income * 0.08 - restaurantIncome;
+                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: managerIncome, nextPaymentDate: self.nextPayment.date, nextPaymentAmount: self.nextPayment.amount.toFixed(2)}));
                 },
                 error: function(error) {
                     showMessage("Error", "Find inventory failed! Reason: " + error.message);
