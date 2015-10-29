@@ -83,10 +83,22 @@
   }	
   .dishinfo{
     .item{
-      color:$color_dgrey;
+      color:$color_lgreen;
       font-size:$sm;
     }
   }
+  .menu-dishinfo{
+    .content{
+      font-size:$sm;
+      .green{
+        color:$color_lgreen;
+      }
+      .yellow{
+        color:$color_yellow;
+      }
+    }
+  }
+  
   .tab-dish-detail{
     border:none;
     margin-bottom:0 !important;
