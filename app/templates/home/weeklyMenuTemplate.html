@@ -39,9 +39,9 @@
                             <span class="left floated">
                                 <div class="content">
                                     <% if(inventory.get('dish').get('vegetarian')) { %>
-                                        Vegetarian
+                                        <span class="green"> Vegetarian</span>
                                     <% } else { %>
-                                        Non-vegetarian
+                                       <span> Non-vegetarian </span>
                                     <% } %>
                                 </div>
                             </span>
@@ -50,9 +50,9 @@
                             <span class="left floated">
                                 <div class="content">
                                     <% if(inventory.get('dish').get('glutenFree')) { %>
-                                        Gluten Free
+                                        <span class="green">Gluten Free</span>
                                     <% } else { %>
-                                        Has Gluten
+                                       <span class="yellow">Has Gluten</span>
                                     <% } %>
                                 </div>
                             </span>
@@ -99,9 +99,9 @@
                             <span class="left floated">
                                 <div class="content">
                                     <% if(inventory.get('dish').get('vegetarian')) { %>
-                                        Vegetarian
+                                       <span class="green">Vegetarian</span>
                                     <% } else { %>
-                                        Non-vegetarian
+                                        <span>Non-vegetarian</span>
                                     <% } %>
                                 </div>
                             </span>
@@ -110,9 +110,9 @@
                             <span class="left floated">
                                 <div class="content">
                                     <% if(inventory.get('dish').get('glutenFree')) { %>
-                                        Gluten Free
+                                        <span class="green">Gluten Free</span>
                                     <% } else { %>
-                                        Has Gluten
+                                        <span class="yellow">Has Gluten</span>
                                     <% } %>
                                 </div>
                             </span>
@@ -158,11 +158,10 @@
                     <div class="ui segment">
                             <span class="left floated">
                                 <div class="content">
-                                    <i class="leaf icon green"></i>
                                     <% if(inventory.get('dish').get('vegetarian')) { %>
-                                        Vegetarian
+                                        <span class="green">Vegetarian</span>
                                     <% } else { %>
-                                        Non-vegetarian
+                                        <span>Non-vegetarian</span>
                                     <% } %>
                                 </div>
                             </span>
@@ -170,11 +169,10 @@
                     <div class="ui segment">
                             <span class="left floated">
                                 <div class="content">
-                                    <i class="ban icon"></i>
                                     <% if(inventory.get('dish').get('glutenFree')) { %>
-                                        Gluten Free
+                                        <span class="green">Gluten Free</span>
                                     <% } else { %>
-                                        Has Gluten
+                                        <span class="yellow">Has Gluten</span>
                                     <% } %>
                                 </div>
                             </span>

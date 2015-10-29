@@ -89,8 +89,13 @@
   }
   .menu-dishinfo{
     .content{
-      color:$color_lgreen;
       font-size:$sm;
+      .green{
+        color:$color_lgreen;
+      }
+      .yellow{
+        color:$color_yellow;
+      }
     }
   }
   
