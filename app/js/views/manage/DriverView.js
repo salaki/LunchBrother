@@ -6,12 +6,20 @@ define([
     'models/Restaurant',
     'models/PickUpLocation',
     'models/InventoryModel',
+    'models/manage/DeliveryModel',
     'views/manage/LoginView',
     'text!templates/manage/driverTemplate.html'
-], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, LoginView, driverTemplate) {
+], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, DeliveryModel, LoginView, driverTemplate) {
 
     var DriverView = Parse.View.extend({
         el: $("#page"),
+        events: {
+            'click #readyToGo': 'startSendingLocation',
+            'click #done': 'stopSendingLocation'
+        },
+
+        driverLocation: null,
+        deliveryId: null,
 
         initialize: function() {
             _.bindAll(this, 'render');
@@ -137,6 +145,15 @@ define([
                             var zipped = _.zip(locationNames, ordersByLocations);
                             self.$el.html(self.template({ordersByLocations: zipped}));
 
+                            var current = new Date();
+                            var currentHour = current.getHours();
+
+                            //Delivery man starts working from 11:00-14:00, otherwise disable both buttons
+                            if(currentHour < 11 || currentHour > 14) {
+                                $("#readyToGo").addClass('disabled');
+                                $("#arrive").addClass('disabled');
+                            }
+
                             //Find Inventory Info
                             self.findTodayPickupInfo();
                         },
@@ -219,6 +236,82 @@ define([
                     console.log(error.message);
                 }
             });
+        },
+
+        savePosition: function(position) {
+            console.log("Sending location...");
+            var deliveryModel = new DeliveryModel();
+            var currentUser = Parse.User.current();
+            if(this.deliveryId != null) {
+                deliveryModel.id = this.deliveryId;
+            }
+            var self = this;
+            deliveryModel.set('deliverBy', currentUser);
+            deliveryModel.set('status', "On the way");
+            deliveryModel.set('longitude', position.coords.longitude);
+            deliveryModel.set('latitude', position.coords.latitude);
+            deliveryModel.save({
+                success: function(delivery) {
+                    self.deliveryId = delivery.id;
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        },
+
+        errorHandler: function(err) {
+            if(err.code == 1) {
+                alert("Error: Access is denied!");
+            }
+
+            else if( err.code == 2) {
+                alert("Error: Position is unavailable!");
+            }
+        },
+
+        startSendingLocation: function(){
+            $("#readyToGo").addClass('disabled');
+            if(navigator.geolocation){
+                var options = {timeout:60000};
+                geoLoc = navigator.geolocation;
+                watchID = geoLoc.watchPosition(this.savePosition, this.errorHandler, options);
+            } else {
+                alert("Sorry, your browser does not support geolocation!");
+            }
+        },
+
+        stopSendingLocation: function() {
+            console.log("Stop recording location!");
+            $("#readyToGo").removeClass('disabled');
+            geoLoc.clearWatch(watchID);
+            if(navigator.geolocation){
+                var options = {timeout:60000};
+                navigator.geolocation.getCurrentPosition(this.saveLastPosition, this.errorHandler, options);
+            }
+            else {
+                alert("Sorry, browser does not support geolocation!");
+            }
+        },
+
+        saveLastPosition: function(position) {
+            var self = this;
+            var currentUser = Parse.User.current();
+            var deliveryModel = new DeliveryModel();
+            deliveryModel.id = this.deliveryId;
+            deliveryModel.set('deliverBy', currentUser);
+            deliveryModel.set('status', "Arrived");
+            deliveryModel.set('longitude', position.coords.longitude);
+            deliveryModel.set('latitude', position.coords.latitude);
+            deliveryModel.save({
+                success: function(delivery) {
+                    self.deliveryId = null;
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+
         }
     });
     return DriverView;
