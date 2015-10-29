@@ -28,6 +28,7 @@
                     <div class="ui segment">
                             <span class="left floated">
                                 <div class="content">
+                                    <i class="wait icon"></i>
                                     <%= inventory.get('dish').get('calorie') %> Cal
                                 </div>
                             </span>
@@ -35,14 +36,24 @@
                     <div class="ui segment">
                             <span class="left floated">
                                 <div class="content">
-                                    <%= inventory.get('dish').get('vegetarian') %>
+                                    <i class="leaf icon green"></i>
+                                    <% if(inventory.get('dish').get('vegetarian')) { %>
+                                        Vegetarian
+                                    <% } else { %>
+                                        Non-vegetarian
+                                    <% } %>
                                 </div>
                             </span>
                     </div>
                     <div class="ui segment">
                             <span class="left floated">
                                 <div class="content">
-                                    <%= inventory.get('dish').get('gluten') %>
+                                    <i class="ban icon"></i>
+                                    <% if(inventory.get('dish').get('glutenFree')) { %>
+                                        Gluten Free
+                                    <% } else { %>
+                                        Has Gluten
+                                    <% } %>
                                 </div>
                             </span>
                     </div>
@@ -86,7 +97,11 @@
                             <span class="left floated">
                                 <div class="content">
                                     <i class="leaf icon green"></i>
-                                    <%= inventory.get('dish').get('vegetarian') %>
+                                    <% if(inventory.get('dish').get('vegetarian')) { %>
+                                        Vegetarian
+                                    <% } else { %>
+                                        Non-vegetarian
+                                    <% } %>
                                 </div>
                             </span>
                     </div>
@@ -94,7 +109,11 @@
                             <span class="left floated">
                                 <div class="content">
                                     <i class="ban icon"></i>
-                                    <%= inventory.get('dish').get('gluten') %>
+                                    <% if(inventory.get('dish').get('glutenFree')) { %>
+                                        Gluten Free
+                                    <% } else { %>
+                                        Has Gluten
+                                    <% } %>
                                 </div>
                             </span>
                     </div>
@@ -138,7 +157,11 @@
                             <span class="left floated">
                                 <div class="content">
                                     <i class="leaf icon green"></i>
-                                    <%= inventory.get('dish').get('vegetarian') %>
+                                    <% if(inventory.get('dish').get('vegetarian')) { %>
+                                        Vegetarian
+                                    <% } else { %>
+                                        Non-vegetarian
+                                    <% } %>
                                 </div>
                             </span>
                     </div>
@@ -146,7 +169,11 @@
                             <span class="left floated">
                                 <div class="content">
                                     <i class="ban icon"></i>
-                                    <%= inventory.get('dish').get('gluten') %>
+                                    <% if(inventory.get('dish').get('glutenFree')) { %>
+                                        Gluten Free
+                                    <% } else { %>
+                                        Has Gluten
+                                    <% } %>
                                 </div>
                             </span>
                     </div>
