@@ -152,7 +152,7 @@ define([
                     if (paymentGridId === currentUser.get("gridId").id && payment.get("pickUpLocation").id === self.$("#addressOption").val()) {
                         _.each(orders, function(order){
                             if (order.get("paymentId") !== undefined && order.get("paymentId").id === payment.id) {
-                                paymentDetailMap.orderSummary += order.get("dishId").get("type") + ":" + order.get("quantity") + ", ";
+                                paymentDetailMap.orderSummary += order.get("dishId").get("dishName") + ":" + order.get("quantity") + ", ";
                             }
                         });
                         paymentDetailMap.orderSummary = paymentDetailMap.orderSummary.substring(0, paymentDetailMap.orderSummary.length - 2);
