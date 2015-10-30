@@ -14,7 +14,7 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render', 'saveBankAccount', 'stripeResponseHandler');
-            Stripe.setPublishableKey('pk_test_pb95pxk797ZxEFRk55wswMRk');
+            Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
         },
 
         template: _.template(bankTemplate),

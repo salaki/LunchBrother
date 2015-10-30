@@ -35,7 +35,7 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render', 'stripeResponseHandler', 'orderSubmit', 'toggleNewCardForm', 'charge');
-            Stripe.setPublishableKey('pk_test_pb95pxk797ZxEFRk55wswMRk');
+            Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
        },
 
         render: function () {
@@ -406,7 +406,7 @@ define([
 
         emailService: function (paymentId) {
             Parse.Cloud.run('email', {
-                orderId: paymentId
+                paymentId: paymentId
 
             }, {
                 success: function () {
