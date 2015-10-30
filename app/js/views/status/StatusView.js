@@ -57,8 +57,14 @@
                 paymentQuery.find({
                     success: function(payments) {
                         if (payments.length !== 0) {
-                            self.displayDriverLocation(payments[0].get("pickUpLocation").get("coordinate").latitude,
-                                payments[0].get("pickUpLocation").get("coordinate").longitude,
+                            var latitude = currentUser.get('gridId').get("coordinate").latitude;
+                            var longitude = currentUser.get('gridId').get("coordinate").longitude;
+                            if (payments[0].get("pickUpLocation").get("coordinate")) {
+                                latitude = payments[0].get("pickUpLocation").get("coordinate").latitude;
+                                longitude = payments[0].get("pickUpLocation").get("coordinate").longitude;
+                            }
+
+                            self.displayDriverLocation(latitude, longitude,
                                 payments[0].get("pickUpLocation").get("address"),
                                 payments[0].get("pickUpLocation").get("distributor").get('firstName'),
                                 payments[0].get("pickUpLocation").get("distributor").get('telnum'),
