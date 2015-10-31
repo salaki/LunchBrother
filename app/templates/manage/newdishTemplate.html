@@ -4,7 +4,20 @@
   <div class="field">
     <label>Dish Name</label>
     <input type="text" id="dish-name" name="dish-name" value="<%= dish.get('dishName') %>">
-  </div> 
+  </div>
+    <div class="field">
+        <label>Dish Code</label>
+        <div class="ui selection dropdown dish-code-selection">
+            <input type="hidden" name="">
+            <i class="dropdown icon"></i>
+            <div class="default text">Code</div>
+            <div class="menu">
+                <%_.each(codes, function(code) { %>
+                <div class="item" data-value="<%= code %>"><%= code %></div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
 
   <div class="field">
     <label>Dish Description</label>

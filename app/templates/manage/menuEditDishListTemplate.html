@@ -19,7 +19,7 @@
                         <div class="eight wide column dish-desc">
                             <input id="inventoryId-<%= dish.id %>" type="hidden" value="<%= dish.inventoryId %>">
                             <input id="dishIdInput-<%= dish.id %>" type="hidden" value="<%= dish.id %>">
-                            <%= dish.get('dishName') %>
+                            <%= dish.get('dishName') %> (Original Price: $<%= dish.get('originalPrice') %>)
                         </div>
                         <div class="four wide column">
                             <div class="ui fluid mini input">

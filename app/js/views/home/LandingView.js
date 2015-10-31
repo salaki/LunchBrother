@@ -127,17 +127,19 @@ define([
             inventoryQuery.include("dish.restaurant");
             inventoryQuery.find({
                 success: function (inventories) {
-                    var firstWeekMenu = [];
-                    var secondWeekMenu = [];
-                    var thirdWeekMenu = [];
+                    var firstWeekMenu = {Mon:[], Tue:[], Wed:[], Thu:[], Fri:[]};
+                    var secondWeekMenu = {Mon:[], Tue:[], Wed:[], Thu:[], Fri:[]};
+                    var thirdWeekMenu = {Mon:[], Tue:[], Wed:[], Thu:[], Fri:[]};
 
                     _.each(inventories, function(inventory){
                         if (inventory.get('pickUpDate') > firstMonday && inventory.get('pickUpDate') < secondMonday) {
-                            firstWeekMenu.push(inventory);
+                            self.populateDayMenu(inventory.get('pickUpDate').getDay(), firstWeekMenu, inventory);
+
                         } else if (inventory.get('pickUpDate') > secondMonday && inventory.get('pickUpDate') < thirdMonday) {
-                            secondWeekMenu.push(inventory);
+                            self.populateDayMenu(inventory.get('pickUpDate').getDay(), secondWeekMenu, inventory);
+
                         } else {
-                            thirdWeekMenu.push(inventory);
+                            self.populateDayMenu(inventory.get('pickUpDate').getDay(), thirdWeekMenu, inventory);
                         }
                     });
                     self.$("#weeklyMenu").html(self.weeklyMenuTemplate({menu:[firstWeekMenu, secondWeekMenu, thirdWeekMenu], weeks: [firstWeek, secondWeek, thirdWeek]}));
@@ -146,6 +148,26 @@ define([
                     showMessage("Oops!", "Inventory Query Error: " + error.code + " " + error.message);
                 }
             });
+        },
+
+        populateDayMenu: function(day, menu, inventory) {
+            switch(day) {
+                case 1:
+                    menu.Mon.push(inventory);
+                    break;
+                case 2:
+                    menu.Tue.push(inventory);
+                    break;
+                case 3:
+                    menu.Wed.push(inventory);
+                    break;
+                case 4:
+                    menu.Thu.push(inventory);
+                    break;
+                default:
+                    menu.Fri.push(inventory);
+                    break;
+            }
         },
 
         showVoteDialog: function(collegeName) {
