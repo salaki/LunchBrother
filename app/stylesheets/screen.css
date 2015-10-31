@@ -524,6 +524,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   margin-bottom: 30px;
 }
 
+/* line 27, ../sass/partials/_manage.scss */
+.original-price {
+  font-size: 0.8rem;
+  color: #9b9b9b;
+}
+
 /* line 1, ../sass/partials/_video.scss */
 #youtubeDiv {
   height: 300px;

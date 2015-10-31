@@ -15,20 +15,25 @@
                     </div>
                 </div>
                 <div class="content">
-                    <div class="ui grid">
-                        <div class="eight wide column dish-desc">
+                    <div class="ui two column grid">
+                        <div class="column dish-desc">
                             <input id="inventoryId-<%= dish.id %>" type="hidden" value="<%= dish.inventoryId %>">
                             <input id="dishIdInput-<%= dish.id %>" type="hidden" value="<%= dish.id %>">
-                            <%= dish.get('dishName') %> (Original Price: $<%= dish.get('originalPrice') %>)
-                        </div>
-                        <div class="four wide column">
+                            <%= dish.get('dishName') %>                         </div>
+                        <div class="column">
+                        <div class="column">
                             <div class="ui fluid mini input">
                                 <input id="dishPriceInput-<%= dish.id %>" type="text" placeholder="Price" value="<%= dish.price %>">
                             </div>
                         </div>
-                        <div class="four wide column">
+                        <div class="column">
                             <div class="ui fluid mini input">
                                 <input id="dishQuantityInput-<%= dish.id %>" type="text" placeholder="Qty" value="<%= dish.quantity %>">
+                            </div>
+                        </div>
+
+                            <div class="original-price">
+                            *Original Price: $<%= dish.get('originalPrice') %>
                             </div>
                         </div>
                     </div>
