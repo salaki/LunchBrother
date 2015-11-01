@@ -11,6 +11,10 @@ define([
             "click .cancel-dish-btn": "cancelDish"
         },
 
+        codes: ["A", "B", "C", "D", "E", "F", "G", "H",
+            "I", "J", "K", "L", "M", "N", "O", "P",
+            "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"],
+
         initialize: function () {
             _.bindAll(this, 'render', 'handleFileSelect');
         },
@@ -25,11 +29,12 @@ define([
                 var dishQuery = new Parse.Query(DishModel);
                 dishQuery.get(dishId, {
                     success: function(dish) {
-                        self.$el.html(self.template({dish: dish}));
+                        self.$el.html(self.template({dish: dish, codes: self.codes}));
                         $("#dish-spicy").prop('checked', dish.get('spicy'));
                         $("#dish-gluten-free").prop('checked', dish.get('glutenFree'));
                         $("#dish-vegetarian").prop('checked', dish.get('vegetarian'));
                         $(".dish-type-selection").dropdown('set selected', dish.get('dishType'));
+                        $(".dish-code-selection").dropdown('set selected', dish.get('dishCode'));
 
                         $("#dishPhoto").change(self.handleFileSelect);
                     },
@@ -39,8 +44,9 @@ define([
                 });
             } else {
                 var dish = new DishModel();
-                this.$el.html(this.template({dish: dish}));
+                this.$el.html(this.template({dish: dish, codes: this.codes}));
                 $(".dish-type-selection").dropdown();
+                $(".dish-code-selection").dropdown();
                 $("#dishPhoto").change(this.handleFileSelect);
             }
         },
@@ -107,6 +113,7 @@ define([
             dish.set("Unit_Price", Number($("#dish-price").val()));
             dish.set("originalPrice", Number($("#dish-original-price").val()));
             dish.set("dishType", $(".dish-type-selection").dropdown('get value'));
+            dish.set("dishCode", $(".dish-code-selection").dropdown('get value'));
             dish.set("spicy", $("#dish-spicy").is(':checked'));
             dish.set("glutenFree", $("#dish-gluten-free").is(':checked'));
             dish.set("vegetarian", $("#dish-vegetarian").is(':checked'));

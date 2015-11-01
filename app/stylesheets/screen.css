@@ -30,7 +30,7 @@
   color: #9b9b9b;
 }
 
-/* line 5, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 5, ../../../../../../../Users/Qing/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -52,45 +52,45 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../../Users/Qing/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../../Users/Qing/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../../Users/Qing/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../../Users/Qing/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../../Users/Qing/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../../Users/Qing/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../../Users/Qing/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../../../Users/Qing/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
@@ -204,6 +204,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 10, ../sass/partials/_dish.scss */
 #page {
   padding-top: 32px;
+  /* Transform Translate Mixin */
 }
 /* line 11, ../sass/partials/_dish.scss */
 #page .dimmer {
@@ -295,57 +296,99 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   color: #1CBC9C;
   font-size: 0.8rem;
 }
-/* line 91, ../sass/partials/_dish.scss */
+/* line 103, ../sass/partials/_dish.scss */
+#page .header-week {
+  position: relative;
+  display: block;
+  margin: 30px auto;
+  width: 100%;
+  text-align: center;
+}
+/* line 109, ../sass/partials/_dish.scss */
+#page .header-week:before {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 1px;
+  top: 50px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  background-color: #f7f7f7;
+}
+/* line 122, ../sass/partials/_dish.scss */
+#page .header-week:after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 3px;
+  top: 47px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #FBBD08;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+/* line 137, ../sass/partials/_dish.scss */
+#page .header-week:hover:after {
+  width: 50px;
+}
+/* line 145, ../sass/partials/_dish.scss */
 #page .menu-dishinfo .content {
   font-size: 0.8rem;
 }
-/* line 93, ../sass/partials/_dish.scss */
+/* line 147, ../sass/partials/_dish.scss */
 #page .menu-dishinfo .content .green {
   color: #1CBC9C;
 }
-/* line 96, ../sass/partials/_dish.scss */
+/* line 150, ../sass/partials/_dish.scss */
 #page .menu-dishinfo .content .yellow {
   color: #FBBD08;
 }
-/* line 102, ../sass/partials/_dish.scss */
+/* line 156, ../sass/partials/_dish.scss */
 #page .tab-dish-detail {
   border: none;
   margin-bottom: 0 !important;
 }
-/* line 107, ../sass/partials/_dish.scss */
+/* line 161, ../sass/partials/_dish.scss */
 #page .dish-detail {
   line-height: 1.2;
 }
-/* line 110, ../sass/partials/_dish.scss */
+/* line 164, ../sass/partials/_dish.scss */
 #page .dish-intro {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 114, ../sass/partials/_dish.scss */
+/* line 168, ../sass/partials/_dish.scss */
 #page .dish-ingredients {
   font-size: 0.6rem;
   color: #9b9b9b;
   margin-top: 15px;
 }
-/* line 118, ../sass/partials/_dish.scss */
+/* line 172, ../sass/partials/_dish.scss */
 #page .dish-ingredients .header {
   color: #454545;
 }
-/* line 122, ../sass/partials/_dish.scss */
+/* line 176, ../sass/partials/_dish.scss */
 #page .restaurantInfo {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 125, ../sass/partials/_dish.scss */
+/* line 179, ../sass/partials/_dish.scss */
 #page .restaurantInfo .header {
   color: #454545;
   font-size: 1rem;
 }
-/* line 131, ../sass/partials/_dish.scss */
+/* line 185, ../sass/partials/_dish.scss */
 #page .extra.content.horizontal.segments {
   padding: 0;
 }
-/* line 133, ../sass/partials/_dish.scss */
+/* line 187, ../sass/partials/_dish.scss */
 #page .extra.content.horizontal.segments span {
   width: 100%;
   text-align: center;
@@ -479,6 +522,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* line 22, ../sass/partials/_manage.scss */
 #menuList .header {
   margin-bottom: 30px;
+}
+
+/* line 27, ../sass/partials/_manage.scss */
+.original-price {
+  font-size: 0.8rem;
+  color: #9b9b9b;
 }
 
 /* line 1, ../sass/partials/_video.scss */
