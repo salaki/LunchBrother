@@ -121,6 +121,7 @@ define([
             var self = this;
             var inventoryQuery = new Parse.Query(InventoryModel);
             inventoryQuery.equalTo("orderBy", manager);
+            inventoryQuery.equalTo("published", true);
             inventoryQuery.greaterThan("pickUpDate", firstMonday);
             inventoryQuery.lessThan("pickUpDate", friday3);
             inventoryQuery.include("dish");
