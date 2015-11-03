@@ -56,35 +56,36 @@
                 paymentQuery.include("pickUpLocation.distributor");
                 paymentQuery.find({
                     success: function(payments) {
-                        if (payments.length !== 0) {
-                            var latitude = currentUser.get('gridId').get("coordinate").latitude;
-                            var longitude = currentUser.get('gridId').get("coordinate").longitude;
-                            if (payments[0].get("pickUpLocation").get("coordinate")) {
-                                latitude = payments[0].get("pickUpLocation").get("coordinate").latitude;
-                                longitude = payments[0].get("pickUpLocation").get("coordinate").longitude;
-                            }
-
-                            self.displayDriverLocation(latitude, longitude,
-                                payments[0].get("pickUpLocation").get("address"),
-                                payments[0].get("pickUpLocation").get("distributor").get('firstName'),
-                                payments[0].get("pickUpLocation").get("distributor").get('telnum'),
-                                payments[0].get("pickUpLocation").get("gridId").get("driver"));
-                        } else {
-                            var gridId = UMCP_GRID_ID;
-                            if (currentUser.get('gridId') !== undefined) {
-                                gridId = currentUser.get('gridId').id;
-                            }
-                            var gridQuery = new Parse.Query(GridModel);
-                            gridQuery.get(gridId, {
-                                success: function(grid) {
-                                    self.displayDriverLocation(grid.get("coordinate").latitude, grid.get("coordinate").longitude,
-                                        grid.get("name"), "", "", grid.get("driver"));
-                                },
-                                error: function(object, error) {
-                                    showMessage("Error", "Get grid failed! Error: " + error.code + " " + error.message);
-                                }
-                            });
+                        var latitude;
+                        var longitude;
+                        var gridId = UMCP_GRID_ID;
+                        if (currentUser.get('gridId') !== undefined) {
+                            gridId = currentUser.get('gridId').id;
                         }
+                        var gridQuery = new Parse.Query(GridModel);
+                        gridQuery.get(gridId, {
+                            success: function(grid) {
+                                latitude = grid.get("coordinate").latitude;
+                                longitude = grid.get("coordinate").longitude;
+                                if (payments.length !== 0) {
+                                    if (payments[0].get("pickUpLocation").get("coordinate")) {
+                                        latitude = payments[0].get("pickUpLocation").get("coordinate").latitude;
+                                        longitude = payments[0].get("pickUpLocation").get("coordinate").longitude;
+                                    }
+                                    self.displayDriverLocation(latitude, longitude,
+                                        payments[0].get("pickUpLocation").get("address"),
+                                        payments[0].get("pickUpLocation").get("distributor").get('firstName'),
+                                        payments[0].get("pickUpLocation").get("distributor").get('telnum'),
+                                        payments[0].get("pickUpLocation").get("gridId").get("driver"));
+                                } else {
+                                    self.displayDriverLocation(latitude, longitude,
+                                        grid.get("name"), "", "", grid.get("driver"));
+                                }
+                            },
+                            error: function(object, error) {
+                                showMessage("Error", "Get grid failed! Error: " + error.code + " " + error.message);
+                            }
+                        });
                     },
                     error: function(error) {
                         showMessage("Error", "Find payment record failed! Error: " + error.code + " " + error.message);
