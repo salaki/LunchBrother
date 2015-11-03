@@ -59,13 +59,17 @@ define([
                           $(".restaurant-type-selection").dropdown('set selected', restaurant.get('type'));
                           $(".restaurant-area-selection").dropdown('set selected', restaurant.get('gridId').id);
                           $(".yelp-rating-selection").dropdown('set selected', restaurant.get('rating'));
+                          $(".pickup-time-selection").dropdown('set selected', restaurant.get('pickUpTime'));
+
                           $(".restaurant-type-selection").dropdown('set value', restaurant.get('type'));
                           $(".restaurant-area-selection").dropdown('set value', restaurant.get('gridId').id);
                           $(".yelp-rating-selection").dropdown('set value', restaurant.get('rating'));
+                          $(".pickup-time-selection").dropdown('set value', restaurant.get('pickUpTime'));
                       } else {
                           $(".restaurant-type-selection").dropdown();
                           $(".restaurant-area-selection").dropdown();
                           $(".yelp-rating-selection").dropdown();
+                          $(".pickup-time-selection").dropdown();
                       }
                   },
                   error: function(error) {
@@ -89,6 +93,7 @@ define([
               var yelpLink = $("#yelpLink").val();
               var yelpRating = Number($(".yelp-rating-selection").dropdown('get value'));
               var description = $("#restaurantDescription").val();
+              var pickUpTime = $(".pickup-time-selection").dropdown('get value');
 
               var savedRestaurant = new RestaurantModel();
               if (id) {
@@ -110,7 +115,8 @@ define([
                 url: url,
                 yelpLink: yelpLink,
                   rating: yelpRating,
-                description: description
+                description: description,
+                  pickUpTime: pickUpTime
               }, {
                 success: function(savedRestaurant) {
                     showMessage("Success", "Save restaurant successfully!", function() {
