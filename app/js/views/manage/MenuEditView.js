@@ -22,6 +22,7 @@ define([
 
         initialInventories: [],
         addedInventories: [],
+        restaurantPickUpTime: "",
         
         initialize: function() {
             _.bindAll(this, 'render');
@@ -161,8 +162,10 @@ define([
                 objectId: restaurantId
             });
 
+            dishQuery.include("restaurant");
             dishQuery.find({
                 success: function(restaurantDishes){
+                    self.restaurantPickUpTime = restaurantDishes[0].get('restaurant').get('pickUpTime');
                     self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : restaurantDishes}));
                     self.setButtonsAndAddInventories(restaurantDishes);
                 },
@@ -304,7 +307,10 @@ define([
             var pickUpdate = new Date();
             pickUpdate.setMonth(month - 1);
             pickUpdate.setDate(date);
-            pickUpdate.setHours(11, 0, 0, 0);
+
+            var hour = this.restaurantPickUpTime.split(":")[0];
+            var minute = this.restaurantPickUpTime.split(":")[1];
+            pickUpdate.setHours(Number(hour), Number(minute), 0, 0);
 
             _.each(this.addedInventories, function(inventory) {
                 var toSaveInventory = new InventoryModel();
