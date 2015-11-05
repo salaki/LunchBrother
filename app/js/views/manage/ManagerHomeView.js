@@ -6,16 +6,22 @@ define([
     'models/RegistrationCodeModel',
     'models/BankAccount',
     'models/Transfer',
+    'models/user/CardModel',
     'text!templates/manage/managerHomeTemplate.html',
     'text!templates/manage/menuListTemplate.html',
-    'text!templates/manage/salesTableBodyTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, RegistrationCodeModel, BankAccountModel, TransferModel, managerHomeTemplate, menuListTemplate, salesTableBodyTemplate) {
+    'text!templates/manage/salesTableBodyTemplate.html',
+    'text!templates/manage/creditCardSectionTemplate.html'
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel,
+            RegistrationCodeModel, BankAccountModel, TransferModel, CardModel,
+            managerHomeTemplate, menuListTemplate, salesTableBodyTemplate,
+            creditCardSectionTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
         template: _.template(managerHomeTemplate),
         menuListTemplate: _.template(menuListTemplate),
         salesTableBodyTemplate: _.template(salesTableBodyTemplate),
+        creditCardSectionTemplate: _.template(creditCardSectionTemplate),
         events: {
             'click #DPAdd': 'onEditOrAddClick',
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
@@ -23,7 +29,8 @@ define([
             'click #publishMenu': 'onPublishMenuClick',
             'click #concealMenu': 'onConcealMenuClick',
             'click #addPerson': 'onEditOrAddPersonClick',
-            'click .toBankAccount': 'showBankInfo'
+            'click .toBankAccount': 'showBankInfo',
+            'click .toCreditCard': 'showCardInfo'
         },
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
@@ -163,6 +170,7 @@ define([
                             success: function(bankAccount) {
                                 self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers, bankAccount: bankAccount}));
                                 self.menuSelectionAndSalesData();
+                                self.cardCreditSection();
                             }
                         });
 
@@ -170,8 +178,8 @@ define([
                         bankAccount = new BankAccountModel();
                         self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers, bankAccount: bankAccount}));
                         self.menuSelectionAndSalesData();
+                        self.cardCreditSection();
                     }
-
                 },
                 error: function(error) {
                     console.log(error.message);
@@ -201,6 +209,24 @@ define([
 
                     // Query Sales Data
                     self.querySalesData(dayStart, dayEnd);
+                }
+            });
+        },
+
+        cardCreditSection: function() {
+            var self = this;
+            var cardQuery = new Parse.Query(CardModel);
+            cardQuery.equalTo("createdBy", Parse.User.current());
+            cardQuery.descending("createdAt");
+            cardQuery.first({
+                success: function(card) {
+                    if (!card) {
+                        card = new CardModel();
+                    }
+                    self.$("#creditCardSection").html(self.creditCardSectionTemplate({card: card}));
+                },
+                error: function(error) {
+                    showMessage("Find Credit Card Failed", error.message);
                 }
             });
         },
@@ -238,7 +264,6 @@ define([
             transferQuery.ascending("updatedAt");
             transferQuery.find({
                 success: function(transfers) {
-                    console.log(transfers);
                     var amount = 0.00;
                     var firstPayDateString = ""; //For the very first transfer pay date
                     _.each(transfers, function(transfer){
@@ -762,6 +787,12 @@ define([
         showBankInfo: function(ev) {
             var bankId = $(ev.currentTarget).data('id');
             window.location.href='#bank?id=' + bankId;
+        },
+
+        showCardInfo: function() {
+            //var cardId = $(ev.currentTarget).data('id');
+            //window.location.href='#card?id=' + cardId;
+            window.location.href='#card';
         }
     });
     return ManagerHomeView;
