@@ -19,7 +19,7 @@ define([
 
           initialize: function () {
             _.bindAll(this, 'render', 'saveRestaurant');
-              Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
+              Stripe.setPublishableKey(STRIPE_KEY);
           },
 
           render: function () {

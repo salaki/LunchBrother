@@ -17,7 +17,7 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render', 'saveCreditCard', 'stripeResponseHandler');
-            Stripe.setPublishableKey('pk_live_YzLQL6HfUiVf8XAxGxWv5AkH');
+            Stripe.setPublishableKey(STRIPE_KEY);
         },
 
         template: _.template(cardTemplate),
