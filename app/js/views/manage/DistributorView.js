@@ -206,16 +206,22 @@ define([
 
         updateStatus: function () {
             this.$("#arriveBtn").addClass("disabled");
-            var deliveryDetails = new DeliveryModel();
-            deliveryDetails.set("status", "Arrived!");
-            deliveryDetails.set("address", this.$("#addressOption").val());
-            deliveryDetails.save();
+            //var deliveryDetails = new DeliveryModel();
+            //deliveryDetails.set("status", "Arrived!");
+            //deliveryDetails.set("address", this.$("#addressOption").val());
+            //deliveryDetails.save();
             this.checkIfNotificationSent(this.$("#addressOption").val());
         },
 
         sendNotification: function() {
+            var self = this;
             var query = new Parse.Query(PaymentModel);
-            query.equalTo("address", this.$("#addressOption").val());
+            var pickUpLocationId = this.$("#addressOption").val();
+            query.equalTo("pickUpLocation", {
+                __type: "Pointer",
+                className: "PickUpLocation",
+                objectId: pickUpLocationId
+            });
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
 
@@ -238,24 +244,25 @@ define([
                     }
 
                     Parse.Cloud.run('emailNotification', {
-                        pickupAddress: address,
+                        pickUpLocationId: pickUpLocationId,
                         ordersToSend: orders
                     }, {
                         success: function () {
-                            console.log("Arrival notification has been sent successfully!");
-                            var notification = new NotificationModel();
-                            notification.set("key", this.getNotificationKey(address));
-                            notification.save({
-                                success: function(notification) {
-                                    console.log("Notification saved successfully!");
-                                },
-                                error: function(error) {
-                                    console.log("Notification saved failed! Reason: " + error.message);
-                                }
+                            showMessage("Success", "Arrival notification has been sent to customers successfully!", function(){
+                                var notification = new NotificationModel();
+                                notification.set("key", self.getNotificationKey(pickUpLocationId));
+                                notification.save({
+                                    success: function(notification) {
+                                        console.log("Notification saved successfully!");
+                                    },
+                                    error: function(error) {
+                                        console.log("Notification saved failed! Reason: " + error.message);
+                                    }
+                                });
                             });
                         },
                         error: function (error) {
-                            console.log("Notification failed to send. Error: " + error.message);
+                            showMessage("Failed", "Notification failed to send. Error: " + error.message);
                         }
                     });
                 },
@@ -268,11 +275,11 @@ define([
         checkIfNotificationSent: function() {
             var self = this;
             var notificationQuery = new Parse.Query(NotificationModel);
-            notificationQuery.equalTo("key", this.getNotificationKey());
+            notificationQuery.equalTo("key", self.getNotificationKey());
             notificationQuery.find({
                 success: function (results) {
                     if(results.length > 0){
-                        console.log("Notification email has already been sent before!");
+                        showMessage("Oops!", "Notification has already been sent before!");
                     }else{
                         self.sendNotification();
                     }
