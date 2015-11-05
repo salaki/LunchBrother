@@ -21,7 +21,8 @@ define([
   'views/manage/ManagerListView',
   'views/manage/NewManagerView',
   'views/manage/BankView',
-    'views/manage/lbAdminView'
+    'views/manage/lbAdminView',
+    'views/manage/CardView'
   ], function (LandingView,
         HomeView,
 		OrderView, 
@@ -44,7 +45,8 @@ define([
     ManagerListView,    
         NewManagerView,
         BankView,
-        AdminView) {
+        AdminView,
+        CardView) {
 
     var AppRouter = Parse.Router.extend({
         routes: {
@@ -82,6 +84,7 @@ define([
             'newManager' : 'showNewManager',
             'editManager?*queryString' : 'showEditManager',
             'bank?*queryString' : 'showBank',
+            'card' : 'showCard',
 
             // Admin
             'admin' : 'showAdminPage',
@@ -330,6 +333,11 @@ define([
                 id: params.id
             });
             newBankView.render();
+        });
+
+        appRouter.on('route:showCard', function () {
+            var newCardView = new CardView();
+            newCardView.render();
         });
 
         appRouter.on('route:showNewdish', function (queryString) {

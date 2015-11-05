@@ -147,20 +147,6 @@ define([
                                     } else {
                                         that.$("#youtubeDiv").hide();
                                     }
-                                	
-                                   /* var link = pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=1";
-                                    console.log(link);
-                                    // Try to check the link @@might not work
-                                    $.ajax({
-                                    	url: link,
-                                    	type: 'GET',
-                                    	complete: function(response) {
-                                    		if(response.status == 200) {
-                                    			that.$("#frame").attr("src", link);
-                                    			that.$("#youtubeDiv").show();
-                                    		}
-                                    	}
-                                    });*/
                                 });
 
                                 that.$("#addressdetails").dropdown();
