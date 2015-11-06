@@ -4,21 +4,21 @@
     <div class="ui vertical segment">
         <div class="ui column grid summary-list">
             <% if(rest){ %>
-            <div class="sixteen wide column center aligned">Our delivery man is at rest now.</div>
-            <% } else if (locationName === "NA") { %>
-            <div class="sixteen wide column center aligned" style="font-style: italic">No driver for your location yet.</div>
-            <% } else if (locationName !== "") { %>
-            <div class="six wide column">
-                <span class="summary-location"><%= locationName %></span>
-            </div>
-            <div class="six wide column">
-                <span id="contact" class="summary-contact">Contact: <%= contactName %> (<%= contactNumber %>)</span>
-            </div>
-            <div class="four wide column right aligned">
-                <span class="summary-status"><%= status %></span>
-            </div>
+            <div class="sixteen wide column center aligned">The delivery man is at rest now.</div>
+            <% } else if (ready) { %>
+                <% _.each (pickUpLocations, function(pickUpLocation) { %>
+                    <div class="six wide column">
+                        <span class="summary-location"><%= pickUpLocation.get('address') %></span>
+                    </div>
+                    <div class="six wide column">
+                        <span id="contact" class="summary-contact">Contact: <%= pickUpLocation.get('distributor').get('lastName') %> (<%= pickUpLocation.get('distributor').get('telnum') %>)</span>
+                    </div>
+                    <div class="four wide column right aligned">
+                        <span class="summary-status"><%= pickUpLocation.status %></span>
+                    </div>
+                <% }); %>
             <% } else { %>
-            <div class="sixteen wide column center aligned" style="font-style: italic">Your have no order for today.</div>
+                <div class="sixteen wide column center aligned" style="font-style: italic">The delivery man is not ready yet.</div>
             <% } %>
         </div>
     </div>
