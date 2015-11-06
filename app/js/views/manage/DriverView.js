@@ -248,6 +248,10 @@ define([
             var self = this;
             deliveryModel.set('deliverBy', currentUser);
             deliveryModel.set('status', "On the way");
+            deliveryModel.set('grid', {
+                __type: "Pointer",
+                className: "Grid",
+                objectId: currentUser.get("gridId").id});
             deliveryModel.set('longitude', position.coords.longitude);
             deliveryModel.set('latitude', position.coords.latitude);
             deliveryModel.save({
@@ -300,7 +304,11 @@ define([
             var deliveryModel = new DeliveryModel();
             deliveryModel.id = this.deliveryId;
             deliveryModel.set('deliverBy', currentUser);
-            deliveryModel.set('status', "Arrived");
+            deliveryModel.set('status', "On the way");
+            deliveryModel.set('grid', {
+                __type: "Pointer",
+                className: "Grid",
+                objectId: currentUser.get("gridId").id});
             deliveryModel.set('longitude', position.coords.longitude);
             deliveryModel.set('latitude', position.coords.latitude);
             deliveryModel.save({

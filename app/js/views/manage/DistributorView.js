@@ -206,10 +206,6 @@ define([
 
         updateStatus: function () {
             this.$("#arriveBtn").addClass("disabled");
-            //var deliveryDetails = new DeliveryModel();
-            //deliveryDetails.set("status", "Arrived!");
-            //deliveryDetails.set("address", this.$("#addressOption").val());
-            //deliveryDetails.save();
             this.checkIfNotificationSent(this.$("#addressOption").val());
         },
 
