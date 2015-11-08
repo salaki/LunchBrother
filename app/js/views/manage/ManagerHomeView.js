@@ -394,7 +394,8 @@ define([
                                 dishName: inventories[i].get('dish').get('dishName'),
                                 restaurantName: inventories[i].get('dish').get('restaurant').get('name'),
                                 quantity: inventories[i].get('preorderQuantity'),
-                                price: inventories[i].get('price')
+                                price: inventories[i].get('price'),
+                                status: inventories[i].get('status')
                             };
 
                             self.weeklyMenu.menus[pickUpDay - 1].inventoryIds.push(inventories[i].id);
