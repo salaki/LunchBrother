@@ -61,134 +61,142 @@
 
     //  .ui.segment {
         //    padding: 0.4em;
-        //  }
-        .card .content .ui.button {
-            font-size: 0.7rem;
-        }
+    //  }
+    .card .content .ui.button {
+        font-size: 0.7rem;
+    }
 
-        //overide default tab style
-        .ui.pointing.secondary.menu
-        .item{
+    //overide default tab style
+    .ui.pointing.secondary.menu
+    .item{
+        color:$color_grey;
+        width:50%;
+        text-align:center;
+        border-radius:0;
+        &:hover{
             color:$color_grey;
-            width:50%;
-            text-align:center;
-            border-radius:0;
-            &:hover{
-                color:$color_grey;
-            }
         }
-        .active.item{
-            border-left:none;
-            border-color:$color_red;
-        }	
-        .dishinfo{
-            .item{
-                color:$color_lgreen;
-                font-size:$sm;
-            }
-        }
-        @mixin transition($a) {
-            -webkit-transition : all $a ease 0s;
-            -moz-transition : all $a ease 0s;
-            -o-transition : all $a ease 0s;
-            transition : all $a ease 0s;
-        }
-
-        /* Transform Translate Mixin */
-        @mixin transfom-translate($b, $c){
-            -webkit-transform: translate($b, $c);
-            -ms-transform: translate($b, $c);
-            transform: translate($b, $c);
-        }
-        .header-week {
-            position: relative;
-                display: block;
-                    margin: 30px auto;
-                        width: 100%;
-                            text-align: center;
-            &:before {
-                content: '';
-                position: absolute;
-                width: 50%;
-                height: 1px;
-                top: 50px;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                margin: auto;
-                background-color: $color_lgrey;
-            }  
-
-            &:after {
-                content: '';
-                position: absolute;
-                width:40px;
-                height: 3px;
-                top:47px;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                margin: auto;
-                background-color: $color_yellow;
-                @include transition(0.3s);
-            }
-
-            &:hover {
-                &:after {
-                    width: 50px;
-                }
-            }
-        }
-
-
-        .menu-dishinfo{
-            .content{
-                font-size:$sm;
-                .green{
-                    color:$color_lgreen;
-                }
-                .yellow{
-                    color:$color_yellow;
-                }
-            }
-        }
-
-        .tab-dish-detail{
-            border:none;
-            margin-bottom:0 !important;
-        }
-
-        .dish-detail{
-            line-height:1.2;    
-        }
-        .dish-intro{
+    }
+    .active.item{
+        border-left:none;
+        border-color:$color_red;
+    }	
+    .dishinfo{
+        .item{
+            color:$color_lgreen;
             font-size:$sm;
-            color:$color-grey;
         }
-        .dish-ingredients {
-            font-size:$xsm;
-            color:$color-grey;    
-            margin-top:15px;
-            .header{
-                color:$color_dgrey;
-            }
-        }
-        .restaurantInfo{
-            font-size:$sm;                                                                                 
-            color:$color-grey;
-            .header{
-                color:$color_dgrey;
-                font-size:$md;
-            }
+    }
+    @mixin transition($a) {
+        -webkit-transition : all $a ease 0s;
+        -moz-transition : all $a ease 0s;
+        -o-transition : all $a ease 0s;
+        transition : all $a ease 0s;
+    }
+
+    /* Transform Translate Mixin */
+    @mixin transfom-translate($b, $c){
+        -webkit-transform: translate($b, $c);
+        -ms-transform: translate($b, $c);
+        transform: translate($b, $c);
+    }
+    .header-week {
+        position: relative;
+        display: block;
+        margin: 30px auto;
+        width: 100%;
+        text-align: center;
+        &:before {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 1px;
+            top: 50px;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            background-color: $color_lgrey;
+        }  
+
+        &:after {
+            content: '';
+            position: absolute;
+            width:40px;
+            height: 3px;
+            top:47px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            background-color: $color_yellow;
+            @include transition(0.3s);
         }
 
-        .extra.content.horizontal.segments {
-            padding:0;
-            & span {
-                width:100%;
-                text-align:center;
+        &:hover {
+            &:after {
+                width: 50px;
             }
         }
     }
 
 
+    .menu-dishinfo{
+        .content{
+            font-size:$sm;
+            .green{
+                color:$color_lgreen;
+            }
+            .yellow{
+                color:$color_yellow;
+            }
+        }
+    }
+
+    .tab-dish-detail{
+        border:none;
+        margin-bottom:0 !important;
+    }
+
+    .dish-detail{
+        line-height:1.2;    
+    }
+    .dish-intro{
+        font-size:$sm;
+        color:$color-grey;
+    }
+    .dish-ingredients {
+        font-size:$xsm;
+        color:$color-grey;    
+        margin-top:15px;
+        .header{
+            color:$color_dgrey;
+        }
+    }
+    .restaurantInfo{
+        font-size:$sm;                                                                                 
+        color:$color-grey;
+        .header{
+            color:$color_dgrey;
+            font-size:$md;
+        }
+    }
+
+    .extra.content.horizontal.segments {
+        padding:0;
+        & span {
+            width:100%;
+            text-align:center;
+        }
+    }
+}
+
+.striped {
+    background: repeating-linear-gradient(
+    45deg,
+    $color_lgrey,
+    $color_lgrey 10px,
+    white 10px,
+    white 20px
+    );
+}
