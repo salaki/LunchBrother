@@ -69,6 +69,18 @@ define([
                     var restaurantId = null;
                     if (inventoryArray[0] !== "") {
                         restaurantId = dishes[0].get('restaurant').id;
+
+                        // Set pick-up time
+                        var restaurantQuery = new Parse.Query(RestaurantModel);
+                        restaurantQuery.get(restaurantId, {
+                            success: function(restaurant) {
+                                self.restaurantPickUpTime = restaurant.get('pickUpTime');
+                                console.log(self.restaurantPickUpTime);
+                            },
+                            error: function(error) {
+                                showMessage("Error", "Error in fetching restaurant. Reason: " + error.message);
+                            }
+                        });
                     }
 
                     if (restaurantId) {
