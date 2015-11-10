@@ -71,6 +71,7 @@ define([
           $('#account').hide();
 
           //Hide bottom bar
+          $("#bottom-bar-order").hide();
           $("#bottom-bar-menu").hide();
           $("#bottom-bar-tracking").hide();
           $("#bottom-bar-manager").hide();

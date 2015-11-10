@@ -143,17 +143,20 @@ define([
 
         displayBottomBarItems: function(permission) {
             if (permission === LB_ADMIN) {
+                $("#bottom-bar-order").show();
                 $("#bottom-bar-menu").show();
                 $("#bottom-bar-tracking").show();
-                $("#bottom-bar-manager").show();
+                //$("#bottom-bar-manager").show();
                 $("#bottom-bar-admin").show();
 
             } else if (permission === LOCAL_MANAGER) {
+                $("#bottom-bar-order").show();
                 $("#bottom-bar-menu").show();
                 $("#bottom-bar-tracking").show();
                 $("#bottom-bar-manager").show();
 
             } else {
+                $("#bottom-bar-order").show();
                 $("#bottom-bar-menu").show();
                 $("#bottom-bar-tracking").show();
             }
