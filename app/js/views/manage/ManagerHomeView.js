@@ -393,6 +393,7 @@ define([
                             var dishInfo = {
                                 dishName: inventories[i].get('dish').get('dishName'),
                                 restaurantName: inventories[i].get('dish').get('restaurant').get('name'),
+                                restaurantNumber: inventories[i].get('dish').get('restaurant').get('telnum'),
                                 quantity: inventories[i].get('preorderQuantity'),
                                 price: inventories[i].get('price'),
                                 status: inventories[i].get('status')

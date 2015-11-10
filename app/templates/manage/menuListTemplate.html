@@ -8,7 +8,7 @@
         <div class="ui grid middle aligned content">
         <% _.each(menu.dishes, function(dish) { %>
             <div class="five wide column"><%= dish.dishName %></div>
-            <div class="five wide column"><%= dish.restaurantName %></div>
+            <div class="five wide column"><%= dish.restaurantName %> (<%= dish.restaurantNumber %>)</div>
             <div class="two wide column"><%= dish.quantity %></div>
             <div class="two wide column"><%= dish.status %></div>
             <div class="two wide column right aligned">$<%= dish.price %></div>
