@@ -74,7 +74,7 @@ define([
                         var permission = user.get('permission');
                         self.showSideBar(user);
                         self.displayBottomBarItems(permission);
-
+                
                         if (permission === LB_ADMIN) {
                             window.location.hash = '#admin';
                         }
@@ -138,6 +138,7 @@ define([
             //$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
             $("#accountBarFirstName").text(currentUser.get('firstName'));
             //$('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
+            $("#accountLogin").hide();
             $('#account').show();
         },
 
