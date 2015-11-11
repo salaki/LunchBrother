@@ -34,7 +34,7 @@ define([
     //	window.location.href="#";
     //	location.reload();
     //});
-    
+
     $('#signOutBtn').click(function() {
         $('.ui.sidebar').sidebar('hide');
         var currentUser = Parse.User.current();
@@ -45,7 +45,6 @@ define([
             codeQuery.equalTo("loginBy", currentUser);
             codeQuery.first({
                 success: function(code) {
-                    code.unset("loginBy");
                     code.set("usedToLogin", false);
                     code.save();
                     continueSignOut();
@@ -72,7 +71,6 @@ define([
 
           //Hide bottom bar
           $("#bottom-bar-order").hide();
-          $("#bottom-bar-menu").hide();
           $("#bottom-bar-tracking").hide();
           $("#bottom-bar-manager").hide();
           $("#bottom-bar-admin").hide();

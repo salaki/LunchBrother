@@ -5,6 +5,16 @@
 
 .ui .card{
     @include box-shadow(0 0.1em 0.3em 0 #d4d4d5);
+    .image {
+        height: 180px;
+        overflow: hidden;
+        img {
+            position: absolute;
+            top: -40%;
+            width: 100%;     
+            height: auto;
+        }
+    }
 }
 
 #page {

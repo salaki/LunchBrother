@@ -74,7 +74,7 @@ define([
                         var permission = user.get('permission');
                         self.showSideBar(user);
                         self.displayBottomBarItems(permission);
-
+                
                         if (permission === LB_ADMIN) {
                             window.location.hash = '#admin';
                         }
@@ -92,14 +92,7 @@ define([
                         }
 
                         if (permission === GENERAL_USER) {
-                            if (registrationCode) {
-                                self.updateRegistrationCodeState(user, registrationCode);
-                            } else {
-                                showMessage("Registration Code Required", "Please enter a registration code to login!", function(){
-                                    Parse.User.logOut();
-                                    location.reload();
-                                });
-                            }
+                            self.checkLoggedInWithCodeBefore(user, registrationCode);
                         }
                 	}  
                 },
@@ -112,6 +105,31 @@ define([
             var $form = this.$('form');
             $form.find('#loginBtn').prop('disabled', true);
             return false;
+        },
+
+        checkLoggedInWithCodeBefore: function(currentUser, registrationCode) {
+            var self = this;
+            var registrationCodeLoginUpByQuery = new Parse.Query(RegistrationCodeModel);
+            registrationCodeLoginUpByQuery.equalTo("loginBy", currentUser);
+            registrationCodeLoginUpByQuery.first({
+                success: function(user) {
+                    if (user) {
+                        window.location.hash = '#home';
+                    } else {
+                        if (registrationCode) {
+                            self.updateRegistrationCodeState(currentUser, registrationCode);
+                        } else {
+                            showMessage("Registration Code Required", "Please enter a registration code to login!", function(){
+                                Parse.User.logOut();
+                                location.reload();
+                            });
+                        }
+                    }
+                },
+                error: function(error) {
+                    console.log("Error in checking registration code usage. Reason: " + error.message);
+                }
+            });
         },
 
         showSideBar: function(currentUser) {
@@ -138,6 +156,7 @@ define([
             //$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
             $("#accountBarFirstName").text(currentUser.get('firstName'));
             //$('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
+            $("#accountLogin").hide();
             $('#account').show();
         },
 
