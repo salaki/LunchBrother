@@ -38,6 +38,11 @@ define([
     $('#signOutBtn').click(function() {
         $('.ui.sidebar').sidebar('hide');
         var currentUser = Parse.User.current();
+        var currentUserObject = new Parse.User();
+        currentUserObject.id = currentUser.id;
+        currentUserObject.unset("online");
+        currentUserObject.save();
+
         //Update registration code state
         var RegistrationCode = Parse.Object.extend("RegistrationCode");
         if (currentUser.get('permission') === GENERAL_USER) {

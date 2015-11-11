@@ -76,18 +76,26 @@ define([
                         self.displayBottomBarItems(permission);
                 
                         if (permission === LB_ADMIN) {
+                            user.set("online", true);
+                            user.save();
                             window.location.hash = '#admin';
                         }
 
                         if (permission === LOCAL_MANAGER) {
+                            user.set("online", true);
+                            user.save();
                             window.location.hash = '#managerHome?week=';
                         }
 
                         if (permission === DISTRIBUTOR) {
+                            user.set("online", true);
+                            user.save();
                             window.location.hash = '#distributor';
                         }
 
                         if (permission === DRIVER) {
+                            user.set("online", true);
+                            user.save();
                             window.location.hash = '#driver';
                         }
 
@@ -112,8 +120,10 @@ define([
             var registrationCodeLoginUpByQuery = new Parse.Query(RegistrationCodeModel);
             registrationCodeLoginUpByQuery.equalTo("loginBy", currentUser);
             registrationCodeLoginUpByQuery.first({
-                success: function(user) {
-                    if (user) {
+                success: function(code) {
+                    if (code) {
+                        currentUser.set("online", true);
+                        currentUser.save();
                         window.location.hash = '#home';
                     } else {
                         if (registrationCode) {
@@ -191,6 +201,9 @@ define([
             registrationCodeQuery.get(code, {
                 success: function(registrationCode) {
                     if (registrationCode) {
+                        user.set("online", true);
+                        user.save();
+
                         registrationCode.set("loginBy", user);
                         registrationCode.set("usedToLogin", true);
                         registrationCode.save(null, {
