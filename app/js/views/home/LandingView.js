@@ -36,6 +36,14 @@ define([
                             self.refreshWeeklyMenu(collegeName);
                         }
                     });
+
+                    if (Parse.User.current()) {
+                        self.$("#signUpBtn").hide();
+                        self.$("#loginBtn").hide();
+                    } else {
+                        self.$("#signUpBtn").show();
+                        self.$("#loginBtn").show();
+                    }
                 },
                 error: function(err) {
                     console.log(err.message);
