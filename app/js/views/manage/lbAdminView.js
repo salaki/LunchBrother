@@ -12,7 +12,9 @@ define([
         template: _.template(adminTemplate),
 
         events: {
-            'click #generateCode': 'generateCode'
+            'click #generateCode': 'generateCode',
+            "click .test-transfer": "onTestTransfer",
+            "click .addFunds": "addFunds"
         },
 
         initialize: function () {
@@ -54,6 +56,34 @@ define([
                 }
             });
         },
+
+        onTestTransfer: function() {
+            Parse.Cloud.run('testTransfer', {
+
+            }, {
+                success: function () {
+                    console.log("Transfer successfully!");
+                },
+
+                error: function (error) {
+                    console.log("Fail to transfer. Reason: " + error.message);
+                }
+            });
+        },
+
+        addFunds: function() {
+            Parse.Cloud.run('addFundsImmediatelyForTest', {
+
+            }, {
+                success: function () {
+                    console.log("Add funds successfully!");
+                },
+
+                error: function (error) {
+                    console.log("Fail to add funds. Reason: " + error.message);
+                }
+            });
+        }
     });
     return adminView;
 });

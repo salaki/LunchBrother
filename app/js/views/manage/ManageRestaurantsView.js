@@ -14,9 +14,7 @@ define([
             "click .toNewRestaurant": "toNewRestaurantPageClick",
             "click .deleteDish": "onDeleteDishClick",
             "click #editRestaurant": "onEditRestaurantClick",
-            "click #deleteRestaurant": "onDeleteRestaurantClick",
-            "click .test-transfer": "onTestTransfer",
-            "click .addFunds": "addFunds"
+            "click #deleteRestaurant": "onDeleteRestaurantClick"
         },
 
         initialize: function () {
@@ -177,34 +175,6 @@ define([
                 },
                 error: function(restaurant, error) {
                     showMessage("Error", "Delete dish failed! Reason: " + error.message);
-                }
-            });
-        },
-
-        onTestTransfer: function() {
-            Parse.Cloud.run('testTransfer', {
-
-            }, {
-                success: function () {
-                    console.log("Transfer successfully!");
-                },
-
-                error: function (error) {
-                    console.log("Fail to transfer. Reason: " + error.message);
-                }
-            });
-        },
-
-        addFunds: function() {
-            Parse.Cloud.run('addFundsImmediatelyForTest', {
-
-            }, {
-                success: function () {
-                    console.log("Add funds successfully!");
-                },
-
-                error: function (error) {
-                    console.log("Fail to add funds. Reason: " + error.message);
                 }
             });
         }
