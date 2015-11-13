@@ -94,7 +94,6 @@ define([
           savebtn.css("display", "block");
       });
       $(".savebtn").on("click", function(e){
-          var currentUser = Parse.User.current();
           e.preventDefault();
           var elink   = $(this).prev(".editlink");
           var dataset = elink.prev(".datainfo");
@@ -104,40 +103,45 @@ define([
           $(this).css("display", "none");
           dataset.html(newval);
           elink.css("display", "block");
-          if (newid.indexOf('Email') > -1) {
-              currentUser.set( "email", newval );
-          } else {
-              currentUser.set( "telnum", Number(newval) );
-          }
-          currentUser.save( null, {
-              success: function ( user )
-              {
-                  //Do nothing
-              },
-              error: function ( user, error )
-              {
-                  showMessage("Error", "Save user failed! Reason: " + error.message);
+
+          Parse.User.current().fetch().then(function(currentUser) {
+              if (newid.indexOf('Email') > -1) {
+                  currentUser.set( "email", newval );
+              } else {
+                  currentUser.set( "telnum", Number(newval) );
               }
-          } );
+              currentUser.save( null, {
+                  success: function ( user )
+                  {
+                      //Do nothing
+                  },
+                  error: function ( user, error )
+                  {
+                      showMessage("Error", "Save user failed! Reason: " + error.message);
+                  }
+              } );
+          });
       });
       $("#smsCheckbox").on("change", function(e){
-          var currentUser = Parse.User.current();
           e.preventDefault();
-          if ($(this).is(':checked')) {
-              currentUser.set( "smsEnabled", true );
-          } else {
-              currentUser.set( "smsEnabled", false );
-          }
-          currentUser.save( null, {
-              success: function ( user )
-              {
-                  //Do nothing
-              },
-              error: function ( user, error )
-              {
-                  showMessage("Error", "Save user failed! Reason: " + error.message);
+          var self = this;
+          Parse.User.current().fetch().then(function(currentUser) {
+              if ($(self).is(':checked')) {
+                  currentUser.set( "smsEnabled", true );
+              } else {
+                  currentUser.set( "smsEnabled", false );
               }
-          } );
+              currentUser.save( null, {
+                  success: function ( user )
+                  {
+                      //Do nothing
+                  },
+                  error: function ( user, error )
+                  {
+                      showMessage("Error", "Save user failed! Reason: " + error.message);
+                  }
+              });
+          });
       });
 
       $('#account').click(function() {

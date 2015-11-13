@@ -143,7 +143,6 @@ define([
         },
 
         showSideBar: function(currentUser) {
-            currentUser.fetch();
             $("#userEmail").text(currentUser.get('email'));
             var gridId = UMCP_GRID_ID;
             if (currentUser.get('gridId') == undefined) {
@@ -161,7 +160,14 @@ define([
                     }
                 });
             }
-            $("#userPhone").text(currentUser.get('telnum'));
+
+            // Phone Number
+            var phoneNumber = "Add your phone number";
+            if (currentUser.get('telnum')) {
+                phoneNumber = currentUser.get('telnum');
+            }
+            $("#userPhone").text(phoneNumber);
+
             $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
             //$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
             $("#accountBarFirstName").text(currentUser.get('firstName'));

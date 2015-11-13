@@ -26,30 +26,6 @@
         <link rel="stylesheet" href="js/libs/jquery-ui-1.11.4.custom/themes/smoothness/jquery-ui.min.css" type="text/css" />
     </head>
     <body>
-        <header class="ui grid">
-            <div class="row">
-                <div  class="ui fixed inverted navbar menu">
-                    <a href="#home" class="brand item">
-                        <img src="img/logo-white.png">
-                        Lunchbrother
-                    </a>
-                    <div class="right menu">
-                        <a id="account" class="item" style="display: none">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i>
-                        </a>
-                        <a id="accountLogin" href="#login" class="item">Login</a>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <section class="ui grid main page">
-            <div class="row">
-                <div class="column">
-                    <article id="page">
-                        Loading....
-                    </article>
-                </div>
-            </div>
-        </section>
         <div id="accountBar" class="ui right vertical push sidebar menu">
             <div id="sidebarWrapper" class="ui grid">
                 <div class="row">
@@ -116,8 +92,35 @@
                         </div>
                     </div>
                 </div>
-            </div>	
+            </div>
         </div>
+        <div class="pusher">
+            <header class="ui grid">
+                <div class="row">
+                    <div  class="ui fixed inverted navbar menu">
+                        <a href="#home" class="brand item">
+                            <img src="img/logo-white.png">
+                            Lunchbrother
+                        </a>
+                        <div class="right menu">
+                            <a id="account" class="item" style="display: none">Hi, <span id="accountBarFirstName"></span><i class="user icon"></i>
+                            </a>
+                            <a id="accountLogin" href="#login" class="item">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <section class="ui grid main page">
+                <div class="row">
+                    <div class="column">
+                        <article id="page">
+                            Loading....
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </div>
+
         <div class="space"></div>
         <div class="ui bottom fixed inverted menu navbar page grid">
 
@@ -142,10 +145,11 @@
                     <i class="list layout icon"></i>
                     Menu
                 </a>
-                
+
                 <!-- 4. Markup for the language selection tool (this is where the localization widget will appear) -->
             </div>
         </div>
+
         <div id="alertDialog" class="ui small test modal">
             <div class="header" style="background-color: #ffffff" id="alertTitle"></div>
             <div class="content" id="alertMessage"></div>
