@@ -128,6 +128,7 @@ define([
                 window.location.hash = "#home";
             }
         } else {
+            $("#accountLogin").show();
             window.location.hash = "#loginorsignup";
         }
     };

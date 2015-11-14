@@ -38,23 +38,22 @@ define([
                     });
 
                     if (Parse.User.current()) {
+                        self.showSideBar(Parse.User.current());
                         self.$("#signUpBtn").hide();
                         self.$("#loginBtn").hide();
                     } else {
                         self.$("#signUpBtn").show();
                         self.$("#loginBtn").show();
+                        $("#accountLogin").show();
                     }
                 },
                 error: function(err) {
                     console.log(err.message);
                 }
             });
-
-            this.showSideBar()
         },
 
-        showSideBar: function() {
-            var currentUser = Parse.User.current();
+        showSideBar: function(currentUser) {
             $("#userEmail").text(currentUser.get('email'));
             var gridId = UMCP_GRID_ID;
             if (currentUser.get('gridId') == undefined) {
