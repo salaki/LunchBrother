@@ -34,27 +34,14 @@ define(['views/home/DishView',
 			this.$el.html(_.template(homeTemplate)());
 
             this.dishes = new DishCollection;
-
             var self = this;
             var inventoryQuery = new Parse.Query(InventoryModel);
 
             //Display the inventory dishes
-            var current = new Date();
-            var currentHour = current.getHours();
-            if (currentHour > 14) {
-                //After 14:00, display the inventory of the next day
-                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                upperDate.setHours(12, 0, 0, 0);
-                var lowerDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                lowerDate.setHours(10, 0, 0, 0);
-            }
-            else {
-                //Before 14:00, display the inventory of the current day
-                var upperDate = new Date(current.getTime());
-                upperDate.setHours(12, 0, 0, 0);
-                var lowerDate = new Date(current.getTime());
-                lowerDate.setHours(10, 0, 0, 0);
-            }
+            var upperDate = new Date();
+            upperDate.setHours(13, 0, 0, 0);
+            var lowerDate = new Date();
+            lowerDate.setHours(10, 0, 0, 0);
 
             inventoryQuery.include("dish");
             inventoryQuery.include("dish.restaurant");
@@ -80,7 +67,36 @@ define(['views/home/DishView',
                     showMessage("Error", "Find inventory failed! Reason: " + error.message);
                 }
             });
+
+            // Enable or disable checkout button based on current time
+            this.disableOrEnableCheckOutBtn();
 		},
+
+        disableOrEnableCheckOutBtn: function() {
+            var currentTime = new Date();
+            var weekday = currentTime.getDay();
+
+            var startOrderTime = new Date();
+            startOrderTime.setHours(11, 0, 0, 0);
+            var stopOrderTime = new Date();
+            stopOrderTime.setHours(13, 0, 0, 0);
+
+            if (Parse.User.current().get('permission') != LB_ADMIN) {
+                if (weekday == 6 || weekday == 0) {
+                    $("#timeAlert").css("display", "block");
+                    $("#paymentBtn").addClass('disabled');
+                    $("#timeAlert").text("Sorry, we don't provide the service on weekends. Please come back on Monday :)");
+
+                } else if(currentTime > stopOrderTime || currentTime < startOrderTime) {
+                    $("#timeAlert").css("display", "block");
+                    $("#paymentBtn").addClass('disabled');
+                    $("#timeAlert").text("Sorry, we don't take order before 11:00AM or after 1:00PM. Our order time is 11:00AM-1:00PM.");
+
+                } else {
+                    // Do nothing
+                }
+            }
+        },
 
         loadAll : function() {
             this.$("#dishList").html("");
@@ -224,38 +240,12 @@ define(['views/home/DishView',
         },
 
 		continuePay : function() {
-			var currentTime = new Date();
-			var weekday = currentTime.getDay();
-
-            var stopOrderTimeStart = new Date();
-            stopOrderTimeStart.setHours(11, 45, 0, 0);
-            var stopOrderTimeEnd = new Date();
-            stopOrderTimeEnd.setHours(14, 0, 0, 0);
-
             var view = new OrderView({
                 model : this.stats
             });
 
-            if (Parse.User.current().get('permission') == LB_ADMIN) {
-                $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-                $("#page").append(view.render().el);
-            } else {
-                if ((weekday == 6) || (weekday == 0 && currentTime < stopOrderTimeEnd)) {
-                    $("#timeAlert").css("display", "block");
-                    $("#paymentBtn").addClass('disabled');
-                    $("#timeAlert").text("Sorry, we don't provide service in weekends. Please come back Sunday after 2:00PM.");
-                } else if(weekday !== 0 && (currentTime > stopOrderTimeStart && currentTime < stopOrderTimeEnd)) {
-                    $("#timeAlert").css("display", "block");
-                    $("#paymentBtn").addClass('disabled');
-                    $("#timeAlert").text("Sorry, we don't take order after 11:45AM. Our order time is 2:00PM-11:45AM.");
-                } else if ((weekday == 0 && currentTime > stopOrderTimeEnd) || (weekday == 5 && currentTime < stopOrderTimeStart) && ($("#order").length == 0)) {
-                    $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-                    $("#page").append(view.render().el);
-                } else if ((weekday >= 1 && weekday <= 4) && (currentTime < stopOrderTimeStart || currentTime > stopOrderTimeEnd) && ($("#order").length == 0)) {
-                    $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
-                    $("#page").append(view.render().el);
-                }
-            }
+            $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
+            $("#page").append(view.render().el);
 		}
 	});
 	return HomeView;
