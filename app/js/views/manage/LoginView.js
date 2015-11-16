@@ -74,32 +74,33 @@ define([
                         var permission = user.get('permission');
                         self.showSideBar(user);
                         self.displayBottomBarItems(permission);
-
+                
                         if (permission === LB_ADMIN) {
+                            user.set("online", true);
+                            user.save();
                             window.location.hash = '#admin';
                         }
 
                         if (permission === LOCAL_MANAGER) {
+                            user.set("online", true);
+                            user.save();
                             window.location.hash = '#managerHome?week=';
                         }
 
                         if (permission === DISTRIBUTOR) {
+                            user.set("online", true);
+                            user.save();
                             window.location.hash = '#distributor';
                         }
 
                         if (permission === DRIVER) {
+                            user.set("online", true);
+                            user.save();
                             window.location.hash = '#driver';
                         }
 
                         if (permission === GENERAL_USER) {
-                            if (registrationCode) {
-                                self.updateRegistrationCodeState(user, registrationCode);
-                            } else {
-                                showMessage("Registration Code Required", "Please enter a registration code to login!", function(){
-                                    Parse.User.logOut();
-                                    location.reload();
-                                });
-                            }
+                            self.checkLoggedInWithCodeBefore(user, registrationCode);
                         }
                 	}  
                 },
@@ -114,8 +115,34 @@ define([
             return false;
         },
 
+        checkLoggedInWithCodeBefore: function(currentUser, registrationCode) {
+            var self = this;
+            var registrationCodeLoginUpByQuery = new Parse.Query(RegistrationCodeModel);
+            registrationCodeLoginUpByQuery.equalTo("loginBy", currentUser);
+            registrationCodeLoginUpByQuery.first({
+                success: function(code) {
+                    if (code) {
+                        currentUser.set("online", true);
+                        currentUser.save();
+                        window.location.hash = '#home';
+                    } else {
+                        if (registrationCode) {
+                            self.updateRegistrationCodeState(currentUser, registrationCode);
+                        } else {
+                            showMessage("Registration Code Required", "Please enter a registration code to login!", function(){
+                                Parse.User.logOut();
+                                location.reload();
+                            });
+                        }
+                    }
+                },
+                error: function(error) {
+                    console.log("Error in checking registration code usage. Reason: " + error.message);
+                }
+            });
+        },
+
         showSideBar: function(currentUser) {
-            currentUser.fetch();
             $("#userEmail").text(currentUser.get('email'));
             var gridId = UMCP_GRID_ID;
             if (currentUser.get('gridId') == undefined) {
@@ -133,11 +160,19 @@ define([
                     }
                 });
             }
-            $("#userPhone").text(currentUser.get('telnum'));
+
+            // Phone Number
+            var phoneNumber = "Add your phone number";
+            if (currentUser.get('telnum')) {
+                phoneNumber = currentUser.get('telnum');
+            }
+            $("#userPhone").text(phoneNumber);
+
             $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
             //$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
             $("#accountBarFirstName").text(currentUser.get('firstName'));
             //$('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
+            $("#accountLogin").hide();
             $('#account').show();
         },
 
@@ -172,6 +207,9 @@ define([
             registrationCodeQuery.get(code, {
                 success: function(registrationCode) {
                     if (registrationCode) {
+                        user.set("online", true);
+                        user.save();
+
                         registrationCode.set("loginBy", user);
                         registrationCode.set("usedToLogin", true);
                         registrationCode.save(null, {

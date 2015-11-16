@@ -36,11 +36,75 @@ define([
                             self.refreshWeeklyMenu(collegeName);
                         }
                     });
+
+                    if (Parse.User.current()) {
+                        self.showSideBar(Parse.User.current());
+                        self.$("#signUpBtn").hide();
+                        self.$("#loginBtn").hide();
+                    } else {
+                        self.$("#signUpBtn").show();
+                        self.$("#loginBtn").show();
+                        $("#accountLogin").show();
+                    }
                 },
                 error: function(err) {
                     console.log(err.message);
                 }
             });
+        },
+
+        showSideBar: function(currentUser) {
+            $("#userEmail").text(currentUser.get('email'));
+            var gridId = UMCP_GRID_ID;
+            if (currentUser.get('gridId') == undefined) {
+                $("#userGrid").text("University of Maryland College Park");
+            }else {
+                var GridModel = Parse.Object.extend("Grid");
+                var gridQuery = new Parse.Query(GridModel);
+                gridId = currentUser.get('gridId').id;
+                gridQuery.get(currentUser.get('gridId').id, {
+                    success: function(grid) {
+                        $("#userGrid").text(grid.get('name'));
+                    },
+                    error: function(object, error) {
+                        console.log(error.message);
+                    }
+                });
+            }
+
+            // Phone Number
+            var phoneNumber = "Add your phone number";
+            if (currentUser.get('telnum')) {
+                phoneNumber = currentUser.get('telnum');
+            }
+            $("#userPhone").text(phoneNumber);
+
+            $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
+            //$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
+            $("#accountBarFirstName").text(currentUser.get('firstName'));
+            //$('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
+            $("#accountLogin").hide();
+            $('#account').show();
+
+            // Display Bottom Bar
+            if (currentUser.get("permission") === LB_ADMIN) {
+                $("#bottom-bar-order").show();
+                $("#bottom-bar-menu").show();
+                $("#bottom-bar-tracking").show();
+                //$("#bottom-bar-manager").show();
+                $("#bottom-bar-admin").show();
+
+            } else if (currentUser.get("permission") === LOCAL_MANAGER) {
+                $("#bottom-bar-order").show();
+                $("#bottom-bar-menu").show();
+                $("#bottom-bar-tracking").show();
+                $("#bottom-bar-manager").show();
+
+            } else {
+                $("#bottom-bar-order").show();
+                $("#bottom-bar-menu").show();
+                $("#bottom-bar-tracking").show();
+            }
         },
 
         refreshWeeklyMenu: function(collegeName) {

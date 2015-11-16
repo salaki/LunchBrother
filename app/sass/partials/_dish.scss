@@ -5,6 +5,16 @@
 
 .ui .card{
     @include box-shadow(0 0.1em 0.3em 0 #d4d4d5);
+    .image {
+        height: 170px;
+        overflow: hidden;
+        img {
+            position: absolute;
+            top: -30%;
+            width: 100%;     
+            height: auto;
+        }
+    }
 }
 
 #page {
@@ -69,9 +79,12 @@
         //overide default tab style
         .ui.pointing.secondary.menu
         .item{
+            display:block;
+            padding:10px 0;
+            text-align:center;
+            font-size:$sm;
             color:$color_grey;
             width:50%;
-            text-align:center;
             border-radius:0;
             &:hover{
                 color:$color_grey;

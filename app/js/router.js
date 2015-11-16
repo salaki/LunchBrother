@@ -128,35 +128,37 @@ define([
                 window.location.hash = "#home";
             }
         } else {
+            $("#accountLogin").show();
             window.location.hash = "#loginorsignup";
         }
     };
 
     var showSideBar = function(currentUser) {
-        currentUser.fetch();
-        $("#userEmail").text(currentUser.get('email'));
-        var gridId = UMCP_GRID_ID;
-        if (currentUser.get('gridId') == undefined) {
-            $("#userGrid").text("University of Maryland College Park");
-        }else {
-            var GridModel = Parse.Object.extend("Grid");
-            var gridQuery = new Parse.Query(GridModel);
-            gridId = currentUser.get('gridId').id;
-            gridQuery.get(currentUser.get('gridId').id, {
-                success: function(grid) {
+        currentUser.fetch().then(function (user){
+            $("#userEmail").text(user.get('email'));
+            // Phone Number
+            var phoneNumber = "Add your phone number";
+            if (user.get('telnum')) {
+                phoneNumber = user.get('telnum');
+            }
+            $("#userPhone").text(phoneNumber);
+
+            $("#userFullName").text(user.get('firstName') + " " + user.get('lastName'));
+            //$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
+            $("#accountBarFirstName").text(user.get('firstName'));
+            //$('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
+            $("#accountLogin").hide();
+            $('#account').show();
+
+            var gridId = UMCP_GRID_ID;
+            if (user.get('gridId') == undefined) {
+                $("#userGrid").text("University of Maryland College Park");
+            }else {
+                user.get('gridId').fetch().then(function(grid) {
                     $("#userGrid").text(grid.get('name'));
-                },
-                error: function(object, error) {
-                    console.log(error.message);
-                }
-            });
-        }
-        $("#userPhone").text(currentUser.get('telnum'));
-        $("#userFullName").text(currentUser.get('firstName') + " " + currentUser.get('lastName'));
-        //$("#userCreditBalance").text("$" + currentUser.get('creditBalance').toFixed(2));
-        $("#accountBarFirstName").text(currentUser.get('firstName'));
-        //$('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
-        $('#account').show();
+                });
+            }
+        });
     };
 
     var displayBottomBarItems = function(permission) {
