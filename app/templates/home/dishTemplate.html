@@ -52,17 +52,29 @@
                         -->
                         <div class="item">
                             <div class="content">
-                                <%=dish.vegetarian %>
+                                <% if(dish.vegetarian) { %>
+                                    Vegetarian
+                                <% } else {  %>
+                                    Not Vegetarian
+                                <% } %>
                             </div>
                         </div>
                         <div class="item">
                             <div class="content">
-                                <%=dish.gluten %>
+                                <% if(dish.glutenFree) { %>
+                                    Gluten-Free
+                                <% } else {  %>
+                                    Has Gluten
+                                <% } %>
                             </div>
                         </div>
                         <div class="item">
                             <div class="content">
-                                <%=dish.spiciness %>
+                                <% if(dish.spicy) { %>
+                                    Spicy
+                                <% } else {  %>
+                                    Not Spicy
+                                <% } %>
                             </div>
                         </div>
                     </div>
