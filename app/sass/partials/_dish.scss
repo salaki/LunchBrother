@@ -96,7 +96,7 @@
         }	
         .dishinfo{
             .item{
-                color:$color_lgreen;
+                color:$color_grey;
                 font-size:$sm;
             }
         }
@@ -154,7 +154,7 @@
         }
 
 
-        .menu-dishinfo{
+        .menu-dishinfo, .dishinfo{
             .content{
                 font-size:$sm;
                 .green{

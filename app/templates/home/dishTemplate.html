@@ -53,7 +53,7 @@
                         <div class="item">
                             <div class="content">
                                 <% if(dish.vegetarian) { %>
-                                    Vegetarian
+                                    <span class="green">Vegetarian</span>
                                 <% } else {  %>
                                     Not Vegetarian
                                 <% } %>
@@ -62,18 +62,18 @@
                         <div class="item">
                             <div class="content">
                                 <% if(dish.glutenFree) { %>
-                                    Gluten-Free
+                                    <span class="green">Gluten-Free</span>
                                 <% } else {  %>
-                                    Has Gluten
+                                    <span class="yellow">Has Gluten</span>
                                 <% } %>
                             </div>
                         </div>
                         <div class="item">
                             <div class="content">
                                 <% if(dish.spicy) { %>
-                                    Spicy
+                                    <span class="yellow">Spicy</span>
                                 <% } else {  %>
-                                    Not Spicy
+                                    <span class="green">Not Spicy</span>
                                 <% } %>
                             </div>
                         </div>
