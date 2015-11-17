@@ -6,7 +6,7 @@
 .ui .card{
     @include box-shadow(0 0.1em 0.3em 0 #d4d4d5);
     .image {
-        height: 170px;
+        height: 120px;
         overflow: hidden;
         img {
             position: absolute;

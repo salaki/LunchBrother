@@ -5,14 +5,16 @@
 </div>
 <div class="ui grid active tab" data-tab="first">
     <h3 class="header-week">
-            Monday
+        Monday
     </h3>
     <div class="doubling two column row dishes">
         <% _.each(menu[0].Mon, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
-                <div class="image">
-                    <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                <div class="image" style="background-image: url(<%= inventory.get('dish').get('Image_File')._url %>); background-position: center center; background-size: cover;">
+                    <!--
+                        <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                    -->
                 </div>
                 <div class="content">
                     <div class="ui grid">
@@ -29,36 +31,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                        <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                       <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                        <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                       <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -72,8 +74,10 @@
         <% _.each(menu[0].Tue, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
-                <div class="image">
-                    <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                <div class="image" style="background-image: url(<%= inventory.get('dish').get('Image_File')._url %>); background-position: center center; background-size: cover;">
+                    <!--
+                        <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                    -->
                 </div>
                 <div class="content">
                     <div class="ui grid">
@@ -90,36 +94,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -133,8 +137,10 @@
         <% _.each(menu[0].Wed, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
-                <div class="image">
-                    <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                <div class="image" style="background-image: url(<%= inventory.get('dish').get('Image_File')._url %>); background-position: center center; background-size: cover;">
+                    <!--
+                        <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                    -->
                 </div>
                 <div class="content">
                     <div class="ui grid">
@@ -151,36 +157,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -194,8 +200,10 @@
         <% _.each(menu[0].Thu, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
-                <div class="image">
-                    <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                <div class="image" style="background-image: url(<%= inventory.get('dish').get('Image_File')._url %>); background-position: center center; background-size: cover;">
+                    <!--
+                        <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                    -->
                 </div>
                 <div class="content">
                     <div class="ui grid">
@@ -212,36 +220,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -255,8 +263,10 @@
         <% _.each(menu[0].Fri, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
-                <div class="image">
-                    <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                <div class="image" style="background-image: url(<%= inventory.get('dish').get('Image_File')._url %>); background-position: center center; background-size: cover;">
+                    <!--
+                        <img src="<%= inventory.get('dish').get('Image_File')._url %>">
+                    -->
                 </div>
                 <div class="content">
                     <div class="ui grid">
@@ -273,36 +283,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -336,36 +346,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -397,36 +407,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -458,36 +468,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -519,36 +529,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -580,36 +590,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -643,36 +653,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -704,36 +714,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -765,36 +775,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -826,36 +836,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -887,36 +897,36 @@
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
                     <!--
-                    <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <i class="wait icon"></i>
-                                    <%= inventory.get('dish').get('calorie') %> Cal
-                                </div>
-                            </span>
-                    </div>
+                        <div class="ui segment">
+                        <span class="left floated">
+                        <div class="content">
+                        <i class="wait icon"></i>
+                        <%= inventory.get('dish').get('calorie') %> Cal
+                        </div>
+                        </span>
+                        </div>
                     -->
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('vegetarian')) { %>
-                                    <span class="green"> Vegetarian</span>
-                                    <% } else { %>
-                                    <span> Non-vegetarian </span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('vegetarian')) { %>
+                                <span class="green"> Vegetarian</span>
+                                <% } else { %>
+                                <span> Non-vegetarian </span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                     <div class="ui segment">
-                            <span class="left floated">
-                                <div class="content">
-                                    <% if(inventory.get('dish').get('glutenFree')) { %>
-                                    <span class="green">Gluten Free</span>
-                                    <% } else { %>
-                                    <span class="yellow">Has Gluten</span>
-                                    <% } %>
-                                </div>
-                            </span>
+                        <span class="left floated">
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                                <span class="green">Gluten Free</span>
+                                <% } else { %>
+                                <span class="yellow">Has Gluten</span>
+                                <% } %>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -925,5 +935,5 @@
     </div>
 </div>
 <script>
-    $('.menu .item').tab();
+$('.menu .item').tab();
 </script>
