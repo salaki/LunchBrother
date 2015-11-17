@@ -322,9 +322,9 @@ Parse.Cloud.define("emailNotification",
                             success: function (httpResponse) { console.log("Email sent to " + email + " successfully!"); },
                             error: function (httpResponse) { console.log("Email sent to " + email + " failed! Reason: " + httpResponse ); }
                         });
-                        response.success("Pick-up Email sent out successfully!");
-                        //response.error();
                     }
+                    response.success("Pick-up Email sent out successfully!");
+                    //response.error();
                 } else {
                     sendEmail({
                         message: {
