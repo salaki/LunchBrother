@@ -331,13 +331,16 @@ define([
                     var restaurantIncome = 0;
                     if (inventories.length !== 0) {
                         _.each(inventories, function(inventory) {
-                            restaurantIncome += inventory.get("preorderQuantity") * inventory.get("dish").get('originalPrice');
-                            income += (inventory.get("preorderQuantity") - inventory.get("currentQuantity")) * inventory.get("price");
+                            var soldQuantity = inventory.get("preorderQuantity") - inventory.get("currentQuantity");
+                            var salesTotalByInventory = soldQuantity * inventory.get("price");
+                            var restaurantIncomeByInventory = soldQuantity * inventory.get("dish").get('originalPrice');
+                            restaurantIncome += restaurantIncomeByInventory;
+                            income += salesTotalByInventory;
+                            inventory.income = salesTotalByInventory - salesTotalByInventory * 0.08 - restaurantIncomeByInventory;
                         });
                     }
 
-                    var managerIncome = income - income * 0.08 - restaurantIncome;
-                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, income: managerIncome, nextPaymentDate: self.nextPayment.date, nextPaymentAmount: self.nextPayment.amount.toFixed(2)}));
+                    self.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: inventories, nextPaymentDate: self.nextPayment.date, nextPaymentAmount: self.nextPayment.amount.toFixed(2)}));
                 },
                 error: function(error) {
                     showMessage("Error", "Find inventory failed! Reason: " + error.message);
