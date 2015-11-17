@@ -244,7 +244,7 @@ define([
                         ordersToSend: orders
                     }, {
                         success: function () {
-                            showMessage("Success", "Arrival notification has been sent to customers successfully!", function(){
+                            showMessage("Success", "Pick-up notification has been sent to customers successfully!", function(){
                                 var notification = new NotificationModel();
                                 notification.set("key", self.getNotificationKey(pickUpLocationId));
                                 notification.save({

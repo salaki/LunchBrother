@@ -312,10 +312,7 @@ define([
                     paymentDetails.set('paymentCheck', true);
                     paymentDetails.save(null, {
                         success: function (paymentDetails) {
-                            self.saveOrders(paymentDetails);
-                            self.updateInventory();
-                            self.emailService(paymentDetails.id);
-                            self.chargeCreditBalance(params.coupon);
+                            self.updateInventory(paymentDetails, params.coupon); // Execute a series of actions
 
                             var view1 = new TextView({
                                 model: paymentDetails
@@ -342,7 +339,33 @@ define([
             });
         },
 
-        saveOrders: function(paymentDetails) {
+        updateInventory: function(paymentDetails, coupon) {
+            var self = this;
+            _.each(this.model.orders, function (dish) {
+                var inventoryQuery = new Parse.Query(InventoryModel);
+                inventoryQuery.get(dish.inventoryId, {
+                    success: function(inventory) {
+                        var newQantity = inventory.get('currentQuantity') - dish.count;
+                        inventory.set('currentQuantity', newQantity);
+                        inventory.save(null, {
+                            success: function() {
+                                console.log("Update current quantity successfully!");
+                                self.saveOrders(paymentDetails, coupon);
+                            },
+                            error: function(err) {
+                                console.log("Failed to update dish current quantity. Reason: " + err.message);
+                            }
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err.message);
+                    }
+                });
+            });
+        },
+
+        saveOrders: function(paymentDetails, coupon) {
+            var self = this;
             _.each(this.model.orders, function (order) {
                 var dish = new DishModel();
                 dish.id = order.dishId;
@@ -357,7 +380,7 @@ define([
                 orderDetails.set('pickUpLocation', paymentDetails.get('pickUpLocation'));
                 orderDetails.save(null, {
                         success: function() {
-                            //Do nothing
+                            self.chargeCreditBalance(coupon, paymentDetails.id);
                         },
                         error: function(err) {
                             console.log("Failed to save orders. Reason: " + err.message);
@@ -367,27 +390,12 @@ define([
             });
         },
 
-        updateInventory: function() {
-            _.each(this.model.orders, function (dish) {
-                var inventoryQuery = new Parse.Query(InventoryModel);
-                inventoryQuery.get(dish.inventoryId, {
-                    success: function(inventory) {
-                        var newQantity = inventory.get('currentQuantity') - dish.count;
-                        inventory.set('currentQuantity', newQantity);
-                        inventory.save(null, {
-                            success: function() {
-                                console.log("update current quantity successfully!");
-                            },
-                            error: function(err) {
-                                console.log("Failed to update dish current quantity. Reason: " + err.message);
-                            }
-                        })
-                    },
-                    error: function(err) {
-                        console.log(err.message);
-                    }
-                });
-            });
+        chargeCreditBalance: function(coupon, paymentDetailId){
+            var currentUser = Parse.User.current();
+            var currentCredit = parseFloat((currentUser.get('creditBalance') - coupon).toFixed(2));
+            currentUser.set('creditBalance', currentCredit);
+            currentUser.save();
+            this.emailService(paymentDetailId);
         },
 
         emailService: function (paymentId) {
@@ -403,13 +411,6 @@ define([
                     console.log("Fail to send email. Reason: " + error.message);
                 }
             });
-        },
-
-        chargeCreditBalance: function(coupon){
-            var currentUser = Parse.User.current();
-            var currentCredit = parseFloat((currentUser.get('creditBalance') - coupon).toFixed(2));
-            currentUser.set('creditBalance', currentCredit);
-            currentUser.save();
         }
     });
     return OrderView;
