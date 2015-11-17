@@ -51,6 +51,7 @@ define(['views/home/DishView',
                 success: function(inventories) {
                     _.each(inventories, function(inventory) {
                         var dish = inventory.get("dish");
+                        dish.add("price", inventory.get('price'));
                         self.dishes.add(dish);
                         self.inventoryMap[dish.id] = {
                             inventoryId: inventory.id,
