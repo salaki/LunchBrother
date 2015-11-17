@@ -202,7 +202,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 /* line 8, ../sass/partials/_dish.scss */
 .ui .card .image {
-  height: 170px;
+  height: 140px;
   overflow: hidden;
 }
 /* line 11, ../sass/partials/_dish.scss */
