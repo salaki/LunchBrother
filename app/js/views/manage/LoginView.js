@@ -173,6 +173,7 @@ define([
             $("#accountBarFirstName").text(currentUser.get('firstName'));
             //$('#referlink input').val('https://www.lunchbrother.com/?refer=' + currentUser.id + '#signupemail');
             $("#accountLogin").hide();
+            $("#accountSignup").hide();
             $('#account').show();
         },
 

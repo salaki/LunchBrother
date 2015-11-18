@@ -347,11 +347,11 @@ header {
 	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
 	box-shadow: 0 0 5px $black_50;
   &.bottom{
-    font-size:0.6em;
-    & .item{
+    & .item-left{
       display:block;
+      font-size:0.6em;
     }
-    & .icon{
+    & .item-left .icon{
       display:block;
       text-align:center;
       height:1em;

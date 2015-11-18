@@ -954,16 +954,13 @@ header .brand.item img {
   opacity: 0.9;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
-/* line 349, ../sass/screen.scss */
-.ui.inverted.menu.bottom {
+/* line 350, ../sass/screen.scss */
+.ui.inverted.menu.bottom .item-left {
+  display: block;
   font-size: 0.6em;
 }
-/* line 351, ../sass/screen.scss */
-.ui.inverted.menu.bottom .item {
-  display: block;
-}
 /* line 354, ../sass/screen.scss */
-.ui.inverted.menu.bottom .icon {
+.ui.inverted.menu.bottom .item-left .icon {
   display: block;
   text-align: center;
   height: 1em;

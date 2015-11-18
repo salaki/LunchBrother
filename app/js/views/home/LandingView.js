@@ -45,6 +45,7 @@ define([
                         self.$("#signUpBtn").show();
                         self.$("#loginBtn").show();
                         $("#accountLogin").show();
+                        $("#accountSignup").show();
                     }
                 },
                 error: function(err) {
