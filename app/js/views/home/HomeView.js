@@ -158,17 +158,29 @@ define(['views/home/DishView',
             newEvent["click #" + dish.id +"-dimmerButton"] = 'onRequestClick';
             this.delegateEvents(_.extend(this.events, newEvent));
 
-            if (currentQuantity <= 5) {
-                $('#' + dish.id + '-currentQuantityWarning').text("Only " + currentQuantity + " left!");
-                $('#' + dish.id + '-currentQuantityWarning').show();
-            }
 
-            if (dish.get('count') === currentQuantity) {
-                $('#' + dish.id + '-dimmer').addClass('active');
-                $('#' + dish.id + '-plusButton').prop('disabled', true);
-                $('#' + dish.id + '-currentQuantityWarning').hide();
+            var current = new Date();
+            var startOrderTime = new Date();
+            startOrderTime.setHours(11, 0, 0, 0);
+            var stopOrderTime = new Date();
+            stopOrderTime.setHours(13, 0, 0, 0);
+
+            if (current > startOrderTime && current < stopOrderTime) {
+                if (currentQuantity <= 5) {
+                    $('#' + dish.id + '-currentQuantityWarning').text("Only " + currentQuantity + " left!");
+                    $('#' + dish.id + '-currentQuantityWarning').show();
+                }
+
+                if (dish.get('count') === currentQuantity) {
+                    $('#' + dish.id + '-dimmer').addClass('active');
+                    $('#' + dish.id + '-plusButton').prop('disabled', true);
+                    $('#' + dish.id + '-currentQuantityWarning').hide();
+                } else {
+                    $('#' + dish.id + '-dimmer').dimmer('hide');
+                }
             } else {
-                $('#' + dish.id + '-dimmer').dimmer('hide');
+                $('#' + dish.id + '-plusButton').prop('disabled', true);
+                $('#' + dish.id + '-minusButton').prop('disabled', true);
             }
 		},
 

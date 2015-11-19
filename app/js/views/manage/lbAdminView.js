@@ -14,7 +14,8 @@ define([
         events: {
             'click #generateCode': 'generateCode',
             "click .test-transfer": "onTestTransfer",
-            "click .addFunds": "addFunds"
+            "click .addFunds": "addFunds",
+            "click .sendSMSBtn": "sendSMS"
         },
 
         initialize: function () {
@@ -57,6 +58,9 @@ define([
             });
         },
 
+        /**
+         * For Testing Purpose
+         */
         onTestTransfer: function() {
             Parse.Cloud.run('testTransfer', {
 
@@ -71,6 +75,9 @@ define([
             });
         },
 
+        /**
+         * For Testing Purpose
+         */
         addFunds: function() {
             Parse.Cloud.run('addFundsImmediatelyForTest', {
 
@@ -83,6 +90,27 @@ define([
                     console.log("Fail to add funds. Reason: " + error.message);
                 }
             });
+        },
+
+        sendSMS: function() {
+            var targetDate = Number($("#smsDate").val());
+            console.log(targetDate);
+            if (targetDate) {
+                Parse.Cloud.run("manuallySendConfirmationSMS", {
+                    targetDate: targetDate
+
+                }, {
+                    success: function (success) {
+                        showMessage("Success", "Sending SMS!");
+
+                    },
+
+                    error: function (error) {
+                        showMessage("Fail", "Failed to send sms. Reason: " + error.message);
+
+                    }
+                });
+            }
         }
     });
     return adminView;
