@@ -6,15 +6,18 @@
 .ui .card{
     @include box-shadow(0 0.1em 0.3em 0 #d4d4d5);
     .image {
-        height: 140px;
         overflow: hidden;
-        img {
-            position: absolute;
-            top: -30%;
-            width: 100%;     
-            height: auto;
-        }
+        background-position: center center;
+        background-size: cover;
     }
+}
+
+#weeklyMenu .card .image{
+    height:120px;
+}
+
+#dishList .card .image{
+    height:240px;
 }
 
 #page {
