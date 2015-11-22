@@ -206,28 +206,35 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   background-position: center center;
   background-size: cover;
 }
+/* line 13, ../sass/partials/_dish.scss */
+.ui .card .price-hint {
+  font-size: 0.6rem;
+  color: #1CBC9C;
+  text-transform: none;
+  padding-left: 5px;
+}
 
-/* line 15, ../sass/partials/_dish.scss */
+/* line 21, ../sass/partials/_dish.scss */
 #weeklyMenu .card .image {
   height: 120px;
 }
 
-/* line 19, ../sass/partials/_dish.scss */
+/* line 25, ../sass/partials/_dish.scss */
 #dishList .card .image {
   height: 240px;
 }
 
-/* line 23, ../sass/partials/_dish.scss */
+/* line 29, ../sass/partials/_dish.scss */
 #page {
   padding-top: 32px;
   /* Transform Translate Mixin */
 }
-/* line 24, ../sass/partials/_dish.scss */
+/* line 30, ../sass/partials/_dish.scss */
 #page .dimmer {
   z-index: 0;
   background: rgba(0, 0, 0, 0.65);
 }
-/* line 27, ../sass/partials/_dish.scss */
+/* line 33, ../sass/partials/_dish.scss */
 #page .dimmer .dimmer-content {
   position: relative;
   top: 50%;
@@ -235,36 +242,36 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 32, ../sass/partials/_dish.scss */
+/* line 38, ../sass/partials/_dish.scss */
 #page .dish-desc {
   font-size: 1.2rem;
   padding-left: 10px;
   color: #454545;
 }
-/* line 37, ../sass/partials/_dish.scss */
+/* line 43, ../sass/partials/_dish.scss */
 #page .minus-btn-wrapper {
   padding-left: 0;
   padding-right: 0;
 }
-/* line 40, ../sass/partials/_dish.scss */
+/* line 46, ../sass/partials/_dish.scss */
 #page .minus-btn-wrapper button {
   border: 1px solid #9b9b9b;
 }
-/* line 44, ../sass/partials/_dish.scss */
+/* line 50, ../sass/partials/_dish.scss */
 #page .plus-btn-wrapper {
   padding-left: 0;
   padding-right: 0;
 }
-/* line 47, ../sass/partials/_dish.scss */
+/* line 53, ../sass/partials/_dish.scss */
 #page .plus-btn-wrapper button {
   border: 1px solid #9b9b9b;
 }
-/* line 51, ../sass/partials/_dish.scss */
+/* line 57, ../sass/partials/_dish.scss */
 #page .order-count-wrapper {
   padding-left: 0.6em;
   padding-right: 0.6em;
 }
-/* line 55, ../sass/partials/_dish.scss */
+/* line 61, ../sass/partials/_dish.scss */
 #page .dish-count {
   background-color: white;
   border: 1px solid #9b9b9b;
@@ -272,7 +279,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   padding: 7px 11px;
   font-weight: normal;
 }
-/* line 62, ../sass/partials/_dish.scss */
+/* line 68, ../sass/partials/_dish.scss */
 #page .img-overlay {
   position: absolute;
   height: 40px;
@@ -285,11 +292,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   font-weight: bold;
   padding-top: 0.8rem;
 }
-/* line 78, ../sass/partials/_dish.scss */
+/* line 84, ../sass/partials/_dish.scss */
 #page .card .content .ui.button {
   font-size: 0.7rem;
 }
-/* line 83, ../sass/partials/_dish.scss */
+/* line 89, ../sass/partials/_dish.scss */
 #page .ui.pointing.secondary.menu
 .item {
   display: block;
@@ -300,22 +307,22 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   width: 50%;
   border-radius: 0;
 }
-/* line 92, ../sass/partials/_dish.scss */
+/* line 98, ../sass/partials/_dish.scss */
 #page .ui.pointing.secondary.menu
 .item:hover {
   color: #9b9b9b;
 }
-/* line 96, ../sass/partials/_dish.scss */
+/* line 102, ../sass/partials/_dish.scss */
 #page .active.item {
   border-left: none;
   border-color: #e3151a;
 }
-/* line 101, ../sass/partials/_dish.scss */
+/* line 107, ../sass/partials/_dish.scss */
 #page .dishinfo .item {
   color: #9b9b9b;
   font-size: 0.8rem;
 }
-/* line 119, ../sass/partials/_dish.scss */
+/* line 125, ../sass/partials/_dish.scss */
 #page .header-week {
   position: relative;
   display: block;
@@ -323,7 +330,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   width: 100%;
   text-align: center;
 }
-/* line 125, ../sass/partials/_dish.scss */
+/* line 131, ../sass/partials/_dish.scss */
 #page .header-week:before {
   content: '';
   position: absolute;
@@ -336,7 +343,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   margin: auto;
   background-color: #f7f7f7;
 }
-/* line 138, ../sass/partials/_dish.scss */
+/* line 144, ../sass/partials/_dish.scss */
 #page .header-week:after {
   content: '';
   position: absolute;
@@ -353,61 +360,61 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
 }
-/* line 153, ../sass/partials/_dish.scss */
+/* line 159, ../sass/partials/_dish.scss */
 #page .header-week:hover:after {
   width: 50px;
 }
-/* line 161, ../sass/partials/_dish.scss */
+/* line 167, ../sass/partials/_dish.scss */
 #page .menu-dishinfo .content, #page .dishinfo .content {
   font-size: 0.8rem;
 }
-/* line 163, ../sass/partials/_dish.scss */
+/* line 169, ../sass/partials/_dish.scss */
 #page .menu-dishinfo .content .green, #page .dishinfo .content .green {
   color: #1CBC9C;
 }
-/* line 166, ../sass/partials/_dish.scss */
+/* line 172, ../sass/partials/_dish.scss */
 #page .menu-dishinfo .content .yellow, #page .dishinfo .content .yellow {
   color: #FBBD08;
 }
-/* line 172, ../sass/partials/_dish.scss */
+/* line 178, ../sass/partials/_dish.scss */
 #page .tab-dish-detail {
   border: none;
   margin-bottom: 0 !important;
 }
-/* line 177, ../sass/partials/_dish.scss */
+/* line 183, ../sass/partials/_dish.scss */
 #page .dish-detail {
   line-height: 1.2;
 }
-/* line 180, ../sass/partials/_dish.scss */
+/* line 186, ../sass/partials/_dish.scss */
 #page .dish-intro {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 184, ../sass/partials/_dish.scss */
+/* line 190, ../sass/partials/_dish.scss */
 #page .dish-ingredients {
   font-size: 0.6rem;
   color: #9b9b9b;
   margin-top: 15px;
 }
-/* line 188, ../sass/partials/_dish.scss */
+/* line 194, ../sass/partials/_dish.scss */
 #page .dish-ingredients .header {
   color: #454545;
 }
-/* line 192, ../sass/partials/_dish.scss */
+/* line 198, ../sass/partials/_dish.scss */
 #page .restaurantInfo {
   font-size: 0.8rem;
   color: #9b9b9b;
 }
-/* line 195, ../sass/partials/_dish.scss */
+/* line 201, ../sass/partials/_dish.scss */
 #page .restaurantInfo .header {
   color: #454545;
   font-size: 1rem;
 }
-/* line 201, ../sass/partials/_dish.scss */
+/* line 207, ../sass/partials/_dish.scss */
 #page .extra.content.horizontal.segments {
   padding: 0;
 }
-/* line 203, ../sass/partials/_dish.scss */
+/* line 209, ../sass/partials/_dish.scss */
 #page .extra.content.horizontal.segments span {
   width: 100%;
   text-align: center;
