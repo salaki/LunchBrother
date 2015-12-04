@@ -83,52 +83,24 @@ define([
             query.include("pickUpLocation");
 
             //Display the order between a duration
-            var current = new Date();
-            var currentHour = current.getHours();
-            if (currentHour > 14) {
-                //After 14:00, display the orders from today 2pm to tomorrow 12pm
-                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                upperDate.setHours(12, 0, 0, 0);
-                var lowerDate = current;
-                lowerDate.setHours(14, 0, 0, 0);
-            }
-            else {
-                //Before 14:00, display the orders from yesterday 2pm to today 12pm
-                upperDate = current;
-                upperDate.setHours(12, 0, 0, 0);
-                lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-                lowerDate.setHours(14, 0, 0, 0);
-            }
+            var lowerDate = new Date();
+            lowerDate.setHours(10, 0, 0, 0);
+            var upperDate = new Date();
+            upperDate.setHours(14, 0, 0, 0);
 
             query.greaterThan("createdAt", lowerDate);
             query.lessThan("createdAt", upperDate);
             query.limit(300);
-            query.find({
-                success: function (payments) {
-                    self.queryOrder(payments);
-                },
-                error: function (error) {
-                    showMessage("Error", "Payment Query Error: " + error.code + " " + error.message);
-                }
+            query.find().then(function(payments){
+                self.populateDistributorView(payments);
+
+            }, function(error){
+                showMessage("Error", "Payment Query Error: " + error.code + " " + error.message);
+
             });
         },
 
-        queryOrder: function(payments) {
-            var self = this;
-            var orderQuery = new Parse.Query(OrderModel);
-            orderQuery.include("dishId");
-            orderQuery.include("restaurantId");
-            orderQuery.find({
-                success: function (orders) {
-                    self.populateDistributorView(payments, orders);
-                },
-                error: function (error) {
-                    showMessage("Error", "Order Query Error: " + error.code + " " + error.message);
-                }
-            });
-        },
-
-        populateDistributorView: function(payments, orders) {
+        populateDistributorView: function(payments) {
             var self = this;
             var currentUser = Parse.User.current();
             var newResults = [];
@@ -149,12 +121,20 @@ define([
                         orderSummary: ""
                     };
 
-                    if (paymentGridId === currentUser.get("gridId").id && payment.get("pickUpLocation").id === self.$("#addressOption").val()) {
-                        _.each(orders, function(order){
-                            if (order.get("paymentId") !== undefined && order.get("paymentId").id === payment.id) {
-                                paymentDetailMap.orderSummary += order.get("dishId").get("dishName") + ":" + order.get("quantity") + ", ";
-                            }
+                    if (payment.get('orderSummary')) {
+                        var orderSummaryString = "";
+                        _.each(payment.get('orderSummary'), function(orderSummary){
+                            var orderSummaryDetail = orderSummary.split('-');
+                            var dishCode = orderSummaryDetail[0];
+                            var dishName = orderSummaryDetail[1];
+                            var dishCount = orderSummaryDetail[2];
+                            orderSummaryString += dishCode + " - " + dishCount + ", ";
                         });
+
+                        paymentDetailMap.orderSummary = orderSummaryString;
+                    }
+
+                    if (paymentGridId === currentUser.get("gridId").id && payment.get("pickUpLocation").id === self.$("#addressOption").val()) {
                         paymentDetailMap.orderSummary = paymentDetailMap.orderSummary.substring(0, paymentDetailMap.orderSummary.length - 2);
                         newResults.push(paymentDetailMap);
                         newEvent["click #checkButton-" + paymentDetailMap.orderNumber] = 'onPickupClick';
@@ -221,11 +201,11 @@ define([
             query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
 
-            //Display the orders which are from yesterday 2pm to today 12pm
-            var lowerDate = new Date(new Date().getTime() - 24*60*60*1000);
-            lowerDate.setHours(14, 0, 0, 0);
+            //Set the time frame to look for the orders
+            var lowerDate = new Date();
+            lowerDate.setHours(10, 0, 0, 0);
             var upperDate = new Date();
-            upperDate.setHours(12, 0, 0, 0);
+            upperDate.setHours(14, 0, 0, 0);
 
             var orders = [];
             query.greaterThan("createdAt", lowerDate);

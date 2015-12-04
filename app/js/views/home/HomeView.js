@@ -112,6 +112,7 @@ define(['views/home/DishView',
                 order.dishId = dish.id;
                 order.count = dish.get('count');
                 order.price = self.inventoryMap[dish.id].price;
+                order.code = dish.get('dishCode');
                 order.name = dish.get('dishName');
                 order.inventoryId = self.inventoryMap[dish.id].inventoryId;
                 order.restaurant = self.inventoryMap[dish.id].restaurant;
@@ -158,7 +159,6 @@ define(['views/home/DishView',
             newEvent["click #" + dish.id +"-dimmerButton"] = 'onRequestClick';
             this.delegateEvents(_.extend(this.events, newEvent));
 
-
             var current = new Date();
             var startOrderTime = new Date();
             startOrderTime.setHours(11, 0, 0, 0);
@@ -178,11 +178,13 @@ define(['views/home/DishView',
                 } else {
                     $('#' + dish.id + '-dimmer').dimmer('hide');
                 }
-            } else {
+            } else if (Parse.User.current().get('permission') != LB_ADMIN) {
                 $('#' + dish.id + '-plusButton').prop('disabled', true);
                 $('#' + dish.id + '-minusButton').prop('disabled', true);
             }
+
 		},
+
 
         onRequestClick: function(ev) {
             var dishId = $(ev.currentTarget).data('id');

@@ -123,6 +123,7 @@ define([
         checkInventory: function() {
             var dishCountMap = {};
             var inventoryIds = [];
+
             _.each(this.model.orders, function (dish) {
                 inventoryIds.push(dish.inventoryId);
                 dishCountMap[dish.inventoryId] = dish.count;
@@ -139,9 +140,7 @@ define([
                         exceedInventory = true;
                     }
                 });
-                return Parse.Promise.when(exceedInventory);
 
-            }).then(function(exceedInventory){
                 if (exceedInventory) {
                     $('#inventoryExceededAlert').modal({
                         closable: false,
@@ -269,6 +268,13 @@ define([
         },
         
         charge: function(params){
+            var orderSummaryArray = [];
+
+            _.each(this.model.orders, function (order) {
+                var summary = order.code + "-" + order.name + "-" + order.count;
+                orderSummaryArray.push(summary);
+            });
+
             var self = this;
         	Parse.Cloud.run('pay', params, {
                 success: function () {
@@ -296,6 +302,7 @@ define([
                     paymentDetails.set('pickUpLocation', pickUpLocation);
                     paymentDetails.set('totalPrice', params.totalCharge);
                     paymentDetails.set('paymentCheck', true);
+                    paymentDetails.set('orderSummary', orderSummaryArray);
                     paymentDetails.save().then(function(paymentDetails){
                         self.saveOrders(paymentDetails)
 
@@ -311,6 +318,7 @@ define([
 
         saveOrders: function(paymentDetails) {
             var self = this;
+            var ordersToSave = [];
             _.each(this.model.orders, function (order) {
                 var dish = new DishModel();
                 dish.id = order.dishId;
@@ -323,15 +331,15 @@ define([
                 orderDetails.set('subTotalPrice', order.price * order.count);
                 orderDetails.set('restaurantId', order.restaurant);
                 orderDetails.set('pickUpLocation', paymentDetails.get('pickUpLocation'));
-                orderDetails.save(null, {
-                        success: function() {
-                            self.emailService(paymentDetails);
-                        },
-                        error: function(err) {
-                            console.log("Failed to save orders. Reason: " + err.message);
-                        }
-                    }
-                );
+                ordersToSave.push(orderDetails);
+            });
+
+            Parse.Object.saveAll(ordersToSave).then(function(){
+                self.emailService(paymentDetails);
+
+            }, function(err){
+                console.log("Failed to save orders. Reason: " + err.message);
+
             });
         },
 
