@@ -15,7 +15,9 @@ define([
   'text!templates/order/orderTemplate.html',
   'libs/semantic/checkbox.min',
   'libs/semantic/form.min'
-], function (DishModel, DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel, GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, Stripe, statsTemplate, orderTemplate) {
+], function (DishModel, DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel,
+             GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, Stripe, statsTemplate,
+             orderTemplate) {
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -41,124 +43,67 @@ define([
         render: function () {
         	var that = this;
         	var query = new Parse.Query(CardModel);
-
             var grid = Parse.User.current().get('gridId');
+
             if (grid === undefined) {
-                var gridQuery = new Parse.Query(GridModel);
-                gridQuery.get(UMCP_GRID_ID, {
-                    success: function(defaultGrid) {
-                        var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
-                        pickUpLocationQuery.equalTo('gridId', defaultGrid);
-                        pickUpLocationQuery.find({
-                            success: function(pickUpLocations) {
-                                var pickUpLocationMap = {};
-                                for(var i = 0; i < pickUpLocations.length; i++) {
-                                    pickUpLocationMap[pickUpLocations[i].toJSON().objectId] = pickUpLocations[i].toJSON();
-                                }
-                                query.equalTo("createdBy", Parse.User.current());
-                                query.find({
-                                    success: function(cards) {
-                                        $(that.el).html(that.template({ cards: cards, pickUpLocations: pickUpLocations }));
-                                        that.$('.ui.checkbox').checkbox();
-                                        that.$('select.dropdown').dropdown();
-                                        that.$('.ui.form').form({
-                                            address: {
-                                                identifier: 'address',
-                                                rules: [{
-                                                    type: 'empty',
-                                                    prompt: 'Please select a location'
-                                                }]
-                                            },
-                                            terms: {
-                                                identifier: 'terms',
-                                                rules: [{
-                                                    type: 'checked',
-                                                    prompt: 'You must agree to the terms and conditions'
-                                                }]
-                                            }
-                                        }, {
-                                            on: 'blur',
-                                            inline: 'true'
-                                        });
-
-                                        that.$("#addressdetails").change(function() {
-                                            if (pickUpLocationMap[$("#addressdetails").val()]['youtubeLink']) {
-                                                that.$("#youtubeDiv").show();
-                                                that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
-                                            }
-                                        });
-
-                                        //Localization
-                                        that.$("#termsInput").prop('checked', true);
-                                        that.$("#addressdetails").dropdown();
-                                        that.$("#cardNumber").attr("placeholder", "Your Card Number");
-                                    }
-                                });
-                            },
-                            error: function(error) {
-                                console.log(error.message);
-                            }
-                        });
-                    },
-                    error: function(object, error) {
-                        console.log(error.message);
-                    }
-                });
-            } else {
-                var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
-                pickUpLocationQuery.equalTo('gridId', grid);
-                pickUpLocationQuery.addAscending('address');
-                pickUpLocationQuery.find({
-                    success: function(pickUpLocations) {
-                        var pickUpLocationMap = {};
-                        for(var i = 0; i < pickUpLocations.length; i++) {
-                            pickUpLocationMap[pickUpLocations[i].toJSON().objectId] = pickUpLocations[i].toJSON();
-                        }
-                        query.equalTo("createdBy", Parse.User.current());
-                        query.find({
-                            success: function(cards) {
-                                $(that.el).html(that.template({ cards: cards, pickUpLocations: pickUpLocations }));
-                                that.$('.ui.checkbox').checkbox();
-                                that.$('select.dropdown').dropdown();
-                                that.$('.ui.form').form({
-                                    address: {
-                                        identifier: 'address',
-                                        rules: [{
-                                            type: 'empty',
-                                            prompt: 'Please select a location'
-                                        }]
-                                    },
-                                    terms: {
-                                        identifier: 'terms',
-                                        rules: [{
-                                            type: 'checked',
-                                            prompt: 'You must agree to the terms and conditions'
-                                        }]
-                                    }
-                                }, {
-                                    on: 'blur',
-                                    inline: 'true'
-                                });
-
-                                that.$("#addressdetails").change(function() {
-                                    if(pickUpLocationMap[$("#addressdetails").val()]['youtubeLink']) {
-                                        that.$("#youtubeDiv").show();
-                                        that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
-                                    } else {
-                                        that.$("#youtubeDiv").hide();
-                                    }
-                                });
-
-                                that.$("#addressdetails").dropdown();
-                                that.$("#cardNumber").attr("placeholder", "Your Card Number");
-                            }
-                        });
-                    },
-                    error: function(error) {
-                        console.log(error.message);
-                    }
-                });
+                grid = new GridModel();
+                grid.id = UMCP_GRID_ID;
             }
+
+            var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+            pickUpLocationQuery.equalTo('gridId', grid);
+            pickUpLocationQuery.addAscending('address');
+            pickUpLocationQuery.find().then(function(pickUpLocations){
+                var pickUpLocationMap = {};
+                for(var i = 0; i < pickUpLocations.length; i++) {
+                    pickUpLocationMap[pickUpLocations[i].toJSON().objectId] = pickUpLocations[i].toJSON();
+                }
+                query.equalTo("createdBy", Parse.User.current());
+                query.find();
+                return Parse.Promise.when(query.find(), pickUpLocations, pickUpLocationMap);
+
+            }).then(function(cards, pickUpLocations, pickUpLocationMap){
+                $(that.el).html(that.template({ cards: cards, pickUpLocations: pickUpLocations }));
+                that.$('.ui.checkbox').checkbox();
+                that.$('select.dropdown').dropdown();
+                that.$('.ui.form').form({
+                    address: {
+                        identifier: 'address',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please select a location'
+                        }]
+                    },
+                    terms: {
+                        identifier: 'terms',
+                        rules: [{
+                            type: 'checked',
+                            prompt: 'You must agree to the terms and conditions'
+                        }]
+                    }
+                }, {
+                    on: 'blur',
+                    inline: 'true'
+                });
+
+                that.$("#addressdetails").change(function() {
+                    if(pickUpLocationMap[$("#addressdetails").val()]['youtubeLink']) {
+                        that.$("#youtubeDiv").show();
+                        that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
+                    } else {
+                        that.$("#youtubeDiv").hide();
+                    }
+                });
+
+                //Localization
+                that.$("#termsInput").prop('checked', true);
+                that.$("#addressdetails").dropdown();
+                that.$("#cardNumber").attr("placeholder", "Your Card Number");
+
+            }, function(error){
+                showMessage("Oops!", "Something is wrong! Reason: " + error.message);
+
+            });
 
             return this;
         },
@@ -187,29 +132,51 @@ define([
             inventoryQuery.containedIn("objectId", inventoryIds);
             var self = this;
             var exceedInventory = false;
-            inventoryQuery.find({
-                success: function(inventories) {
-                    _.each(inventories, function(inventory) {
-                        var newQantity = inventory.get('currentQuantity') - dishCountMap[inventory.id];
-                        if (newQantity < 0) {
-                            exceedInventory = true;
-                        }
-                    });
-
-                    if (exceedInventory) {
-                        $('#inventoryExceededAlert').modal({
-                            closable: false,
-                            onApprove: function () {
-                                window.location.href='#home';
-                            }
-                        }).modal('show');
-                    } else {
-                        self.createToken();
+            inventoryQuery.find().then(function(inventories){
+                _.each(inventories, function(inventory) {
+                    var newQantity = inventory.get('currentQuantity') - dishCountMap[inventory.id];
+                    if (newQantity < 0) {
+                        exceedInventory = true;
                     }
-                },
-                error: function(err) {
-                    console.log(err.message);
+                });
+                return Parse.Promise.when(exceedInventory);
+
+            }).then(function(exceedInventory){
+                if (exceedInventory) {
+                    $('#inventoryExceededAlert').modal({
+                        closable: false,
+                        onApprove: function () {
+                            window.location.href='#home';
+                        }
+                    }).modal('show');
+                } else {
+                    self.updateInventory();
                 }
+            });
+        },
+
+        updateInventory: function() {
+            var self = this;
+            var inventoryIds = [];
+            var dishCount = {};
+            _.each(this.model.orders, function (dish) {
+                inventoryIds.push(dish.inventoryId);
+                dishCount[dish.inventoryId] = dish.count;
+            });
+
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            inventoryQuery.containedIn("objectId", inventoryIds);
+            inventoryQuery.find().then(function(inventories){
+                _.each(inventories, function(inventory){
+                    var newQantity = inventory.get('currentQuantity') - dishCount[inventory.id];
+                    inventory.set('currentQuantity', newQantity);
+                });
+
+                return Parse.Object.saveAll(inventories);
+
+            }).then(function(inventories){
+                self.createToken();
+
             });
         },
 
@@ -276,7 +243,27 @@ define([
             $('#failPaymentDialog').modal({
                 closable: false,
                 onApprove: function () {
-                    //Do nothing
+                    var inventoryIds = [];
+                    var dishCount = {};
+                    _.each(this.model.orders, function (dish) {
+                        inventoryIds.push(dish.inventoryId);
+                        dishCount[dish.inventoryId] = dish.count;
+                    });
+
+                    var inventoryQuery = new Parse.Query(InventoryModel);
+                    inventoryQuery.containedIn("objectId", inventoryIds);
+                    inventoryQuery.find().then(function(inventories){
+                        _.each(inventories, function(inventory){
+                            var newQantity = inventory.get('currentQuantity') + dishCount[inventory.id];
+                            inventory.set('currentQuantity', newQantity);
+                        });
+
+                        return Parse.Object.saveAll(inventories);
+
+                    }).then(function(inventories){
+                        //Do nothing
+
+                    });
                 }
             }).modal('show');
         },
@@ -292,7 +279,6 @@ define([
                     var email = user.get('email');
                     var phoneNumber = user.get('telnum');
                     var pickUpLocationId = $('#addressdetails option:selected').val();
-
 
                     paymentDetails.set('telnum', phoneNumber);
                     paymentDetails.set('fname', fname);
@@ -310,25 +296,9 @@ define([
                     paymentDetails.set('pickUpLocation', pickUpLocation);
                     paymentDetails.set('totalPrice', params.totalCharge);
                     paymentDetails.set('paymentCheck', true);
-                    paymentDetails.save(null, {
-                        success: function (paymentDetails) {
-                            self.updateInventory(paymentDetails, params.coupon); // Execute a series of actions
+                    paymentDetails.save().then(function(paymentDetails){
+                        self.saveOrders(paymentDetails)
 
-                            var view1 = new TextView({
-                                model: paymentDetails
-                            });
-                            var view2 = new ConfirmView({
-                                model: paymentDetails
-                            });
-                            $("#paymentForm").remove();
-                            $("#page").prepend(view1.render().el);
-                            $("#page").append(view2.render().el);
-                            $('#orderBtn').prop('disabled', false);
-                            $('#orderBtn').removeClass('grey').addClass('red');
-                        },
-                        error: function (payment, error) {
-                            showMessage("Fail", "Save payment record failed! Error: " + error.code + " " + error.message);
-                        }
                     });
                 },
                 error: function (error) {
@@ -339,32 +309,7 @@ define([
             });
         },
 
-        updateInventory: function(paymentDetails, coupon) {
-            var self = this;
-            _.each(this.model.orders, function (dish) {
-                var inventoryQuery = new Parse.Query(InventoryModel);
-                inventoryQuery.get(dish.inventoryId, {
-                    success: function(inventory) {
-                        var newQantity = inventory.get('currentQuantity') - dish.count;
-                        inventory.set('currentQuantity', newQantity);
-                        inventory.save(null, {
-                            success: function() {
-                                console.log("Update current quantity successfully!");
-                                self.saveOrders(paymentDetails, coupon);
-                            },
-                            error: function(err) {
-                                console.log("Failed to update dish current quantity. Reason: " + err.message);
-                            }
-                        })
-                    },
-                    error: function(err) {
-                        console.log(err.message);
-                    }
-                });
-            });
-        },
-
-        saveOrders: function(paymentDetails, coupon) {
+        saveOrders: function(paymentDetails) {
             var self = this;
             _.each(this.model.orders, function (order) {
                 var dish = new DishModel();
@@ -380,7 +325,7 @@ define([
                 orderDetails.set('pickUpLocation', paymentDetails.get('pickUpLocation'));
                 orderDetails.save(null, {
                         success: function() {
-                            self.chargeCreditBalance(coupon, paymentDetails.id);
+                            self.emailService(paymentDetails);
                         },
                         error: function(err) {
                             console.log("Failed to save orders. Reason: " + err.message);
@@ -390,21 +335,23 @@ define([
             });
         },
 
-        chargeCreditBalance: function(coupon, paymentDetailId){
-            var currentUser = Parse.User.current();
-            var currentCredit = parseFloat((currentUser.get('creditBalance') - coupon).toFixed(2));
-            currentUser.set('creditBalance', currentCredit);
-            currentUser.save();
-            this.emailService(paymentDetailId);
-        },
-
-        emailService: function (paymentId) {
+        emailService: function (paymentDetails) {
             Parse.Cloud.run('email', {
-                paymentId: paymentId
+                paymentId: paymentDetails.id
 
             }, {
                 success: function () {
-                    console.log("Confirmation email has been sent!");
+                    var view1 = new TextView({
+                        model: paymentDetails
+                    });
+                    var view2 = new ConfirmView({
+                        model: paymentDetails
+                    });
+                    $("#paymentForm").remove();
+                    $("#page").prepend(view1.render().el);
+                    $("#page").append(view2.render().el);
+                    $('#orderBtn').prop('disabled', false);
+                    $('#orderBtn').removeClass('grey').addClass('red');
                 },
 
                 error: function (error) {
