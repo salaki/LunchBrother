@@ -84,6 +84,7 @@ define([
 
             //Display the order between a duration
             var lowerDate = new Date();
+            lowerDate.setDate(1);
             lowerDate.setHours(10, 0, 0, 0);
             var upperDate = new Date();
             upperDate.setHours(14, 0, 0, 0);
