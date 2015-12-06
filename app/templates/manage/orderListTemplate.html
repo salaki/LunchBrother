@@ -1,4 +1,5 @@
 <% _.each(payments, function(payment) { %>
+<!--
 <div id="div-<%= payment.orderNumber %>" class="order-detail ui padded grid">
     <div class="seven wide white column">
         <h4 class="ui header"><%= payment.lastName %>, <%= payment.firstName %> (<%= payment.telNum %>)</h4>
@@ -16,4 +17,23 @@
     </a>
 </div>
 <div id="divider-<%= payment.orderNumber %>" class="ui hidden divider"></div>
+-->
+      <tr id="div-<%= payment.orderNumber %>">
+          <td>
+              <div class="order-name">
+                  <%= payment.lastName %>, <%= payment.firstName %>
+              </div>
+              <div class="gray order-tel">
+                  <%= payment.telNum %>
+              </div>
+          </td>
+          <td><%= payment.orderSummary %></td>
+          <td><%= payment.orderNumber %></td>
+          <td>$<%= payment.totalPrice %></td>
+          <td>
+              <button id="checkButton-<%= payment.orderNumber %>" class="ui fluid icon button" data-order="<%= payment.orderNumber %>" data-lname="<%= payment.lastName %>" data-fname="<%= payment.firstName %>" data-price="<%= payment.totalPrice %>">
+                  <i class="check icon"></i>
+              </button>
+          </td>
+      </tr>
 <% })%>

@@ -561,6 +561,17 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   padding-left: 0;
 }
 
+/* line 37, ../sass/partials/_manage.scss */
+.order-name {
+  font-weight: 700;
+}
+
+/* line 41, ../sass/partials/_manage.scss */
+.order-tel {
+  font-size: 0.8rem;
+  padding-top: 5px;
+}
+
 /* line 1, ../sass/partials/_video.scss */
 #youtubeDiv {
   height: 300px;

@@ -11,7 +11,8 @@ var config = {
         stripe: 'libs/stripe/stripe.v2',
         templates: '../templates',
         semantic: 'libs/semantic_2.0/semantic.min',
-        facebook: '//connect.facebook.net/en_US/sdk'
+        facebook: '//connect.facebook.net/en_US/sdk',
+        tablesort: 'libs/jquery-tablesort/jquery.tablesort'
     },
     shim: {
         underscore: {
@@ -33,7 +34,7 @@ var config = {
 		"libs/semantic_2.0/gsidebar.min": ["jquery", "semantic"],
 	    "facebook": {
 	    	exports: 'FB'
-	    }
+	    },
     }
 };
 
