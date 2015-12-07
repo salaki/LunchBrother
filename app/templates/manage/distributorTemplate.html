@@ -38,10 +38,19 @@
 
 
     <div class="sixteen wide column">
-        <div class="ui divided list">
-            <div id="orderList">Loading....</div>
-            <div class="ui divider"></div>
-        </div>
+        <table id="orders-table" class="ui compact striped sortable single line table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Order detail</th>
+                    <th>Order #</th>
+                    <th colspan="2">Total</th>
+                </tr>
+            </thead>
+            <tbody id="orderList">
+            </tbody>
+        </table>
+        <div class="ui divider"></div>
     </div>
     <div class="sixteen wide column">
         <button id="arriveBtn" class="center aligned ui button"><i class="volume down icon"></i>Arrived!</button>
@@ -50,7 +59,7 @@
 
 <div id="confirmDeliveryPayment" class="ui small test modal">
     <div class="header" style="background-color: #ffffff" id="manageConfirmTitle">
-    Please make sure this order has been paid
+        Please make sure this order has been paid
     </div>
     <div class="content">
         <table width="100%">
@@ -79,3 +88,6 @@
     </div>
 </div>
 
+<script>
+$('#orders-table').tablesort();
+</script>

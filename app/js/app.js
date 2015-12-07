@@ -11,7 +11,8 @@ var config = {
         stripe: 'libs/stripe/stripe.v2',
         templates: '../templates',
         semantic: 'libs/semantic_2.0/semantic.min',
-        facebook: '//connect.facebook.net/en_US/sdk'
+        facebook: '//connect.facebook.net/en_US/sdk',
+        tablesort: 'libs/jquery-tablesort/jquery.tablesort'
     },
     shim: {
         underscore: {
@@ -33,7 +34,7 @@ var config = {
 		"libs/semantic_2.0/gsidebar.min": ["jquery", "semantic"],
 	    "facebook": {
 	    	exports: 'FB'
-	    }
+	    },
     }
 };
 
@@ -41,10 +42,11 @@ var config = {
 var GENERAL_USER = 1, DRIVER = 2, DISTRIBUTOR = 3, LOCAL_MANAGER = 4, LB_ADMIN = 5;
 
 //UMCP grid id
-//var UMCP_GRID_ID = 'nmbyDzTp7m'; //dev
-var UMCP_GRID_ID = 'GPOeekfiTI'; //prod
+var UMCP_GRID_ID = 'nmbyDzTp7m'; //dev
+//var UMCP_GRID_ID = 'GPOeekfiTI'; //prod
 
-var STRIPE_KEY = "pk_live_YzLQL6HfUiVf8XAxGxWv5AkH";
+var STRIPE_KEY = "pk_test_pb95pxk797ZxEFRk55wswMRk"; //dev
+//var STRIPE_KEY = "pk_live_YzLQL6HfUiVf8XAxGxWv5AkH"; //prod
 
 require.config(config);
 
