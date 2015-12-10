@@ -42,11 +42,11 @@ var config = {
 var GENERAL_USER = 1, DRIVER = 2, DISTRIBUTOR = 3, LOCAL_MANAGER = 4, LB_ADMIN = 5;
 
 //UMCP grid id
-var UMCP_GRID_ID = 'nmbyDzTp7m'; //dev
-//var UMCP_GRID_ID = 'GPOeekfiTI'; //prod
+//var UMCP_GRID_ID = 'nmbyDzTp7m'; //dev
+var UMCP_GRID_ID = 'GPOeekfiTI'; //prod
 
-var STRIPE_KEY = "pk_test_pb95pxk797ZxEFRk55wswMRk"; //dev
-//var STRIPE_KEY = "pk_live_YzLQL6HfUiVf8XAxGxWv5AkH"; //prod
+//var STRIPE_KEY = "pk_test_pb95pxk797ZxEFRk55wswMRk"; //dev
+var STRIPE_KEY = "pk_live_YzLQL6HfUiVf8XAxGxWv5AkH"; //prod
 
 require.config(config);
 
