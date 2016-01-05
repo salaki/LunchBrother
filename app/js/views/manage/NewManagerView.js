@@ -135,12 +135,12 @@ define([
                       gridId: gridId
                   }, {
                       success: function (success) {
-                          showMessage("Success", "Save manager successfully!", function(){
+                          showMessage("Success", "Update manager successfully!", function(){
                               window.location.href = "#managerList";
                           });
                       },
                       error: function (error) {
-                          showMessage("Error", "Save manager failed! Reason: " + error.message);
+                          showMessage("Error", "Update manager failed! Reason: " + error.message);
                       }
                   });
               } else {
@@ -165,12 +165,13 @@ define([
 
                   manager.save(null, {
                       success: function (manager) {
-                          console.log("Save manager successfully!");
-                          window.location.href = "#managerList";
+                          showMessage("Success", "Save new manager successfully!", function() {
+                              window.location.href = "#managerList";
+                          });
                           //TODO email verification
                       },
                       error: function (error) {
-                          console.log("Save manager failed! Reason: " + error.message);
+                          showMessage("Error", "Save new manager failed! Reason: " + error.message);
                       }
                   });
               }
