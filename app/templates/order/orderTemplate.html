@@ -18,7 +18,7 @@
         <iframe id="frame" src=""></iframe>
     </div>
     
-    <button id="payCashBtn" class="ui orange animated button">
+    <button id="payCardBtn" class="ui orange animated button">
         <div class="visible content">
             Credit/Debit Card
         </div>
@@ -36,7 +36,7 @@
     </button>
 
     <div class="ui divider"></div>
-    <div id="cardInfo" class="ui segment hidden">
+    <div id="cardInfo" class="ui segment hide">
         <% if(cards.length > 0){ %>
         <div id="cardselector" class="grouped fields">
 
@@ -135,7 +135,7 @@
             </div>
         </div>
     </div>
-    <button id="orderBtn" type="submit" class="center aligned ui red button">Place Order</button>
+    <button id="orderBtn" type="submit" class="center aligned ui red button-lg hide">Place Order</button>
     <span class="payment-errors"></span>
 </form>
 

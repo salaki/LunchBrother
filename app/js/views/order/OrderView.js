@@ -32,7 +32,9 @@ define([
 
         events: {
             'submit #paymentForm': 'orderSubmit',
-            'click #newCard':'toggleNewCardForm'
+            'click #newCard':'toggleNewCardForm',
+            'click #payCardBtn' : 'showCardInfo',
+            'click #payCashBtn' : 'hideCardInfo'
         },
 
         initialize: function () {
@@ -118,6 +120,16 @@ define([
         orderSubmit: function (e) {
             e.preventDefault();
             this.checkInventory();
+        },
+
+        showCardInfo: function(e) {
+            $("#cardInfo").removeClass("hide");
+            $("#orderBtn").removeClass("hide");  
+        },
+        
+        hideCardInfo: function(e) {
+            $("#cardInfo").addClass("hide");
+            $("#orderBtn").addClass("hide");  
         },
 
         checkInventory: function() {
