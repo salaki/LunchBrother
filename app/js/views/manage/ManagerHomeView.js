@@ -3,6 +3,7 @@ define([
     'models/Restaurant',
     'models/PickUpLocation',
     'models/InventoryModel',
+    'models/Employee',
     'models/RegistrationCodeModel',
     'models/BankAccount',
     'models/Transfer',
@@ -11,7 +12,7 @@ define([
     'text!templates/manage/menuListTemplate.html',
     'text!templates/manage/salesTableBodyTemplate.html',
     'text!templates/manage/creditCardSectionTemplate.html'
-], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel,
+], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, EmployeeModel,
             RegistrationCodeModel, BankAccountModel, TransferModel, CardModel,
             managerHomeTemplate, menuListTemplate, salesTableBodyTemplate,
             creditCardSectionTemplate) {
@@ -81,10 +82,25 @@ define([
 
         inventoryIds: [],
 
+        pickUpLocations: [],
+
         initialize: function() {
             _.bindAll(this, 'render');
             this.nextPaymentCalculation();
             var currentUser = Parse.User.current();
+            var self = this;
+            var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+            pickUpLocationQuery.equalTo("gridId", currentUser.get("gridId"));
+            pickUpLocationQuery.find({
+                success: function(pickUpLocations) {
+                    _.each(pickUpLocations, function(pickUpLocation){
+                        self.pickUpLocations.push(pickUpLocation.get("address"));
+                    });
+                },
+                error: function(error) {
+                    console.log("Error in querying pick up locations. Reason: " + error.message);
+                }
+            });
         },
 
         render: function() {
@@ -99,6 +115,7 @@ define([
 
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
             pickUpLocationQuery.equalTo("gridId", chefGrid);
+            pickUpLocationQuery.equalTo("manager", Parse.User.current());
             pickUpLocationQuery.include("distributor");
             pickUpLocationQuery.find({
                 success:function(locations) {
@@ -146,20 +163,19 @@ define([
 
         queryWorkers: function(locations, firstWeek, secondWeek, thirdWeek) {
             var self = this;
-            var userQuery = new Parse.Query(Parse.User);
-            userQuery.greaterThan("permission", 1);
-            userQuery.lessThan("permission", 4);
-            userQuery.equalTo("gridId", Parse.User.current().get('gridId'));
-            userQuery.find({
-                success: function(workers) {
+            var employeeQuery = new Parse.Query(EmployeeModel);
+            employeeQuery.equalTo("manager", Parse.User.current());
+            employeeQuery.include("worker");
+            employeeQuery.find({
+                success: function(employees) {
                     var distributors = [];
                     var newEvent2 = {};
 
-                    _.each(workers, function(worker) {
-                        newEvent2["click #workerEditButton-" + worker.id] = 'onEditOrAddPersonClick';
-                        newEvent2["click #workerDeleteButton-" + worker.id] = 'onDeletePersonClick';
-                        if (worker.get('permission') === DISTRIBUTOR) {
-                            distributors.push(worker);
+                    _.each(employees, function(employee) {
+                        newEvent2["click #employeeEditButton-" + employee.id] = 'onEditOrAddPersonClick';
+                        newEvent2["click #employeeDeleteButton-" + employee.id] = 'onDeletePersonClick';
+                        if (employee.get("worker").get('permission') === DISTRIBUTOR) {
+                            distributors.push(employee.get("worker"));
                         }
                     });
                     self.delegateEvents(_.extend(self.events, newEvent2));
@@ -168,7 +184,7 @@ define([
                     if (bankAccount) {
                         bankAccount.fetch({
                             success: function(bankAccount) {
-                                self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers, bankAccount: bankAccount}));
+                                self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], employees: employees, bankAccount: bankAccount}));
                                 self.menuSelectionAndSalesData();
                                 self.cardCreditSection();
                             }
@@ -176,7 +192,7 @@ define([
 
                     } else {
                         bankAccount = new BankAccountModel();
-                        self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], workers: workers, bankAccount: bankAccount}));
+                        self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], employees: employees, bankAccount: bankAccount}));
                         self.menuSelectionAndSalesData();
                         self.cardCreditSection();
                     }
@@ -544,6 +560,15 @@ define([
             var youtubeLink = $(ev.currentTarget).data('youtube');
             var distributorId = $(ev.currentTarget).data('distributor');
 
+            var pickUpLocationsString = "";
+
+            _.each(this.pickUpLocations, function(pickUpLocation){
+                pickUpLocationsString += "\"" + pickUpLocation + "\"" + ", ";
+            });
+
+            if (pickUpLocationsString) {
+                $('#dpWarningLine').text("Cannot use " + pickUpLocationsString.substring(0, pickUpLocationsString.length-2)).css({ 'font-size': 12 });
+            }
 
             $("#distributorSelector").val(distributorId);
             $("#dp_location").val(address);
@@ -575,14 +600,14 @@ define([
 
         onDeletePersonClick: function(ev) {
             var self = this;
-            var userId = $(ev.currentTarget).data('id');
+            var employeeId = $(ev.currentTarget).data('id');
             $('#deletePersonDialog').modal({
                 closable: false,
                 onDeny: function () {
                     location.reload();
                 },
                 onApprove: function () {
-                    self.deletePerson(userId);
+                    self.deleteEmployee(employeeId);
                 }
             }).modal('show');
         },
@@ -596,7 +621,8 @@ define([
         },
 
         saveDP: function(id, address, youtubeLink, distributorId) {
-            var chefGrid = Parse.User.current().get('gridId');
+            var currentManager = Parse.User.current();
+            var chefGrid = currentManager.get('gridId');
             //default chef's grid to University of Maryland College Park
             if (chefGrid === undefined){
                 chefGrid = new GridModel();
@@ -606,6 +632,7 @@ define([
             if (address.trim() !== "") {
                 var dp = new PickUpLocationModel();
                 dp.id = id;
+                dp.set("manager", currentManager);
                 dp.set("gridId", chefGrid);
                 dp.set("address", address);
                 if (distributorId !== "") {
@@ -657,8 +684,19 @@ define([
                 person.set("permission", Number(title));
                 person.save(null, {
                     success: function(person) {
-                        showMessage("Success", "Save worker successfully!", function() {
-                            location.reload();
+                        // Save Employee
+                        var employee = new EmployeeModel();
+                        employee.set("worker", person);
+                        employee.set("manager", Parse.User.current());
+                        employee.save(null, {
+                            success: function(employee) {
+                                showMessage("Success", "Save employee successfully!", function() {
+                                    location.reload();
+                                });
+                            },
+                            error: function(error) {
+                                showMessage("Error", "Save employee failed! Reason: " + error.message);
+                            }
                         });
                     },
                     error: function(error) {
@@ -690,17 +728,17 @@ define([
             });
         },
 
-        deletePerson: function(id) {
-            Parse.Cloud.run('deleteUser', {
-                userId: id
-            }, {
-                success: function (success) {
-                    showMessage("Success", "Delete worker successfully!", function() {
+        deleteEmployee: function(id) {
+            var employee = new EmployeeModel();
+            employee.id = id;
+            employee.destroy({
+                success: function(success) {
+                    showMessage("Success", "Delete employee successfully!", function() {
                         location.reload();
                     });
                 },
-                error: function (error) {
-                    showMessage("Error", "Delete worker failed! Reason: " + error.message);
+                error: function(error) {
+                    showMessage("Error", "Delete employee failed! Reason: " + error.message);
                 }
             });
         },

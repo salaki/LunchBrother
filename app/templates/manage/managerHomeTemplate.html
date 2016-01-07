@@ -52,23 +52,23 @@ Add a new location
 </h4>
 <div class="ui attached segment">
 <div class="ui middle very relaxed aligned list">
-  <% _.each(workers, function(worker) { %>
+  <% _.each(employees, function(employee) { %>
   <div class="item">
     <div class="right floated content">
-      <button class="ui circular orange small icon button" id="workerEditButton-<%= worker.id %>"
-        data-id="<%= worker.id %>"
-        data-first-name="<%= worker.get('firstName') %>"
-        data-last-name="<%= worker.get('lastName') %>"
-        data-email="<%= worker.get('email') %>"
-        data-phone-number="<%= worker.get('telnum') %>"
-        data-password="<%= worker.get('password') %>"
-        data-title="<%= worker.get('permission') %>"><i class="icon edit"></i></button>
-      <button class="ui circular small icon button" id="workerDeleteButton-<%= worker.id %>" data-id="<%= worker.id %>"><i class="remove icon"></i></button>
+      <button class="ui circular orange small icon button" id="employeeEditButton-<%= employee.id %>"
+        data-id="<%= employee.id %>"
+        data-first-name="<%= employee.get('worker').get('firstName') %>"
+        data-last-name="<%= employee.get('worker').get('lastName') %>"
+        data-email="<%= employee.get('worker').get('email') %>"
+        data-phone-number="<%= employee.get('worker').get('telnum') %>"
+        data-password="<%= employee.get('worker').get('password') %>"
+        data-title="<%= employee.get('worker').get('permission') %>"><i class="icon edit"></i></button>
+      <button class="ui circular small icon button" id="employeeDeleteButton-<%= employee.id %>" data-id="<%= employee.id %>"><i class="remove icon"></i></button>
     </div>
     <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
     <div class="content">
-      <div class="header"><%= worker.get('firstName') %></div>
-      <% if(worker.get('permission') === DRIVER) { %>
+      <div class="header"><%= employee.get('worker').get('firstName') %></div>
+      <% if(employee.get('worker').get('permission') === DRIVER) { %>
       <div class="description desc-line">Driver</div>
       <% } else { %>
       <div class="description desc-line">Distributor</div>
@@ -110,6 +110,7 @@ Add a new person
   <form action="" method="POST" id="dpForm" class="ui form">
     <div class="field">
       <div id="basicDPInfo">
+        <span id="dpWarningLine" class="red"></span>
         <div id="dpinfo" class="two fields">
           <div class="ui fluid field">
             <input id="dp_location" class="ui input location" placeholder="Name of Location" type="text" name="dp_location" value="">
@@ -168,7 +169,7 @@ Add a new person
   <label id="deletePersonLabel">Are you sure?</label>
 </div>
 <div class="content">
-  Do you really want to remove this person?
+  Do you really want to remove this employee?
 </div>
 <div class="actions">
   <div class="ui basic cancel button">
