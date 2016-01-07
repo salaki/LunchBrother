@@ -28,15 +28,14 @@ define(['views/home/DishView',
 		},
 
         inventoryMap : {},
-
 		initialize : function() {
 			_.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
 			this.$el.html(_.template(homeTemplate)());
-
+                
             this.dishes = new DishCollection;
             var self = this;
             var inventoryQuery = new Parse.Query(InventoryModel);
-
+            
             //Display the inventory dishes
             var upperDate = new Date();
             upperDate.setHours(13, 0, 0, 0);
@@ -68,6 +67,7 @@ define(['views/home/DishView',
                     showMessage("Error", "Find inventory failed! Reason: " + error.message);
                 }
             });
+            
 
             // Enable or disable checkout button based on current time
             this.disableOrEnableCheckOutBtn();
@@ -259,9 +259,9 @@ define(['views/home/DishView',
                 model : this.stats
             });
 
-            $("#dishTitle,#dishList,#paymentBtn,#orderMessage").remove();
+            $("#dishTitle,#dishList,#paymentBtn,#orderMessage,#payCashBtn").remove();
             $("#page").append(view.render().el);
-		}
+        }
 	});
 	return HomeView;
 });

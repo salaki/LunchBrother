@@ -1,9 +1,9 @@
 <h1 id="dishTitle" class="ui small center aligned header">Today's Special</h1>
 
 <div id="dishWrapper" class="ui grid">
-  <div id="dishList" class="doubling two column row dishes">
-    Loading...
-  </div>
+    <div id="dishList" class="doubling two column row dishes">
+        Loading...
+    </div>
 </div>
 <div id="orderStats" class="ui segment">
 </div>
@@ -11,7 +11,12 @@
 <p id="orderMessage" class="ui small message">
 We are early now! We guarantee your lunch will arrive before 12:00PM, please track your lunch and pick it up on your schedule. (no later than 1:15PM :P)
 </p>
-<button id="paymentBtn" class="center aligned ui red button">Check Out</button>
+
+    <button id="paymentBtn" class="ui red button-lg">
+        <div class="visible content">
+            Checkout
+        </div>
+    </button>
 <div id="inventoryExceededAlert" class="ui small test modal">
     <div class="header" style="background-color: #ffffff" id="inventoryAlertTitle">
         Oops!
@@ -31,7 +36,7 @@ We are early now! We guarantee your lunch will arrive before 12:00PM, please tra
 
 <!--ClickMeter.com page views tracking: Home Page -->
 <script type='text/javascript'>
-    var ClickMeter_pixel_url = '//pixel.watch/akdb';
+var ClickMeter_pixel_url = '//pixel.watch/akdb';
 </script>
 <script type='text/javascript' id='cmpixelscript' src='//s3.amazonaws.com/scripts-clickmeter-com/js/pixelNew.js'></script>
 <noscript>

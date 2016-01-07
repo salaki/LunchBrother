@@ -73,91 +73,20 @@ header {
 	float: left;
 }
 
-.ui.button.red {
+.ui.red.button-lg {
 	@extend %extend_1;
-		&:hover {
-			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
-			top: 1px;
-		}
-		&:active {
-			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 0 $color_btn_active;
-			top: 2px;
-    }
+	background-color: $color_red;
 }
 
-.ui.button.grey{
-		@extend %extend_2;
-		&:hover {
-			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
-			top: 1px;
-		}
-		&:active {
-			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 0 $color_btn_active;
-			top: 2px;
-		}
-
-}
-
-#loginBtn {
-		background-color:#f2711c;
-    color:white;
-    @extend %extend_2;
-		&:hover {
-			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
-			top: 1px;
-		}
-		&:active {
-			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 0 $color_btn_active;
-			top: 2px;
-		}
-
-    & a{
-      color:white;
-    }
-}
-#arriveBtn {
-	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-	box-shadow: 0 -0.3em 0 0 $color_btn_shadow inset;
-	padding: 1em 2em 1.35em;
-	width: 100%;
-	position: relative;
-	&.red {
+.ui.button-lg.grey{
 		@extend %extend_1;
-		&:hover {
-			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
-			top: 1px;
-		}
-		&:active {
-			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 0 $color_btn_active;
-			top: 2px;
-		}
-	}
+        background-color: $color_grey;
 }
-#fbLoginBtn {
-	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-	box-shadow: 0 -0.3em 0 0 $color_btn_shadow inset;
-	padding: 1em 2em 1.35em;
-	width: 100%;
-	position: relative;
-	&:hover {
-		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-		box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
-		top: 1px;
-	}
-	&:active {
-		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-		box-shadow: 0 0 $color_btn_active;
-		top: 2px;
-	}
+.ui.button-lg.orange{
+		@extend %extend_1;
+        background-color: $color_orange;
 }
+
 
 
 #loginBtnContent {
@@ -218,28 +147,7 @@ header {
 .order-detail {
 	border: 1px solid $black_15;
 }
-.send {
-	opacity: 1;
-	//Instead of the line below you could use @includetransition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
-	transition: opacity .25s ease-in-out;
-	line-height: 50px;
-	background: #E3151A !important;
-	height: 78px;
-	&:hover {
-		opacity: 0.8;
-	}
-	i {
-		color: $white;
-		margin: 0 auto;
-		width: 100%;
-	}
-}
-.red {
-	color: #E3151A;
-}
-.gray {
-	color: $color_grey;
-}
+
 #orderStats {
 	.column {
 		padding-top: 0;
@@ -363,45 +271,7 @@ header {
 .dishes .card {
 	width: 100%;
 }
-#paymentBtn.red {
-	@extend %extend_1;
-	&:hover {
-		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-		box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
-		top: 1px;
-	}
-	&:active {
-		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-		box-shadow: 0 0 $color_btn_active;
-		top: 2px;
-	}
-}
-#signUpBtn.red {
-	@extend %extend_1;
-	&:hover {
-		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-		box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
-		top: 1px;
-	}
-	&:active {
-		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-		box-shadow: 0 0 $color_btn_active;
-		top: 2px;
-	}
-}
-#sendemailBtn.red {
-	@extend %extend_1;
-	&:hover {
-		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-		box-shadow: 0 -0.25em 0 0 $color_btn_shadow inset;
-		top: 1px;
-	}
-	&:active {
-		//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-		box-shadow: 0 0 $color_btn_active;
-		top: 2px;
-	}
-}
+
 #resetBtn.red {
 	@extend %extend_1;
 	&:hover {

@@ -38,7 +38,7 @@ define([
         initialize: function () {
             _.bindAll(this, 'render', 'stripeResponseHandler', 'orderSubmit', 'toggleNewCardForm', 'charge');
             Stripe.setPublishableKey(STRIPE_KEY);
-       },
+        },
 
         render: function () {
         	var that = this;

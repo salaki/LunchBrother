@@ -17,9 +17,26 @@
     <div class = "video-container" id="youtubeDiv"  style="display: none" align="center">
         <iframe id="frame" src=""></iframe>
     </div>
+    
+    <button id="payCashBtn" class="ui orange animated button">
+        <div class="visible content">
+            Credit/Debit Card
+        </div>
+        <div class="hidden content">
+            <i class="payment icon"></i>
+        </div>
+    </button>
+    <button id="payCashBtn" class="ui orange animated button">
+        <div class="visible content">
+            Pay Cash
+        </div>
+        <div class="hidden content">
+            <i class="money icon"></i>
+        </div>
+    </button>
 
     <div class="ui divider"></div>
-    <div class="ui segment">
+    <div id="cardInfo" class="ui segment hidden">
         <% if(cards.length > 0){ %>
         <div id="cardselector" class="grouped fields">
 
