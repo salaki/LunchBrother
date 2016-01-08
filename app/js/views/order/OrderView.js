@@ -124,12 +124,18 @@ define([
 
         showCardInfo: function(e) {
             $("#cardInfo").removeClass("hide");
+            $("#cashInfo").addClass("hide");
             $("#orderBtn").removeClass("hide");  
+            $("#payCardBtn").addClass("orange");
+            $("#payCashBtn").removeClass("orange");
         },
         
         hideCardInfo: function(e) {
             $("#cardInfo").addClass("hide");
-            $("#orderBtn").addClass("hide");  
+            $("#cashInfo").removeClass("hide");
+            $("#payCardBtn").removeClass("orange");
+            $("#orderBtn").removeClass("hide");  
+            $("#payCashBtn").addClass("orange");
         },
 
         checkInventory: function() {

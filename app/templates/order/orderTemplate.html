@@ -18,24 +18,20 @@
         <iframe id="frame" src=""></iframe>
     </div>
     
-    <button id="payCardBtn" class="ui orange animated button">
-        <div class="visible content">
-            Credit/Debit Card
-        </div>
-        <div class="hidden content">
+    <button id="payCardBtn" class="ui toggle button">
             <i class="payment icon"></i>
-        </div>
+            Credit/Debit Card
     </button>
-    <button id="payCashBtn" class="ui orange animated button">
-        <div class="visible content">
-            Pay Cash
-        </div>
-        <div class="hidden content">
+    <button id="payCashBtn" class="ui toggle button">
             <i class="money icon"></i>
-        </div>
+            Pay Cash
     </button>
 
     <div class="ui divider"></div>
+    
+    <div id="cashInfo" class="ui segment hide">
+        Cash Payment Terms...
+    </div>
     <div id="cardInfo" class="ui segment hide">
         <% if(cards.length > 0){ %>
         <div id="cardselector" class="grouped fields">
