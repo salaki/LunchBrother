@@ -459,11 +459,10 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   font-size: 12px;
   color: #9b9b9b;
   display: inline-block;
-  width: 40px;
   color: #E3151E;
 }
 
-/* line 27, ../sass/partials/_home.scss */
+/* line 26, ../sass/partials/_home.scss */
 .summary-tax {
   font-size: 12px;
   color: #9b9b9b;
@@ -471,7 +470,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   width: 40px;
 }
 
-/* line 33, ../sass/partials/_home.scss */
+/* line 32, ../sass/partials/_home.scss */
 .summary-coupon {
   font-size: 12px;
   color: #9b9b9b;
@@ -480,51 +479,51 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   color: #5bbd72;
 }
 
-/* line 40, ../sass/partials/_home.scss */
+/* line 39, ../sass/partials/_home.scss */
 .summary-location {
   color: #454545;
   font-weight: bold;
   font-size: 11px;
 }
 
-/* line 45, ../sass/partials/_home.scss */
+/* line 44, ../sass/partials/_home.scss */
 .summary-status {
   color: #A3A3A3;
   font-size: 11px;
 }
 
-/* line 49, ../sass/partials/_home.scss */
+/* line 48, ../sass/partials/_home.scss */
 .summary-contact {
   color: #A3A3A3;
   font-size: 11px;
 }
 
-/* line 53, ../sass/partials/_home.scss */
+/* line 52, ../sass/partials/_home.scss */
 .summary-total-label {
   font-size: 12px;
 }
 
-/* line 56, ../sass/partials/_home.scss */
+/* line 55, ../sass/partials/_home.scss */
 .summary-tax-label {
   font-size: 12px;
 }
 
-/* line 59, ../sass/partials/_home.scss */
+/* line 58, ../sass/partials/_home.scss */
 .summary-coupon-label {
   font-size: 12px;
 }
 
-/* line 62, ../sass/partials/_home.scss */
+/* line 61, ../sass/partials/_home.scss */
 #timeAlert {
   display: none;
 }
 
-/* line 68, ../sass/partials/_home.scss */
+/* line 67, ../sass/partials/_home.scss */
 #orderBtn.red:hover {
   box-shadow: 0 -0.25em 0 0 rgba(39, 41, 43, 0.15) inset;
   top: 1px;
 }
-/* line 73, ../sass/partials/_home.scss */
+/* line 72, ../sass/partials/_home.scss */
 #orderBtn.red:active {
   box-shadow: 0 0 #ab3c3c;
   top: 2px;

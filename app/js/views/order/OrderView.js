@@ -34,7 +34,7 @@ define([
             'submit #paymentForm': 'orderSubmit',
             'click #newCard':'toggleNewCardForm',
             'click #payCardBtn' : 'showCardInfo',
-            'click #payCashBtn' : 'hideCardInfo'
+            'click #payCashBtn' : 'showCashInfo'
         },
 
         paymentMethod: "",
@@ -131,15 +131,17 @@ define([
             $("#payCardBtn").addClass("orange");
             $("#payCashBtn").removeClass("orange");
             this.paymentMethod = "Credit Card";
+            $(".summary-total").html("Card price");
         },
         
-        hideCardInfo: function(e) {
+        showCashInfo: function(e) {
             $("#cardInfo").addClass("hide");
             $("#cashInfo").removeClass("hide");
             $("#payCardBtn").removeClass("orange");
             $("#orderBtn").removeClass("hide");  
             $("#payCashBtn").addClass("orange");
             this.paymentMethod = "Cash";
+            $(".summary-total").html("Cash price");
         },
 
         checkInventory: function() {
