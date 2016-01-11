@@ -1,32 +1,16 @@
+<div class = "video-container" id="youtubeDiv"  style="display: none" align="center">
+    <iframe id="frame" src=""></iframe>
+</div>
+
+<button id="payCardBtn" class="ui toggle button">
+    <i class="payment icon"></i>
+    Credit/Debit Card
+</button>
+<button id="payCashBtn" class="ui toggle button">
+    <i class="money icon"></i>
+    Pay Cash
+</button>
 <form action="" method="POST" id="paymentForm" class="ui form">
-    <div class="ui segment">
-        <div id="basicinfo">
-            <div class="ui fluid field">
-                <div id="addressoption">
-                    <select id="addressdetails" name="address">
-                        <option id="pickUpAddress" value="">Select Pick Up Place</option>
-                        <% _.each(pickUpLocations, function(pickUpLocation){ %>
-                        <option value="<%= pickUpLocation.id %>"><%= pickUpLocation.get('address') %></option>
-                        <% }); %>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class = "video-container" id="youtubeDiv"  style="display: none" align="center">
-        <iframe id="frame" src=""></iframe>
-    </div>
-    
-    <button id="payCardBtn" class="ui toggle button">
-            <i class="payment icon"></i>
-            Credit/Debit Card
-    </button>
-    <button id="payCashBtn" class="ui toggle button">
-            <i class="money icon"></i>
-            Pay Cash
-    </button>
-
     <div class="ui divider"></div>
     
     <div id="cashInfo" class="ui segment hide">

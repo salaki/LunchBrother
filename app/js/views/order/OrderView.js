@@ -37,8 +37,10 @@ define([
             'click #payCashBtn' : 'hideCardInfo'
         },
 
+        paymentMethod: "",
+
         initialize: function () {
-            _.bindAll(this, 'render', 'stripeResponseHandler', 'orderSubmit', 'toggleNewCardForm', 'charge');
+            _.bindAll(this, 'render', 'stripeResponseHandler');
             Stripe.setPublishableKey(STRIPE_KEY);
         },
 
@@ -128,6 +130,7 @@ define([
             $("#orderBtn").removeClass("hide");  
             $("#payCardBtn").addClass("orange");
             $("#payCashBtn").removeClass("orange");
+            this.paymentMethod = "Credit Card";
         },
         
         hideCardInfo: function(e) {
@@ -136,6 +139,7 @@ define([
             $("#payCardBtn").removeClass("orange");
             $("#orderBtn").removeClass("hide");  
             $("#payCashBtn").addClass("orange");
+            this.paymentMethod = "Cash";
         },
 
         checkInventory: function() {
@@ -319,7 +323,15 @@ define([
                     pickUpLocation.id = pickUpLocationId;
                     paymentDetails.set('pickUpLocation', pickUpLocation);
                     paymentDetails.set('totalPrice', params.totalCharge);
-                    paymentDetails.set('paymentCheck', true);
+                    paymentDetails.set('paymentMethod', self.paymentMethod);
+
+                    if (self.paymentMethod === "Cash") {
+                        paymentDetails.set('paymentCheck', false);
+
+                    } else {
+                        paymentDetails.set('paymentCheck', true);
+                    }
+
                     paymentDetails.set('orderSummary', orderSummaryArray);
                     paymentDetails.save().then(function(paymentDetails){
                         self.saveOrders(paymentDetails)

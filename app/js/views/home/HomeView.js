@@ -4,12 +4,14 @@ define(['views/home/DishView',
     'models/dish/DishCollection',
     'models/Grid',
     'models/Restaurant',
+    'models/PickUpLocation',
     'models/InventoryModel',
     'models/UserRequestModel',
     'text!templates/home/homeTemplate.html',
     'text!templates/home/statsTemplate.html',
     'text!templates/order/orderTemplate.html'],
-    function(DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, InventoryModel, UserRequestModel, homeTemplate, statsTemplate, orderTemplate) {
+    function(DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, PickUpLocationModel,
+             InventoryModel, UserRequestModel, homeTemplate, statsTemplate, orderTemplate) {
 
 	var HomeView = Parse.View.extend({
 		// tagName: 'ul', // required, but defaults to 'div' if not set
@@ -30,13 +32,61 @@ define(['views/home/DishView',
         inventoryMap : {},
 		initialize : function() {
 			_.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
-			this.$el.html(_.template(homeTemplate)());
-                
+            this.$el.html(_.template(homeTemplate)());
             this.dishes = new DishCollection;
+
+            // Find pick-up locations
+            this.getPickUpLocations();
+
+            // Display the inventory dishes
+            this.collectInventoryDishes();
+
+            // Enable or disable checkout button based on current time
+            this.disableOrEnableCheckOutBtn();
+
+		},
+
+        getPickUpLocations: function() {
+            var self = this;
+            var grid = Parse.User.current().get('gridId');
+            if (grid === undefined) {
+                grid = new GridModel();
+                grid.id = UMCP_GRID_ID;
+            }
+
+            var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+            pickUpLocationQuery.equalTo('gridId', grid);
+            pickUpLocationQuery.addAscending('address');
+            pickUpLocationQuery.find().then(function(pickUpLocations){
+                $.each(pickUpLocations, function (i, pickUpLocation) {
+                    $('#addressdetails').append($('<option>', {
+                        value: pickUpLocation.id,
+                        text : pickUpLocation.get('address')
+                    }));
+                });
+
+                $("#addressdetails").dropdown();
+                $("#addressdetails").change(function() {
+                    console.log(self.dishes);
+                    var selectedPickupLocation = $("#addressdetails").val();
+                    _.each(self.dishes, function(dish){
+                        if (dish.pickUpLocationId === selectedPickupLocation) {
+                            $("#pickUpLocation-" + dish.pickUpLocationId).show();
+                        } else {
+                            $("#pickUpLocation-" + dish.pickUpLocationId).hide();
+                        }
+                    });
+                });
+
+            }, function(error){
+                showMessage("Oops!", "Something is wrong! Reason: " + error.message);
+
+            });
+        },
+
+        collectInventoryDishes: function() {
             var self = this;
             var inventoryQuery = new Parse.Query(InventoryModel);
-            
-            //Display the inventory dishes
             var upperDate = new Date();
             upperDate.setHours(13, 0, 0, 0);
             var lowerDate = new Date();
@@ -51,6 +101,7 @@ define(['views/home/DishView',
                     _.each(inventories, function(inventory) {
                         var dish = inventory.get("dish");
                         dish.add("price", inventory.get('price'));
+                        dish.add("pickUpLocationId", inventory.get('pickUpLocation').id);
                         self.dishes.add(dish);
                         self.inventoryMap[dish.id] = {
                             inventoryId: inventory.id,
@@ -67,11 +118,7 @@ define(['views/home/DishView',
                     showMessage("Error", "Find inventory failed! Reason: " + error.message);
                 }
             });
-            
-
-            // Enable or disable checkout button based on current time
-            this.disableOrEnableCheckOutBtn();
-		},
+        },
 
         disableOrEnableCheckOutBtn: function() {
             var currentTime = new Date();
@@ -133,6 +180,7 @@ define(['views/home/DishView',
                 this.stats.coupon = currentUser.get('creditBalance');
             }
             //this.stats.totalCharge = parseFloat((charge + this.stats.tax - this.stats.coupon).toFixed(2));
+
             this.stats.totalCharge = parseFloat((charge).toFixed(2));
             this.$('#orderStats').html(this.statsTemplate(this.stats));
             this.delegateEvents();
@@ -259,7 +307,7 @@ define(['views/home/DishView',
                 model : this.stats
             });
 
-            $("#dishTitle,#dishList,#paymentBtn,#orderMessage,#payCashBtn").remove();
+            $("#dishTitle,#dishList,#paymentBtn,#orderMessage,#payCashBtn,#pickUpLocationWrapper").remove();
             $("#page").append(view.render().el);
         }
 	});
