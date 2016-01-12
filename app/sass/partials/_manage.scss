@@ -6,8 +6,10 @@
 
 #menuList{
   padding:0 1.2em;
-  & .item{
-    margin-top:10px;
+  & .item{  
+    padding: 10px 0;
+    border-top: none;
+    border-bottom: 1px solid rgba(34,36,38,.15);
   }
   & .item .ui.grid.content{
     color:$color_grey;
@@ -20,7 +22,7 @@
   }
 
   & .header {
-    margin-bottom:30px;
+    line-height: 37px;
   }
 }
 

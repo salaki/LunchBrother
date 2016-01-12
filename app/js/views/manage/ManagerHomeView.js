@@ -423,7 +423,7 @@ define([
                             self.inventoryIds.push(inventories[i].id);
                             published = inventories[i].get('published');
                         }
-
+                        
                         self.weeklyMenu.published = published;
                         self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
                         if (published) {
