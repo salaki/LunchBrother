@@ -22,7 +22,8 @@ define(['views/home/DishView',
 			orders : [],
 			coupon : 0,
 			tax : 0,
-			totalCharge : 0
+			totalCharge : 0,
+            youtubeLink: ""
 		},
 
 		events : {
@@ -30,6 +31,9 @@ define(['views/home/DishView',
 		},
 
         inventoryMap : {},
+
+        pickUpLocationYouTubeLinkMap: {},
+
 		initialize : function() {
 			_.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
             this.$el.html(_.template(homeTemplate)());
@@ -59,6 +63,7 @@ define(['views/home/DishView',
             pickUpLocationQuery.addAscending('address');
             pickUpLocationQuery.find().then(function(pickUpLocations){
                 $.each(pickUpLocations, function (i, pickUpLocation) {
+                    self.pickUpLocationYouTubeLinkMap[pickUpLocation.id] = pickUpLocation.get("youtubeLink");
                     $('#addressdetails').append($('<option>', {
                         value: pickUpLocation.id,
                         text : pickUpLocation.get('address')
@@ -69,6 +74,10 @@ define(['views/home/DishView',
                 $("#addressdetails").change(function() {
                     console.log(self.dishes);
                     var selectedPickupLocation = $("#addressdetails").val();
+
+                    // TODO - Figure out if we need to show youtube video for multiple locations
+                    //self.stats.youtubeLink = self.pickUpLocationYouTubeLinkMap[selectedPickupLocation];
+
                     _.each(self.dishes, function(dish){
                         if (dish.pickUpLocationId === selectedPickupLocation) {
                             $("#pickUpLocation-" + dish.pickUpLocationId).show();

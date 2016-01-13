@@ -84,7 +84,7 @@ define([
                         if (permission === LOCAL_MANAGER) {
                             user.set("online", true);
                             user.save();
-                            window.location.hash = '#managerHome?week=';
+                            window.location.hash = '#managerHome?week=&dp=';
                         }
 
                         if (permission === DISTRIBUTOR) {

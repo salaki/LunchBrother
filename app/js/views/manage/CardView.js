@@ -63,7 +63,7 @@ define([
         },
 
         onCancelClick: function() {
-            window.location.href='#managerHome?week=';
+            window.location.href='#managerHome?week=&dp=';
         }
     });
     return CardView;

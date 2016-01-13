@@ -6,9 +6,10 @@ define([
     'models/Restaurant',
     'models/InventoryModel',
     'models/dish/DishModel',
+    'models/PickUpLocation',
     'text!templates/manage/menuEditTemplate.html',
     'text!templates/manage/menuEditDishListTemplate.html'
-], function(GridModel, RestaurantModel, InventoryModel, DishModel, menuEditTemplate, menuEditDishListTemplate) {
+], function(GridModel, RestaurantModel, InventoryModel, DishModel, PickUpLocationModel, menuEditTemplate, menuEditDishListTemplate) {
 
     var MenuEditView = Parse.View.extend({
         el: $("#page"),
@@ -115,6 +116,8 @@ define([
                                 restaurantQuery.find({
                                     success:function(restaurants) {
                                         self.$el.html(self.template({restaurants: restaurants, date: date}));
+                                        self.displayDPName();
+
                                         self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : dishes}));
                                         self.setButtonsAndAddInventories(dishes);
                                         $(".restaurant-selection").dropdown(
@@ -143,6 +146,8 @@ define([
                         restaurantQuery.find({
                             success:function(restaurants) {
                                 self.$el.html(self.template({restaurants: restaurants, date: date}));
+                                self.displayDPName();
+
                                 //For days with empty dishes
                                 $(".restaurant-selection").dropdown({
                                     onChange: function (restaurantId) {
@@ -158,6 +163,18 @@ define([
                 },
                 error: function(err) {
                     console.log(err.message);
+                }
+            });
+        },
+
+        displayDPName: function() {
+            var dpQuery = new Parse.Query(PickUpLocationModel);
+            dpQuery.get(this.options.dp, {
+                success: function(dp) {
+                    $("#menuEditViewDpName").text(dp.get("address"));
+                },
+                error: function(error) {
+                    console.log("Error in getting DP. Reason: " + error.message);
                 }
             });
         },
@@ -374,7 +391,7 @@ define([
             var friday = new Date(monday.setDate(diff2));
             week += (friday.getMonth() + 1) + "/" + friday.getDate();
 
-            window.location.hash = "#managerHome?week=" + week;
+            window.location.hash = "#managerHome?week=" + week + "&dp=" + this.options.dp;
         }
     });
     return MenuEditView;

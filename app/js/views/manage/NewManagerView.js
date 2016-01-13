@@ -47,6 +47,12 @@ define([
                       self.$el.html(self.template({grids: grids, manager: manager}));
                       $("#managerPhoto").change(self.handleFileSelect);
 
+                      if (self.options.managerId) {
+                          $("#managerDetailPageTitle").text("Edit this manager");
+                      } else {
+                          $("#managerDetailPageTitle").text("Add a new manager");
+                      }
+
                       if (manager.get('gridId')) {
                           $(".manager-location-select").dropdown('set selected', manager.get('gridId').id);
                           $(".manager-location-select").dropdown('set value', manager.get('gridId').id);

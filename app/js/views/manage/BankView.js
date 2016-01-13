@@ -41,7 +41,7 @@ define([
 
         saveBankAccount: function(e) {
             if (this.isOldBankAccount()) {
-                window.location.href = '#managerHome?week=';
+                window.location.href = '#managerHome?week=&dp=';
 
             } else {
                 e.preventDefault();
@@ -92,7 +92,7 @@ define([
                         currentUser.set('bankAccount', response);
                         currentUser.save();
                         showMessage("Success", "Bank account created successfully!", function() {
-                            window.location.href = '#managerHome?week=';
+                            window.location.href = '#managerHome?week=&dp=';
                         });
                     },
                     error: function(error) {
@@ -103,7 +103,7 @@ define([
         },
 
         onCancelClick: function() {
-            window.location.href='#managerHome?week=';
+            window.location.href='#managerHome?week=&dp=';
         }
     });
     return BankView;
