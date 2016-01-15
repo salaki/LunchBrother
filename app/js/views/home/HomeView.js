@@ -72,17 +72,23 @@ define(['views/home/DishView',
 
                 $("#addressdetails").dropdown();
                 $("#addressdetails").change(function() {
-                    console.log(self.dishes);
                     var selectedPickupLocation = $("#addressdetails").val();
 
                     // TODO - Figure out if we need to show youtube video for multiple locations
                     //self.stats.youtubeLink = self.pickUpLocationYouTubeLinkMap[selectedPickupLocation];
 
-                    _.each(self.dishes, function(dish){
-                        if (dish.pickUpLocationId === selectedPickupLocation) {
-                            $("#pickUpLocation-" + dish.pickUpLocationId).show();
+                    _.each(self.dishes.models, function(order){
+                        var dp = order.get("pickUpLocationId")[0];
+
+                        if (selectedPickupLocation === "all") {
+                            $("#pickUpLocation-" + dp).show();
+
                         } else {
-                            $("#pickUpLocation-" + dish.pickUpLocationId).hide();
+                            if (dp === selectedPickupLocation) {
+                                $("#pickUpLocation-" + dp).show();
+                            } else {
+                                $("#pickUpLocation-" + dp).hide();
+                            }
                         }
                     });
                 });

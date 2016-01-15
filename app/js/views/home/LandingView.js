@@ -115,7 +115,7 @@ define([
             gridQuery.first({
                 success: function(grid) {
                     if(grid) {
-                        self.getGridManager(grid);
+                        self.getInventory(grid);
                     } else {
                         self.showVoteDialog(collegeName);
                     }
@@ -126,22 +126,7 @@ define([
             });
         },
 
-        getGridManager: function(grid) {
-            var self = this;
-            var userQuery = new Parse.Query(Parse.User);
-            userQuery.equalTo("permission", LOCAL_MANAGER);
-            userQuery.equalTo("gridId", grid);
-            userQuery.first({
-                success: function(manager) {
-                    self.getManagerInventory(manager);
-                },
-                error: function(error){
-                    showMessage("Oops!", "Find manager failed! Reason" + error.message);
-                }
-            });
-        },
-
-        getManagerInventory: function(manager) {
+        getInventory: function(grid) {
             var d = new Date();
             var day = d.getDay(),
                 diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
@@ -185,7 +170,7 @@ define([
 
             var self = this;
             var inventoryQuery = new Parse.Query(InventoryModel);
-            inventoryQuery.equalTo("orderBy", manager);
+            inventoryQuery.equalTo("gridId", grid);
             inventoryQuery.equalTo("published", true);
             inventoryQuery.greaterThan("pickUpDate", firstMonday);
             inventoryQuery.lessThan("pickUpDate", friday3);

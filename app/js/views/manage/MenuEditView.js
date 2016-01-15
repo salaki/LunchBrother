@@ -348,8 +348,13 @@ define([
                 }
                 var dish = new DishModel();
                 dish.id = inventory.dishId;
-                toSaveInventory.set("dishId", inventory.dishId);
                 toSaveInventory.set("dish", dish);
+
+                var dp = new PickUpLocationModel();
+                dp.id = self.options.dp;
+                toSaveInventory.set("pickUpLocation", dp);
+
+                toSaveInventory.set("gridId", currentUser.get('gridId'));
                 toSaveInventory.set("published", false);
                 toSaveInventory.set("preorderQuantity", parseInt(inventory.quantity));
                 toSaveInventory.set("currentQuantity", parseInt(inventory.quantity));
