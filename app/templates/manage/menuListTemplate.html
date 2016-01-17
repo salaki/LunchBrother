@@ -11,7 +11,7 @@
             <div class="five wide column"><%= dish.restaurantName %> (<%= dish.restaurantNumber %>)</div>
             <div class="two wide column"><%= dish.quantity %></div>
             <div class="two wide column"><%= dish.status %></div>
-            <div class="two wide column right aligned">$<%= dish.price %></div>
+            <div class="two wide column right aligned">$<%= dish.price %>($<%= dish.cashPrice %>)</div>
             <% })%>
         </div>
     </div>

@@ -447,6 +447,7 @@ define([
                                 restaurantNumber: inventories[i].get('dish').get('restaurant').get('telnum'),
                                 quantity: inventories[i].get('preorderQuantity'),
                                 price: inventories[i].get('price'),
+                                cashPrice: inventories[i].get('cashPrice'),
                                 status: inventories[i].get('status')
                             };
 

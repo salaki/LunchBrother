@@ -18,6 +18,9 @@ define([
 ], function (DishModel, DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel,
              GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, Stripe, statsTemplate,
              orderTemplate) {
+    var CARD_METHOD = "Credit Card";
+    var CASH_METHOD = "Cash";
+
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -37,14 +40,14 @@ define([
             'click #payCashBtn' : 'showCashInfo'
         },
 
-        paymentMethod: "Cash",
+        paymentMethod: CASH_METHOD,
 
         finalCharge: 0,
 
         initialize: function () {
             _.bindAll(this, 'render', 'stripeResponseHandler');
             Stripe.setPublishableKey(STRIPE_KEY);
-            this.finalCharge = this.stats.totalCharge - this.stats.tax;
+            this.finalCharge = this.model.totalCashCharge
         },
 
         render: function () {
@@ -55,6 +58,8 @@ define([
                 $(self.el).html(self.template({cards: cards}));
                 self.$("#termsInput").prop('checked', true);
                 self.$("#cardNumber").attr("placeholder", "Your Card Number");
+                self.$("#cashPriceMessage").html(self.model.totalCashCharge);
+                self.$("#cardPriceMessage").html(self.model.totalCharge);
 
                 // TODO - Show Youtube Video if is available
                 //if(self.model.youtubeLink) {
@@ -89,9 +94,8 @@ define([
             $("#cashInfo").addClass("hide");
             $("#payCardBtn").addClass("orange");
             $("#payCashBtn").removeClass("orange");
-            this.paymentMethod = "Credit Card";
-            this.finalCharge = this.stats.totalCharge;
-            $(".summary-total").html(this.finalCharge);
+            this.paymentMethod = CARD_METHOD;
+            this.finalCharge = this.model.totalCharge;
         },
         
         showCashInfo: function(e) {
@@ -99,9 +103,8 @@ define([
             $("#cashInfo").removeClass("hide");
             $("#payCardBtn").removeClass("orange");
             $("#payCashBtn").addClass("orange");
-            this.paymentMethod = "Cash";
-            this.finalCharge = this.stats.totalCharge - this.stats.tax;
-            $(".summary-total").html(this.finalCharge);
+            this.paymentMethod = CASH_METHOD;
+            this.finalCharge = this.model.totalCashCharge;
         },
 
         checkInventory: function() {
@@ -175,7 +178,7 @@ define([
             else{
                 this.charge({
                     customerId: this.$('input[type=radio]:checked', '#userCardList').val(),
-                    totalCharge: this.model.totalCharge,
+                    totalCharge: this.finalCharge,
                     coupon: this.model.coupon
                 });
             }
@@ -202,7 +205,7 @@ define([
                     }, {
                         success: function (customer) {
                             self.charge({
-                                totalCharge: self.model.totalCharge,
+                                totalCharge: self.finalCharge,
                                 customerId: customer,
                                 coupon: self.model.coupon
                             });
@@ -212,7 +215,7 @@ define([
                 }
                 else{
                     this.charge({
-                        totalCharge: this.model.totalCharge,
+                        totalCharge: this.finalCharge,
                         paymentToken: response.id,
                         coupon: this.model.coupon
                     });
@@ -284,10 +287,10 @@ define([
                     var pickUpLocation = new PickUpLocationModel();
                     pickUpLocation.id = pickUpLocationId;
                     paymentDetails.set('pickUpLocation', pickUpLocation);
-                    paymentDetails.set('totalPrice', params.totalCharge);
+                    paymentDetails.set('totalPrice', params.totalCharge); // TODO - Cash Price
                     paymentDetails.set('paymentMethod', self.paymentMethod);
 
-                    if (self.paymentMethod === "Cash") {
+                    if (self.paymentMethod === CASH_METHOD) {
                         paymentDetails.set('paymentCheck', false);
 
                     } else {
@@ -319,8 +322,14 @@ define([
                 orderDetails.set('quantity', order.count);
                 orderDetails.set('paymentId', paymentDetails);
                 orderDetails.set('orderBy', Parse.User.current());
-                orderDetails.set('unitPrice', order.price);
-                orderDetails.set('subTotalPrice', order.price * order.count);
+
+                var orderPrice = order.cashPrice;
+                if (self.paymentMethod === CARD_METHOD) {
+                    orderPrice = order.price;
+                }
+
+                orderDetails.set('unitPrice', orderPrice);
+                orderDetails.set('subTotalPrice', orderPrice * order.count);
                 orderDetails.set('restaurantId', order.restaurant);
                 orderDetails.set('pickUpLocation', paymentDetails.get('pickUpLocation'));
                 ordersToSave.push(orderDetails);

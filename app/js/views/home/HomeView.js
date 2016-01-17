@@ -23,6 +23,7 @@ define(['views/home/DishView',
 			coupon : 0,
 			tax : 0,
 			totalCharge : 0,
+            totalCashCharge : 0,
             youtubeLink: ""
 		},
 
@@ -121,6 +122,7 @@ define(['views/home/DishView',
                         self.inventoryMap[dish.id] = {
                             inventoryId: inventory.id,
                             price: inventory.get('price'),
+                            cashPrice: inventory.get('cashPrice'),
                             currentQuantity: inventory.get('currentQuantity'),
                             restaurant: dish.get('restaurant')
                         }
@@ -174,6 +176,7 @@ define(['views/home/DishView',
                 order.dishId = dish.id;
                 order.count = dish.get('count');
                 order.price = self.inventoryMap[dish.id].price;
+                order.cashPrice = self.inventoryMap[dish.id].cashPrice;
                 order.code = dish.get('dishCode');
                 order.name = dish.get('dishName');
                 order.inventoryId = self.inventoryMap[dish.id].inventoryId;
@@ -182,21 +185,14 @@ define(['views/home/DishView',
             });
 
             var charge = 0;
+            var cashCharge = 0;
             _.each(this.stats.orders, function(order) {
                 charge += order.count * order.price;
+                cashCharge += order.count * order.cashPrice;
             });
 
-            this.stats.tax = parseFloat((charge * 0.11).toFixed(2));
-            var currentUser = Parse.User.current();
-            var ordercoupon = 3 * this.dishes.totalCount();
-            if (ordercoupon <= currentUser.get('creditBalance')) {
-                this.stats.coupon = ordercoupon;
-            } else {
-                this.stats.coupon = currentUser.get('creditBalance');
-            }
-            //this.stats.totalCharge = parseFloat((charge + this.stats.tax - this.stats.coupon).toFixed(2));
-
             this.stats.totalCharge = parseFloat((charge).toFixed(2));
+            this.stats.totalCashCharge = parseFloat((cashCharge).toFixed(2));
             this.$('#orderStats').html(this.statsTemplate(this.stats));
             this.delegateEvents();
             return this;

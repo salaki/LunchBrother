@@ -51,13 +51,15 @@ define([
                             dish.quantity = inventory.get('preorderQuantity');
                             dish.inventoryId = inventory.id;
                             dish.price = inventory.get('price');
+                            dish.cashPrice = inventory.get('cashPrice');
                             dishes.push(dish);
 
                             var inventory = {
                                 id: inventory.id,
                                 dishId: dish.id,
                                 quantity: dish.quantity,
-                                price: dish.price
+                                price: dish.price,
+                                cashPrice: dish.price
                             };
                             self.addedInventories.push(inventory);
                             self.initialInventories.push(inventory);
@@ -222,7 +224,16 @@ define([
                     });
                     self.checkAddedDishes();
                 });
+
                 $("#dishPriceInput-" + dish.id).keyup(function(){
+                    self.markAsNotAdded(dish.id);
+                    self.addedInventories = _.reject(self.addedInventories, function (el) {
+                        return el.dishId === $('#dishIdInput-' + dish.id).val();
+                    });
+                    self.checkAddedDishes();
+                });
+
+                $("#cashPriceInput-" + dish.id).keyup(function(){
                     self.markAsNotAdded(dish.id);
                     self.addedInventories = _.reject(self.addedInventories, function (el) {
                         return el.dishId === $('#dishIdInput-' + dish.id).val();
@@ -241,6 +252,7 @@ define([
                     } else {
                         var quantity = $('#dishQuantityInput-' + dish.id).val();
                         var price = $('#dishPriceInput-' + dish.id).val();
+                        var cashPrice = $('#cashPriceInput-' + dish.id).val();
 
                         //Validate quantity and price inputs
                         if (!self.isInteger(quantity)) {
@@ -249,6 +261,10 @@ define([
 
                         if (!Number(price)) {
                             showMessage("Oops!", "Price has to be a number!");
+                        }
+
+                        if (!Number(cashPrice)) {
+                            showMessage("Oops!", "Cash Price has to be a number!");
                         }
 
                         if (self.addedInventories === 0) {
@@ -264,7 +280,8 @@ define([
                             id: $('#inventoryId-' + dish.id).val(),
                             dishId: $('#dishIdInput-' + dish.id).val(),
                             quantity: quantity,
-                            price: price
+                            price: price,
+                            cashPrice: cashPrice
                         };
                         self.addedInventories.push(inventory);
                     };
@@ -360,6 +377,7 @@ define([
                 toSaveInventory.set("currentQuantity", parseInt(inventory.quantity));
                 toSaveInventory.set("orderBy", currentUser);
                 toSaveInventory.set("price", Number(inventory.price));
+                toSaveInventory.set("cashPrice", Number(inventory.cashPrice));
                 toSaveInventory.set("status", "Unconfirmed");
                 toSaveInventory.set("pickUpDate", pickUpdate);
                 toSaveInventories.push(toSaveInventory);
