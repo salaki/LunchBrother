@@ -3,8 +3,14 @@
     <div class="twelve wide column">
       
       	<strong class="thanks" >
-		<p id="thanks">Your order has been received, thank you for using lunchbrother.com!</p>
-		<p><span id="orderId">OrderId: #</span><%=objectId %></p>
+          <% if (paymentCheck) { %>
+		    <p id="thanks">Your order has been received, thank you for using lunchbrother.com!</p>
+          <% } else { %>
+            <p id="thanks">Your order has been reserved, remember to bring the cash to take your order, thank you for using lunchbrother.com!</p>
+          <% } %>
+          <p>
+            <span id="orderId">OrderId: #</span><%=objectId %>
+          </p>
 	  	</strong>
       <p><span id="confirmEmail">The confirmation email has been sent to</span> <%=email %></p>
       <p id="ifNoEmail">Please save this page in case you don't receive your confirmation email!</p>

@@ -224,7 +224,8 @@ define([
             // Call render on the module we loaded in via the dependency array
             var params = new ParseQueryString(queryString);
             var managerHomeView = new ManagerHomeView({
-                week: params.week
+                week: params.week,
+                dp: params.dp
             });
             renderView(LOCAL_MANAGER, managerHomeView);
         });
@@ -234,7 +235,8 @@ define([
             var params = new ParseQueryString(queryString);
             var menuEditView = new MenuEditView({
                 inventoryIds: params.inventoryIds,
-                date: params.date
+                date: params.date,
+                dp: params.dp
             });
             renderView(LOCAL_MANAGER, menuEditView);
         });

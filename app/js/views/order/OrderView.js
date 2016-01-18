@@ -18,6 +18,9 @@ define([
 ], function (DishModel, DishCollection, OrderModel, PaymentModel, CardModel, PickUpLocationModel,
              GridModel, InventoryModel, DishCollectionView, ConfirmView, TextView, Stripe, statsTemplate,
              orderTemplate) {
+    var CARD_METHOD = "Credit Card";
+    var CASH_METHOD = "Cash";
+
     var OrderView = Parse.View.extend({
 
         id: "order",
@@ -32,73 +35,39 @@ define([
 
         events: {
             'submit #paymentForm': 'orderSubmit',
-            'click #newCard':'toggleNewCardForm'
+            'click #newCard':'toggleNewCardForm',
+            'click #payCardBtn' : 'showCardInfo',
+            'click #payCashBtn' : 'showCashInfo'
         },
 
+        paymentMethod: CASH_METHOD,
+
+        finalCharge: 0,
+
         initialize: function () {
-            _.bindAll(this, 'render', 'stripeResponseHandler', 'orderSubmit', 'toggleNewCardForm', 'charge');
+            _.bindAll(this, 'render', 'stripeResponseHandler');
             Stripe.setPublishableKey(STRIPE_KEY);
-       },
+            this.finalCharge = this.model.totalCashCharge
+        },
 
         render: function () {
-        	var that = this;
-        	var query = new Parse.Query(CardModel);
-            var grid = Parse.User.current().get('gridId');
+            var self = this;
+        	var cardQuery = new Parse.Query(CardModel);
+            cardQuery.equalTo("createdBy", Parse.User.current());
+            cardQuery.find().then(function(cards){
+                $(self.el).html(self.template({cards: cards}));
+                self.$("#termsInput").prop('checked', true);
+                self.$("#cardNumber").attr("placeholder", "Your Card Number");
+                self.$("#cashPriceMessage").html(self.model.totalCashCharge);
+                self.$("#cardPriceMessage").html(self.model.totalCharge);
 
-            if (grid === undefined) {
-                grid = new GridModel();
-                grid.id = UMCP_GRID_ID;
-            }
-
-            var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
-            pickUpLocationQuery.equalTo('gridId', grid);
-            pickUpLocationQuery.addAscending('address');
-            pickUpLocationQuery.find().then(function(pickUpLocations){
-                var pickUpLocationMap = {};
-                for(var i = 0; i < pickUpLocations.length; i++) {
-                    pickUpLocationMap[pickUpLocations[i].toJSON().objectId] = pickUpLocations[i].toJSON();
-                }
-                query.equalTo("createdBy", Parse.User.current());
-                query.find();
-                return Parse.Promise.when(query.find(), pickUpLocations, pickUpLocationMap);
-
-            }).then(function(cards, pickUpLocations, pickUpLocationMap){
-                $(that.el).html(that.template({ cards: cards, pickUpLocations: pickUpLocations }));
-                that.$('.ui.checkbox').checkbox();
-                that.$('select.dropdown').dropdown();
-                that.$('.ui.form').form({
-                    address: {
-                        identifier: 'address',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Please select a location'
-                        }]
-                    },
-                    terms: {
-                        identifier: 'terms',
-                        rules: [{
-                            type: 'checked',
-                            prompt: 'You must agree to the terms and conditions'
-                        }]
-                    }
-                }, {
-                    on: 'blur',
-                    inline: 'true'
-                });
-
-                that.$("#addressdetails").change(function() {
-                    if(pickUpLocationMap[$("#addressdetails").val()]['youtubeLink']) {
-                        that.$("#youtubeDiv").show();
-                        that.$("#frame").attr("src", pickUpLocationMap[$("#addressdetails").val()]['youtubeLink'] + "?autoplay=0");
-                    } else {
-                        that.$("#youtubeDiv").hide();
-                    }
-                });
-
-                //Localization
-                that.$("#termsInput").prop('checked', true);
-                that.$("#addressdetails").dropdown();
-                that.$("#cardNumber").attr("placeholder", "Your Card Number");
+                // TODO - Show Youtube Video if is available
+                //if(self.model.youtubeLink) {
+                //    self.$("#youtubeDiv").show();
+                //    self.$("#frame").attr("src", self.model.youtubeLink + "?autoplay=0");
+                //} else {
+                //    self.$("#youtubeDiv").hide();
+                //}
 
             }, function(error){
                 showMessage("Oops!", "Something is wrong! Reason: " + error.message);
@@ -118,6 +87,24 @@ define([
         orderSubmit: function (e) {
             e.preventDefault();
             this.checkInventory();
+        },
+
+        showCardInfo: function(e) {
+            $("#cardInfo").removeClass("hide");
+            $("#cashInfo").addClass("hide");
+            $("#payCardBtn").addClass("orange");
+            $("#payCashBtn").removeClass("orange");
+            this.paymentMethod = CARD_METHOD;
+            this.finalCharge = this.model.totalCharge;
+        },
+        
+        showCashInfo: function(e) {
+            $("#cardInfo").addClass("hide");
+            $("#cashInfo").removeClass("hide");
+            $("#payCardBtn").removeClass("orange");
+            $("#payCashBtn").addClass("orange");
+            this.paymentMethod = CASH_METHOD;
+            this.finalCharge = this.model.totalCashCharge;
         },
 
         checkInventory: function() {
@@ -191,7 +178,7 @@ define([
             else{
                 this.charge({
                     customerId: this.$('input[type=radio]:checked', '#userCardList').val(),
-                    totalCharge: this.model.totalCharge,
+                    totalCharge: this.finalCharge,
                     coupon: this.model.coupon
                 });
             }
@@ -218,7 +205,7 @@ define([
                     }, {
                         success: function (customer) {
                             self.charge({
-                                totalCharge: self.model.totalCharge,
+                                totalCharge: self.finalCharge,
                                 customerId: customer,
                                 coupon: self.model.coupon
                             });
@@ -228,7 +215,7 @@ define([
                 }
                 else{
                     this.charge({
-                        totalCharge: this.model.totalCharge,
+                        totalCharge: this.finalCharge,
                         paymentToken: response.id,
                         coupon: this.model.coupon
                     });
@@ -300,8 +287,16 @@ define([
                     var pickUpLocation = new PickUpLocationModel();
                     pickUpLocation.id = pickUpLocationId;
                     paymentDetails.set('pickUpLocation', pickUpLocation);
-                    paymentDetails.set('totalPrice', params.totalCharge);
-                    paymentDetails.set('paymentCheck', true);
+                    paymentDetails.set('totalPrice', params.totalCharge); // TODO - Cash Price
+                    paymentDetails.set('paymentMethod', self.paymentMethod);
+
+                    if (self.paymentMethod === CASH_METHOD) {
+                        paymentDetails.set('paymentCheck', false);
+
+                    } else {
+                        paymentDetails.set('paymentCheck', true);
+                    }
+
                     paymentDetails.set('orderSummary', orderSummaryArray);
                     paymentDetails.save().then(function(paymentDetails){
                         self.saveOrders(paymentDetails)
@@ -327,8 +322,14 @@ define([
                 orderDetails.set('quantity', order.count);
                 orderDetails.set('paymentId', paymentDetails);
                 orderDetails.set('orderBy', Parse.User.current());
-                orderDetails.set('unitPrice', order.price);
-                orderDetails.set('subTotalPrice', order.price * order.count);
+
+                var orderPrice = order.cashPrice;
+                if (self.paymentMethod === CARD_METHOD) {
+                    orderPrice = order.price;
+                }
+
+                orderDetails.set('unitPrice', orderPrice);
+                orderDetails.set('subTotalPrice', orderPrice * order.count);
                 orderDetails.set('restaurantId', order.restaurant);
                 orderDetails.set('pickUpLocation', paymentDetails.get('pickUpLocation'));
                 ordersToSave.push(orderDetails);

@@ -1,25 +1,26 @@
+<div class = "video-container" id="youtubeDiv"  style="display: none" align="center">
+    <iframe id="frame" src=""></iframe>
+</div>
+
+<button id="payCashBtn" class="ui toggle orange button">
+    <i class="money icon"></i>
+    Pay Cash
+</button>
+<button id="payCardBtn" class="ui toggle button">
+    <i class="payment icon"></i>
+    Credit/Debit Card
+</button>
 <form action="" method="POST" id="paymentForm" class="ui form">
-    <div class="ui segment">
-        <div id="basicinfo">
-            <div class="ui fluid field">
-                <div id="addressoption">
-                    <select id="addressdetails" name="address">
-                        <option id="pickUpAddress" value="">Select Pick Up Place</option>
-                        <% _.each(pickUpLocations, function(pickUpLocation){ %>
-                        <option value="<%= pickUpLocation.id %>"><%= pickUpLocation.get('address') %></option>
-                        <% }); %>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class = "video-container" id="youtubeDiv"  style="display: none" align="center">
-        <iframe id="frame" src=""></iframe>
-    </div>
-
     <div class="ui divider"></div>
-    <div class="ui segment">
+    
+    <div id="cashInfo" class="ui segment">
+        <div class="ui medium header">Cash is cheaper and easier!</div>
+        <p>Your order total is: $<span id="cashPriceMessage"></span></p>
+        <div class="ui divider"></div>
+        <p>Pay cash when you pick up your order at selected location and enjoy the delicious food.</p>
+    </div>
+    <div id="cardInfo" class="ui segment hide">
+        <p>Your order total is: $<span id="cardPriceMessage"></span></p>
         <% if(cards.length > 0){ %>
         <div id="cardselector" class="grouped fields">
 
@@ -118,7 +119,7 @@
             </div>
         </div>
     </div>
-    <button id="orderBtn" type="submit" class="center aligned ui red button">Place Order</button>
+    <button id="orderBtn" type="submit" class="center aligned ui red button-lg">Place Order</button>
     <span class="payment-errors"></span>
 </form>
 

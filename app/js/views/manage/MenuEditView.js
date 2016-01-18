@@ -6,9 +6,10 @@ define([
     'models/Restaurant',
     'models/InventoryModel',
     'models/dish/DishModel',
+    'models/PickUpLocation',
     'text!templates/manage/menuEditTemplate.html',
     'text!templates/manage/menuEditDishListTemplate.html'
-], function(GridModel, RestaurantModel, InventoryModel, DishModel, menuEditTemplate, menuEditDishListTemplate) {
+], function(GridModel, RestaurantModel, InventoryModel, DishModel, PickUpLocationModel, menuEditTemplate, menuEditDishListTemplate) {
 
     var MenuEditView = Parse.View.extend({
         el: $("#page"),
@@ -50,13 +51,15 @@ define([
                             dish.quantity = inventory.get('preorderQuantity');
                             dish.inventoryId = inventory.id;
                             dish.price = inventory.get('price');
+                            dish.cashPrice = inventory.get('cashPrice');
                             dishes.push(dish);
 
                             var inventory = {
                                 id: inventory.id,
                                 dishId: dish.id,
                                 quantity: dish.quantity,
-                                price: dish.price
+                                price: dish.price,
+                                cashPrice: dish.price
                             };
                             self.addedInventories.push(inventory);
                             self.initialInventories.push(inventory);
@@ -115,6 +118,8 @@ define([
                                 restaurantQuery.find({
                                     success:function(restaurants) {
                                         self.$el.html(self.template({restaurants: restaurants, date: date}));
+                                        self.displayDPName();
+
                                         self.$("#menuEditDishList").html(self.menuEditDishListTemplate({dishes : dishes}));
                                         self.setButtonsAndAddInventories(dishes);
                                         $(".restaurant-selection").dropdown(
@@ -143,6 +148,8 @@ define([
                         restaurantQuery.find({
                             success:function(restaurants) {
                                 self.$el.html(self.template({restaurants: restaurants, date: date}));
+                                self.displayDPName();
+
                                 //For days with empty dishes
                                 $(".restaurant-selection").dropdown({
                                     onChange: function (restaurantId) {
@@ -158,6 +165,18 @@ define([
                 },
                 error: function(err) {
                     console.log(err.message);
+                }
+            });
+        },
+
+        displayDPName: function() {
+            var dpQuery = new Parse.Query(PickUpLocationModel);
+            dpQuery.get(this.options.dp, {
+                success: function(dp) {
+                    $("#menuEditViewDpName").text(dp.get("address"));
+                },
+                error: function(error) {
+                    console.log("Error in getting DP. Reason: " + error.message);
                 }
             });
         },
@@ -205,7 +224,16 @@ define([
                     });
                     self.checkAddedDishes();
                 });
+
                 $("#dishPriceInput-" + dish.id).keyup(function(){
+                    self.markAsNotAdded(dish.id);
+                    self.addedInventories = _.reject(self.addedInventories, function (el) {
+                        return el.dishId === $('#dishIdInput-' + dish.id).val();
+                    });
+                    self.checkAddedDishes();
+                });
+
+                $("#cashPriceInput-" + dish.id).keyup(function(){
                     self.markAsNotAdded(dish.id);
                     self.addedInventories = _.reject(self.addedInventories, function (el) {
                         return el.dishId === $('#dishIdInput-' + dish.id).val();
@@ -224,6 +252,7 @@ define([
                     } else {
                         var quantity = $('#dishQuantityInput-' + dish.id).val();
                         var price = $('#dishPriceInput-' + dish.id).val();
+                        var cashPrice = $('#cashPriceInput-' + dish.id).val();
 
                         //Validate quantity and price inputs
                         if (!self.isInteger(quantity)) {
@@ -232,6 +261,10 @@ define([
 
                         if (!Number(price)) {
                             showMessage("Oops!", "Price has to be a number!");
+                        }
+
+                        if (!Number(cashPrice)) {
+                            showMessage("Oops!", "Cash Price has to be a number!");
                         }
 
                         if (self.addedInventories === 0) {
@@ -247,7 +280,8 @@ define([
                             id: $('#inventoryId-' + dish.id).val(),
                             dishId: $('#dishIdInput-' + dish.id).val(),
                             quantity: quantity,
-                            price: price
+                            price: price,
+                            cashPrice: cashPrice
                         };
                         self.addedInventories.push(inventory);
                     };
@@ -331,13 +365,19 @@ define([
                 }
                 var dish = new DishModel();
                 dish.id = inventory.dishId;
-                toSaveInventory.set("dishId", inventory.dishId);
                 toSaveInventory.set("dish", dish);
+
+                var dp = new PickUpLocationModel();
+                dp.id = self.options.dp;
+                toSaveInventory.set("pickUpLocation", dp);
+
+                toSaveInventory.set("gridId", currentUser.get('gridId'));
                 toSaveInventory.set("published", false);
                 toSaveInventory.set("preorderQuantity", parseInt(inventory.quantity));
                 toSaveInventory.set("currentQuantity", parseInt(inventory.quantity));
                 toSaveInventory.set("orderBy", currentUser);
                 toSaveInventory.set("price", Number(inventory.price));
+                toSaveInventory.set("cashPrice", Number(inventory.cashPrice));
                 toSaveInventory.set("status", "Unconfirmed");
                 toSaveInventory.set("pickUpDate", pickUpdate);
                 toSaveInventories.push(toSaveInventory);
@@ -374,7 +414,7 @@ define([
             var friday = new Date(monday.setDate(diff2));
             week += (friday.getMonth() + 1) + "/" + friday.getDate();
 
-            window.location.hash = "#managerHome?week=" + week;
+            window.location.hash = "#managerHome?week=" + week + "&dp=" + this.options.dp;
         }
     });
     return MenuEditView;

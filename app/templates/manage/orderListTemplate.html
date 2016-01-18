@@ -30,6 +30,11 @@
           <td><%= payment.orderSummary %></td>
           <td><%= payment.orderNumber %></td>
           <td>$<%= payment.totalPrice %></td>
+          <% if(payment.paymentCheck) { %>
+            <td class="green">Paid</td>
+          <% } else { %>
+            <td class="red">Not Paid</td>
+          <% } %>
           <td>
               <button id="checkButton-<%= payment.orderNumber %>" class="ui fluid icon button" data-order="<%= payment.orderNumber %>" data-lname="<%= payment.lastName %>" data-fname="<%= payment.firstName %>" data-price="<%= payment.totalPrice %>">
                   <i class="check icon"></i>

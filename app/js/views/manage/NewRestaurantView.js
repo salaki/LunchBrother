@@ -55,6 +55,13 @@ define([
 
                       self.$el.html(self.template({grids: grids, restaurant: restaurant, bankAccount: bankAccount}));
 
+
+                      if (self.options.id) {
+                          $("#restaurantPageTitle").text("Edit this restaurant");
+                      } else {
+                          $("#restaurantPageTitle").text("Add new restaurant");
+                      }
+
                       if (restaurant.id) {
                           $(".restaurant-type-selection").dropdown('set selected', restaurant.get('type'));
                           $(".restaurant-area-selection").dropdown('set selected', restaurant.get('gridId').id);

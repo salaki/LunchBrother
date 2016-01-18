@@ -84,6 +84,10 @@ define([
 
         pickUpLocations: [],
 
+        selectedWeek: "",
+
+        selectedDP: "",
+
         initialize: function() {
             _.bindAll(this, 'render');
             this.nextPaymentCalculation();
@@ -312,21 +316,36 @@ define([
 
         configureMenuSelection: function() {
             var self = this;
-            if (self.options.week !== "") {
-                self.refreshWeekMenu(self.options.week);
+            if (this.options.week !== "" && this.options.dp !== "") {
+                this.selectedDP = this.options.dp;
+                this.selectedWeek = this.options.week;
+                this.refreshWeekMenu();
 
                 //We need to do this crazy stuff to both set the value and have it to be selectable
-                $(".week-selection").dropdown('set selected', self.options.week);
+                $(".week-selection").dropdown('set selected', this.options.week);
                 $(".week-selection").dropdown({
                     onChange: function (week) {
-                        self.refreshWeekMenu(week);
+                        self.setWeek(week);
+                    }
+                });
+
+                $(".dp-selection").dropdown('set selected', this.options.dp);
+                $(".dp-selection").dropdown({
+                    onChange: function (dp) {
+                        self.setDP(dp);
                     }
                 });
 
             } else {
                 $(".week-selection").dropdown({
                     onChange: function (week) {
-                        self.refreshWeekMenu(week);
+                        self.setWeek(week);
+                    }
+                });
+
+                $(".dp-selection").dropdown({
+                    onChange: function (dp) {
+                        self.setDP(dp);
                     }
                 });
             }
@@ -364,9 +383,21 @@ define([
             });
         },
 
-        refreshWeekMenu: function(week) {
-            if (week) {
-                var days = week.split("-");
+        setWeek: function(week) {
+            this.selectedWeek = week;
+            this.refreshWeekMenu();
+        },
+
+        setDP: function(dpId) {
+            this.selectedDP = dpId;
+            this.refreshWeekMenu();
+        },
+
+        refreshWeekMenu: function() {
+            if (this.selectedWeek && this.selectedDP) {
+                var days = this.selectedWeek.split("-");
+                var dp = new PickUpLocationModel();
+                dp.id = this.selectedDP;
 
                 /**
                  *
@@ -400,6 +431,7 @@ define([
                 var currentUser = Parse.User.current();
                 var inventoryQuery = new Parse.Query(InventoryModel);
                 inventoryQuery.equalTo("orderBy", currentUser);
+                inventoryQuery.equalTo("pickUpLocation", dp);
                 inventoryQuery.greaterThan("pickUpDate", monday);
                 inventoryQuery.lessThan("pickUpDate", friday);
                 inventoryQuery.include("dish");
@@ -415,6 +447,7 @@ define([
                                 restaurantNumber: inventories[i].get('dish').get('restaurant').get('telnum'),
                                 quantity: inventories[i].get('preorderQuantity'),
                                 price: inventories[i].get('price'),
+                                cashPrice: inventories[i].get('cashPrice'),
                                 status: inventories[i].get('status')
                             };
 
@@ -423,7 +456,7 @@ define([
                             self.inventoryIds.push(inventories[i].id);
                             published = inventories[i].get('published');
                         }
-
+                        
                         self.weeklyMenu.published = published;
                         self.$("#menuList").html(self.menuListTemplate(self.weeklyMenu));
                         if (published) {
@@ -456,7 +489,8 @@ define([
         onEditMenuClick: function(ev) {
             var inventoryIds = $(ev.currentTarget).data('inventoryIds');
             var date = $(ev.currentTarget).data('date');
-            window.location.hash = "#menuEdit?inventoryIds=" + inventoryIds + "&date=" + date;
+
+            window.location.hash = "#menuEdit?inventoryIds=" + inventoryIds + "&date=" + date + "&dp=" + this.selectedDP;
 
         },
 

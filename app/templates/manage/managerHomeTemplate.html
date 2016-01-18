@@ -3,7 +3,7 @@
   <button class="ui orange button" id="showDriverStatus"><i class="car icon"></i>Work as driver</button>
 </div>
 <h4 class="ui top attached red header">
-  <i class="marker icon small"></i>Manage distribution points
+  <i class="marker icon small"></i>Manage Distributing Points
 </h4>    
 
 <div class="ui attached segment">
@@ -84,11 +84,10 @@ Add a new person
 </div>
 
 <h4 class="ui red top attached header">
-<i class="small file text outline icon"></i>Manage weekly menu
+<i class="small file text outline icon"></i>Manage Weekly Menu
 </h4>
 <div class="ui attached segment">
-<div class="ui menu">
-  <div class="ui dropdown fluid item week-selection">
+  <div class="ui dropdown selection week-selection">
     <i class="small calendar icon"></i><div class="default text" id="weekMenu">Select a week</div><i class="dropdown icon"></i>
     <div class="menu">
       <% _.each(weeks, function(week) { %>
@@ -96,7 +95,14 @@ Add a new person
       <% })%>
     </div>
   </div>
-</div>
+  <div class="ui selection dropdown dp-selection">
+    <i class="marker icon small"></i><div class="default text">Select distributing point</div><i class="dropdown icon"></i>
+    <div class="menu">
+      <% _.each(distributingPoints, function(distributingPoint) { %>
+      <div class="item" data-value="<%= distributingPoint.id %>"><%= distributingPoint.get('address') %></div>
+      <% }) %>
+    </div>
+  </div>
 <div id="menuList"></div>
 </div>
 
