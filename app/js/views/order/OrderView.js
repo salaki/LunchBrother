@@ -44,6 +44,8 @@ define([
 
         finalCharge: 0,
 
+        dpId: null,
+
         initialize: function () {
             _.bindAll(this, 'render', 'stripeResponseHandler');
             Stripe.setPublishableKey(STRIPE_KEY);
@@ -108,17 +110,24 @@ define([
         },
 
         checkInventory: function() {
+            var self = this;
             var dishCountMap = {};
             var inventoryIds = [];
 
+
+
             _.each(this.model.orders, function (dish) {
+                if (!self.dpId) {
+                    self.dpId = dish.dpId;
+                }
+                console.log(self.dpId);
                 inventoryIds.push(dish.inventoryId);
                 dishCountMap[dish.inventoryId] = dish.count;
             });
 
             var inventoryQuery = new Parse.Query(InventoryModel);
             inventoryQuery.containedIn("objectId", inventoryIds);
-            var self = this;
+
             var exceedInventory = false;
             inventoryQuery.find().then(function(inventories){
                 _.each(inventories, function(inventory) {
@@ -161,8 +170,11 @@ define([
                 return Parse.Object.saveAll(inventories);
 
             }).then(function(inventories){
-                self.createToken();
-
+                if (self.paymentMethod === CASH_METHOD) {
+                    self.savePayment();
+                } else {
+                    self.createToken();
+                }
             });
         },
 
@@ -225,13 +237,14 @@ define([
         },
 
         displayPaymentFailDialog: function (errorMessage) {
+            var self = this;
             $('#paymentFailMessage').text(errorMessage);
             $('#failPaymentDialog').modal({
                 closable: false,
                 onApprove: function () {
                     var inventoryIds = [];
                     var dishCount = {};
-                    _.each(this.model.orders, function (dish) {
+                    _.each(self.model.orders, function (dish) {
                         inventoryIds.push(dish.inventoryId);
                         dishCount[dish.inventoryId] = dish.count;
                     });
@@ -255,59 +268,76 @@ define([
         },
         
         charge: function(params){
-            var orderSummaryArray = [];
-
-            _.each(this.model.orders, function (order) {
-                var summary = order.code + "-" + order.name + "-" + order.count;
-                orderSummaryArray.push(summary);
-            });
-
             var self = this;
         	Parse.Cloud.run('pay', params, {
                 success: function () {
-                	var paymentDetails = new PaymentModel();
-            		var user = Parse.User.current();
-                    var fname = user.get('firstName');
-                    var lname = user.get('lastName');
-                    var email = user.get('email');
-                    var phoneNumber = user.get('telnum');
-                    var pickUpLocationId = $('#addressdetails option:selected').val();
+                	self.savePayment(params);
 
-                    paymentDetails.set('telnum', phoneNumber);
-                    paymentDetails.set('fname', fname);
-                    paymentDetails.set('lname', lname);
-                    paymentDetails.set('lowercaseLastName', lname.toLowerCase());
-                    paymentDetails.set('email', email);
-                    if(params.customerId){
-                    	paymentDetails.set('stripeToken', params.customerId);
-                    }
-                    else{
-                    	paymentDetails.set('stripeToken', params.paymentToken);
-                    }
-                    var pickUpLocation = new PickUpLocationModel();
-                    pickUpLocation.id = pickUpLocationId;
-                    paymentDetails.set('pickUpLocation', pickUpLocation);
-                    paymentDetails.set('totalPrice', params.totalCharge); // TODO - Cash Price
-                    paymentDetails.set('paymentMethod', self.paymentMethod);
-
-                    if (self.paymentMethod === CASH_METHOD) {
-                        paymentDetails.set('paymentCheck', false);
-
-                    } else {
-                        paymentDetails.set('paymentCheck', true);
-                    }
-
-                    paymentDetails.set('orderSummary', orderSummaryArray);
-                    paymentDetails.save().then(function(paymentDetails){
-                        self.saveOrders(paymentDetails)
-
-                    });
                 },
                 error: function (error) {
                     self.displayPaymentFailDialog(error.message);
         	        $('#orderBtn').prop('disabled', false);
                     $('#orderBtn').removeClass('grey').addClass('red');
                 }
+            });
+        },
+
+        savePayment: function(params) {
+            var self = this;
+
+            var orderSummaryArray = [];
+            _.each(this.model.orders, function (order) {
+                var summary = order.code + "-" + order.name + "-" + order.count;
+                orderSummaryArray.push(summary);
+            });
+
+            var paymentDetails = new PaymentModel();
+            var user = Parse.User.current();
+            var fname = user.get('firstName');
+            var lname = user.get('lastName');
+            var email = user.get('email');
+            var phoneNumber = user.get('telnum');
+
+            paymentDetails.set('telnum', phoneNumber);
+            paymentDetails.set('fname', fname);
+            paymentDetails.set('lname', lname);
+            paymentDetails.set('lowercaseLastName', lname.toLowerCase());
+            paymentDetails.set('email', email);
+            paymentDetails.set('paymentMethod', this.paymentMethod);
+            if (this.paymentMethod === CASH_METHOD) {
+                paymentDetails.set('paymentCheck', false);
+
+            } else {
+                paymentDetails.set('paymentCheck', true);
+            }
+
+            // Set payment charge
+            var totalCharge = this.finalCharge;
+            if (params) {
+                if (params.customerId){
+                    paymentDetails.set('stripeToken', params.customerId);
+
+                } else {
+                    paymentDetails.set('stripeToken', params.paymentToken);
+                }
+
+                totalCharge = params.totalCharge;
+            }
+            paymentDetails.set('totalPrice', totalCharge);
+
+            var pickUpLocationId = this.model.dp;
+            if (!pickUpLocationId || pickUpLocationId === "all") {
+                pickUpLocationId = this.dpId;
+
+            }
+
+            var pickUpLocation = new PickUpLocationModel();
+            pickUpLocation.id = pickUpLocationId;
+            paymentDetails.set('pickUpLocation', pickUpLocation);
+            paymentDetails.set('orderSummary', orderSummaryArray);
+            paymentDetails.save().then(function(paymentDetails){
+                self.saveOrders(paymentDetails)
+
             });
         },
 
@@ -357,6 +387,8 @@ define([
                         model: paymentDetails
                     });
                     $("#paymentForm").remove();
+                    $("#payCashBtn").remove();
+                    $("#payCardBtn").remove();
                     $("#page").prepend(view1.render().el);
                     $("#page").append(view2.render().el);
                     $('#orderBtn').prop('disabled', false);
