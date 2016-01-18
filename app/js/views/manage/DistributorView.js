@@ -24,14 +24,12 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render', 'updateStatus');
-            var currentUser = Parse.User.current();
         },
 
         render: function () {
             var self = this;
-            var currentUser = Parse.User.current();
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
-            pickUpLocationQuery.equalTo("gridId", currentUser.get("gridId"));
+            pickUpLocationQuery.equalTo("manager", Parse.User.current());
             pickUpLocationQuery.find({
                 success: function(pickUpLocations) {
                     self.$el.html(self.template({pickUpLocations: pickUpLocations}));
@@ -78,7 +76,7 @@ define([
             this.$("#buildingLabel").text(this.$("#addressOption option:selected").text());
             query.contains("lowercaseLastName", this.$("#searchInput").val().toLowerCase());
             query.ascending("lowercaseLastName");
-            query.equalTo("paymentCheck", true);
+            //query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
             query.include("pickUpLocation");
 
@@ -163,7 +161,7 @@ define([
 
                 },
                 onApprove: function () {
-                    self.saveChange(orderId, "isPickedUp", true);
+                    self.saveChange(orderId);
                     self.$("#div-" + orderId).fadeOut();
                     self.$("#divider-" + orderId).fadeOut();
                     self.$("#orderNumberLabel").text(self.$("#orderNumberLabel").text() - 1);
@@ -171,10 +169,11 @@ define([
             }).modal('show');
         },
 
-        saveChange: function (orderId, attributeName, attributeValue) {
+        saveChange: function (orderId) {
             var paymentDetail = new PaymentModel();
             paymentDetail.id = orderId;
-            paymentDetail.set(attributeName, attributeValue);
+            paymentDetail.set("isPickedUp", true);
+            paymentDetail.set("paymentCheck", true);
             paymentDetail.save(null, {
                 success: function (paymentDetail) {
                     //Do nothing
