@@ -150,16 +150,16 @@ define(['views/home/DishView',
             var stopOrderTime = new Date();
             stopOrderTime.setHours(13, 0, 0, 0);
 
+            // Disable check out button by default unless adding orders
+            $('#paymentBtn').prop('disabled', true);
+            $('#paymentBtn').addClass('grey');
+
             if (Parse.User.current().get('permission') != LB_ADMIN) {
                 if (weekday == 6 || weekday == 0) {
-                    $("#timeAlert").css("display", "block");
-                    $("#paymentBtn").addClass('disabled');
-                    $("#timeAlert").text("Sorry, we don't provide the service on weekends. Please come back on Monday :)");
+                    $("#timeAlert").css("display", "block").text("Sorry, we don't provide the service on weekends. Please come back on Monday :)");
 
                 } else if(currentTime > stopOrderTime || currentTime < startOrderTime) {
-                    $("#timeAlert").css("display", "block");
-                    $("#paymentBtn").addClass('disabled');
-                    $("#timeAlert").text("Sorry, we don't take order before 11:00AM or after 1:00PM. Our order time is 11:00AM-1:00PM.");
+                    $("#timeAlert").css("display", "block").text("Sorry, we don't take order before 11:00AM or after 1:00PM. Our order time is 11:00AM-1:00PM.");
 
                 } else {
                     // Do nothing
@@ -188,6 +188,15 @@ define(['views/home/DishView',
                 order.dpId = self.inventoryMap[dish.id].dpId;
                 self.stats.orders.push(order);
             });
+
+            if (this.dishes.orders().length > 0) {
+                $('#paymentBtn').prop('disabled', false);
+                $('#paymentBtn').removeClass('grey');
+
+            } else {
+                $('#paymentBtn').prop('disabled', true);
+                $('#paymentBtn').addClass('grey');
+            }
 
             var charge = 0;
             var cashCharge = 0;
