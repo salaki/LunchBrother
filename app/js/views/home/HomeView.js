@@ -24,7 +24,8 @@ define(['views/home/DishView',
 			tax : 0,
 			totalCharge : 0,
             totalCashCharge : 0,
-            youtubeLink: ""
+            youtubeLink: "",
+            dp:""
 		},
 
 		events : {
@@ -91,6 +92,8 @@ define(['views/home/DishView',
                                 $("#pickUpLocation-" + dp).hide();
                             }
                         }
+
+                        self.stats.dp = selectedPickupLocation;
                     });
                 });
 
@@ -124,7 +127,8 @@ define(['views/home/DishView',
                             price: inventory.get('price'),
                             cashPrice: inventory.get('cashPrice'),
                             currentQuantity: inventory.get('currentQuantity'),
-                            restaurant: dish.get('restaurant')
+                            restaurant: dish.get('restaurant'),
+                            dpId: inventory.get('pickUpLocation').id
                         }
                     });
 
@@ -181,6 +185,7 @@ define(['views/home/DishView',
                 order.name = dish.get('dishName');
                 order.inventoryId = self.inventoryMap[dish.id].inventoryId;
                 order.restaurant = self.inventoryMap[dish.id].restaurant;
+                order.dpId = self.inventoryMap[dish.id].dpId;
                 self.stats.orders.push(order);
             });
 
