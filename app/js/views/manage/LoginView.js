@@ -100,10 +100,13 @@ define([
                         }
 
                         if (permission === GENERAL_USER) {
-                            self.checkLoggedInWithCodeBefore(user, registrationCode);
+                        //    self.checkLoggedInWithCodeBefore(user, registrationCode);
+                            user.set("online", true);
+                            user.save();
+                            window.location.hash = '#home';
                         }
-                	}  
-                },
+                   }  
+           },
                 error: function (user, error) {
                 	self.$("#loginError").removeClass("hidden");
                     self.$("#loginError").text("Invalid Username or Password");
