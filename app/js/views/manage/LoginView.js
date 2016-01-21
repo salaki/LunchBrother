@@ -61,7 +61,7 @@ define([
             var self = this;
             var username = this.$("#username").val();
             var password = this.$("#password").val();
-            var registrationCode = this.$("#loginRegistrationCode").val().trim();
+            //var registrationCode = this.$("#loginRegistrationCode").val().trim();
             Parse.User.logIn(username, password, {
                 success: function (user) {
                     if (user.get("emailVerified") === false) {
@@ -100,10 +100,13 @@ define([
                         }
 
                         if (permission === GENERAL_USER) {
-                            self.checkLoggedInWithCodeBefore(user, registrationCode);
+                        //    self.checkLoggedInWithCodeBefore(user, registrationCode);
+                            user.set("online", true);
+                            user.save();
+                            window.location.hash = '#home';
                         }
-                	}  
-                },
+                   }  
+           },
                 error: function (user, error) {
                 	self.$("#loginError").removeClass("hidden");
                     self.$("#loginError").text("Invalid Username or Password");
