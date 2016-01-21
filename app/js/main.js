@@ -43,25 +43,7 @@ define([
         currentUserObject.id = currentUser.id;
         currentUserObject.unset("online");
         currentUserObject.save();
-
-        //Update registration code state
-        var RegistrationCode = Parse.Object.extend("RegistrationCode");
-        if (currentUser.get('permission') === GENERAL_USER) {
-            var codeQuery = new Parse.Query(RegistrationCode);
-            codeQuery.equalTo("loginBy", currentUser);
-            codeQuery.first({
-                success: function(code) {
-                    code.set("usedToLogin", false);
-                    code.save();
-                    continueSignOut();
-                },
-                error: function(error) {
-                    console.log('Update failed! Reason: ' + error.message);
-                }
-            });
-        } else {
-            continueSignOut()
-        }
+        continueSignOut()
     });
 
       var continueSignOut = function() {
