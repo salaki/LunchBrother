@@ -586,16 +586,20 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 /* line 1, ../sass/partials/_video.scss */
 #youtubeDiv {
-  height: 300px;
   width: 100%;
+  position: relative;
+  height: 0;
+  padding-top: 35px;
+  padding-bottom: 56.25%;
+  overflow: hidden;
 }
-
-/* line 5, ../sass/partials/_video.scss */
-#frame {
+/* line 8, ../sass/partials/_video.scss */
+#youtubeDiv iframe {
+  position: absolute;
   height: 100%;
   width: 100%;
-  -webkit-overflow-scrolling: touch;
-  overflow-y: scroll;
+  top: 0;
+  left: 0;
 }
 
 /* line 20, ../sass/screen.scss */

@@ -1,18 +1,18 @@
-<div class = "video-container" id="youtubeDiv"  style="display: none" align="center">
-    <iframe id="frame" src=""></iframe>
+<div class = "scroll-wrapper" id="youtubeDiv" align="center" frameborder="0" allowfullscreen>
+    <iframe id="frame" src="//www.youtube.com/embed/XGSy3_Czz8k?autoplay=1"></iframe>
 </div>
-
+<div class="ui divider hidden"></div>
 <button id="payCashBtn" class="ui toggle orange button">
     <i class="money icon"></i>
     Pay Cash
 </button>
 <button id="payCardBtn" class="ui toggle button">
     <i class="payment icon"></i>
-    Credit/Debit Card
+    Credit Card
 </button>
 <form action="" method="POST" id="paymentForm" class="ui form">
     <div class="ui divider"></div>
-    
+
     <div id="cashInfo" class="ui segment">
         <div class="ui medium header">Cash is cheaper and easier!</div>
         <p>Your order total is: $<span id="cashPriceMessage"></span></p>
@@ -38,21 +38,21 @@
             <div id="userCardList">
                 <% var count = 0; %>
                 <% _.each(cards, function(card){
-                 var customerId = card.get('customerId');
-                 var digit = card.get('last4Digit');%>
-                 <div class="field">
-                     <div class="ui radio checkbox checked">
-                         <% if(count === 0){ %>
-                         <input type="radio" name="card" value="<%= customerId %>" checked >
-                         <% } else { %>
-                         <input type="radio" name="card" value="<%= customerId %>" >
-                         <% } %>
-                         <label>xxxx-xxxx-xxxx-<span><%= digit %></span>
-                         </label>
-                     </div>
-                 </div>
-                 <% count++; %>
-                 <% }); %>
+                var customerId = card.get('customerId');
+                var digit = card.get('last4Digit');%>
+                <div class="field">
+                    <div class="ui radio checkbox checked">
+                        <% if(count === 0){ %>
+                        <input type="radio" name="card" value="<%= customerId %>" checked >
+                        <% } else { %>
+                        <input type="radio" name="card" value="<%= customerId %>" >
+                        <% } %>
+                        <label>xxxx-xxxx-xxxx-<span><%= digit %></span>
+                        </label>
+                    </div>
+                </div>
+                <% count++; %>
+                <% }); %>
             </div>
             <div class="ui divider"></div>
         </div>
