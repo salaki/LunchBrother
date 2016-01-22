@@ -3,25 +3,24 @@
         <form class="ui form">
             <div class="two fields">
                 <div class="field">
-                    <div class="ui search selection dropdown college-selector">
+                    <div class="button ui dropdown college-selector">
                         <input type="hidden" name="university">
-                        <div class="default text">Select a location</div><i class="dropdown icon"></i>
+                        <i class="university icon"></i><div class="default text">Select a location</div><i class="dropdown icon"></i>
                         <div class="menu">
                             <% _.each(universities, function(university) { %>
-                            <div class="item" data-value="<%= university.get('biz_name') %>"><i class="university icon"></i><%= university.get('biz_name') %></div>
+                                <% if (university.dps) { %>
+                                    <div class="item" data-value="<%= university.get('biz_name') %>" data-text="<%= university.get('biz_name') %> (University)"><i class="dropdown icon"></i><%= university.get('biz_name') %>
+                                        <div class="menu">
+                                            <% _.each(university.dps, function(dp) { %>
+                                                <div class="item" data-value="<%= dp.id %>" data-text="<%= dp.get('address') %> (DP)"><%= dp.get('address') %></div>
+                                            <% }) %>
+                                        </div>
+                                    </div>
+                                <% } else { %>
+                                    <div class="item" data-value="<%= university.get('biz_name') %>" data-text="<%= university.get('biz_name') %> (University)"><%= university.get('biz_name') %></div>
+                                <% } %>
                             <% }) %>
                         </div>
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="selection ui dropdown" tabindex="0">
-                        <select id="">
-                            <option value="">Point 1 (default when change college)</option>
-                            <option value="1">Point 2</option>
-                            <option value="0">Point 3</option>
-                        </select>
-                        <i class="dropdown icon"></i>
-                        <div class="default text">Select a Point</div>
                     </div>
                 </div>
             </div>

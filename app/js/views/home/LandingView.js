@@ -6,9 +6,10 @@ define([
     'models/Grid',
     'models/InventoryModel',
     'models/UserRequestModel',
+    'models/PickUpLocation',
     'text!templates/home/landingTemplate.html',
     'text!templates/home/weeklyMenuTemplate.html'
-], function(UniversityModel, GridModel, InventoryModel, UserRequestModel, landingTemplate, weeklyMenuTemplate) {
+], function(UniversityModel, GridModel, InventoryModel, UserRequestModel, PickUpLocationModel, landingTemplate, weeklyMenuTemplate) {
 
     var LandingView = Parse.View.extend({
         el: $("#page"),
@@ -19,6 +20,8 @@ define([
             _.bindAll(this, 'render');
         },
 
+        universityDPMap:[],
+
         render: function() {
             var self = this;            
             var universityQuery = new Parse.Query(UniversityModel);
@@ -26,13 +29,47 @@ define([
             universityQuery.containedIn("e_state", ["MD", "DC", "VA"]);
             universityQuery.ascending("biz_name");
             universityQuery.limit(800);
-            universityQuery.find({
-                success: function(universities) {
+            universityQuery.find().then(
+                function(universities) {
+                    var dpQuery = new Parse.Query(PickUpLocationModel);
+
+                    // TODO - Combine Grid class to University class
+                    dpQuery.include("gridId");
+
+                    return Parse.Promise.when(dpQuery.find(), universities);
+                },
+                function(err) {
+                    console.log(err.message);
+                }
+            ).then(
+                function(dps, universities){
+                    var gridDpMap = {};
+                    _.each(dps, function(dp){
+                        if (!gridDpMap[dp.get("gridId").get("name")]) {
+                            var dpArray = [];
+                            dpArray.push(dp);
+                            gridDpMap[dp.get("gridId").get("name")] = dpArray;
+
+                        } else {
+                            gridDpMap[dp.get("gridId").get("name")].push(dp);
+                        }
+                    });
+
+                    _.each(universities, function(university){
+                        if (gridDpMap[university.get("biz_name")]) {
+                            university["dps"] = gridDpMap[university.get("biz_name")];
+                            console.log(university.dps);
+                        }
+                    });
+
                     self.$el.html(self.template({universities: universities}));
                     self.$(".college-selector").dropdown('set selected', "University of Maryland College Park");
                     self.refreshWeeklyMenu("University of Maryland College Park");
                     self.$(".college-selector").dropdown({
-                        onChange: function (collegeName) {
+                        allowCategorySelection: true,
+                        onChange: function (collegeName, text) {
+                            console.log(collegeName);
+                            console.log(text);
                             self.refreshWeeklyMenu(collegeName);
                         }
                     });
@@ -47,11 +84,8 @@ define([
                         $("#accountLogin").show();
                         $("#accountSignup").show();
                     }
-                },
-                error: function(err) {
-                    console.log(err.message);
                 }
-            });
+            );
         },
 
         showSideBar: function(currentUser) {
@@ -108,14 +142,14 @@ define([
             }
         },
 
-        refreshWeeklyMenu: function(collegeName) {
+        refreshWeeklyMenu: function(collegeName, dp) {
             var self = this;
             var gridQuery = new Parse.Query(GridModel);
             gridQuery.equalTo('name', collegeName);
             gridQuery.first({
                 success: function(grid) {
                     if(grid) {
-                        self.getInventory(grid);
+                        self.getInventory(grid, dp);
                     } else {
                         self.showVoteDialog(collegeName);
                     }
