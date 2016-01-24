@@ -10,7 +10,8 @@ define([
     'text!templates/home/landingTemplate.html',
     'text!templates/home/weeklyMenuTemplate.html'
 ], function(UniversityModel, GridModel, InventoryModel, UserRequestModel, PickUpLocationModel, landingTemplate, weeklyMenuTemplate) {
-
+    var GRID_QUERY = "Grid";
+    var DP_QUERY = "PickUpLoaction";
     var LandingView = Parse.View.extend({
         el: $("#page"),
         template: _.template(landingTemplate),
@@ -55,22 +56,41 @@ define([
                         }
                     });
 
-                    _.each(universities, function(university){
-                        if (gridDpMap[university.get("biz_name")]) {
-                            university["dps"] = gridDpMap[university.get("biz_name")];
-                            console.log(university.dps);
+                    self.$el.html(self.template({universities: universities}));
+                    $(".college-selector").dropdown('set selected', "University of Maryland College Park");
+
+                    var defaultDpOptions = "";
+                    _.each(gridDpMap["University of Maryland College Park"], function(dp) {
+                        defaultDpOptions += '<div class="item" data-value="' + dp.id +'">' + dp.get("address") + '</div>'
+                    });
+
+                    $('.dp-selection .menu').html(defaultDpOptions);
+                    //$('.dp-selection').dropdown('set selected', gridDpMap["University of Maryland College Park"][0].id);
+                    $('.dp-selection').dropdown({
+                        'set selected': gridDpMap["University of Maryland College Park"][0].id,
+                        onChange: function(dp) {
+                            self.refreshWeeklyMenu(DP_QUERY, dp)
                         }
                     });
 
-                    self.$el.html(self.template({universities: universities}));
-                    self.$(".college-selector").dropdown('set selected', "University of Maryland College Park");
-                    self.refreshWeeklyMenu("University of Maryland College Park");
-                    self.$(".college-selector").dropdown({
-                        allowCategorySelection: true,
-                        onChange: function (collegeName, text) {
-                            console.log(collegeName);
-                            console.log(text);
-                            self.refreshWeeklyMenu(collegeName);
+                    console.log(gridDpMap["University of Maryland College Park"][0]);
+                    console.log(gridDpMap["University of Maryland College Park"][0].id);
+
+                    self.refreshWeeklyMenu(DP_QUERY, gridDpMap["University of Maryland College Park"][0].id);
+                    $(".college-selector").dropdown({
+                        onChange: function (collegeName) {
+                            var dpOptions = "";
+                            _.each(gridDpMap[collegeName], function(dp) {
+                                dpOptions += '<div class="item" data-value="' + dp.id +'">' + dp.get("address") + '</div>'
+
+                            });
+                            $('.dp-selection .menu').html(dpOptions);
+                            $('.dp-selection').dropdown({
+                                onChange: function(dp) {
+                                    self.refreshWeeklyMenu(DP_QUERY, dp)
+                                }
+                            });
+                            self.refreshWeeklyMenu(GRID_QUERY, collegeName);
                         }
                     });
 
@@ -142,25 +162,33 @@ define([
             }
         },
 
-        refreshWeeklyMenu: function(collegeName, dp) {
+        refreshWeeklyMenu: function(queryType, target) {
             var self = this;
-            var gridQuery = new Parse.Query(GridModel);
-            gridQuery.equalTo('name', collegeName);
-            gridQuery.first({
-                success: function(grid) {
-                    if(grid) {
-                        self.getInventory(grid, dp);
-                    } else {
-                        self.showVoteDialog(collegeName);
+            if (queryType === GRID_QUERY) {
+                var gridQuery = new Parse.Query(GridModel);
+                gridQuery.equalTo('name', target);
+                gridQuery.first({
+                    success: function(grid) {
+                        if(grid) {
+                            self.getInventory(queryType, grid);
+                        } else {
+                            self.showVoteDialog(target);
+                        }
+                    },
+                    error: function(error) {
+                        showMessage("Oops!", "Find grid failed! Reason: " + error.message);
                     }
-                },
-                error: function(error) {
-                    showMessage("Oops!", "Find grid failed! Reason: " + error.message);
-                }
-            });
+                });
+
+            } else {
+                this.getInventory(queryType, target)
+            }
         },
 
-        getInventory: function(grid) {
+        getInventory: function(queryType, target) {
+            console.log(queryType);
+            console.log(target);
+
             var d = new Date();
             var day = d.getDay(),
                 diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
@@ -204,7 +232,15 @@ define([
 
             var self = this;
             var inventoryQuery = new Parse.Query(InventoryModel);
-            inventoryQuery.equalTo("gridId", grid);
+
+            if (queryType === GRID_QUERY) {
+                inventoryQuery.equalTo("gridId", target);
+            } else {
+                var dp = new PickUpLocationModel();
+                dp.id = target;
+                inventoryQuery.equalTo("pickUpLocation", dp);
+            }
+
             inventoryQuery.equalTo("published", true);
             inventoryQuery.greaterThan("pickUpDate", firstMonday);
             inventoryQuery.lessThan("pickUpDate", friday3);
