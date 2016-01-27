@@ -490,7 +490,6 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
             var unsoldTotal = 0;
             var totalPreorderQuantity = 0;
             var actualSoldOriginalTotal = 0;
-
             if (inventories) {
                 for (var i=0; i<inventories.length; i++) {
                     totalPreorderQuantity += inventories[i].get('preorderQuantity');
@@ -513,11 +512,14 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
                 }
 
                 //Restaurant's Cut
+                //Manager will handle the payment to Restaurant.
+                /*
                 var restaurantTransfer = new TransferModel();
                 restaurantTransfer.set('amount', transferMap.restaurantAmount);
                 restaurantTransfer.set('restaurant', transferMap.restaurant);
                 restaurantTransfer.set("transferred", false);
                 transfers.push(restaurantTransfer);
+                */
 
                 //LunchBrother's Cut
                 var lbTransfer = new TransferModel();
@@ -529,15 +531,15 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
                 //Manager's Cut
                 var managerTransfer = new TransferModel();
 
-                transferMap.managerAmount = todayIncome - lbAmount - actualSoldOriginalTotal;
+                transferMap.managerAmount = todayIncome * 0.92;
                 managerTransfer.set('amount', transferMap.managerAmount);
                 managerTransfer.set('manager', transferMap.manager);
                 managerTransfer.set("transferred", false);
                 transfers.push(managerTransfer);
 
-                var transferSummaryMessage = "Restaurant - $" + transferMap.restaurantAmount.toFixed(2) + ", " +
-                                            "Manager - $" + transferMap.managerAmount.toFixed(2) + ", " +
-                                            "LunchBrother - $" + lbAmount.toFixed(2);
+                //var transferSummaryMessage = "Restaurant - $" + transferMap.restaurantAmount.toFixed(2) + ", " +
+                var transferSummaryMessage = "Manager - $" + transferMap.managerAmount.toFixed(2) + ", " +
+                                             "LunchBrother - $" + lbAmount.toFixed(2);
 
                 Parse.Object.saveAll(transfers, {
                     success: function(transfers) {
@@ -548,10 +550,13 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
                     }
                 });
 
+                //No unsold penalty collected by LB.
+                /*
                 if (unsoldTotal > 0) {
                     unsoldTotal += unsoldTotal * 0.029 + 0.3; // Manager is responsible for this stripe cost
                     chargeUnsoldDishes(totalPreorderQuantity, unsoldTotal, transferMap.manager);
                 }
+                */
             }
         },
         error: function(error) {
