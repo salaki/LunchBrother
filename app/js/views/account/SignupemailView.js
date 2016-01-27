@@ -6,11 +6,11 @@ define([
     var SignupemailView = Parse.View.extend({
         el: $("#page"),
         events: {
-            'click  #signUpBtn': 'checkRegistrationCode'
+            'click  #signUpBtn': 'createAccount'
         },
 
         initialize: function () {
-            _.bindAll(this, 'render', 'checkRegistrationCode', 'createAccount');
+            _.bindAll(this, 'render', 'createAccount');
             
         },
 
@@ -71,6 +71,7 @@ define([
                                  prompt: 'Please select an area for you'
                              }]
                          },
+                         /*
                          'signUpRegistrationCode': {
                              identifier: 'signUpRegistrationCode',
                              rules: [{
@@ -78,6 +79,7 @@ define([
                                  prompt: 'Please provide your registration code'
                              }]
                          }
+                         */
                      }, {
                          on: 'blur',
                          inline: 'true'
@@ -90,6 +92,7 @@ define([
              return this;
         },
 
+        /*
         checkRegistrationCode: function() {
             var self = this;
             var inputCode = this.$("#signUpRegistrationCode").val();
@@ -121,6 +124,7 @@ define([
             });
 
         },
+        */
 
         createAccount: function() {
         	var self = this;
