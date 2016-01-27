@@ -12,6 +12,7 @@ define([
 ], function(UniversityModel, GridModel, InventoryModel, UserRequestModel, PickUpLocationModel, landingTemplate, weeklyMenuTemplate) {
     var GRID_QUERY = "Grid";
     var DP_QUERY = "PickUpLoaction";
+    var UNIVERSITY_POPULATION_THRESHOLD = 25000;
     var LandingView = Parse.View.extend({
         el: $("#page"),
         template: _.template(landingTemplate),
@@ -33,17 +34,26 @@ define([
             universityQuery.find().then(
                 function(universities) {
                     var dpQuery = new Parse.Query(PickUpLocationModel);
-
-                    // TODO - Combine Grid class to University class
                     dpQuery.include("gridId");
 
-                    return Parse.Promise.when(dpQuery.find(), universities);
+                    // TODO - Combine Grid class to University class
+                    var filteredUniversities = _.reject(universities, function(university){
+                        if (university.get("c_pop")) {
+                            if (Number(university.get("c_pop")) < UNIVERSITY_POPULATION_THRESHOLD) {
+                                return university;
+                            }
+                        } else {
+                            return university;
+                        }
+                    });
+
+                    return Parse.Promise.when(dpQuery.find(), filteredUniversities);
                 },
                 function(err) {
                     console.log(err.message);
                 }
             ).then(
-                function(dps, universities){
+                function(dps, filteredUniversities){
                     var gridDpMap = {};
                     _.each(dps, function(dp){
                         if (!gridDpMap[dp.get("gridId").get("name")]) {
@@ -56,27 +66,12 @@ define([
                         }
                     });
 
-                    self.$el.html(self.template({universities: universities}));
+                    // Render page
+                    self.$el.html(self.template({universities: filteredUniversities}));
+
+                    // Default university and dp selections and their onChange settings
                     $(".college-selector").dropdown('set selected', "University of Maryland College Park");
-
-                    var defaultDpOptions = "";
-                    _.each(gridDpMap["University of Maryland College Park"], function(dp) {
-                        defaultDpOptions += '<div class="item" data-value="' + dp.id +'">' + dp.get("address") + '</div>'
-                    });
-
-                    $('.dp-selection .menu').html(defaultDpOptions);
-                    //$('.dp-selection').dropdown('set selected', gridDpMap["University of Maryland College Park"][0].id);
-                    $('.dp-selection').dropdown({
-                        'set selected': gridDpMap["University of Maryland College Park"][0].id,
-                        onChange: function(dp) {
-                            self.refreshWeeklyMenu(DP_QUERY, dp)
-                        }
-                    });
-
-                    console.log(gridDpMap["University of Maryland College Park"][0]);
-                    console.log(gridDpMap["University of Maryland College Park"][0].id);
-
-                    self.refreshWeeklyMenu(DP_QUERY, gridDpMap["University of Maryland College Park"][0].id);
+                    self.refreshWeeklyMenu(GRID_QUERY, "University of Maryland College Park");
                     $(".college-selector").dropdown({
                         onChange: function (collegeName) {
                             var dpOptions = "";
@@ -91,6 +86,18 @@ define([
                                 }
                             });
                             self.refreshWeeklyMenu(GRID_QUERY, collegeName);
+                        }
+                    });
+
+                    // Default dp onChange setting
+                    var defaultDpOptions = "";
+                    _.each(gridDpMap["University of Maryland College Park"], function(dp) {
+                        defaultDpOptions += '<div class="item" data-value="' + dp.id +'">' + dp.get("address") + '</div>'
+                    });
+                    $('.dp-selection .menu').html(defaultDpOptions);
+                    $('.dp-selection').dropdown({
+                        onChange: function(dp) {
+                            self.refreshWeeklyMenu(DP_QUERY, dp)
                         }
                     });
 
