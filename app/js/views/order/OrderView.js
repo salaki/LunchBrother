@@ -27,10 +27,6 @@ define([
 
         tagName: "div",
 
-        attributes: {
-            class: 'column'
-        },
-
         template: _.template(orderTemplate),
 
         events: {

@@ -1,16 +1,24 @@
 <h1 id="dishTitle" class="ui small center aligned header">Today's Special</h1>
 
-<div id="pickUpLocationWrapper" class="ui segment">
-    <div id="basicinfo">
-        <div class="ui fluid field">
-            <div id="addressoption">
+<form class="ui form">
+    <div class="two fields">
+        <div class="field">
+            <div class="ui search selection dropdown college-selector">
+                <input type="hidden" name="university">
+                <div class="default text">Select a College</div><i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="item" data-value="1">College 1</div>
+                    <div class="item" data-value="0">College 2</div>
+                </div>
+            </div>           
+        </div>
+        <div class="field">
                 <select id="addressdetails" name="address">
                     <option id="pickUpAddress" value="all">Select Operating Point</option>
                 </select>
-            </div>
         </div>
     </div>
-</div>
+</form>
 
 <div id="dishWrapper" class="ui grid">
     <div id="dishList" class="doubling two column row dishes">

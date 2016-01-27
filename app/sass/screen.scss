@@ -28,6 +28,12 @@ html {
 	background-color: $color_lgrey;
     font-family: 'Roboto', sans-serif;
 }
+
+body {
+  height: auto !important;
+  min-height: 100%;
+}
+
 header {
 	min-width: 320px;
   .brand.item {

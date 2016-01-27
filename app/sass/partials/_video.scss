@@ -1,11 +1,16 @@
-#youtubeDiv{
-    height:300px;
-    width:100%
-}
-#frame {
-    height: 100%;
-    width: 100%;
-    
-    -webkit-overflow-scrolling: touch;
-    overflow-y: scroll;
-}
+    .scroll-wrapper {
+        width:100%;
+        position: relative;
+        height: 0;
+        padding-top: 35px;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+        iframe {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
+    }
+
