@@ -31,7 +31,8 @@ define([
             'click #concealMenu': 'onConcealMenuClick',
             'click #addPerson': 'onEditOrAddPersonClick',
             'click .toBankAccount': 'showBankInfo',
-            'click .toCreditCard': 'showCardInfo'
+            'click .toCreditCard': 'showCardInfo',
+            'click #toManageRestaurants': 'toManageRestaurants'
         },
 
         days: {0:'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat'},
@@ -870,6 +871,10 @@ define([
             //var cardId = $(ev.currentTarget).data('id');
             //window.location.href='#card?id=' + cardId;
             window.location.href='#card';
+        },
+
+        toManageRestaurants: function() {
+            window.location.href='#manageRestaurants';  
         }
     });
     return ManagerHomeView;
