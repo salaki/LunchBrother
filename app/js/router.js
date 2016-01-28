@@ -317,7 +317,7 @@ define([
          */
         appRouter.on('route:showManageRestaurants', function () {
             var manageRestaurantsView = new ManageRestaurantsView();
-            renderView(LB_ADMIN, manageRestaurantsView);
+            renderView(LOCAL_MANAGER, manageRestaurantsView);
         });
 
         appRouter.on('route:showNewRestaurant', function () {
