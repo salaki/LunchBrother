@@ -217,7 +217,7 @@ define([
         menuSelectionAndSalesData: function() {
             var self = this;
             this.configureMenuSelection();
-
+            this.$("#periodSelector").dropdown();
             //Sales data
             this.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00, nextPaymentDate: this.nextPayment.date, nextPaymentAmount: this.nextPayment.amount.toFixed(2)}));
             this.$( "#datepicker" ).datepicker({
