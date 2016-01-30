@@ -165,6 +165,10 @@ define([
                     // For non-preorder model
                     var newQantity = inventory.get('totalOrderQuantity') + dishCount[inventory.id];
                     inventory.set('totalOrderQuantity', newQantity);
+                    if (self.paymentMethod === CARD_METHOD) {
+                        var newPayByCardCount = inventory.get('payByCardCount') + 1;
+                        inventory.set('payByCardCount', newPayByCardCount);
+                    }
                 });
 
                 return Parse.Object.saveAll(inventories);
