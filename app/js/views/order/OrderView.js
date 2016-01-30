@@ -163,7 +163,8 @@ define([
                     //inventory.set('currentQuantity', newQantity);
 
                     // For non-preorder model
-                    inventory.set('currentOrderQuantity', dishCount[inventory.id]);
+                    var newQantity = inventory.get('totalOrderQuantity') + dishCount[inventory.id];
+                    inventory.set('totalOrderQuantity', newQantity);
                 });
 
                 return Parse.Object.saveAll(inventories);
