@@ -106,10 +106,28 @@ define(['views/home/DishView',
         collectInventoryDishes: function() {
             var self = this;
             var inventoryQuery = new Parse.Query(InventoryModel);
-            var upperDate = new Date();
-            upperDate.setHours(13, 0, 0, 0);
-            var lowerDate = new Date();
-            lowerDate.setHours(10, 0, 0, 0);
+            //var upperDate = new Date();
+            //upperDate.setHours(13, 0, 0, 0);
+            //var lowerDate = new Date();
+            //lowerDate.setHours(10, 0, 0, 0);
+
+            //Display the inventory dishes
+            var current = new Date();
+            var currentHour = current.getHours();
+            if (currentHour > 14) {
+                //After 14:00, display the inventory of the next day
+                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                upperDate.setHours(13, 0, 0, 0);
+                var lowerDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                lowerDate.setHours(10, 0, 0, 0);
+            }
+            else {
+                //Before 14:00, display the inventory of the current day
+                var upperDate = new Date(current.getTime());
+                upperDate.setHours(13, 0, 0, 0);
+                var lowerDate = new Date(current.getTime());
+                lowerDate.setHours(10, 0, 0, 0);
+            }
 
             inventoryQuery.include("dish");
             inventoryQuery.include("dish.restaurant");
@@ -146,20 +164,20 @@ define(['views/home/DishView',
             var weekday = currentTime.getDay();
 
             var startOrderTime = new Date();
-            startOrderTime.setHours(11, 0, 0, 0);
+            startOrderTime.setHours(14, 0, 0, 0);
             var stopOrderTime = new Date();
-            stopOrderTime.setHours(13, 0, 0, 0);
+            stopOrderTime.setHours(21, 45, 0, 0);
 
             // Disable check out button by default unless adding orders
             $('#paymentBtn').prop('disabled', true);
             $('#paymentBtn').addClass('grey');
 
             if (Parse.User.current().get('permission') != LB_ADMIN) {
-                if (weekday == 6 || weekday == 0) {
-                    $("#timeAlert").css("display", "block").text("Sorry, we don't provide the service on weekends. Please come back on Monday :)");
+                if (weekday == 6 && weekday == 5) {
+                    $("#timeAlert").css("display", "block").text("Sorry, we don't provide service on weekends. Please come back on Sunday after 2:00PM :)");
 
                 } else if(currentTime > stopOrderTime || currentTime < startOrderTime) {
-                    $("#timeAlert").css("display", "block").text("Sorry, we don't take order before 11:00AM or after 1:00PM. Our order time is 11:00AM-1:00PM.");
+                    $("#timeAlert").css("display", "block").text("Sorry, our order time is 2:00PM-9:45PM.");
 
                 } else {
                     // Do nothing
@@ -234,9 +252,9 @@ define(['views/home/DishView',
 
             var current = new Date();
             var startOrderTime = new Date();
-            startOrderTime.setHours(11, 0, 0, 0);
+            startOrderTime.setHours(14, 0, 0, 0);
             var stopOrderTime = new Date();
-            stopOrderTime.setHours(13, 0, 0, 0);
+            stopOrderTime.setHours(21, 45, 0, 0);
 
             if (current > startOrderTime && current < stopOrderTime) {
                 if (currentQuantity <= 5) {

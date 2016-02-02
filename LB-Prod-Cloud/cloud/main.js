@@ -799,17 +799,25 @@ Parse.Cloud.job("weeklySMS", function(request, status) {
 });
 
 Parse.Cloud.job("dailyOrderConfirmationSMS", function(request, status) {
-    findInventoriesThensendSMS(0);
+    findInventoriesThensendSMS(0, "PICK_UP_TIME");
+});
+
+// TODO - Schedule this job to 10PM every day
+Parse.Cloud.job("orderQuantityNotificationSMS", function(request, status) {
+    findInventoriesThensendSMS(0, "PICK_UP_QUANTITY");
 });
 
 Parse.Cloud.define("manuallySendConfirmationSMS", function(request, response) {
-    findInventoriesThensendSMS(request.params.targetDate);
+    findInventoriesThensendSMS(request.params.targetDate, request.params.smsType);
 });
 
-function findInventoriesThensendSMS(targetDate) {
+function findInventoriesThensendSMS(targetDate, smsType) {
     //Target date to confirm
     var lowerBoundPickUpTime = new Date();
     var confirmDateOffset = 7;
+    if (smsType === "PICK_UP_QUANTITY") {
+        confirmDateOffset = 1;
+    }
     lowerBoundPickUpTime.setHours(14, 0, 0, 0);
 
     if (targetDate === 0) {
@@ -825,96 +833,106 @@ function findInventoriesThensendSMS(targetDate) {
     upperBoundPickUpTime.setDate(lowerBoundPickUpTime.getDate());
     console.log("Inventory query period: " + lowerBoundPickUpTime + " - " + upperBoundPickUpTime);
 
-    //Query Inventory
     var inventoryModel = Parse.Object.extend("Inventory");
     var inventoryQuery = new Parse.Query(inventoryModel);
     inventoryQuery.greaterThan("pickUpDate", lowerBoundPickUpTime);
     inventoryQuery.lessThan("pickUpDate", upperBoundPickUpTime);
     inventoryQuery.include("dish");
     inventoryQuery.include("dish.restaurant");
+    inventoryQuery.include("pickUpLocation");
+    inventoryQuery.include("pickUpLocation.manager");
     inventoryQuery.find({
         success: function(inventories) {
             console.log("Inventory Number: " + inventories.length);
+            var managerInventoryMap = {};
             if (inventories.length > 0) {
-                var message = "LunchBrother Order Pick Up Time: ";
-                var messagePickUpTime;
-                var messageQuantity = "";
-                var confirmNumber;
-                var restaurantName = "";
-                var managerName = "";
-                var inventoryIds = [];
-                for (var i=0; i<inventories.length; i++) {
-                    inventoryIds.push(inventories[i].id);
-                    var pickUpDateTime = new Date(inventories[i].get('pickUpDate'));
-                    var year = pickUpDateTime.getFullYear();
-                    var month = pickUpDateTime.getMonth() + 1;
-                    var day = pickUpDateTime.getDay();
-                    var date = pickUpDateTime.getDate();
-                    var hour = pickUpDateTime.getHours() - 5; //TODO - Need to somehow include time zone
-                    var minute = (pickUpDateTime.getMinutes()<10 ? '0':'') + pickUpDateTime.getMinutes();
+                _.each(inventories, function(inventory){
+                    var managerFirstName = inventory.get('pickUpLocation').get('manager').get('firstName');
+                    if (managerInventoryMap[managerFirstName]) {
+                        managerInventoryMap[managerFirstName].push(inventory);
 
-                    if (confirmNumber === undefined) {
-                        confirmNumber = inventories[i].get('dish').get('restaurant').get('confirmNumber');
+                    } else {
+                        managerInventoryMap[managerFirstName] = [inventory];
+                    }
+                });
+
+                for (var name in managerInventoryMap) {
+                    if (smsType === "PICK_UP_QUANTITY") {
+                        var message = name + " will pickup ";
+
+                    } else {
+                        var message = name + " requires orders: ";
+
                     }
 
-                    if (messagePickUpTime === undefined) {
-                        var dayLabel;
-                        switch (day) {
-                            case 1:
-                                dayLabel = "Mon";
-                                break;
-                            case 2:
-                                dayLabel = "Tue";
-                                break;
-                            case 3:
-                                dayLabel = "Wed";
-                                break;
-                            case 4:
-                                dayLabel = "Thu";
-                                break;
-                            case 5:
-                                dayLabel = "Fri";
-                                break;
-                            case 6:
-                                dayLabel = "Sat";
-                                break;
-                            default :
-                                dayLabel = "Sun";
-                                break;
+                    var messagePickUpTime;
+                    var messageQuantity = "";
+                    var confirmNumber;
+                    var restaurantName = "";
+                    var managerName = "";
+                    var inventoryIds = [];
+                    _.each(managerInventoryMap[name], function(inventory){
+                        inventoryIds.push(inventory.id);
+                        var pickUpDateTime = new Date(inventory.get('pickUpDate'));
+                        var year = pickUpDateTime.getFullYear();
+                        var month = pickUpDateTime.getMonth() + 1;
+                        var day = pickUpDateTime.getDay();
+                        var date = pickUpDateTime.getDate();
+                        var hour = pickUpDateTime.getHours() - 5; //TODO - Need to somehow include time zone
+                        var minute = (pickUpDateTime.getMinutes()<10 ? '0':'') + pickUpDateTime.getMinutes();
+
+                        if (confirmNumber === undefined) {
+                            confirmNumber = inventory.get('dish').get('restaurant').get('confirmNumber');
                         }
 
-                        messagePickUpTime = dayLabel + " " + hour + ":" + minute + "AM " + month + "/" + date + "/" + year + " - Orders:";
-                    }
+                        if (messagePickUpTime === undefined) {
+                            var dayLabel = getDayLabel(day);
+                            if (smsType === "PICK_UP_QUANTITY") {
+                                messagePickUpTime = " at " + hour + ":" + minute + "AM Tomorrow. Reply \"yes\" to confirm.";
 
-                    if (!restaurantName) {
-                        restaurantName = inventories[i].get('dish').get('restaurant').get('name');
-                    }
+                            } else {
+                                messagePickUpTime = " on " + dayLabel + " " + month + "/" + date + "/" + year + ". Reply \"yes\" to acknowledge";
+                            }
+                        }
 
-                    if (!managerName) {
-                        managerName = inventories[i].get('dish').get('restaurant').get('managerName');
-                    }
+                        if (!restaurantName) {
+                            restaurantName = inventory.get('dish').get('restaurant').get('name');
+                        }
 
-                    messageQuantity += " " + inventories[i].get('dish').get('dishCode') + "(" + inventories[i].get('preorderQuantity') + ")";
+                        if (!managerName) {
+                            managerName = inventory.get('dish').get('restaurant').get('managerName');
+                        }
+
+                        if (smsType === "PICK_UP_QUANTITY") {
+                            messageQuantity += " ," + inventory.get('dish').get('dishCode') + "(" + inventory.get('totalOrderQuantity') + ")";
+
+                        } else {
+                            messageQuantity += ' ,"' + inventory.get('dish').get('dishCode') + '"';
+                        }
+                    });
+
+                    message +=  messageQuantity.substring(2) + messagePickUpTime;
+
+                    twilioSMSService(confirmNumber, message);
+                    //twilioSMSService("2022039808", message);  // Yali's phone number
+                    //twilioSMSService("7179822078", message);  // Jack's phone number
+
+                    var ConfirmRecord = Parse.Object.extend("SMSConfirmRecord");
+                    var confirmRecord = new ConfirmRecord();
+
+                    confirmRecord.set("inventoryIds", inventoryIds);
+                    confirmRecord.set("sentToNumber", confirmNumber);
+                    confirmRecord.set("confirmStatus", "PENDING");
+                    confirmRecord.set("smsType", smsType);
+
+                    confirmRecord.save();
+                    console.log("SMS sent to " + confirmNumber + "! Message: " + message);
+
+                    // Send sms message copy to LunchBrother email and slack
+                    sendSMSCopyToLBEmail(message, confirmNumber, managerName, restaurantName);
+                    slackLunchBrother("#sms", "SMS Sent to " + confirmNumber + " (" + restaurantName + ") ", "Message Content: " + message, ":outbox_tray:");
                 }
 
-                message += messagePickUpTime + messageQuantity + " - Please reply 'yes' to confirm.";
-
-                twilioSMSService(confirmNumber, message);
-                //twilioSMSService("2022039808", message);  // Yali's phone number
-                //twilioSMSService("7179822078", message);  // Jack's phone number
-
-                var ConfirmRecord = Parse.Object.extend("SMSConfirmRecord");
-                var confirmRecord = new ConfirmRecord();
-
-                confirmRecord.set("inventoryIds", inventoryIds);
-                confirmRecord.set("sentToNumber", confirmNumber);
-                confirmRecord.set("confirmStatus", "PENDING");
-                confirmRecord.save();
-                console.log("SMS sent to " + confirmNumber + "! Message: " + message);
-
-                // Send sms message copy to LunchBrother email and slack
-                sendSMSCopyToLBEmail(message, confirmNumber, managerName, restaurantName);
-                slackLunchBrother("#sms", "SMS Sent to " + confirmNumber + " (" + restaurantName + ") ", "Message Content: " + message, ":outbox_tray:");
             } else {
                 console.log("Nothing to send!");
             }
@@ -923,6 +941,35 @@ function findInventoriesThensendSMS(targetDate) {
             console.log("Fail to query inventory! Reason: " + error.message);
         }
     })
+}
+
+function getDayLabel(day) {
+    var label;
+    switch (day) {
+        case 1:
+            label = "Mon";
+            break;
+        case 2:
+            label = "Tue";
+            break;
+        case 3:
+            label = "Wed";
+            break;
+        case 4:
+            label = "Thu";
+            break;
+        case 5:
+            label = "Fri";
+            break;
+        case 6:
+            label = "Sat";
+            break;
+        default :
+            label = "Sun";
+            break;
+    }
+
+    return label;
 }
 
 function twilioSMSService(targetNumber, messageBody) {

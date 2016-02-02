@@ -364,15 +364,24 @@ define([
             inventoryQuery.find({
                 success: function(inventories) {
                     var income = 0;
+                    var payByCardIncome = 0;
                     var restaurantIncome = 0;
                     if (inventories.length !== 0) {
                         _.each(inventories, function(inventory) {
-                            var soldQuantity = inventory.get("preorderQuantity") - inventory.get("currentQuantity");
-                            var salesTotalByInventory = soldQuantity * inventory.get("price");
-                            var restaurantIncomeByInventory = soldQuantity * inventory.get("dish").get('originalPrice');
+                            //var soldQuantity = inventory.get("preorderQuantity") - inventory.get("currentQuantity");
+                            //var salesTotalByInventory = soldQuantity * inventory.get("price");
+                            //var restaurantIncomeByInventory = soldQuantity * inventory.get("dish").get('originalPrice');
+                            //income += salesTotalByInventory;
+                            //inventory.income = salesTotalByInventory - salesTotalByInventory * 0.08 - restaurantIncomeByInventory;
+                            var totalOrderQuantity = inventory.get("totalOrderQuantity");
+                            var payByCardQuantity = inventory.get("payByCardCount");
+                            var payByCardIncomeByInventory = payByCardQuantity * inventory.get("price");
+                            var salesTotalByInventory = payByCardIncome + (totalOrderQuantity - payByCardQuantity) * inventory.get("cashPrice");
+                            var restaurantIncomeByInventory = totalOrderQuantity * inventory.get("dish").get('originalPrice');
+                            payByCardIncome += payByCardIncomeByInventory;
                             restaurantIncome += restaurantIncomeByInventory;
                             income += salesTotalByInventory;
-                            inventory.income = salesTotalByInventory - salesTotalByInventory * 0.08 - restaurantIncomeByInventory;
+                            inventory.income = salesTotalByInventory - payByCardIncomeByInventory * 0.08;
                         });
                     }
 

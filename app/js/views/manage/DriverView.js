@@ -54,23 +54,28 @@ define([
                         locationArray.push(locations[i]);
                     }
 
-                    //Display the order between a duration
+                    //Display the order
                     var current = new Date();
-                    var currentHour = current.getHours();
-                    if (currentHour > 14) {
-                        //After 14:00, display the orders from today 2pm to tomorrow 12pm
-                        var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                        upperDate.setHours(12, 0, 0, 0);
-                        var lowerDate = current;
-                        lowerDate.setHours(14, 0, 0, 0);
-                    }
-                    else {
-                        //Before 14:00, display the orders from yesterday 2pm to today 12pm
-                        upperDate = current;
-                        upperDate.setHours(12, 0, 0, 0);
-                        lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-                        lowerDate.setHours(14, 0, 0, 0);
-                    }
+                    //var currentHour = current.getHours();
+                    //if (currentHour > 14) {
+                    //    //After 14:00, display the orders from today 2pm to tomorrow 12pm
+                    //    var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                    //    upperDate.setHours(12, 0, 0, 0);
+                    //    var lowerDate = current;
+                    //    lowerDate.setHours(14, 0, 0, 0);
+                    //}
+                    //else {
+                    //    //Before 14:00, display the orders from yesterday 2pm to today 12pm
+                    //    upperDate = current;
+                    //    upperDate.setHours(12, 0, 0, 0);
+                    //    lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                    //    lowerDate.setHours(14, 0, 0, 0);
+                    //}
+
+                    var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                    lowerDate.setHours(14, 0, 0, 0);
+                    var upperDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                    upperDate.setHours(21, 50, 0, 0);
 
                     orderQuery.greaterThan("createdAt", lowerDate);
                     orderQuery.lessThan("createdAt", upperDate);
@@ -173,20 +178,25 @@ define([
 
             //Find today's inventory
             var current = new Date();
-            var currentHour = current.getHours();
-            if (currentHour < 12) {
-                //Before 12:00, display the inventory for today
-                var lowerDate = current;
-                lowerDate.setHours(8, 0, 0, 0);
-                var upperDate = new Date(current.getTime());
-                upperDate.setHours(12, 0, 0, 0);
-            } else {
-                //After 12:00, display the inventory for tomorrow
-                lowerDate = current;
-                lowerDate.setHours(12, 0, 0, 0);
-                upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                upperDate.setHours(12, 0, 0, 0);
-            }
+            //var currentHour = current.getHours();
+            //if (currentHour < 12) {
+            //    //Before 12:00, display the inventory for today
+            //    var lowerDate = current;
+            //    lowerDate.setHours(8, 0, 0, 0);
+            //    var upperDate = new Date(current.getTime());
+            //    upperDate.setHours(12, 0, 0, 0);
+            //} else {
+            //    //After 12:00, display the inventory for tomorrow
+            //    lowerDate = current;
+            //    lowerDate.setHours(12, 0, 0, 0);
+            //    upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+            //    upperDate.setHours(12, 0, 0, 0);
+            //}
+
+            var lowerDate = current;
+            lowerDate.setHours(10, 0, 0, 0);
+            var upperDate = new Date(current.getTime());
+            upperDate.setHours(13, 0, 0, 0);
 
             var driverGrid = Parse.User.current().get('gridId');
             //default chef's grid to University of Maryland College Park

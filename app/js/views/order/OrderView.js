@@ -84,7 +84,8 @@ define([
 
         orderSubmit: function (e) {
             e.preventDefault();
-            this.checkInventory();
+            //this.checkInventory();
+            this.updateInventory();
         },
 
         showCardInfo: function(e) {
@@ -109,8 +110,6 @@ define([
             var self = this;
             var dishCountMap = {};
             var inventoryIds = [];
-
-
 
             _.each(this.model.orders, function (dish) {
                 if (!self.dpId) {
@@ -159,8 +158,17 @@ define([
             inventoryQuery.containedIn("objectId", inventoryIds);
             inventoryQuery.find().then(function(inventories){
                 _.each(inventories, function(inventory){
-                    var newQantity = inventory.get('currentQuantity') - dishCount[inventory.id];
-                    inventory.set('currentQuantity', newQantity);
+                    // For pre-order model
+                    //var newQantity = inventory.get('currentQuantity') - dishCount[inventory.id];
+                    //inventory.set('currentQuantity', newQantity);
+
+                    // For non-preorder model
+                    var newQantity = inventory.get('totalOrderQuantity') + dishCount[inventory.id];
+                    inventory.set('totalOrderQuantity', newQantity);
+                    if (self.paymentMethod === CARD_METHOD) {
+                        var newPayByCardCount = inventory.get('payByCardCount') + 1;
+                        inventory.set('payByCardCount', newPayByCardCount);
+                    }
                 });
 
                 return Parse.Object.saveAll(inventories);

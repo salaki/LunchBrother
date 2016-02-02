@@ -80,12 +80,17 @@ define([
             query.notEqualTo("isPickedUp", true);
             query.include("pickUpLocation");
 
-            //Display the order between a duration
-            var lowerDate = new Date();
-            lowerDate.setDate(1);
-            lowerDate.setHours(10, 0, 0, 0);
-            var upperDate = new Date();
-            upperDate.setHours(14, 0, 0, 0);
+            //Display the order
+            //var lowerDate = new Date();
+            //lowerDate.setHours(10, 0, 0, 0);
+            //var upperDate = new Date();
+            //upperDate.setHours(14, 0, 0, 0);
+
+            var current = new Date();
+            var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+            lowerDate.setHours(14, 0, 0, 0);
+            var upperDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+            upperDate.setHours(21, 50, 0, 0);
 
             query.greaterThan("createdAt", lowerDate);
             query.lessThan("createdAt", upperDate);
@@ -202,10 +207,15 @@ define([
             query.notEqualTo("isPickedUp", true);
 
             //Set the time frame to look for the orders
-            var lowerDate = new Date();
-            lowerDate.setHours(10, 0, 0, 0);
-            var upperDate = new Date();
-            upperDate.setHours(14, 0, 0, 0);
+            //var lowerDate = new Date();
+            //lowerDate.setHours(10, 0, 0, 0);
+            //var upperDate = new Date();
+            //upperDate.setHours(14, 0, 0, 0);
+            var current = new Date();
+            var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+            lowerDate.setHours(14, 0, 0, 0);
+            var upperDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+            upperDate.setHours(21, 50, 0, 0);
 
             var orders = [];
             query.greaterThan("createdAt", lowerDate);

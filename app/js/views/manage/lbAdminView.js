@@ -94,11 +94,12 @@ define([
 
         sendSMS: function() {
             var targetDate = Number($("#smsDate").val());
-            console.log(targetDate);
+            var smsType = $('input[name="smsType"]:checked').val();
+            console.log("Target Date: " + targetDate + ", SMS Type: " + smsType);
             if (targetDate) {
                 Parse.Cloud.run("manuallySendConfirmationSMS", {
-                    targetDate: targetDate
-
+                    targetDate: targetDate,
+                    smsType: smsType
                 }, {
                     success: function (success) {
                         showMessage("Success", "Sending SMS!");
