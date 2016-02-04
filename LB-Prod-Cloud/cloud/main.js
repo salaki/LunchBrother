@@ -835,6 +835,7 @@ function findInventoriesThensendSMS(targetDate) {
     var inventoryQuery = new Parse.Query(inventoryModel);
     inventoryQuery.greaterThan("pickUpDate", lowerBoundPickUpTime);
     inventoryQuery.lessThan("pickUpDate", upperBoundPickUpTime);
+    inventoryQuery.equalTo("published", true);
     inventoryQuery.include("dish");
     inventoryQuery.include("dish.restaurant");
     inventoryQuery.find({
