@@ -78,7 +78,6 @@ define([
                         restaurantQuery.get(restaurantId, {
                             success: function(restaurant) {
                                 self.restaurantPickUpTime = restaurant.get('pickUpTime');
-                                console.log(self.restaurantPickUpTime);
                             },
                             error: function(error) {
                                 showMessage("Error", "Error in fetching restaurant. Reason: " + error.message);

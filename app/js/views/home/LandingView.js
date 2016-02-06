@@ -193,9 +193,6 @@ define([
         },
 
         getInventory: function(queryType, target) {
-            console.log(queryType);
-            console.log(target);
-
             var d = new Date();
             var day = d.getDay(),
                 diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
@@ -241,7 +238,10 @@ define([
             var inventoryQuery = new Parse.Query(InventoryModel);
 
             if (queryType === GRID_QUERY) {
-                inventoryQuery.equalTo("gridId", target);
+                var grid = new GridModel();
+                grid.id = target.id;
+                inventoryQuery.equalTo("gridId", grid);
+
             } else {
                 var dp = new PickUpLocationModel();
                 dp.id = target;
