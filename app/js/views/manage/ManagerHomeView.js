@@ -874,7 +874,7 @@ define([
         },
 
         toManageRestaurants: function() {
-            window.location.href='#manageRestaurants';  
+            window.location.href='#manageRestaurants';
         }
     });
     return ManagerHomeView;
