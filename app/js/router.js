@@ -322,7 +322,7 @@ define([
 
         appRouter.on('route:showNewRestaurant', function () {
             var newRestaurantView = new NewRestaurantView();
-            renderView(LB_ADMIN, newRestaurantView);
+            renderView(LOCAL_MANAGER, newRestaurantView);
         });
 
         appRouter.on('route:showEditRestaurant', function (queryString) {
@@ -330,7 +330,7 @@ define([
             var newRestaurantView = new NewRestaurantView({
                 id: params.id
             });
-            renderView(LB_ADMIN, newRestaurantView);
+            renderView(LOCAL_MANAGER, newRestaurantView);
         });
 
         appRouter.on('route:showBank', function (queryString) {

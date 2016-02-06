@@ -19,10 +19,12 @@ define([
 
         initialize: function () {
             _.bindAll(this, 'render');
+            this.currentUser = Parse.User.current();
         },
 
         template: _.template(manageRestaurantsTemplate),
         dishListTemplate: _.template(manageRestaurantDishListTemplate),
+        currentUser: null,
 
         render: function () {
             var self = this;
@@ -32,6 +34,12 @@ define([
                     self.$el.html(self.template({restaurants: restaurants}));
                     $("#editRestaurant").addClass('disabled');
                     $("#deleteRestaurant").addClass('disabled');
+
+                    if (self.currentUser.get('permission') !== LB_ADMIN) {
+                        $("#editRestaurant").hide();
+                        $("#deleteRestaurant").hide();
+                    }
+
                     $(".manage-restaurant-selection").dropdown({
                         onChange: function (restaurantId) {
                             self.refreshDishList(restaurantId);
@@ -67,6 +75,11 @@ define([
             dishQuery.find({
                 success: function(dishes) {
                     self.$("#dishList").html(self.dishListTemplate({dishes: dishes}));
+                    if (self.currentUser.get('permission') !== LB_ADMIN) {
+                        $(".editDish").hide();
+                        $(".deleteDish").hide();
+                        $("#addNewDishBtn").hide();
+                    }
                 },
                 error: function(error) {
                     showMessage("Error", "Find dishes failed! Reason: " + error.message);
