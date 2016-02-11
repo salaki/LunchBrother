@@ -1,18 +1,5 @@
 <div class="ui card" id="pickUpLocation-<%=dish.pickUpLocationId %>">
-    <div class="image" style="background-image: url(<%= dish.Image_File.url%>);">
-        <div id="<%=dish.objectId %>-dimmer" class="ui dimmer">
-            <div class="dimmer-content">
-                <h2 class="ui inverted header">
-                    Sold Out!
-                </h2>
-                <div class="ui inverted basic button" id="<%=dish.objectId %>-dimmerButton" data-id="<%=dish.objectId %>" data-inventory-id="<%=inventoryId %>">I want more</div>
-            </div>
-        </div>
-        <!--
-        <img src="<%= dish.Image_File.url%>" />
-        -->
-        <div id="<%=dish.objectId %>-currentQuantityWarning" class="img-overlay" style="display: none"></div>
-    </div>
+    <div class="image" style="background-image: url(<%= dish.Image_File.url%>);"></div>
 
     <div class="content">
         <div class="ui grid">
