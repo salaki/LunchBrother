@@ -59,13 +59,13 @@ define([
                 self.$("#cashPriceMessage").html(self.model.totalCashCharge);
                 self.$("#cardPriceMessage").html(self.model.totalCharge);
 
-                // TODO - Show Youtube Video if is available
-                //if(self.model.youtubeLink) {
-                //    self.$("#youtubeDiv").show();
-                //    self.$("#frame").attr("src", self.model.youtubeLink + "?autoplay=0");
-                //} else {
-                //    self.$("#youtubeDiv").hide();
-                //}
+                // Show Youtube Video if is available
+                if(self.model.youtubeLink) {
+                    self.$("#youtubeDiv").show();
+                    self.$("#youtubeFrame").attr("src", self.model.youtubeLink + "?autoplay=0");
+                } else {
+                    self.$("#youtubeDiv").hide();
+                }
 
             }, function(error){
                 showMessage("Oops!", "Something is wrong! Reason: " + error.message);
