@@ -269,7 +269,7 @@ Parse.Cloud.define("email",
                                 '</tr>' +
                                 '</table>' +
                                 '<p align="middle" style="position:relative;  color: red">*Please <a href="www.lunchbrother.com/#status">check the delivery status on Lunchbrother</a> to find the specific pick-up start time.</p>' +
-                                '<p align="middle" style="position:relative;  color: red">**No pick-up later than <a style="color: blue;">1:15PM</a>, please manage well your pick-up time.' +
+                                '<p align="middle" style="position:relative;  color: red">**No pick-up later than <a style="color: blue;">12:30PM</a>, please manage well your pick-up time.' +
                                 '</p>',
                                 subject: "Notification: your lunch is on your way",
                                 from_email: "orders@lunchbrother.com",
@@ -360,7 +360,7 @@ Parse.Cloud.define("emailNotification",
                     '<td>' + contactInfo + '</td>' +
                     '</tr>' +
                     '</table>' +
-                    '<p style="color: red; position: relative" align="middle">***No pick-up later than <a style="color: blue">1:15PM</a>, please manage well your pick-up time***</p>',
+                    '<p style="color: red; position: relative" align="middle">***No pick-up later than <a style="color: blue">12:30PM</a>, please manage well your pick-up time***</p>',
                     subject: "Notification: your lunch is ready to pick up",
                     from_email: "orders@lunchbrother.com",
                     from_name: "LunchBrother",
