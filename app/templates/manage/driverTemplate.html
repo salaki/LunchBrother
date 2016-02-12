@@ -15,21 +15,16 @@
 <div class="ui divider"></div>
 <h3 class="ui center aligned header">Today's Delivery Detail</h3>
 <div class="ui segment">
-    <% _.map(ordersByLocations, function(pair) { %>
     <div class="ui vertical segment">
         <a href="#distributor" class="delivery-order">
             <div class="ui column grid summary-list">
-                <div class="four wide right aligned column"><span class="summary-location"><%= pair[0] %>:</span></div>
+                <div class="four wide right aligned column"><span class="summary-location"><%= pickUpAddress %></span></div>
                 <div class="five wide column left aligned">
                     <span class="summary-status">
-                        <% _.map(pair[1], function(orderDetailSet) { %>
-                        Dish:&nbsp <%= orderDetailSet[0] %>, &nbsp&nbsp
-                        Quantity:&nbsp <%= orderDetailSet[1] %> <br>
-                        <% }) %>
+                        <%= dishQuantity %>
                     </span>
                 </div>
             </div>
         </a>
     </div>
-    <% })%>
 </div>

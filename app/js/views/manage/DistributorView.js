@@ -81,16 +81,11 @@ define([
             query.include("pickUpLocation");
 
             //Display the order
-            //var lowerDate = new Date();
-            //lowerDate.setHours(10, 0, 0, 0);
-            //var upperDate = new Date();
-            //upperDate.setHours(14, 0, 0, 0);
-
             var current = new Date();
             var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
             lowerDate.setHours(14, 0, 0, 0);
             var upperDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-            upperDate.setHours(21, 50, 0, 0);
+            upperDate.setHours(21, 30, 0, 0);
 
             query.greaterThan("createdAt", lowerDate);
             query.lessThan("createdAt", upperDate);
@@ -122,6 +117,7 @@ define([
                         telNum: payment.get('telnum'),
                         totalPrice: payment.get('totalPrice'),
                         orderNumber: payment.id,
+                        paid: payment.get('paymentCheck'),
                         orderSummary: ""
                     };
 
@@ -132,7 +128,7 @@ define([
                             var dishCode = orderSummaryDetail[0];
                             var dishName = orderSummaryDetail[1];
                             var dishCount = orderSummaryDetail[2];
-                            orderSummaryString += dishCode + " - " + dishCount + ", ";
+                            orderSummaryString += dishName + " - " + dishCount + ", ";
                         });
 
                         paymentDetailMap.orderSummary = orderSummaryString;
@@ -203,19 +199,15 @@ define([
                 className: "PickUpLocation",
                 objectId: pickUpLocationId
             });
-            query.equalTo("paymentCheck", true);
+
             query.notEqualTo("isPickedUp", true);
 
             //Set the time frame to look for the orders
-            //var lowerDate = new Date();
-            //lowerDate.setHours(10, 0, 0, 0);
-            //var upperDate = new Date();
-            //upperDate.setHours(14, 0, 0, 0);
             var current = new Date();
             var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
             lowerDate.setHours(14, 0, 0, 0);
             var upperDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-            upperDate.setHours(21, 50, 0, 0);
+            upperDate.setHours(21, 30, 0, 0);
 
             var orders = [];
             query.greaterThan("createdAt", lowerDate);
