@@ -802,7 +802,7 @@ Parse.Cloud.job("dailyOrderConfirmationSMS", function(request, status) {
     findInventoriesThensendSMS(0, "PICK_UP_TIME");
 });
 
-// TODO - Schedule this job to 10PM every day
+// TODO - Schedule this job to 9:25PM every day
 Parse.Cloud.job("orderQuantityNotificationSMS", function(request, status) {
     findInventoriesThensendSMS(0, "PICK_UP_QUANTITY");
 });

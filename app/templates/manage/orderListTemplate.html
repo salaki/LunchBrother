@@ -1,23 +1,4 @@
 <% _.each(payments, function(payment) { %>
-<!--
-<div id="div-<%= payment.orderNumber %>" class="order-detail ui padded grid">
-    <div class="seven wide white column">
-        <h4 class="ui header"><%= payment.lastName %>, <%= payment.firstName %> (<%= payment.telNum %>)</h4>
-        <p>
-            <span class="gray"><label class="orderListOrderNumber">Order Summary:
-            <span class="red"><%= payment.orderSummary %></span>
-        </p>
-    </div>
-    <div class="seven wide white column">
-        <p><span class="gray"><label class="orderListOrderNumber">Order Number</label>:</span><span class="red"><%= payment.orderNumber %></span></p>
-        <p><span class="gray"><label class="orderListTotal">Total</label>:</span><span class="red">$<%= payment.totalPrice %></span></p>
-    </div>
-    <a id="checkButton-<%= payment.orderNumber %>" class="send two wide white column" data-order="<%= payment.orderNumber %>" data-lname="<%= payment.lastName %>" data-fname="<%= payment.firstName %>" data-price="<%= payment.totalPrice %>">
-        <i class="checkmark icon"></i>
-    </a>
-</div>
-<div id="divider-<%= payment.orderNumber %>" class="ui hidden divider"></div>
--->
       <tr id="div-<%= payment.orderNumber %>">
           <td>
               <div class="order-name">
@@ -30,10 +11,10 @@
           <td><%= payment.orderSummary %></td>
           <td><%= payment.orderNumber %></td>
           <td>$<%= payment.totalPrice %></td>
-          <% if(payment.paymentCheck) { %>
-            <td class="green">Paid</td>
+          <% if(payment.paid) { %>
+            <td style="color: green">Paid</td>
           <% } else { %>
-            <td class="red">Not Paid</td>
+            <td style="color: red">Not Paid</td>
           <% } %>
           <td>
               <button id="checkButton-<%= payment.orderNumber %>" class="ui fluid icon button" data-order="<%= payment.orderNumber %>" data-lname="<%= payment.lastName %>" data-fname="<%= payment.firstName %>" data-price="<%= payment.totalPrice %>">
