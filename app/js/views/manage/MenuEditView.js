@@ -48,7 +48,6 @@ define([
                     var dishes = [];
                     _.each(inventories, function(inventory) {
                             var dish = inventory.get('dish');
-                            dish.quantity = inventory.get('preorderQuantity');
                             dish.inventoryId = inventory.id;
                             dish.price = inventory.get('price');
                             dish.cashPrice = inventory.get('cashPrice');
@@ -57,7 +56,6 @@ define([
                             var inventory = {
                                 id: inventory.id,
                                 dishId: dish.id,
-                                quantity: dish.quantity,
                                 price: dish.price,
                                 cashPrice: dish.price
                             };
@@ -216,14 +214,6 @@ define([
                 /**
                  * Set input value onChange events
                  */
-                $("#dishQuantityInput-" + dish.id).keyup(function(){
-                    self.markAsNotAdded(dish.id);
-                    self.addedInventories = _.reject(self.addedInventories, function (el) {
-                        return el.dishId === $('#dishIdInput-' + dish.id).val();
-                    });
-                    self.checkAddedDishes();
-                });
-
                 $("#dishPriceInput-" + dish.id).keyup(function(){
                     self.markAsNotAdded(dish.id);
                     self.addedInventories = _.reject(self.addedInventories, function (el) {
@@ -249,15 +239,10 @@ define([
                         self.checkAddedDishes();
 
                     } else {
-                        var quantity = $('#dishQuantityInput-' + dish.id).val();
                         var price = $('#dishPriceInput-' + dish.id).val();
                         var cashPrice = $('#cashPriceInput-' + dish.id).val();
 
-                        //Validate quantity and price inputs
-                        if (!self.isInteger(quantity)) {
-                            showMessage("Oops!", "Quantity has to be an integer number!");
-                        }
-
+                        //Validate price inputs
                         if (!Number(price)) {
                             showMessage("Oops!", "Price has to be a number!");
                         }
@@ -278,7 +263,6 @@ define([
                         var inventory = {
                             id: $('#inventoryId-' + dish.id).val(),
                             dishId: $('#dishIdInput-' + dish.id).val(),
-                            quantity: quantity,
                             price: price,
                             cashPrice: cashPrice
                         };
@@ -372,11 +356,11 @@ define([
 
                 toSaveInventory.set("gridId", currentUser.get('gridId'));
                 toSaveInventory.set("published", false);
-                toSaveInventory.set("preorderQuantity", parseInt(inventory.quantity));
-                toSaveInventory.set("currentQuantity", parseInt(inventory.quantity));
                 toSaveInventory.set("orderBy", currentUser);
                 toSaveInventory.set("price", Number(inventory.price));
                 toSaveInventory.set("cashPrice", Number(inventory.cashPrice));
+                toSaveInventory.set("payByCardCount", 0);
+                toSaveInventory.set("totalOrderQuantity", 0);
                 toSaveInventory.set("status", "Unconfirmed");
                 toSaveInventory.set("pickUpDate", pickUpdate);
                 toSaveInventories.push(toSaveInventory);
