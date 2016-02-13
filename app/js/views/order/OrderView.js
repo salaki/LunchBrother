@@ -49,6 +49,8 @@ define([
         },
 
         render: function () {
+            this.setDpId();
+
             var self = this;
         	var cardQuery = new Parse.Query(CardModel);
             cardQuery.equalTo("createdBy", Parse.User.current());
@@ -75,6 +77,15 @@ define([
             return this;
         },
 
+        setDpId: function() {
+            var self = this;
+            _.each(this.model.orders, function (dish) {
+                if (!self.dpId) {
+                    self.dpId = dish.dpId;
+                }
+            });
+        },
+
         toggleNewCardForm: function(e) {
         	$('#newCardInfo').transition('slide down');
         	$('#userCardList').toggleClass('disabled');
@@ -84,7 +95,6 @@ define([
 
         orderSubmit: function (e) {
             e.preventDefault();
-            //this.checkInventory();
             this.updateInventory();
         },
 
@@ -104,45 +114,6 @@ define([
             $("#payCashBtn").addClass("orange");
             this.paymentMethod = CASH_METHOD;
             this.finalCharge = this.model.totalCashCharge;
-        },
-
-        checkInventory: function() {
-            var self = this;
-            var dishCountMap = {};
-            var inventoryIds = [];
-
-            _.each(this.model.orders, function (dish) {
-                if (!self.dpId) {
-                    self.dpId = dish.dpId;
-                }
-                console.log(self.dpId);
-                inventoryIds.push(dish.inventoryId);
-                dishCountMap[dish.inventoryId] = dish.count;
-            });
-
-            var inventoryQuery = new Parse.Query(InventoryModel);
-            inventoryQuery.containedIn("objectId", inventoryIds);
-
-            var exceedInventory = false;
-            inventoryQuery.find().then(function(inventories){
-                _.each(inventories, function(inventory) {
-                    var newQantity = inventory.get('currentQuantity') - dishCountMap[inventory.id];
-                    if (newQantity < 0) {
-                        exceedInventory = true;
-                    }
-                });
-
-                if (exceedInventory) {
-                    $('#inventoryExceededAlert').modal({
-                        closable: false,
-                        onApprove: function () {
-                            window.location.href='#home';
-                        }
-                    }).modal('show');
-                } else {
-                    self.updateInventory();
-                }
-            });
         },
 
         updateInventory: function() {
@@ -331,6 +302,7 @@ define([
 
             var pickUpLocationId = this.model.dp;
             if (!pickUpLocationId || pickUpLocationId === "all") {
+                // TODO - What if the user order the dishes from multiple DPs?
                 pickUpLocationId = this.dpId;
 
             }
