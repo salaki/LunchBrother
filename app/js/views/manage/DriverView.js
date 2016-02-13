@@ -35,11 +35,22 @@ define([
         findTodayPickupInfo: function() {
             var self = this;
 
-            //Find today's inventory
-            var lowerDate = new Date();
-            lowerDate.setHours(10, 0, 0, 0);
-            var upperDate = new Date();
-            upperDate.setHours(13, 0, 0, 0);
+            //Find inventory
+            var current = new Date();
+            if (current.getHours() > 14) {
+                // After 2PM, find tomorrow's invenotry
+                var lowerDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                lowerDate.setHours(10, 0, 0, 0);
+                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+                upperDate.setHours(13, 0, 0, 0);
+
+            } else {
+                // Before 2PM, find today's inventory
+                var lowerDate = new Date();
+                lowerDate.setHours(10, 0, 0, 0);
+                var upperDate = new Date();
+                upperDate.setHours(13, 0, 0, 0);
+            }
 
             var inventoryQuery = new Parse.Query(InventoryModel);
 
@@ -76,9 +87,9 @@ define([
                         }
 
                         if (!dishQuantity) {
-                            dishQuantity = inventory.get('dish').get('dishName') + " - " + inventory.get('preorderQuantity');
+                            dishQuantity = inventory.get('dish').get('dishName') + " - " + inventory.get('totalOrderQuantity');
                         } else {
-                            dishQuantity += "; " + inventory.get('dish').get('dishName') + " - " + inventory.get('preorderQuantity');
+                            dishQuantity += "; " + inventory.get('dish').get('dishName') + " - " + inventory.get('totalOrderQuantity');
                         }
 
                         if (!pickUpLocationAddress) {

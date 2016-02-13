@@ -82,10 +82,19 @@ define([
 
             //Display the order
             var current = new Date();
-            var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-            lowerDate.setHours(14, 0, 0, 0);
-            var upperDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-            upperDate.setHours(21, 30, 0, 0);
+            if (current.getHours() > 14) {
+                var lowerDate = new Date();
+                lowerDate.setHours(14, 0, 0, 0);
+                var upperDate = new Date();
+                upperDate.setHours(21, 30, 0, 0);
+
+            } else {
+                var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                lowerDate.setHours(14, 0, 0, 0);
+                var upperDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+                upperDate.setHours(21, 30, 0, 0);
+
+            }
 
             query.greaterThan("createdAt", lowerDate);
             query.lessThan("createdAt", upperDate);
