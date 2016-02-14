@@ -13,6 +13,8 @@ define(['views/home/DishView',
     function(DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, PickUpLocationModel,
              InventoryModel, UserRequestModel, homeTemplate, statsTemplate, orderTemplate) {
 
+        var DEFAULT_DP = "DBR7M5Pw6q";
+
 	var HomeView = Parse.View.extend({
 		// tagName: 'ul', // required, but defaults to 'div' if not set
 		el : $("#page"),
@@ -66,35 +68,19 @@ define(['views/home/DishView',
             pickUpLocationQuery.find().then(function(pickUpLocations){
                 $.each(pickUpLocations, function (i, pickUpLocation) {
                     self.pickUpLocationYouTubeLinkMap[pickUpLocation.id] = pickUpLocation.get("youtubeLink");
-                    $('#addressdetails').append($('<option>', {
+                    $('#address').append($('<option>', {
                         value: pickUpLocation.id,
                         text : pickUpLocation.get('address')
                     }));
                 });
 
-                $("#addressdetails").dropdown();
-                $("#addressdetails").change(function() {
-                    var selectedPickupLocation = $("#addressdetails").val();
+                // Default setting
+                self.setPageInfo(DEFAULT_DP);
+                $("#address").dropdown('set selected', DEFAULT_DP);
 
-                    // Get youtube video link
-                    self.stats.youtubeLink = self.pickUpLocationYouTubeLinkMap[selectedPickupLocation];
-
-                    _.each(self.dishes.models, function(order){
-                        var dp = order.get("pickUpLocationId")[0];
-
-                        if (selectedPickupLocation === "all") {
-                            $("#pickUpLocation-" + dp).show();
-
-                        } else {
-                            if (dp === selectedPickupLocation) {
-                                $("#pickUpLocation-" + dp).show();
-                            } else {
-                                $("#pickUpLocation-" + dp).hide();
-                            }
-                        }
-
-                        self.stats.dp = selectedPickupLocation;
-                    });
+                // Drop-down change event
+                $("#address").change(function() {
+                    self.setPageInfo($("#address").val());
                 });
 
             }, function(error){
@@ -103,13 +89,26 @@ define(['views/home/DishView',
             });
         },
 
+        setPageInfo: function(selectedPickupLocation) {
+            this.stats.youtubeLink = this.pickUpLocationYouTubeLinkMap[selectedPickupLocation];
+            this.stats.dp = selectedPickupLocation;
+            this.filterOutDish(selectedPickupLocation);
+        },
+
+        filterOutDish: function(selectedPickupLocation) {
+            _.each(this.dishes.models, function(order){
+                var dp = order.get("pickUpLocationId")[0];
+                if (dp === selectedPickupLocation) {
+                    $(".pickUpLocation-" + dp).show();
+                } else {
+                    $(".pickUpLocation-" + dp).hide();
+                }
+            });
+        },
+
         collectInventoryDishes: function() {
             var self = this;
             var inventoryQuery = new Parse.Query(InventoryModel);
-            //var upperDate = new Date();
-            //upperDate.setHours(13, 0, 0, 0);
-            //var lowerDate = new Date();
-            //lowerDate.setHours(10, 0, 0, 0);
 
             //Display the inventory dishes
             var current = new Date();

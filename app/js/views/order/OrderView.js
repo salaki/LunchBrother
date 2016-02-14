@@ -40,8 +40,6 @@ define([
 
         finalCharge: 0,
 
-        dpId: null,
-
         initialize: function () {
             _.bindAll(this, 'render', 'stripeResponseHandler');
             Stripe.setPublishableKey(STRIPE_KEY);
@@ -49,8 +47,6 @@ define([
         },
 
         render: function () {
-            this.setDpId();
-
             var self = this;
         	var cardQuery = new Parse.Query(CardModel);
             cardQuery.equalTo("createdBy", Parse.User.current());
@@ -75,15 +71,6 @@ define([
             });
 
             return this;
-        },
-
-        setDpId: function() {
-            var self = this;
-            _.each(this.model.orders, function (dish) {
-                if (!self.dpId) {
-                    self.dpId = dish.dpId;
-                }
-            });
         },
 
         toggleNewCardForm: function(e) {
@@ -304,15 +291,8 @@ define([
             }
             paymentDetails.set('totalPrice', totalCharge);
 
-            var pickUpLocationId = this.model.dp;
-            if (!pickUpLocationId || pickUpLocationId === "all") {
-                // TODO - What if the user order the dishes from multiple DPs?
-                pickUpLocationId = this.dpId;
-
-            }
-
             var pickUpLocation = new PickUpLocationModel();
-            pickUpLocation.id = pickUpLocationId;
+            pickUpLocation.id = this.model.dp;
             paymentDetails.set('pickUpLocation', pickUpLocation);
             paymentDetails.set('orderSummary', orderSummaryArray);
             paymentDetails.save().then(function(paymentDetails){

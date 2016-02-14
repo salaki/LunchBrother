@@ -13,13 +13,12 @@
             <!--</div>           -->
         <!--</div>-->
         <div class="field">
-                <select id="addressdetails" name="address">
-                    <option id="pickUpAddress" value="all">Select Operating Point</option>
-                </select>
+            <select id="address" name="address">
+                <option id="pickUpAddress" value="">Select Operating Point</option>
+            </select>
         </div>
     </div>
 </form>
-
 <div class="ui divider hidden"></div>
 
 <div id="dishWrapper" class="ui grid">
@@ -31,11 +30,12 @@
 </div>
 <span id="timeAlert" class="ui yellow message" style="display:none"></span>
 <p id="orderMessage" class="ui small message">
-We are early now! We guarantee your lunch will arrive before 12:00PM, please track your lunch and pick it up on your schedule. (no later than 12:30PM :P)
+    We are early now! We guarantee your lunch will arrive before 12:00PM, please track your lunch and pick it up on your schedule. (no later than 12:30PM :P)
 </p>
-    <button id="paymentBtn" class="ui red button-lg">
-        Checkout
-    </button>
+<button id="paymentBtn" class="ui red button-lg">
+    Checkout
+</button>
+
 <div id="inventoryExceededAlert" class="ui small test modal">
     <div class="header" style="background-color: #ffffff" id="inventoryAlertTitle">
         Oops!
