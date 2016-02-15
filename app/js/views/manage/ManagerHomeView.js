@@ -132,8 +132,14 @@ define([
 
                     //Get three weeks
                     var d = new Date();
-                    var day = d.getDay(),
-                        diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+                    var day = d.getDay();
+                    var diff = d.getDate() - day + 1;
+
+                    // For Saturday to see next week's menu
+                    if (day == 6) {
+                        diff += 1;
+                    }
+
                     var monday = new Date(d.setDate(diff));
                     var firstWeek = (monday.getMonth() + 1) + "/" + monday.getDate() + "-";
 
@@ -499,8 +505,9 @@ define([
         onEditMenuClick: function(ev) {
             var inventoryIds = $(ev.currentTarget).data('inventoryIds');
             var date = $(ev.currentTarget).data('date');
+            var dp = this.selectedDP ? this.selectedDP : this.options.dp;
 
-            window.location.hash = "#menuEdit?inventoryIds=" + inventoryIds + "&date=" + date + "&dp=" + this.selectedDP;
+            window.location.hash = "#menuEdit?inventoryIds=" + inventoryIds + "&date=" + date + "&dp=" + dp;
 
         },
 

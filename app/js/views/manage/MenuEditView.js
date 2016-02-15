@@ -173,7 +173,7 @@ define([
                     $("#menuEditViewDpName").text(dp.get("address"));
                 },
                 error: function(error) {
-                    console.log("Error in getting DP. Reason: " + error.message);
+                    console.log("Error in getting DP. Reason: " + error);
                 }
             });
         },
