@@ -65,7 +65,7 @@ Add a new location
         data-title="<%= employee.get('worker').get('permission') %>"><i class="icon edit"></i></button>
       <button class="ui circular small icon button" id="employeeDeleteButton-<%= employee.id %>" data-id="<%= employee.id %>"><i class="remove icon"></i></button>
     </div>
-    <img class="ui avatar image" src="/images/avatar/small/helen.jpg">
+    <img class="ui avatar image" src="img/default_user.png">
     <div class="content">
       <div class="header"><%= employee.get('worker').get('firstName') %></div>
       <% if(employee.get('worker').get('permission') === DRIVER) { %>
