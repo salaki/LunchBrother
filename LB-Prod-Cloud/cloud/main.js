@@ -846,15 +846,15 @@ function findInventoriesThensendSMS(targetDate, smsType) {
             console.log("Inventory Number: " + inventories.length);
             var managerInventoryMap = {};
             if (inventories.length > 0) {
-                _.each(inventories, function(inventory){
-                    var managerFirstName = inventory.get('pickUpLocation').get('manager').get('firstName');
+                for (var i=0; i<inventories.length; i++) {
+                    var managerFirstName = inventories[i].get('pickUpLocation').get('manager').get('firstName');
                     if (managerInventoryMap[managerFirstName]) {
-                        managerInventoryMap[managerFirstName].push(inventory);
+                        managerInventoryMap[managerFirstName].push(inventories[i]);
 
                     } else {
-                        managerInventoryMap[managerFirstName] = [inventory];
+                        managerInventoryMap[managerFirstName] = [inventories[i]];
                     }
-                });
+                }
 
                 for (var name in managerInventoryMap) {
                     if (smsType === "PICK_UP_QUANTITY") {
@@ -871,7 +871,8 @@ function findInventoriesThensendSMS(targetDate, smsType) {
                     var restaurantName = "";
                     var managerName = "";
                     var inventoryIds = [];
-                    _.each(managerInventoryMap[name], function(inventory){
+                    for (var i=0; i<managerInventoryMap[name].length; i++) {
+                        var inventory = managerInventoryMap[name][i];
                         inventoryIds.push(inventory.id);
                         var pickUpDateTime = new Date(inventory.get('pickUpDate'));
                         var year = pickUpDateTime.getFullYear();
@@ -909,7 +910,7 @@ function findInventoriesThensendSMS(targetDate, smsType) {
                         } else {
                             messageQuantity += ' ,"' + inventory.get('dish').get('dishCode') + '"';
                         }
-                    });
+                    }
 
                     message +=  messageQuantity.substring(2) + messagePickUpTime;
 
@@ -928,8 +929,7 @@ function findInventoriesThensendSMS(targetDate, smsType) {
                     confirmRecord.save();
                     console.log("SMS sent to " + confirmNumber + "! Message: " + message);
 
-                    // Send sms message copy to LunchBrother email and slack
-                    sendSMSCopyToLBEmail(message, confirmNumber, managerName, restaurantName);
+                    // Slack sms message copy to LunchBrother sms channel
                     slackLunchBrother("#sms", "SMS Sent to " + confirmNumber + " (" + restaurantName + ") ", "Message Content: " + message, ":outbox_tray:");
                 }
 
