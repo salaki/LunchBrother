@@ -816,7 +816,7 @@ function findInventoriesThensendSMS(targetDate, smsType) {
     var lowerBoundPickUpTime = new Date();
     var confirmDateOffset = 7;
     if (smsType === "PICK_UP_QUANTITY") {
-        confirmDateOffset = 1;
+        confirmDateOffset = 0;  // Because cloud code is in UTC
     }
     lowerBoundPickUpTime.setHours(14, 0, 0, 0);
 
