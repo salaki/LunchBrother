@@ -113,7 +113,7 @@ define(['views/home/DishView',
             //Display the inventory dishes
             var current = new Date();
             var currentHour = current.getHours();
-            if (currentHour > 14) {
+            if (currentHour >= 14) {
                 //After 14:00, display the inventory of the next day
                 var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
                 upperDate.setHours(13, 0, 0, 0);
