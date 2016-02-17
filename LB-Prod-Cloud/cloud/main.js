@@ -442,7 +442,6 @@ Parse.Cloud.job("summarizeTodaySales", function(request, status) {
         var paymentModel = Parse.Object.extend("Payment");
         var paymentQuery = new Parse.Query(paymentModel);
 
-        var current = new Date();
         var startOrderTime = new Date(current.getTime() - 24 * 60 * 60 * 1000);
         startOrderTime.setHours(19, 0, 0, 0);
 
@@ -495,12 +494,14 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
             if (inventories) {
                 for (var i=0; i<inventories.length; i++) {
                     var orderById = inventories[i].get('orderBy').id;
-                    if (managerTransferRecord[orderById]) {
+                    if (orderById in managerTransferRecord) {
                         managerTransferRecord[orderById].transferAmount += inventories[i].get('payByCardCount') * inventories[i].get('price')
 
                     } else {
-                        managerTransferRecord[orderById].manager = inventories[i].get('orderBy');
-                        managerTransferRecord[orderById].transferAmount = inventories[i].get('payByCardCount') * inventories[i].get('price')
+                        managerTransferRecord[orderById] = {
+                            manager: inventories[i].get('orderBy'),
+                            transferAmount: inventories[i].get('payByCardCount') * inventories[i].get('price')
+                        }
                     }
                 }
 
@@ -509,18 +510,19 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
                 //Managers' Cut
                 for (var record in managerTransferRecord) {
                     var managerTransfer = new TransferModel();
-                    managerTransfer.set('amount', record.transferAmount);
-                    managerTransfer.set('manager', record.manager);
+                    var managerCut = managerTransferRecord[record].transferAmount * 0.92;
+                    managerTransfer.set('amount', Number(managerCut.toFixed(2)));
+                    managerTransfer.set('manager', managerTransferRecord[record].manager);
                     managerTransfer.set("transferred", false);
                     transfers.push(managerTransfer);
 
-                    transferSummaryMessage += record.manager.get('lastName') + " " + record.manager.get('lastName') + " - $" + record.transferAmount.toFixed(2) + ", "
+                    transferSummaryMessage += managerTransferRecord[record].manager.get('firstName') + " - $" + managerCut.toFixed(2) + ", "
                 }
 
                 //LunchBrother's Cut
                 var lbTransfer = new TransferModel();
                 var lbAmount = todayIncome * 0.08 - stripeFee;    //LunchBrother takes 8% of the total sales
-                lbTransfer.set('amount', lbAmount);
+                lbTransfer.set('amount', Number(lbAmount.toFixed(2)));
                 lbTransfer.set("transferred", false);
                 transfers.push(lbTransfer);
 
