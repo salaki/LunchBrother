@@ -442,23 +442,27 @@ Parse.Cloud.job("summarizeTodaySales", function(request, status) {
         var paymentModel = Parse.Object.extend("Payment");
         var paymentQuery = new Parse.Query(paymentModel);
 
-        var todayAfter11 = new Date();
-        todayAfter11.setHours(15, 30, 0, 0); //UTC
+        var current = new Date();
+        var startOrderTime = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+        startOrderTime.setHours(19, 0, 0, 0);
 
-        var todayBefore13 = new Date();
-        todayBefore13.setHours(18, 30, 0, 0); //UTC
+        var stopOrderTime = new Date();
+        stopOrderTime.setHours(2, 30, 0, 0);
 
-        paymentQuery.greaterThan("createdAt", todayAfter11);
-        paymentQuery.lessThan("createdAt", todayBefore13);
+        paymentQuery.greaterThan("createdAt", startOrderTime);
+        paymentQuery.lessThan("createdAt", stopOrderTime);
         paymentQuery.find({
             success: function(payments) {
-
-                // TODO - only count card payment
+                // Only count credit card payment
                 var todayIncome = 0;
+                var payByCardCount = 0;
                 for (var i=0; i<payments.length; i++) {
-                    todayIncome += payments[i].get('totalPrice');
+                    if (payments[i].get('paymentMethod') === "Credit Card") {
+                        payByCardCount++;
+                        todayIncome += payments[i].get('totalPrice');
+                    }
                 }
-                var stripeFee = todayIncome * 0.029 + payments.length * 0.3;
+                var stripeFee = todayIncome * 0.029 + payByCardCount * 0.3;
                 summarizeSalesOfToday(TransferModel, todayIncome, stripeFee);
             },
             error: function(error) {
@@ -486,38 +490,32 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
         success: function(inventories) {
             //Summarize today's sale by querying inventory and create transfer queue for restaurants and local managers
             var transfers = [];
-            var transferMap = {};
-            var unsoldTotal = 0;
-            var totalPreorderQuantity = 0;
-            var actualSoldOriginalTotal = 0;
+            var managerTransferRecord = {};
 
             if (inventories) {
                 for (var i=0; i<inventories.length; i++) {
-                    totalPreorderQuantity += inventories[i].get('preorderQuantity');
-                    actualSoldOriginalTotal += inventories[i].get('dish').get('originalPrice') * (inventories[i].get('preorderQuantity') - inventories[i].get('currentQuantity'));
-                    unsoldTotal += inventories[i].get('currentQuantity') * inventories[i].get('dish').get('originalPrice');
+                    var orderById = inventories[i].get('orderBy').id;
+                    if (managerTransferRecord[orderById]) {
+                        managerTransferRecord[orderById].transferAmount += inventories[i].get('payByCardCount') * inventories[i].get('price')
 
-                    if (!transferMap.restaurant) {
-                        transferMap.restaurant = inventories[i].get('dish').get('restaurant')
-                    }
-
-                    if (!transferMap.manager) {
-                        transferMap.manager = inventories[i].get('orderBy');
-                    }
-
-                    if (!transferMap.restaurantAmount) {
-                        transferMap.restaurantAmount = inventories[i].get('preorderQuantity') * inventories[i].get('dish').get('originalPrice');
                     } else {
-                        transferMap.restaurantAmount += inventories[i].get('preorderQuantity') * inventories[i].get('dish').get('originalPrice');
+                        managerTransferRecord[orderById].manager = inventories[i].get('orderBy');
+                        managerTransferRecord[orderById].transferAmount = inventories[i].get('payByCardCount') * inventories[i].get('price')
                     }
                 }
 
-                //Restaurant's Cut
-                var restaurantTransfer = new TransferModel();
-                restaurantTransfer.set('amount', transferMap.restaurantAmount);
-                restaurantTransfer.set('restaurant', transferMap.restaurant);
-                restaurantTransfer.set("transferred", false);
-                transfers.push(restaurantTransfer);
+                var transferSummaryMessage = "";
+
+                //Managers' Cut
+                for (var record in managerTransferRecord) {
+                    var managerTransfer = new TransferModel();
+                    managerTransfer.set('amount', record.transferAmount);
+                    managerTransfer.set('manager', record.manager);
+                    managerTransfer.set("transferred", false);
+                    transfers.push(managerTransfer);
+
+                    transferSummaryMessage += record.manager.get('lastName') + " " + record.manager.get('lastName') + " - $" + record.transferAmount.toFixed(2) + ", "
+                }
 
                 //LunchBrother's Cut
                 var lbTransfer = new TransferModel();
@@ -526,18 +524,8 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
                 lbTransfer.set("transferred", false);
                 transfers.push(lbTransfer);
 
-                //Manager's Cut
-                var managerTransfer = new TransferModel();
+                transferSummaryMessage += "LunchBrother - $" + lbAmount.toFixed(2) + " (Total - $" + todayIncome.toFixed(2) + ", Stripe Fee - $" + stripeFee.toFixed(2) + ")";
 
-                transferMap.managerAmount = todayIncome - lbAmount - actualSoldOriginalTotal;
-                managerTransfer.set('amount', transferMap.managerAmount);
-                managerTransfer.set('manager', transferMap.manager);
-                managerTransfer.set("transferred", false);
-                transfers.push(managerTransfer);
-
-                var transferSummaryMessage = "Restaurant - $" + transferMap.restaurantAmount.toFixed(2) + ", " +
-                                            "Manager - $" + transferMap.managerAmount.toFixed(2) + ", " +
-                                            "LunchBrother - $" + lbAmount.toFixed(2);
 
                 Parse.Object.saveAll(transfers, {
                     success: function(transfers) {
@@ -547,59 +535,7 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
                         console.log('Save transfer records failed! Reason: ' + error.message);
                     }
                 });
-
-                if (unsoldTotal > 0) {
-                    unsoldTotal += unsoldTotal * 0.029 + 0.3; // Manager is responsible for this stripe cost
-                    chargeUnsoldDishes(totalPreorderQuantity, unsoldTotal, transferMap.manager);
-                }
             }
-        },
-        error: function(error) {
-            console.log(error.message);
-        }
-    });
-}
-
-function chargeUnsoldDishes(totalPreorderQuantity, unsoldTotal, manager) {
-    var Stripe = require("stripe");
-    Stripe.initialize(STRIPE_KEY);
-
-    var chargeAmount = unsoldTotal * 100;
-    var Card = Parse.Object.extend("Card");
-    var cardQuery = new Parse.Query(Card);
-    cardQuery.equalTo("createdBy", manager);
-    cardQuery.first({
-        success: function(card) {
-            //var customer = "cus_5g1gOaPr8OPXA5";  // Joe's customer id in Stripe
-            //
-            //if (totalPreorderQuantity > 20) {
-            //    customer = card.get('customerId');
-            //}
-
-            var customer = card.get('customerId');
-
-            var params = {
-                amount: chargeAmount.toFixed(0),
-                currency: "usd",
-                customer: customer
-            };
-
-            Stripe.Charges.create(params, {
-                    success: function (httpResponse) {
-                        //if (totalPreorderQuantity > 20) {
-                            console.log("Charged manager (" + manager.get('firstName') + " " + manager.get('lastName') + ") $" + unsoldTotal + " for unsold dishes.");
-
-                        //} else {
-                        //    console.log("Charged Joe $" + unsoldTotal + " for unsold dishes.");
-                        //
-                        //}
-                    }
-                    ,
-                    error: function (httpResponse) {
-                        console.log("Charge manager error: " + httpResponse.message);
-                    }
-                }
-            );
         },
         error: function(error) {
             console.log(error.message);
@@ -610,9 +546,6 @@ function chargeUnsoldDishes(totalPreorderQuantity, unsoldTotal, manager) {
 Parse.Cloud.job("transfer", function(request, status) {
     var current = new Date();
     if (current.getDay() != 6 && current.getDay() != 0) {
-        //For restaurant owner
-        createTransfer("RESTAURANT");
-
         //For manager
         createTransfer("MANAGER");
 
@@ -638,11 +571,7 @@ function createTransfer(target) {
         transferQuery.doesNotExist("manager");
         transferQuery.doesNotExist("restaurant");
 
-    } else if (target == "RESTAURANT"){
-        transferQuery.doesNotExist("manager");
-        transferQuery.exists("restaurant");
-
-    } else {
+    }  else {
         transferQuery.exists("manager");
         transferQuery.doesNotExist("restaurant");
     }
