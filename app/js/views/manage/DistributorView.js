@@ -172,8 +172,11 @@ define([
                 },
                 onApprove: function () {
                     self.saveChange(orderId);
-                    self.$("#div-" + orderId).fadeOut();
-                    self.$("#divider-" + orderId).fadeOut();
+                    self.$("#div-" + orderId).fadeOut(500, function(){
+                        // This is a jquery bug for fading out trs, need to do this removal for mobile device
+                        //http://stackoverflow.com/questions/944110/jquery-fadeout-not-working-with-table-rows
+                        $(this).parent().remove();
+                    });
                     self.$("#orderNumberLabel").text(self.$("#orderNumberLabel").text() - 1);
                 }
             }).modal('show');
