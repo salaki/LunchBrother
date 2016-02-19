@@ -5,12 +5,13 @@ define([
     'models/dish/DishModel',
     'models/Grid',
     'models/PickUpLocation',
+    'models/Employee',
     'models/order/NotificationModel',
     'models/manage/DeliveryModel',
     'text!templates/manage/distributorTemplate.html',
     'text!templates/manage/orderListTemplate.html',
     'libs/semantic/dropdown.min'
-], function (StatusView, PaymentModel, OrderModel, DishModel, GridModel, PickUpLocationModel, NotificationModel, DeliveryModel, distributorTemplate, orderListTemplate) {
+], function (StatusView, PaymentModel, OrderModel, DishModel, GridModel, PickUpLocationModel, EmployeeModel, NotificationModel, DeliveryModel, distributorTemplate, orderListTemplate) {
     var DistributorView = Parse.View.extend({
         el: $("#page"),
         template: _.template(distributorTemplate),
@@ -28,8 +29,31 @@ define([
 
         render: function () {
             var self = this;
+            var currentUser = Parse.User.current();
+            if (currentUser.get('permission') != LOCAL_MANAGER) {
+                var employeeQuery = new Parse.Query(EmployeeModel);
+                employeeQuery.equalTo("worker", currentUser);
+                employeeQuery.first({
+                    success: function(employee) {
+                        self.findPickUpLocationFromManager(employee.get('manager'));
+
+                    },
+                    error: function(error) {
+                        showMessage("Error", "Can't finding maanger. Reason: " + error.message);
+                    }
+                });
+
+            } else {
+                this.findPickUpLocationFromManager(currentUser);
+            }
+
+            return this;
+        },
+
+        findPickUpLocationFromManager: function(manager) {
+            var self = this;
             var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
-            pickUpLocationQuery.equalTo("manager", Parse.User.current());
+            pickUpLocationQuery.equalTo("manager", manager);
             pickUpLocationQuery.find({
                 success: function(pickUpLocations) {
                     self.$el.html(self.template({pickUpLocations: pickUpLocations}));
@@ -49,8 +73,6 @@ define([
                     showMessage("Error", "Pick Up Location Query Error: " + error.code + " " + error.message);
                 }
             });
-
-            return self;
         },
 
         onSearchBarInput: function () {
