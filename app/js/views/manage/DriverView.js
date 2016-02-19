@@ -6,10 +6,11 @@ define([
     'models/Restaurant',
     'models/PickUpLocation',
     'models/InventoryModel',
+    'models/Employee',
     'models/manage/DeliveryModel',
     'views/manage/LoginView',
     'text!templates/manage/driverTemplate.html'
-], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, DeliveryModel, LoginView, driverTemplate) {
+], function(PaymentModel, OrderModel, DishModel, GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, EmployeeModel, DeliveryModel, LoginView, driverTemplate) {
 
     var DriverView = Parse.View.extend({
         el: $("#page"),
@@ -34,8 +35,27 @@ define([
 
         findTodayPickupInfo: function() {
             var self = this;
+            var currentUser = Parse.User.current();
+            if (currentUser.get('permission') != LOCAL_MANAGER) {
+                var employeeQuery = new Parse.Query(EmployeeModel);
+                employeeQuery.equalTo("worker", currentUser);
+                employeeQuery.first({
+                    success: function(employee) {
+                        self.findInventoryByManager(employee.get('manager'));
 
-            //Find inventory
+                    },
+                    error: function(error) {
+                        showMessage("Error", "Can't finding manager. Reason: " + error.message);
+                    }
+                });
+
+            } else {
+                this.findInventoryByManager(currentUser);
+            }
+        },
+
+        findInventoryByManager: function(manager) {
+            var self = this;
             var current = new Date();
             if (current.getHours() > 14) {
                 // After 2PM, find tomorrow's invenotry
@@ -53,13 +73,7 @@ define([
             }
 
             var inventoryQuery = new Parse.Query(InventoryModel);
-
-            var orderBy = Parse.User.current();
-            if (Parse.User.current() != LOCAL_MANAGER) {
-                //TODO - Query employee class to find local manager
-            }
-
-            inventoryQuery.equalTo("orderBy", orderBy);
+            inventoryQuery.equalTo("orderBy", manager);
             inventoryQuery.greaterThan("pickUpDate", lowerDate);
             inventoryQuery.lessThan("pickUpDate", upperDate);
             inventoryQuery.include("dish");

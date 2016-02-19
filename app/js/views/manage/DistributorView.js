@@ -39,7 +39,7 @@ define([
 
                     },
                     error: function(error) {
-                        showMessage("Error", "Can't finding maanger. Reason: " + error.message);
+                        showMessage("Error", "Can't find manager. Reason: " + error.message);
                     }
                 });
 
