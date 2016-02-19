@@ -547,83 +547,50 @@ function summarizeSalesOfToday (TransferModel, todayIncome, stripeFee) {
 
 Parse.Cloud.job("transfer", function(request, status) {
     var current = new Date();
-    if (current.getDay() != 6 && current.getDay() != 0) {
-        //For manager
-        createTransfer("MANAGER");
-
-        //For Lunch Brother
-        createTransfer("LUNCHBROTHER");
+    if (current.getDate() === 1 || current.getDate() === 15) {
+        createTransfer();
+    } else {
+        status.success("Nothing to transfer!")
     }
 });
 
-function createTransfer(target) {
+function createTransfer() {
     var TransferModel = Parse.Object.extend("Transfer");
-
-    // Transfer dates setting
-    var twoWeeksAgoUpperBound = new Date();
-    twoWeeksAgoUpperBound.setDate(twoWeeksAgoUpperBound.getDate() - 14);
-    twoWeeksAgoUpperBound.setHours(23, 59, 59, 59);
-
-    var twoWeeksAgoLowerBound = new Date();
-    twoWeeksAgoLowerBound.setDate(twoWeeksAgoLowerBound.getDate() - 14);
-    twoWeeksAgoLowerBound.setHours(16, 0, 0, 0);
-
     var transferQuery = new Parse.Query(TransferModel);
-    if (target == "LUNCHBROTHER") {
-        transferQuery.doesNotExist("manager");
-        transferQuery.doesNotExist("restaurant");
-
-    }  else {
-        transferQuery.exists("manager");
-        transferQuery.doesNotExist("restaurant");
-    }
-
-    transferQuery.greaterThan("createdAt", twoWeeksAgoLowerBound);
-    transferQuery.lessThan("createdAt", twoWeeksAgoUpperBound);
+    transferQuery.include("manager");
     transferQuery.equalTo("transferred", false);
     transferQuery.find({
         success: function(transfers) {
-            console.log(transfers.length);
-            var totalTransferAmount = 0;
             if (transfers.length > 0) {
-                ////Summarize the amount
-                //for (var i=0; i<transfers.length; i++) {
-                //    totalTransferAmount += transfers[i].get('amount');
-                //    transfers[i].set('transferred', true);
-                //}
+                var lbKey = "LunchBrother";
+                var transferRecordMap = {};
 
-                if (target == "LUNCHBROTHER") {
-                    console.log("Transfer $" + (transfers[0].get('amount') - 0.5) + " to " + target);
-                    //startTransfer(totalTransferAmount * 100, "self", transfers);
-                    var lbTransferAmount = transfers[0].get('amount') * 100 - 50;
-                    transfers[0].set('transferred', true);
-                    startTransfer(lbTransferAmount.toFixed(0), "self", transfers, target);
-
-                } else {
-                    //Query bankAccount for createdBy to get recipientId and initiate the transfer
-                    var bankAccountModel = Parse.Object.extend("BankAccount");
-                    var bankAccountQuery = new Parse.Query(bankAccountModel);
-
-                    if (target == "RESTAURANT") {
-                        bankAccountQuery.equalTo("createdById", transfers[0].get('restaurant').id);
-                    } else {
-                        bankAccountQuery.equalTo("createdById", transfers[0].get('manager').id);
-                    }
-
-                    bankAccountQuery.descending("createdAt");
-                    bankAccountQuery.first({
-                        success: function(bankAccount){
-                            console.log("Transfer $" + transfers[0].get('amount') + " to " + target);
-                            //startTransfer(totalTransferAmount * 100, bankAccount.get("recipientId"), transfers);
-                            var stripeTransferAmount = transfers[0].get('amount') * 100;
-                            transfers[0].set('transferred', true);
-                            startTransfer(stripeTransferAmount.toFixed(0), bankAccount.get("recipientId"), transfers, target);
-                        },
-                        error: function(error){
-                            console.log(error.message);
-                        }
-                    });
+                for (var i=0; i<transfers.length; i++) {
+                    addTransferRecord(transferRecordMap, transfers[i], lbKey);
                 }
+
+                for (var target in transferRecordMap) {
+                    if (target === lbKey) {
+                        startTransfer(transferRecordMap[target], "self", Object.keys(transferRecordMap).length);
+
+                    } else {
+                        //Query bankAccount for createdBy to get recipientId and initiate the transfer
+                        var bankAccountModel = Parse.Object.extend("BankAccount");
+                        var bankAccountQuery = new Parse.Query(bankAccountModel);
+                        bankAccountQuery.equalTo("createdById", target);  // target === transfers[0].get('manager').id
+                        bankAccountQuery.descending("createdAt");
+                        bankAccountQuery.first({                          // Get the latest one
+                            success: function(bankAccount){
+                                startTransfer(transferRecordMap[target], bankAccount.get("recipientId"), Object.keys(transferRecordMap).length);
+
+                            },
+                            error: function(error){
+                                console.log(error.message);
+                            }
+                        });
+                    }
+                }
+
             } else {
                 console.log("Nothing to transfer!");
                 //Do nothing
@@ -635,18 +602,50 @@ function createTransfer(target) {
     });
 }
 
-function startTransfer(totalTransferAmount, recipient, transfers, target) {
-    if (totalTransferAmount > 0) {
+function addTransferRecord(transferRecordMap, transfer, lbKey) {
+    var target, name;
+
+    if (transfer.get('manager')) {
+        target = transfer.get('manager').id;
+        name = transfer.get('manager').get('firstName');
+
+    } else {
+        target = lbKey;
+        name = lbKey;
+
+    }
+
+    transfer.set('transferred', true);
+    if (transferRecordMap[target]) {
+        transferRecordMap[target].amount += transfer.get('amount');
+        transferRecordMap[target].transfers.push(transfer);
+
+    } else {
+        transferRecordMap[target] = {
+            name: name,
+            amount: transfer.get('amount'),
+            transfers: [transfer]
+        };
+    }
+}
+
+function startTransfer(transferObject, recipient, numberOfTransferObjects) {
+    if (transferObject.amount > 0) {
+        var transferAmount = transferObject.amount * 100;
+        if (recipient === "self") {
+            transferAmount -= 50 * (numberOfTransferObjects - 1);
+        }
+
         transfer({
             params: {
                 currency: "usd",
-                amount: totalTransferAmount,
+                amount: transferAmount.toFixed(0),
                 recipient: recipient
             },
             success: function (httpResponse) {
-                slackLunchBrother("#co-founders", "Transfer money successfully!", "Target - " + target + ", Amount - $" + totalTransferAmount / 100, ":money_with_wings:");
+                slackLunchBrother("#co-founders", "Transfer money successfully!", "Target - " + transferObject.name + ", Amount - $" + transferAmount.toFixed(0) / 100 + ", Number of transfer records: " + transferObject.transfers.length, ":money_with_wings:");
 
-                Parse.Object.saveAll(transfers, {
+                Parse.Object.saveAll(transferObject.transfers, {
                     success: function(transfers) {
                         console.log("Update transfer records successfully!");
                     },
