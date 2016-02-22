@@ -159,7 +159,7 @@ define([
                             var dishCode = orderSummaryDetail[0];
                             var dishName = orderSummaryDetail[1];
                             var dishCount = orderSummaryDetail[2];
-                            orderSummaryString += dishName + " - " + dishCount + ", ";
+                            orderSummaryString += dishName + " (" + dishCode + ")" + " - " + dishCount + ", ";
                         });
 
                         paymentDetailMap.orderSummary = orderSummaryString;

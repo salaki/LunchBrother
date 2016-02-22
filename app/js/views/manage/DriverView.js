@@ -101,9 +101,11 @@ define([
                         }
 
                         if (!dishQuantity) {
-                            dishQuantity = inventory.get('dish').get('dishName') + " - " + inventory.get('totalOrderQuantity');
+                            dishQuantity = inventory.get('dish').get('dishName') + " (" + inventory.get('dish').get('dishCode') + ") " +
+                                " - " + inventory.get('totalOrderQuantity');
                         } else {
-                            dishQuantity += "; " + inventory.get('dish').get('dishName') + " - " + inventory.get('totalOrderQuantity');
+                            dishQuantity += "; " + inventory.get('dish').get('dishName') + " (" + inventory.get('dish').get('dishCode') + ") " +
+                                " - " + inventory.get('totalOrderQuantity');
                         }
 
                         if (!pickUpLocationAddress) {

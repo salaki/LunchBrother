@@ -137,6 +137,7 @@ define(['views/home/DishView',
                     _.each(inventories, function(inventory) {
                         var dish = inventory.get("dish");
                         dish.add("price", inventory.get('price'));
+                        dish.add("cashPrice", inventory.get('cashPrice'));
                         dish.add("pickUpLocationId", inventory.get('pickUpLocation').id);
                         self.dishes.add(dish);
                         self.inventoryMap[dish.id] = {
