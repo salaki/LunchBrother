@@ -57,7 +57,7 @@ define([
                                 id: inventory.id,
                                 dishId: dish.id,
                                 price: dish.price,
-                                cashPrice: dish.price
+                                cashPrice: dish.cashPrice
                             };
                             self.addedInventories.push(inventory);
                             self.initialInventories.push(inventory);
