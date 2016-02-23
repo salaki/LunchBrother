@@ -20,8 +20,6 @@
             $('.menu li').removeClass('active');
             $('.menu li a[href="#"]').parent().addClass('active');
 
-            var current = new Date();
-            var currentHour = current.getHours();
             var currentUser = Parse.User.current();
 
             var gridId = currentUser.get('gridId').id;
@@ -29,44 +27,21 @@
                 gridId = UMCP_GRID_ID;
             }
 
-            //Delivery man starts working from 11:00-14:00, otherwise is at rest.
-            if(currentHour < 11 || currentHour > 14) {
-                this.$el.html(this.template({rest: true, pickUpLocations: [], ready: false}));
-                $("#mapHolder").hide();
-            } else {
-                //Time Range for querying the order from the current user
-                var current = new Date();
-                var currentHour = current.getHours();
-                if (currentHour > 14) {
-                    //After 14:00, display the orders from today 2pm to tomorrow 12pm
-                    var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                    upperDate.setHours(12, 0, 0, 0);
-                    var lowerDate = current;
-                    lowerDate.setHours(14, 0, 0, 0);
-                }
-                else {
-                    //Before 14:00, display the orders from yesterday 2pm to today 12pm
-                    upperDate = current;
-                    upperDate.setHours(12, 0, 0, 0);
-                    lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-                    lowerDate.setHours(14, 0, 0, 0);
-                }
+            //Time Range for querying the order from the current user
+            var self = this;
+            var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
+            pickUpLocationQuery.equalTo("gridId", {__type: "Pointer", className: "Grid", objectId: gridId});
+            pickUpLocationQuery.include("gridId");
+            pickUpLocationQuery.include("distributor");
+            pickUpLocationQuery.find({
+                success: function(locations) {
+                    self.displayStatus(locations);
 
-                var self = this;
-                var pickUpLocationQuery = new Parse.Query(PickUpLocationModel);
-                pickUpLocationQuery.equalTo("gridId", {__type: "Pointer", className: "Grid", objectId: gridId});
-                pickUpLocationQuery.include("gridId");
-                pickUpLocationQuery.include("distributor");
-                pickUpLocationQuery.find({
-                    success: function(locations) {
-                        self.displayStatus(locations);
-
-                    },
-                    error: function(error) {
-                        showMessage("Error", "Find pick-up location failed! Error: " + error.code + " " + error.message);
-                    }
-                });
-            }
+                },
+                error: function(error) {
+                    showMessage("Error", "Find pick-up location failed! Error: " + error.code + " " + error.message);
+                }
+            });
 
             return this;
         },
@@ -138,7 +113,6 @@
                         var driverMarker = new google.maps.Marker({position: driverLocation, map: map, icon: icon, title: "Your lunch is here"});
                         var pickUpLocationMarker = new google.maps.Marker({position: gridLocation, map: map, title: "Your are here"});
                     } else {
-                        self.$el.html(self.template({rest: false, pickUpLocations: pickUpLocations, ready: false}));
                         $("#mapHolder").hide();
                     }
                 },
