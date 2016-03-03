@@ -446,7 +446,7 @@ Parse.Cloud.job("summarizeTodaySales", function(request, status) {
         startOrderTime.setHours(19, 0, 0, 0);
 
         var stopOrderTime = new Date();
-        stopOrderTime.setHours(2, 30, 0, 0);
+        stopOrderTime.setHours(15, 30, 0, 0);
 
         paymentQuery.greaterThan("createdAt", startOrderTime);
         paymentQuery.lessThan("createdAt", stopOrderTime);
@@ -732,7 +732,7 @@ Parse.Cloud.job("dailyOrderConfirmationSMS", function(request, status) {
     findInventoriesThensendSMS(0, "PICK_UP_TIME");
 });
 
-// TODO - Schedule this job to 9:25PM every day
+// TODO - Schedule this job to 10:35AM EST (15:35) every day
 Parse.Cloud.job("orderQuantityNotificationSMS", function(request, status) {
     findInventoriesThensendSMS(0, "PICK_UP_QUANTITY");
 });
@@ -801,6 +801,7 @@ function findInventoriesThensendSMS(targetDate, smsType) {
                     var restaurantName = "";
                     var managerName = "";
                     var inventoryIds = [];
+                    var dishMap = {};
                     for (var i=0; i<managerInventoryMap[name].length; i++) {
                         var inventory = managerInventoryMap[name][i];
                         inventoryIds.push(inventory.id);
@@ -819,7 +820,7 @@ function findInventoriesThensendSMS(targetDate, smsType) {
                         if (messagePickUpTime === undefined) {
                             var dayLabel = getDayLabel(day);
                             if (smsType === "PICK_UP_QUANTITY") {
-                                messagePickUpTime = " at " + hour + ":" + minute + "AM Tomorrow. Reply \"yes\" to confirm.";
+                                messagePickUpTime = " at " + hour + ":" + minute + "AM Today. Reply \"yes\" to confirm.";
 
                             } else {
                                 messagePickUpTime = " on " + dayLabel + " " + month + "/" + date + "/" + year + ". Reply \"yes\" to acknowledge";
@@ -835,10 +836,27 @@ function findInventoriesThensendSMS(targetDate, smsType) {
                         }
 
                         if (smsType === "PICK_UP_QUANTITY") {
-                            messageQuantity += " ," + inventory.get('dish').get('dishCode') + "(" + inventory.get('totalOrderQuantity') + ")";
+                            if (!dishMap[inventory.get('dish').id]) {
+                                dishMap[inventory.get('dish').id] = {
+                                    dishLabel: inventory.get('dish').get('dishName') + " (" + inventory.get('dish').get('dishCode') + ")",
+                                    orderCount: inventory.get('totalOrderQuantity')
+                                }
+                            } else {
+                                dishMap[inventory.get('dish').id].orderCount += inventory.get('totalOrderQuantity');
+                            }
 
                         } else {
                             messageQuantity += ' ,"' + inventory.get('dish').get('dishCode') + '"';
+                        }
+                    }
+
+                    if (smsType === "PICK_UP_QUANTITY") {
+                        for (var key in dishMap) {
+                            if (!messageQuantity) {
+                                messageQuantity = dishMap[key].dishLabel + " - " + dishMap[key].orderCount;
+                            } else {
+                                messageQuantity += ", " + dishMap[key].dishLabel + " - " + dishMap[key].orderCount;
+                            }
                         }
                     }
 

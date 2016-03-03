@@ -56,26 +56,10 @@ define([
 
         findInventoryByManager: function(manager) {
             var self = this;
-            var current = new Date();
-            if (current.getHours() > 14) {
-                // After 2PM, find tomorrow's invenotry
-                var lowerDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                lowerDate.setHours(10, 0, 0, 0);
-                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                upperDate.setHours(13, 0, 0, 0);
-
-            } else {
-                // Before 2PM, find today's inventory
-                var lowerDate = new Date();
-                lowerDate.setHours(10, 0, 0, 0);
-                var upperDate = new Date();
-                upperDate.setHours(13, 0, 0, 0);
-            }
-
             var inventoryQuery = new Parse.Query(InventoryModel);
             inventoryQuery.equalTo("orderBy", manager);
-            inventoryQuery.greaterThan("pickUpDate", lowerDate);
-            inventoryQuery.lessThan("pickUpDate", upperDate);
+            inventoryQuery.greaterThan("pickUpDate", INVENTORY_FROM_TIME());
+            inventoryQuery.lessThan("pickUpDate", INVENTORY_UNTIL_TIME());
             inventoryQuery.include("dish");
             inventoryQuery.include("dish.restaurant");
             inventoryQuery.include("pickUpLocation");
@@ -84,8 +68,9 @@ define([
                     var restaurantName = "";
                     var restaurantNumber = "";
                     var restaurantAddress = "";
-                    var dishQuantity = "";
-                    var pickUpLocationAddress = "";
+                    var dishQuantitySummary = "";
+                    var orderByDps = {};
+                    var dishMap = {};
 
                     _.each(inventories, function(inventory) {
                         if (!restaurantName) {
@@ -100,25 +85,41 @@ define([
                             restaurantAddress = inventory.get('dish').get('restaurant').get('address');
                         }
 
-                        if (!dishQuantity) {
-                            dishQuantity = inventory.get('dish').get('dishName') + " (" + inventory.get('dish').get('dishCode') + ") " +
-                                " - " + inventory.get('totalOrderQuantity');
+                        if (!dishMap[inventory.get('dish').id]) {
+                            dishMap[inventory.get('dish').id] = {
+                                dishLabel: inventory.get('dish').get('dishName') + " (" + inventory.get('dish').get('dishCode') + ")",
+                                orderCount: inventory.get('totalOrderQuantity')
+                            }
                         } else {
-                            dishQuantity += "; " + inventory.get('dish').get('dishName') + " (" + inventory.get('dish').get('dishCode') + ") " +
-                                " - " + inventory.get('totalOrderQuantity');
+                            dishMap[inventory.get('dish').id].orderCount += inventory.get('totalOrderQuantity');
                         }
 
-                        if (!pickUpLocationAddress) {
-                            pickUpLocationAddress = inventory.get("pickUpLocation").get("address");
+                        if (!orderByDps[inventory.get("pickUpLocation").id]) {
+                            orderByDps[inventory.get("pickUpLocation").id] = {
+                                address: inventory.get("pickUpLocation").get('address'),
+                                dishLabel: inventory.get('dish').get('dishName') + " (" + inventory.get('dish').get('dishCode') + ")" +
+                                " - " + inventory.get('totalOrderQuantity')
+                            }
+
+                        } else {
+                            orderByDps[inventory.get("pickUpLocation").id].dishLabel += ", " + inventory.get('dish').get('dishName') + " (" + inventory.get('dish').get('dishCode') + ")" +
+                                " - " + inventory.get('totalOrderQuantity');
                         }
                     });
 
-                    self.$el.html(self.template({pickUpAddress: pickUpLocationAddress, dishQuantity: dishQuantity}));
+                    for (var key in dishMap) {
+                        if (!dishQuantitySummary) {
+                            dishQuantitySummary = dishMap[key].dishLabel + " - " + dishMap[key].orderCount;
+                        } else {
+                            dishQuantitySummary += ", " + dishMap[key].dishLabel + " - " + dishMap[key].orderCount;
+                        }
+                    }
+
+                    self.$el.html(self.template({orderByDps: orderByDps, dishQuantitySummary: dishQuantitySummary}));
 
                     self.$("#resName").html(restaurantName);
                     self.$("#resNumber").html(restaurantNumber);
                     self.$("#resAddress").html(restaurantAddress);
-                    self.$("#dishQuan").html(dishQuantity);
                 },
                 error: function(error) {
                     console.log(error.message);
