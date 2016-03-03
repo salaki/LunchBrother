@@ -101,25 +101,8 @@ define([
             //query.equalTo("paymentCheck", true);
             query.notEqualTo("isPickedUp", true);
             query.include("pickUpLocation");
-
-            //Display the order
-            var current = new Date();
-            if (current.getHours() > 14) {
-                var lowerDate = new Date();
-                lowerDate.setHours(14, 0, 0, 0);
-                var upperDate = new Date();
-                upperDate.setHours(21, 30, 0, 0);
-
-            } else {
-                var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-                lowerDate.setHours(14, 0, 0, 0);
-                var upperDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-                upperDate.setHours(21, 30, 0, 0);
-
-            }
-
-            query.greaterThan("createdAt", lowerDate);
-            query.lessThan("createdAt", upperDate);
+            query.greaterThan("createdAt", START_ORDER_TIME());
+            query.lessThan("createdAt", STOP_ORDER_TIME());
             query.limit(300);
             query.find().then(function(payments){
                 self.populateDistributorView(payments);
@@ -236,16 +219,9 @@ define([
 
             query.notEqualTo("isPickedUp", true);
 
-            //Set the time frame to look for the orders
-            var current = new Date();
-            var lowerDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-            lowerDate.setHours(14, 0, 0, 0);
-            var upperDate = new Date(current.getTime() - 24 * 60 * 60 * 1000);
-            upperDate.setHours(21, 30, 0, 0);
-
             var orders = [];
-            query.greaterThan("createdAt", lowerDate);
-            query.lessThan("createdAt", upperDate);
+            query.greaterThan("createdAt", START_ORDER_TIME());
+            query.lessThan("createdAt", STOP_ORDER_TIME());
             query.limit(300);
             query.find({
                 success: function (results) {
