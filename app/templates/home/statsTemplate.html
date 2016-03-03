@@ -9,8 +9,7 @@
 			<span class="summary-count"> <%= order.count %> </span>
 		</div>
 		<div class="four wide column right aligned">
-			<span class="summary-price">$
-				<%= (order.price * order.count).toFixed(2) %> </span>
+			<span class="summary-price">$<%= (order.price * order.count).toFixed(2) %> ($<%= (order.cashPrice * order.count).toFixed(2) %>)</span>
 		</div>
 	</div>
 	<% }); %>

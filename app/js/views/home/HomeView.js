@@ -1,4 +1,5 @@
-define(['views/home/DishView',
+define(['views/home/InventoryView',
+        'views/home/DishView',
     'views/order/OrderView',
     'models/dish/DishModel',
     'models/dish/DishCollection',
@@ -6,14 +7,13 @@ define(['views/home/DishView',
     'models/Restaurant',
     'models/PickUpLocation',
     'models/InventoryModel',
+    'models/InventoryCollection',
     'models/UserRequestModel',
     'text!templates/home/homeTemplate.html',
     'text!templates/home/statsTemplate.html',
     'text!templates/order/orderTemplate.html'],
-    function(DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, PickUpLocationModel,
-             InventoryModel, UserRequestModel, homeTemplate, statsTemplate, orderTemplate) {
-
-        var DEFAULT_DP = "DBR7M5Pw6q";
+    function(InventoryView, DishView, OrderView, DishModel, DishCollection, GridModel, RestaurantModel, PickUpLocationModel,
+             InventoryModel, InventoryCollection, UserRequestModel, homeTemplate, statsTemplate, orderTemplate) {
 
 	var HomeView = Parse.View.extend({
 		// tagName: 'ul', // required, but defaults to 'div' if not set
@@ -41,13 +41,10 @@ define(['views/home/DishView',
 		initialize : function() {
 			_.bindAll(this, 'render', 'loadAll', 'addOne', 'continuePay');
             this.$el.html(_.template(homeTemplate)());
-            this.dishes = new DishCollection;
+            this.inventories = new InventoryCollection();
 
             // Find pick-up locations
             this.getPickUpLocations();
-
-            // Display the inventory dishes
-            this.collectInventoryDishes();
 
             // Enable or disable checkout button based on current time
             this.disableOrEnableCheckOutBtn();
@@ -92,66 +89,39 @@ define(['views/home/DishView',
         setPageInfo: function(selectedPickupLocation) {
             this.stats.youtubeLink = this.pickUpLocationYouTubeLinkMap[selectedPickupLocation];
             this.stats.dp = selectedPickupLocation;
-            this.filterOutDish(selectedPickupLocation);
+            this.collectInventoryDishes(selectedPickupLocation);
         },
 
-        filterOutDish: function(selectedPickupLocation) {
-            _.each(this.dishes.models, function(order){
-                var dp = order.get("pickUpLocationId")[0];
-                if (dp === selectedPickupLocation) {
-                    $(".pickUpLocation-" + dp).show();
-                } else {
-                    $(".pickUpLocation-" + dp).hide();
-                }
-            });
-        },
-
-        collectInventoryDishes: function() {
+        collectInventoryDishes: function(pickUpLocationId) {
+            this.inventories = new InventoryCollection();
             var self = this;
+
+            var pickUpLocation = new PickUpLocationModel();
+            pickUpLocation.id = pickUpLocationId;
+
             var inventoryQuery = new Parse.Query(InventoryModel);
-
-            //Display the inventory dishes
-            var current = new Date();
-            var currentHour = current.getHours();
-            if (currentHour >= 14) {
-                //After 14:00, display the inventory of the next day
-                var upperDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                upperDate.setHours(13, 0, 0, 0);
-                var lowerDate = new Date(current.getTime() + 24 * 60 * 60 * 1000);
-                lowerDate.setHours(10, 0, 0, 0);
-            }
-            else {
-                //Before 14:00, display the inventory of the current day
-                var upperDate = new Date(current.getTime());
-                upperDate.setHours(13, 0, 0, 0);
-                var lowerDate = new Date(current.getTime());
-                lowerDate.setHours(10, 0, 0, 0);
-            }
-
             inventoryQuery.include("dish");
             inventoryQuery.include("dish.restaurant");
-            inventoryQuery.greaterThan("pickUpDate", lowerDate);
-            inventoryQuery.lessThan("pickUpDate", upperDate);
+            inventoryQuery.greaterThan("pickUpDate", INVENTORY_FROM_TIME());
+            inventoryQuery.lessThan("pickUpDate", INVENTORY_UNTIL_TIME());
+            inventoryQuery.equalTo("pickUpLocation", pickUpLocation);
             inventoryQuery.find({
                 success: function(inventories) {
                     _.each(inventories, function(inventory) {
-                        var dish = inventory.get("dish");
-                        dish.add("price", inventory.get('price'));
-                        dish.add("cashPrice", inventory.get('cashPrice'));
-                        dish.add("pickUpLocationId", inventory.get('pickUpLocation').id);
-                        self.dishes.add(dish);
-                        self.inventoryMap[dish.id] = {
+                        inventory["orderNumber"] = 0;
+                        self.inventories.add(inventory);
+                        self.inventoryMap[inventory.id] = {
                             inventoryId: inventory.id,
                             price: inventory.get('price'),
                             cashPrice: inventory.get('cashPrice'),
                             currentQuantity: inventory.get('currentQuantity'),
-                            restaurant: dish.get('restaurant'),
+                            restaurant: inventory.get('dish').get('restaurant'),
                             dpId: inventory.get('pickUpLocation').id
                         }
                     });
 
                     self.loadAll();
-                    self.dishes.bind('all', self.render);
+                    self.inventories.bind('all', self.render);
                 },
                 error: function(error) {
                     showMessage("Error", "Find inventory failed! Reason: " + error.message);
@@ -163,11 +133,6 @@ define(['views/home/DishView',
             var currentTime = new Date();
             var weekday = currentTime.getDay();
 
-            var startOrderTime = new Date();
-            startOrderTime.setHours(14, 0, 0, 0);
-            var stopOrderTime = new Date();
-            stopOrderTime.setHours(21, 20, 0, 0);
-
             // Disable check out button by default unless adding orders
             $('#paymentBtn').prop('disabled', true);
             $('#paymentBtn').addClass('grey');
@@ -176,8 +141,8 @@ define(['views/home/DishView',
                 if (weekday == 6 && weekday == 5) {
                     $("#timeAlert").css("display", "block").text("Sorry, we don't provide service on weekends. Please come back on Sunday after 2:00PM :)");
 
-                } else if(currentTime > stopOrderTime || currentTime < startOrderTime) {
-                    $("#timeAlert").css("display", "block").text("Sorry, our order time is 2:00PM-9:15PM.");
+                } else if(currentTime > START_ORDER_TIME() || currentTime < STOP_ORDER_TIME()) {
+                    $("#timeAlert").css("display", "block").text("Sorry, the order time is from 2:00PM to 10:30AM tomorrow, please come back again later.");
 
                 } else {
                     // Do nothing
@@ -187,27 +152,27 @@ define(['views/home/DishView',
 
         loadAll : function() {
             this.$("#dishList").html("");
-            this.dishes.each(this.addOne);
+            this.inventories.each(this.addOne);
         },
 
 		render : function() {
             var self = this;
             this.stats.orders = [];
-            _.each(this.dishes.orders(), function(dish){
+            _.each(this.inventories.orders(), function(inventory){
                 var order = {};
-                order.dishId = dish.id;
-                order.count = dish.get('count');
-                order.price = self.inventoryMap[dish.id].price;
-                order.cashPrice = self.inventoryMap[dish.id].cashPrice;
-                order.code = dish.get('dishCode');
-                order.name = dish.get('dishName');
-                order.inventoryId = self.inventoryMap[dish.id].inventoryId;
-                order.restaurant = self.inventoryMap[dish.id].restaurant;
-                order.dpId = self.inventoryMap[dish.id].dpId;
+                order.dishId = inventory.get('dish').id;
+                order.count = inventory.get('count');
+                order.price = inventory.get('price');
+                order.cashPrice = inventory.get('cashPrice');
+                order.code = inventory.get('dish').get('dishCode');
+                order.name = inventory.get('dish').get('dishName');
+                order.inventoryId = inventory.id;
+                order.restaurant = inventory.get('dish').get('restaurant');
+                order.dpId = inventory.get('pickUpLocation').id;
                 self.stats.orders.push(order);
             });
 
-            if (this.dishes.orders().length > 0) {
+            if (this.inventories.orders().length > 0) {
                 $('#paymentBtn').prop('disabled', false);
                 $('#paymentBtn').removeClass('grey');
 
@@ -230,34 +195,24 @@ define(['views/home/DishView',
             return this;
 		},
 
-		addOne : function(dish) {
-			var view = new DishView({
-				model : dish
-			});
+        addOne : function(inventory) {
+            var view = new InventoryView({
+                model : inventory
+            });
 
-            var currentQuantity = this.inventoryMap[dish.id].currentQuantity;
-            var inventoryId = this.inventoryMap[dish.id].inventoryId;
-            view.setCurrentQuantity(currentQuantity);
-            view.setInventoryId(inventoryId);
-
-			this.$("#dishList").append(view.render().el);
-            $('#' + dish.id + ' .menu .item').tab({context: $('#' + dish.id)});
+            this.$("#dishList").append(view.render().el);
+            $('#' + inventory.id + ' .menu .item').tab({context: $('#' + inventory.id)});
             $('.ui.rating').rating({
                 interactive: false
             });
 
             var current = new Date();
-            var startOrderTime = new Date();
-            startOrderTime.setHours(14, 0, 0, 0);
-            var stopOrderTime = new Date();
-            stopOrderTime.setHours(21, 20, 0, 0);
-            var operatingTime = current > startOrderTime && current < stopOrderTime;
-
+            var operatingTime = current > START_ORDER_TIME() && current < STOP_ORDER_TIME();
             if (!operatingTime && Parse.User.current().get('permission') != LB_ADMIN) {
-                $('#' + dish.id + '-plusButton').prop('disabled', true);
-                $('#' + dish.id + '-minusButton').prop('disabled', true);
+                $('#' + inventory.id + '-plusButton').prop('disabled', true);
+                $('#' + inventory.id + '-minusButton').prop('disabled', true);
             }
-		},
+        },
 
 		continuePay : function() {
             var view = new OrderView({
