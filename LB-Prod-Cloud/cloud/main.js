@@ -860,7 +860,7 @@ function findInventoriesThensendSMS(targetDate, smsType) {
                         }
                     }
 
-                    message +=  messageQuantity.substring(2) + messagePickUpTime;
+                    message +=  messageQuantity + messagePickUpTime;
 
                     twilioSMSService(confirmNumber, message);
                     //twilioSMSService("2022039808", message);  // Yali's phone number
