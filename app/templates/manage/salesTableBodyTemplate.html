@@ -13,7 +13,7 @@
             <td><%= inventory.get('dish').get('dishName') %> (<%= inventory.get('dish').get('dishCode') %>)</td>
             <td><%= inventory.get("totalOrderQuantity") - inventory.get('payByCardCount') %> ($<%= inventory.get('cashPrice') %>) </td>
             <td><%= inventory.get("payByCardCount") %> ($<%= inventory.get('price') %>)</td>
-            <td><%= inventory.income.toFixed(2) %></td>
+            <td>$<%= inventory.income.toFixed(2) %></td>
         </tr>
     <% })%>
 <% } else { %>
