@@ -11,11 +11,12 @@ define([
     'text!templates/manage/managerHomeTemplate.html',
     'text!templates/manage/menuListTemplate.html',
     'text!templates/manage/salesTableBodyTemplate.html',
-    'text!templates/manage/creditCardSectionTemplate.html'
+    'text!templates/manage/creditCardSectionTemplate.html',
+    'text!templates/manage/billTableBodyTemplate.html'
 ], function(GridModel, RestaurantModel, PickUpLocationModel, InventoryModel, EmployeeModel,
             RegistrationCodeModel, BankAccountModel, TransferModel, CardModel,
             managerHomeTemplate, menuListTemplate, salesTableBodyTemplate,
-            creditCardSectionTemplate) {
+            creditCardSectionTemplate, billTableBodyTemplate) {
 
     var ManagerHomeView = Parse.View.extend({
         el: $("#page"),
@@ -23,6 +24,7 @@ define([
         menuListTemplate: _.template(menuListTemplate),
         salesTableBodyTemplate: _.template(salesTableBodyTemplate),
         creditCardSectionTemplate: _.template(creditCardSectionTemplate),
+        billTableBodyTemplate: _.template(billTableBodyTemplate),
         events: {
             'click #DPAdd': 'onEditOrAddClick',
             'click #showDistributorStatus': 'onShowDistributorStatusClick',
@@ -131,40 +133,11 @@ define([
                     self.delegateEvents(_.extend(self.events, newEvent));
 
                     //Get three weeks
-                    var d = new Date();
-                    var day = d.getDay();
-                    var diff = d.getDate() - day + 1;
-
-                    // For Saturday to see next week's menu
-                    if (day == 6) {
-                        diff += 1;
-                    }
-
-                    var monday = new Date(d.setDate(diff));
-                    var firstWeek = (monday.getMonth() + 1) + "/" + monday.getDate() + "-";
-
-                    var diff2 = monday.getDate() + 4;
-                    var friday = new Date(monday.setDate(diff2));
-                    firstWeek += (friday.getMonth() + 1) + "/" + friday.getDate();
-
-                    var diff3 = friday.getDate() + 3;
-                    var monday2 = new Date(friday.setDate(diff3));
-                    var secondWeek = (monday2.getMonth() + 1) + "/" + monday2.getDate() + "-";
-
-                    var diff4 = monday2.getDate() + 4;
-                    var friday2 = new Date(monday2.setDate(diff4));
-                    secondWeek += (friday2.getMonth() + 1) + "/" + friday2.getDate();
-
-                    var diff5 = friday2.getDate() + 3;
-                    var monday3 = new Date(friday2.setDate(diff5));
-                    var thirdWeek = (monday3.getMonth() + 1) + "/" + monday3.getDate() + "-";
-
-                    var diff6 = monday3.getDate() + 4;
-                    var friday3 = new Date(monday3.setDate(diff6));
-                    thirdWeek += (friday3.getMonth() + 1) + "/" + friday3.getDate();
+                    var threeWeeks = self.getNextThreeWeeks();
+                    var lastThreeWeeks = self.getLastThreeWeeks();
 
                     //Query offline workers
-                    self.queryWorkers(locations, firstWeek, secondWeek, thirdWeek);
+                    self.queryWorkers(locations, threeWeeks, lastThreeWeeks);
                 },
                 error: function(error) {
                     console.log(error.message);
@@ -172,7 +145,76 @@ define([
             });
         },
 
-        queryWorkers: function(locations, firstWeek, secondWeek, thirdWeek) {
+        getNextThreeWeeks: function() {
+            var d = new Date();
+            var day = d.getDay();
+            var diff = d.getDate() - day + 1;
+
+            // For Saturday to see next week's menu
+            if (day == 6) {
+                diff += 1;
+            }
+
+            var monday = new Date(d.setDate(diff));
+            var firstWeek = (monday.getMonth() + 1) + "/" + monday.getDate() + "-";
+
+            var diff2 = monday.getDate() + 4;
+            var friday = new Date(monday.setDate(diff2));
+            firstWeek += (friday.getMonth() + 1) + "/" + friday.getDate();
+
+            var diff3 = friday.getDate() + 3;
+            var monday2 = new Date(friday.setDate(diff3));
+            var secondWeek = (monday2.getMonth() + 1) + "/" + monday2.getDate() + "-";
+
+            var diff4 = monday2.getDate() + 4;
+            var friday2 = new Date(monday2.setDate(diff4));
+            secondWeek += (friday2.getMonth() + 1) + "/" + friday2.getDate();
+
+            var diff5 = friday2.getDate() + 3;
+            var monday3 = new Date(friday2.setDate(diff5));
+            var thirdWeek = (monday3.getMonth() + 1) + "/" + monday3.getDate() + "-";
+
+            var diff6 = monday3.getDate() + 4;
+            var friday3 = new Date(monday3.setDate(diff6));
+            thirdWeek += (friday3.getMonth() + 1) + "/" + friday3.getDate();
+
+            return [firstWeek, secondWeek, thirdWeek];
+        },
+
+        getLastThreeWeeks: function() {
+            var d = new Date();
+            var day = d.getDay();
+            var diff = d.getDate() - day; // Sunday
+
+            var monday = new Date(d);
+            monday.setDate(diff+1);
+            var friday = new Date(monday);
+            var diff1 = monday.getDate() + 4;
+            friday.setDate(diff1);
+            var thisWeek = (monday.getMonth() + 1) + "/" + monday.getDate() + "-" + (friday.getMonth() + 1) + "/" + friday.getDate();
+
+            var sunday = new Date(d);
+            sunday.setDate(diff);
+            var diff2 = sunday.getDate() - 2;
+            var lastFriday = new Date(sunday);
+            lastFriday.setDate(diff2);
+            var diff3 = lastFriday.getDate() - 4;
+            var lastMonday = new Date(lastFriday);
+            lastMonday.setDate(diff3);
+            var firstLastWeek = (lastMonday.getMonth() + 1) + "/" + lastMonday.getDate() + "-" + (lastFriday.getMonth() + 1) + "/" + lastFriday.getDate();
+
+            var diff4 = lastMonday.getDate() - 3
+            var secondLastFriday = new Date(lastMonday);
+            secondLastFriday.setDate(diff4);
+            var diff5 = secondLastFriday.getDate() - 4;
+            var secondLastMonday = new Date(secondLastFriday);
+            secondLastMonday.setDate(diff5);
+            var secondLastWeek = (secondLastMonday.getMonth() + 1) + "/" + secondLastMonday.getDate() + "-" + (secondLastFriday.getMonth() + 1) + "/" + secondLastFriday.getDate();
+
+            return [thisWeek, firstLastWeek, secondLastWeek];
+        },
+
+        queryWorkers: function(locations, threeWeeks, lastThreeWeeks) {
             var self = this;
             var employeeQuery = new Parse.Query(EmployeeModel);
             employeeQuery.equalTo("manager", Parse.User.current());
@@ -195,7 +237,7 @@ define([
                     if (bankAccount) {
                         bankAccount.fetch({
                             success: function(bankAccount) {
-                                self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], employees: employees, bankAccount: bankAccount}));
+                                self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: threeWeeks, lastThreeWeeks:lastThreeWeeks, employees: employees, bankAccount: bankAccount}));
                                 self.menuSelectionAndSalesData();
                                 self.cardCreditSection();
                             }
@@ -203,7 +245,7 @@ define([
 
                     } else {
                         bankAccount = new BankAccountModel();
-                        self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: [firstWeek, secondWeek, thirdWeek], employees: employees, bankAccount: bankAccount}));
+                        self.$el.html(self.template({distributors: distributors, distributingPoints: locations, weeks: threeWeeks, lastThreeWeeks:lastThreeWeeks, employees: employees, bankAccount: bankAccount}));
                         self.menuSelectionAndSalesData();
                         self.cardCreditSection();
                     }
@@ -217,9 +259,20 @@ define([
         menuSelectionAndSalesData: function() {
             var self = this;
             this.configureMenuSelection();
+            this.$("#periodSelector").dropdown();
+            this.$("#periodSelector").dropdown({
+                onChange: function (week) {
+                    console.log(week);
+                    if (week) {
+                        self.refreshBillTableBody(week)
+                    };
+                }
+            });
+
+            this.refreshBillTableBody(this.getLastThreeWeeks()[0]);
 
             //Sales data
-            this.$("#salesTableBody").html(self.salesTableBodyTemplate({inventories: null, income: 0.00, nextPaymentDate: this.nextPayment.date, nextPaymentAmount: this.nextPayment.amount.toFixed(2)}));
+            this.$("#salesTableBody").html(this.salesTableBodyTemplate({inventories: null, income: 0.00, nextPaymentDate: this.nextPayment.date, nextPaymentAmount: this.nextPayment.amount.toFixed(2)}));
             this.$( "#datepicker" ).datepicker({
                 onSelect: function(dateText){
                     var month = parseInt(dateText.split("/")[0]) - 1;
@@ -236,6 +289,42 @@ define([
 
                     // Query Sales Data
                     self.querySalesData(dayStart, dayEnd);
+                }
+            });
+        },
+
+        refreshBillTableBody: function(week) {
+            var self = this;
+            var days = this.parseWeekIntoDates(week);
+            var monday = days[0], friday = days[1];
+            var inventoryQuery = new Parse.Query(InventoryModel);
+            inventoryQuery.equalTo("orderBy", Parse.User.current());
+            inventoryQuery.greaterThan("pickUpDate", monday);
+            inventoryQuery.lessThan("pickUpDate", friday);
+            inventoryQuery.include("dish");
+            inventoryQuery.include("dish.restaurant");
+            inventoryQuery.find({
+                success: function(inventories) {
+                    var restaurantPayments = null;
+                    if (inventories.length !== 0) {
+                        restaurantPayments = {};
+                        _.each(inventories, function(inventory) {
+                            var restaurantName = inventory.get("dish").get("restaurant").get("name");
+                            var totalOrderQuantity = inventory.get("totalOrderQuantity");
+                            var originalDishPrice = inventory.get("dish").get("originalPrice");
+
+                            if (restaurantPayments[restaurantName]) {
+                                restaurantPayments[restaurantName] += totalOrderQuantity * originalDishPrice;
+
+                            } else {
+                                restaurantPayments[restaurantName] = totalOrderQuantity * originalDishPrice;
+                            }
+                        });
+                    }
+                    self.$("#billTableBody").html(self.billTableBodyTemplate({payments: restaurantPayments}));
+                },
+                error: function(error) {
+                    showMessage("Error", "Find inventory failed! Reason: " + error.message);
                 }
             });
         },
@@ -369,25 +458,13 @@ define([
             inventoryQuery.greaterThan("pickUpDate", dayStart);
             inventoryQuery.find({
                 success: function(inventories) {
-                    var income = 0;
-                    var payByCardIncome = 0;
-                    var restaurantIncome = 0;
                     if (inventories.length !== 0) {
                         _.each(inventories, function(inventory) {
-                            //var soldQuantity = inventory.get("preorderQuantity") - inventory.get("currentQuantity");
-                            //var salesTotalByInventory = soldQuantity * inventory.get("price");
-                            //var restaurantIncomeByInventory = soldQuantity * inventory.get("dish").get('originalPrice');
-                            //income += salesTotalByInventory;
-                            //inventory.income = salesTotalByInventory - salesTotalByInventory * 0.08 - restaurantIncomeByInventory;
                             var totalOrderQuantity = inventory.get("totalOrderQuantity");
                             var payByCardQuantity = inventory.get("payByCardCount");
                             var payByCardIncomeByInventory = payByCardQuantity * inventory.get("price");
-                            var salesTotalByInventory = payByCardIncome + (totalOrderQuantity - payByCardQuantity) * inventory.get("cashPrice");
-                            var restaurantIncomeByInventory = totalOrderQuantity * inventory.get("dish").get('originalPrice');
-                            payByCardIncome += payByCardIncomeByInventory;
-                            restaurantIncome += restaurantIncomeByInventory;
-                            income += salesTotalByInventory;
-                            inventory.income = salesTotalByInventory - payByCardIncomeByInventory * 0.08;
+                            var salesTotalByInventory = payByCardIncomeByInventory + (totalOrderQuantity - payByCardQuantity) * inventory.get("cashPrice");
+                            inventory.income = salesTotalByInventory;
                         });
                     }
 
@@ -411,7 +488,6 @@ define([
 
         refreshWeekMenu: function() {
             if (this.selectedWeek && this.selectedDP) {
-                var days = this.selectedWeek.split("-");
                 var dp = new PickUpLocationModel();
                 dp.id = this.selectedDP;
 
@@ -419,15 +495,8 @@ define([
                  *
                  * Set start date and end date for querying inventory
                  */
-                var mondayMonth = parseInt(days[0].split("/")[0]) - 1, mondayDate = parseInt(days[0].split("/")[1]);
-                var monday = new Date();
-                monday.setFullYear(monday.getFullYear(), mondayMonth, mondayDate);
-                monday.setHours(0, 0, 0, 0);
-
-                var fridayMonth = parseInt(days[1].split("/")[0]) - 1, fridayDate = parseInt(days[1].split("/")[1]);
-                var friday = new Date();
-                friday.setFullYear(friday.getFullYear(), fridayMonth, fridayDate);
-                friday.setHours(23, 59, 59, 0);
+                var days = this.parseWeekIntoDates(this.selectedWeek);
+                var monday = days[0], friday = days[1];
 
                 /**
                  * Reset the global variables
@@ -494,6 +563,21 @@ define([
                     }
                 });
             }
+        },
+
+        parseWeekIntoDates: function(week) {
+            var days = week.split("-");
+            var mondayMonth = parseInt(days[0].split("/")[0]) - 1, mondayDate = parseInt(days[0].split("/")[1]);
+            var monday = new Date();
+            monday.setFullYear(monday.getFullYear(), mondayMonth, mondayDate);
+            monday.setHours(0, 0, 0, 0);
+
+            var fridayMonth = parseInt(days[1].split("/")[0]) - 1, fridayDate = parseInt(days[1].split("/")[1]);
+            var friday = new Date();
+            friday.setFullYear(friday.getFullYear(), fridayMonth, fridayDate);
+            friday.setHours(23, 59, 59, 0);
+
+            return [monday, friday];
         },
 
         getDateForEachDay: function(monday, offset, day) {
