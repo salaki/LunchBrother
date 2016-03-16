@@ -269,49 +269,33 @@
     <h4 class="ui red left floated header" style="margin-bottom:0">
         <i class="line chart icon small"></i>Account Summary
     </h4>
-    <!--
-    <h4 class="ui right floated header" style="margin-bottom:0;">Date: <input type="text" id="datepicker"></h4>
-    -->
 </div>
+<div id="restaurantPayment"></div>
 <div class="ui bottom attached segment">
-    <table class="ui small striped unstackable table" ide="billTableBody">
+    <table class="ui small striped unstackable table">
         <thead>
-            <tr>
-                <th colspan="1">You need to pay:
-                </th>
-                <th colspan="1" class="right aligned">
-                    <div id="periodSelector" class="ui dropdown">
-                        <i class="small calendar outline icon"></i>
-                        <div class="text">12/01-12/16</div>
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item">12/01-12/16</div>
-                            <div class="item">11/15-11/31</div>
-                            <div class="item">11/01-11/14</div>
-                        </div>
+        <tr>
+            <th>You need to pay:
+            </th>
+            <th class="right aligned">
+                <div id="periodSelector" class="ui dropdown">
+                    <i class="small calendar outline icon"></i>
+                    <div class="text"><%= lastThreeWeeks[0] %></div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <% _.each(lastThreeWeeks, function(week) { %>
+                        <div class="item" data-value="<%= week %>"><%= week %></div>
+                        <% })%>
                     </div>
-                </th>
-            </tr>
+                </div>
+            </th>
+        </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>
-                    East Dumpling House
-                </td>   
-                <td>
-                    $1300.00
-                </td>
-            </tr>    
-            <tr>
-                <td>
-                    Greate wall Supermarket
-                </td>   
-                <td>
-                    $1000.00
-                </td>
-            </tr>    
+        <tbody id="billTableBody">
         </tbody>
-    </table>    
+    </table>
+    <div class="ui divider hidden"></div>
+    <h5 class="ui right floated header" style="margin-bottom:10px;">Date: <input type="text" id="datepicker"></h5>
     <table class="ui small celled unstackable table" id="salesTableBody">
     </table>
 
