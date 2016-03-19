@@ -3,11 +3,23 @@
     <a class="item" data-tab="second"><%= weeks[1] %></a>
     <a class="item" data-tab="third"><%= weeks[2] %></a>
 </div>
+
 <div class="ui grid active tab" data-tab="first">
+    <% if (menu[0].published) { %>
     <h3 class="header-week">
         Monday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[0].Mon.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[0].Mon, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -27,16 +39,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -63,11 +65,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Tuesday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[0].Tue.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[0].Tue, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -87,16 +100,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -123,11 +126,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Wednesday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[0].Wed.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[0].Wed, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -147,16 +161,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -183,11 +187,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Thursday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[0].Thu.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[0].Thu, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -207,16 +222,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -243,11 +248,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Friday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[0].Fri.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[0].Fri, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -267,16 +283,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -303,13 +309,39 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
+    <% } else { %>
+    <div class="ui divider"></div>
+    <div class="ui orange icon message">
+        <i class="frown icon"></i>
+        <div class="content">
+            <div class="header">
+                Sorry, menu is not published yet
+            </div>
+            <p>
+                We are working on the delicious menu for you, please check it out later :)
+            </p>
+        </div>
+    </div>
+    <% } %>
 </div>
 <div class="ui grid tab" data-tab="second">
+    <% if (menu[1].published) { %>
     <h3 class="header-week">
         Monday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[1].Mon.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[1].Mon, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -329,16 +361,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -365,11 +387,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Tuesday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[1].Tue.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[1].Tue, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -389,16 +422,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -425,11 +448,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Wednesday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[1].Wed.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[1].Wed, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -449,16 +483,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -485,11 +509,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Thursday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[1].Thu.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[1].Thu, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -509,16 +544,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -545,11 +570,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Friday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[1].Fri.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[1].Fri, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -569,16 +605,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -605,13 +631,39 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
+    <% } else { %>
+    <div class="ui divider"></div>
+    <div class="ui orange icon message">
+        <i class="frown icon"></i>
+        <div class="content">
+            <div class="header">
+                Sorry, menu is not published yet
+            </div>
+            <p>
+                We are working on the delicious menu for you, please check it out later :)
+            </p>
+        </div>
+    </div>
+    <% } %>
 </div>
 <div class="ui grid tab" data-tab="third">
+    <% if (menu[2].published) { %>
     <h3 class="header-week">
         Monday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[2].Mon.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[2].Mon, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -631,16 +683,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -667,11 +709,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Tuesday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[2].Tue.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[2].Tue, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -691,16 +744,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -727,11 +770,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Wednesday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[2].Wed.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[2].Wed, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -787,11 +841,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Thursday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[2].Thu.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[2].Thu, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -811,16 +876,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -847,11 +902,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
     <h3 class="header-week">
         Friday
     </h3>
     <div class="doubling two column row dishes">
+        <% if (menu[2].Fri.length === 0) { %>
+        <div class="ui orange icon message">
+            <i class="frown icon"></i>
+            <div class="content">
+                <div class="header">
+                    No service for this day.
+                </div>
+            </div>
+        </div>
+        <% } else { %>
         <% _.each(menu[2].Fri, function(inventory) { %>
         <div class="column">
             <div class="ui weekly card">
@@ -871,16 +937,6 @@
                     </div>
                 </div>
                 <div class="menu-dishinfo ui extra content horizontal segments">
-                    <!--
-                        <div class="ui segment">
-                        <span class="left floated">
-                        <div class="content">
-                        <i class="wait icon"></i>
-                        <%= inventory.get('dish').get('calorie') %> Cal
-                        </div>
-                        </span>
-                        </div>
-                    -->
                     <div class="ui segment">
                         <span class="left floated">
                             <div class="content">
@@ -894,7 +950,8 @@
                     </div>
                     <div class="ui segment">
                         <span class="left floated">
-                            <div class="contenlanding                                <% if(inventory.get('dish').get('glutenFree')) { %>
+                            <div class="content">
+                                <% if(inventory.get('dish').get('glutenFree')) { %>
                                 <span class="green">Gluten Free</span>
                                 <% } else { %>
                                 <span class="yellow">Has Gluten</span>
@@ -906,7 +963,22 @@
             </div>
         </div>
         <% })%>
+        <% } %>
     </div>
+    <% } else { %>
+    <div class="ui divider"></div>
+    <div class="ui orange icon message">
+        <i class="frown icon"></i>
+        <div class="content">
+            <div class="header">
+                Sorry, menu is not published yet
+            </div>
+            <p>
+                We are working on the delicious menu for you, please check it out later :)
+            </p>
+        </div>
+    </div>
+    <% } %>
 </div>
 <script>
 $('.menu .item').tab();

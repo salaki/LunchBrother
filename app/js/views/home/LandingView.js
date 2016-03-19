@@ -254,25 +254,34 @@ define([
                 inventoryQuery.equalTo("pickUpLocation", dp);
             }
 
-            inventoryQuery.equalTo("published", true);
             inventoryQuery.greaterThan("pickUpDate", firstMonday);
             inventoryQuery.lessThan("pickUpDate", friday3);
             inventoryQuery.include("dish");
             inventoryQuery.include("dish.restaurant");
             inventoryQuery.find({
                 success: function (inventories) {
-                    var firstWeekMenu = {Mon:[], Tue:[], Wed:[], Thu:[], Fri:[]};
-                    var secondWeekMenu = {Mon:[], Tue:[], Wed:[], Thu:[], Fri:[]};
-                    var thirdWeekMenu = {Mon:[], Tue:[], Wed:[], Thu:[], Fri:[]};
+                    console.log(inventories.length);
+                    var firstWeekMenu = {Mon:[], Tue:[], Wed:[], Thu:[], Fri:[], published:false};
+                    var secondWeekMenu = {Mon:[], Tue:[], Wed:[], Thu:[], Fri:[], published:false};
+                    var thirdWeekMenu = {Mon:[], Tue:[], Wed:[], Thu:[], Fri:[], published:false};
 
                     _.each(inventories, function(inventory){
                         if (inventory.get('pickUpDate') > firstMonday && inventory.get('pickUpDate') < secondMonday) {
+                            if (inventory.get('published')) {
+                                firstWeekMenu.published = true;
+                            }
                             self.populateDayMenu(inventory.get('pickUpDate').getDay(), firstWeekMenu, inventory);
 
                         } else if (inventory.get('pickUpDate') > secondMonday && inventory.get('pickUpDate') < thirdMonday) {
+                            if (inventory.get('published')) {
+                                secondWeekMenu.published = true;
+                            }
                             self.populateDayMenu(inventory.get('pickUpDate').getDay(), secondWeekMenu, inventory);
 
                         } else {
+                            if (inventory.get('published')) {
+                                thirdWeekMenu.published = true;
+                            }
                             self.populateDayMenu(inventory.get('pickUpDate').getDay(), thirdWeekMenu, inventory);
                         }
                     });
